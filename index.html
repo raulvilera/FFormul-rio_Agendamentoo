@@ -1,0 +1,935 @@
+file:///C:/Users/RAULPEREIRAVILERAJUN/Downloads/deepseek_html_20250513_291c9e.html
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendamento de Aparelhos</title>
+  <style>
+    :root {
+      --azul-escuro: #0a2463;
+      --azul-medio: #3e92cc;
+      --azul-claro: #d6eaff;
+      --verde: #4caf50;
+      --vermelho: #f44336;
+      --cinza-escuro: #333;
+      --cinza-claro: #f5f5f5;
+      --branco: #ffffff;
+      --verde-disponivel: #2ecc71;
+      --azul-agendado: #3498db;
+      --azul-selecionado: #1a5276;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: var(--cinza-claro);
+      color: var(--cinza-escuro);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    h2, h3 {
+      color: var(--azul-escuro);
+      margin-bottom: 20px;
+    }
+
+    .container {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .form-container {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .calendar-container {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      flex: 1;
+      min-width: 220px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--azul-escuro);
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid var(--azul-claro);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--azul-medio);
+      box-shadow: 0 0 0 3px rgba(62, 146, 204, 0.2);
+      outline: none;
+    }
+
+    .calendar {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .calendar th,
+    .calendar td {
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      vertical-align: middle;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      background-color: var(--branco);
+      padding: 10px;
+    }
+
+    .calendar th {
+      background-color: var(--azul-claro);
+    }
+
+    .calendar td.disponivel {
+      background-color: var(--verde-disponivel);
+      color: white;
+      cursor: pointer;
+    }
+
+    .calendar td.agendado {
+      background-color: var(--azul-agendado);
+      color: white;
+    }
+
+    .calendar td.selecionado {
+      background-color: var(--azul-selecionado);
+      color: white;
+      font-weight: bold;
+    }
+
+    .calendar td.indisponivel {
+      background-color: #ccc;
+      cursor: not-allowed;
+      color: #666;
+    }
+
+    .calendar td:hover:not(.indisponivel) {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+
+    .historico-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .historico-table th,
+    .historico-table td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .historico-table th {
+      background-color: var(--azul-claro);
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-cadastrar {
+      background-color: var(--verde);
+      color: white;
+    }
+
+    .btn-cadastrar:hover {
+      background-color: #3e8e41;
+    }
+
+    .btn-limpar {
+      background-color: var(--vermelho);
+      color: white;
+    }
+
+    .btn-limpar:hover {
+      background-color: #d32f2f;
+    }
+
+    /* Estilos para o calendário pop-up */
+    .datepicker-container {
+      position: relative;
+    }
+
+    .datepicker-popup {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      width: 300px;
+    }
+
+    .datepicker-popup.active {
+      display: block;
+    }
+
+    .datepicker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .datepicker-nav {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .datepicker-title {
+      font-weight: bold;
+    }
+
+    .datepicker-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+    }
+
+    .datepicker-weekday {
+      text-align: center;
+      font-weight: bold;
+      padding: 5px;
+    }
+
+    .datepicker-day {
+      text-align: center;
+      padding: 5px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .datepicker-day:hover {
+      background-color: var(--azul-claro);
+    }
+
+    .datepicker-day.selected {
+      background-color: var(--azul-medio);
+      color: white;
+    }
+
+    .datepicker-day.disabled {
+      color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .datepicker-today {
+      font-weight: bold;
+    }
+
+    .datepicker-other-month {
+      color: #aaa;
+    }
+
+    .datepicker-input {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Agendamento de Aparelhos</h2>
+  <div class="container">
+    <div class="form-container">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Professor:</label>
+          <select id="professor" onchange="atualizarEmail()">
+            <option>Selecione</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Email:</label>
+          <input type="email" id="email-professor" readonly>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tipo de Aparelho:</label>
+          <select id="tipo-aparelho" onchange="atualizarMarca()">
+            <option value="">Selecione</option>
+            <option value="Tablet">Tablet</option>
+            <option value="Smartphone">Smartphone</option>
+            <option value="Chromebook">Chromebook</option>
+            <option value="Notebook">Notebook</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Marca:</label>
+          <input type="text" id="marca" readonly>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>N° de Aparelhos:</label>
+          <input type="number" id="numero-aparelhos" min="1" value="1">
+        </div>
+        
+        <div class="form-group datepicker-container">
+          <label>Data:</label>
+          <input type="text" id="data-selecionada" class="datepicker-input" readonly placeholder="Clique para selecionar">
+          <div class="datepicker-popup" id="datepickerPopup">
+            <div class="datepicker-header">
+              <button class="datepicker-nav" id="prevMonth">&lt;</button>
+              <div class="datepicker-title" id="datepickerMonthYear"></div>
+              <button class="datepicker-nav" id="nextMonth">&gt;</button>
+            </div>
+            <div class="datepicker-grid" id="datepickerWeekdays"></div>
+            <div class="datepicker-grid" id="datepickerDays"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Selecione a Turma:</label>
+          <select id="studentClass" class="form-control" required onchange="atualizarSala()">
+            <option value="">Selecione a turma</option>
+            <option value="6° ANO A MANHA ANUAL">6° ANO A MANHA ANUAL</option>
+            <option value="6° ANO B MANHA ANUAL">6° ANO B MANHA ANUAL</option>
+            <option value="6° ANO C MANHA ANUAL">6° ANO C MANHA ANUAL</option>
+            <option value="6° ANO D MANHA ANUAL">6° ANO D MANHA ANUAL</option>
+            <option value="6° ANO E TARDE ANUAL">6° ANO E TARDE ANUAL</option>
+            <option value="6° ANO F TARDE ANUAL">6° ANO F TARDE ANUAL</option>
+            <option value="7° ANO A TARDE ANUAL">7° ANO A TARDE ANUAL</option>
+            <option value="7° ANO B TARDE ANUAL">7° ANO B TARDE ANUAL</option>
+            <option value="7° ANO C TARDE ANUAL">7° ANO C TARDE ANUAL</option>
+            <option value="7° ANO D TARDE ANUAL">7° ANO D TARDE ANUAL</option>
+            <option value="7° ANO E TARDE ANUAL">7° ANO E TARDE ANUAL</option>
+            <option value="7° ANO F TARDE ANUAL">7° ANO F TARDE ANUAL</option>
+            <option value="8° ANO A TARDE ANUAL">8° ANO A TARDE ANUAL</option>
+            <option value="8° ANO B TARDE ANUAL">8° ANO B TARDE ANUAL</option>
+            <option value="8° ANO C TARDE ANUAL">8° ANO C TARDE ANUAL</option>
+            <option value="8° ANO D TARDE ANUAL">8° ANO D TARDE ANUAL</option>
+            <option value="8° ANO E TARDE ANUAL">8° ANO E TARDE ANUAL</option>
+            <option value="9° ANO A TARDE ANUAL">9° ANO A TARDE ANUAL</option>
+            <option value="9° ANO B TARDE ANUAL">9° ANO B TARDE ANUAL</option>
+            <option value="9° ANO C TARDE ANUAL">9° ANO C TARDE ANUAL</option>
+            <option value="9° ANO D TARDE ANUAL">9° ANO D TARDE ANUAL</option>
+            <option value="1ª SERIE A MANHA ANUAL">1ª SERIE A MANHA ANUAL</option>
+            <option value="1ª SERIE B MANHA ANUAL">1ª SERIE B MANHA ANUAL</option>
+            <option value="1ª SERIE C MANHA ANUAL">1ª SERIE C MANHA ANUAL</option>
+            <option value="1ª SERIE D MANHA ANUAL">1ª SERIE D MANHA ANUAL</option>
+            <option value="1ª SERIE E MANHA ANUAL">1ª SERIE E MANHA ANUAL</option>
+            <option value="1ª SERIE F MANHA ANUAL">1ª SERIE F MANHA ANUAL</option>
+            <option value="1ª SERIE G TARDE ANUAL">1ª SERIE G TARDE ANUAL</option>
+            <option value="1ª SERIE H NOITE ANUAL">1ª SERIE H NOITE ANUAL</option>
+            <option value="1ª SERIE I NOITE ANUAL">1ª SERIE I NOITE ANUAL</option>
+            <option value="2ª SERIE A MANHA ANUAL">2ª SERIE A MANHA ANUAL</option>
+            <option value="2ª SERIE B MANHA ANUAL">2ª SERIE B MANHA ANUAL</option>
+            <option value="2ª SERIE C MANHA ANUAL">2ª SERIE C MANHA ANUAL</option>
+            <option value="2ª SERIE D MANHA ANUAL">2ª SERIE D MANHA ANUAL</option>
+            <option value="2ª SERIE E MANHA ANUAL">2ª SERIE E MANHA ANUAL</option>
+            <option value="2ª SERIE F NOITE ANUAL">2ª SERIE F NOITE ANUAL</option>
+            <option value="2ª SERIE G NOITE ANUAL">2ª SERIE G NOITE ANUAL</option>
+            <option value="2ª SERIE H NOITE ANUAL">2ª SERIE H NOITE ANUAL</option>
+            <option value="2ª SERIE I NOITE ANUAL">2ª SERIE I NOITE ANUAL</option>
+            <option value="3ª SERIE A MANHA ANUAL">3ª SERIE A MANHA ANUAL</option>
+            <option value="3ª SERIE B MANHA ANUAL">3ª SERIE B MANHA ANUAL</option>
+            <option value="3ª SERIE C MANHA ANUAL">3ª SERIE C MANHA ANUAL</option>
+            <option value="3ª SERIE D NOITE ANUAL">3ª SERIE D NOITE ANUAL</option>
+            <option value="3ª SERIE E NOITE ANUAL">3ª SERIE E NOITE ANUAL</option>
+            <option value="3ª SERIE F NOITE ANUAL">3ª SERIE F NOITE ANUAL</option>
+            <option value="3ª SERIE G NOITE ANUAL">3ª SERIE G NOITE ANUAL</option>
+            <option value="4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA ANUAL">4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA ANUAL</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Sala:</label>
+          <input type="text" id="sala" readonly>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Retirada:</label>
+          <input type="time" id="hora-retirada" onclick="abrirRelogio('hora-retirada')">
+        </div>
+
+        <div class="form-group">
+          <label>Entrega:</label>
+          <input type="time" id="hora-entrega" onclick="abrirRelogio('hora-entrega')">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Aula:</label>
+        <select id="aula">
+          <option>1ª Aula</option>
+          <option>2ª Aula</option>
+          <option>3ª Aula</option>
+          <option>4ª Aula</option>
+          <option>5ª Aula</option>
+          <option>6ª Aula</option>
+        </select>
+      </div>
+
+      <div class="buttons-container">
+        <button class="btn btn-cadastrar" onclick="cadastrarAgendamento()">Cadastrar</button>
+        <button class="btn btn-limpar" onclick="limparFormulario()">Limpar</button>
+      </div>
+    </div>
+
+    <div class="calendar-container">
+      <div style="margin-bottom: 20px;">
+        <select id="monthSelect"></select>
+        <select id="yearSelect"></select>
+      </div>
+
+      <table class="calendar">
+        <thead>
+          <tr>
+            <th>Dom</th>
+            <th>Seg</th>
+            <th>Ter</th>
+            <th>Qua</th>
+            <th>Qui</th>
+            <th>Sex</th>
+            <th>Sáb</th>
+          </tr>
+        </thead>
+        <tbody id="calendarBody">
+          <!-- Dias serão inseridos via JavaScript -->
+        </tbody>
+      </table>
+
+      <h3>Histórico de Agendamentos</h3>
+      <table class="historico-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Turma</th>
+            <th>N° Aparelhos</th>
+            <th>Tipo de Aparelho</th>
+            <th>Professor</th>
+            <th>Aula(s)</th>
+          </tr>
+        </thead>
+        <tbody id="historico-body">
+          <!-- Histórico dinâmico -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Dados dos professores
+    const teacherEmails = {
+      "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
+      "ALEX LUTH PEREIRA MARANHAO": "luth@prof.educacao.sp.gov.br",
+      "ALEXANDRE SILVA LIMA": "alexandresilvalima@prof.educacao.sp.gov.br",
+    };
+
+    // Dados dos aparelhos
+    const marcas = {
+      "Tablet": "Positivo",
+      "Smartphone": "Positivo",
+      "Chromebook": "Samsung",
+      "Notebook": "Positivo"
+    };
+
+    // Dados das salas por turma
+    const salasPorTurma = {
+      "6° ANO A MANHA ANUAL": "Sala 101",
+      "6° ANO B MANHA ANUAL": "Sala 102",
+      "6° ANO C MANHA ANUAL": "Sala 103",
+      "6° ANO D MANHA ANUAL": "Sala 104",
+      "6° ANO E TARDE ANUAL": "Sala 105",
+      "6° ANO F TARDE ANUAL": "Sala 106",
+      "7° ANO A TARDE ANUAL": "Sala 201",
+      "7° ANO B TARDE ANUAL": "Sala 202",
+      "7° ANO C TARDE ANUAL": "Sala 203",
+      "7° ANO D TARDE ANUAL": "Sala 204",
+      "7° ANO E TARDE ANUAL": "Sala 205",
+      "7° ANO F TARDE ANUAL": "Sala 206",
+      "8° ANO A TARDE ANUAL": "Sala 301",
+      "8° ANO B TARDE ANUAL": "Sala 302",
+      "8° ANO C TARDE ANUAL": "Sala 303",
+      "8° ANO D TARDE ANUAL": "Sala 304",
+      "8° ANO E TARDE ANUAL": "Sala 305",
+      "9° ANO A TARDE ANUAL": "Sala 401",
+      "9° ANO B TARDE ANUAL": "Sala 402",
+      "9° ANO C TARde ANUAL": "Sala 403",
+      "9° ANO D TARDE ANUAL": "Sala 404",
+      "1ª SERIE A MANHA ANUAL": "Sala 501",
+      "1ª SERIE B MANHA ANUAL": "Sala 502",
+      "1ª SERIE C MANHA ANUAL": "Sala 503",
+      "1ª SERIE D MANHA ANUAL": "Sala 504",
+      "1ª SERIE E MANHA ANUAL": "Sala 505",
+      "1ª SERIE F MANHA ANUAL": "Sala 506",
+      "1ª SERIE G TARDE ANUAL": "Sala 507",
+      "1ª SERIE H NOITE ANUAL": "Sala 601",
+      "1ª SERIE I NOITE ANUAL": "Sala 602",
+      "2ª SERIE A MANHA ANUAL": "Sala 603",
+      "2ª SERIE B MANHA ANUAL": "Sala 604",
+      "2ª SERIE C MANHA ANUAL": "Sala 605",
+      "2ª SERIE D MANHA ANUAL": "Sala 606",
+      "2ª SERIE E MANHA ANUAL": "Sala 607",
+      "2ª SERIE F NOITE ANUAL": "Sala 701",
+      "2ª SERIE G NOITE ANUAL": "Sala 702",
+      "2ª SERIE H NOITE ANUAL": "Sala 703",
+      "2ª SERIE I NOITE ANUAL": "Sala 704",
+      "3ª SERIE A MANHA ANUAL": "Sala 801",
+      "3ª SERIE B MANHA ANUAL": "Sala 802",
+      "3ª SERIE C MANHA ANUAL": "Sala 803",
+      "3ª SERIE D NOITE ANUAL": "Sala 804",
+      "3ª SERIE E NOITE ANUAL": "Sala 805",
+      "3ª SERIE F NOITE ANUAL": "Sala 806",
+      "3ª SERIE G NOITE ANUAL": "Sala 807",
+      "4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA ANUAL": "Laboratório 1"
+    };
+
+    // Agendamentos
+    const agendamentos = {
+      '2025-05': [
+        { dia: 3, aparelho: "Tablet", professor: "ADEMAR RIBEIRO DE SOUZA", turma: "6° ANO A MANHA ANUAL", numAparelhos: 5, aula: "1ª Aula" },
+        { dia: 7, aparelho: "Chromebook", professor: "ALEX LUTH PEREIRA MARANHAO", turma: "7° ANO B TARDE ANUAL", numAparelhos: 10, aula: "3ª Aula" },
+        { dia: 12, aparelho: "Notebook", professor: "ALEXANDRE SILVA LIMA", turma: "8° ANO C TARDE ANUAL", numAparelhos: 8, aula: "2ª Aula" }
+      ],
+      '2025-06': [
+        { dia: 5, aparelho: "Smartphone", professor: "ADEMAR RIBEIRO DE SOUZA", turma: "9° ANO D TARDE ANUAL", numAparelhos: 6, aula: "4ª Aula" },
+        { dia: 15, aparelho: "Tablet", professor: "ALEXANDRE SILVA LIMA", turma: "1ª SERIE A MANHA ANUAL", numAparelhos: 12, aula: "1ª Aula" }
+      ]
+    };
+
+    const monthNames = [
+      "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+      "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    ];
+
+    const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+    const monthSelect = document.getElementById('monthSelect');
+    const yearSelect = document.getElementById('yearSelect');
+    let selectedDay = null;
+    let selectedDate = null;
+
+    // Variáveis para o calendário pop-up
+    let currentPopupDate = new Date();
+    let popupSelectedDate = null;
+
+    // Funções do formulário
+    function atualizarMarca() {
+      const tipo = document.getElementById("tipo-aparelho").value;
+      document.getElementById("marca").value = marcas[tipo] || "";
+    }
+
+    function atualizarSala() {
+      const turma = document.getElementById("studentClass").value;
+      document.getElementById("sala").value = salasPorTurma[turma] || "";
+    }
+
+    function abrirRelogio(idCampo) {
+      document.getElementById(idCampo).focus();
+    }
+
+    function atualizarEmail() {
+      const nome = document.getElementById("professor").value;
+      document.getElementById("email-professor").value = teacherEmails[nome] || "";
+    }
+
+    function gerarOpcoesProfessores() {
+      const select = document.getElementById("professor");
+      Object.keys(teacherEmails).forEach(nome => {
+        const option = document.createElement("option");
+        option.value = nome;
+        option.textContent = nome;
+        select.appendChild(option);
+      });
+    }
+
+    // Funções do calendário pop-up
+    function initDatepicker() {
+      const datepickerInput = document.getElementById('data-selecionada');
+      const datepickerPopup = document.getElementById('datepickerPopup');
+      const prevMonthBtn = document.getElementById('prevMonth');
+      const nextMonthBtn = document.getElementById('nextMonth');
+      const datepickerMonthYear = document.getElementById('datepickerMonthYear');
+      const datepickerWeekdays = document.getElementById('datepickerWeekdays');
+      const datepickerDays = document.getElementById('datepickerDays');
+
+      // Preenche os dias da semana
+      datepickerWeekdays.innerHTML = weekdays.map(day => 
+        `<div class="datepicker-weekday">${day}</div>`
+      ).join('');
+
+      // Mostra/oculta o popup
+      datepickerInput.addEventListener('click', () => {
+        datepickerPopup.classList.toggle('active');
+        renderDatepicker();
+      });
+
+      // Navegação do calendário
+      prevMonthBtn.addEventListener('click', () => {
+        currentPopupDate.setMonth(currentPopupDate.getMonth() - 1);
+        renderDatepicker();
+      });
+
+      nextMonthBtn.addEventListener('click', () => {
+        currentPopupDate.setMonth(currentPopupDate.getMonth() + 1);
+        renderDatepicker();
+      });
+
+      // Fecha o popup quando clicar fora
+      document.addEventListener('click', (e) => {
+        if (!datepickerPopup.contains(e.target) && e.target !== datepickerInput) {
+          datepickerPopup.classList.remove('active');
+        }
+      });
+
+      function renderDatepicker() {
+        const year = currentPopupDate.getFullYear();
+        const month = currentPopupDate.getMonth();
+        
+        datepickerMonthYear.textContent = `${monthNames[month]} ${year}`;
+        
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const daysInPrevMonth = new Date(year, month, 0).getDate();
+        
+        let daysHtml = '';
+        const today = new Date();
+        
+        // Dias do mês anterior
+        for (let i = 0; i < firstDay; i++) {
+          const day = daysInPrevMonth - firstDay + i + 1;
+          daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${day}</div>`;
+        }
+        
+        // Dias do mês atual
+        for (let i = 1; i <= daysInMonth; i++) {
+          const date = new Date(year, month, i);
+          const isToday = date.toDateString() === today.toDateString();
+          const isSelected = popupSelectedDate && date.toDateString() === popupSelectedDate.toDateString();
+          const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+          
+          let dayClass = 'datepicker-day';
+          if (isToday) dayClass += ' datepicker-today';
+          if (isSelected) dayClass += ' selected';
+          if (isPast) dayClass += ' disabled';
+          
+          daysHtml += `<div class="${dayClass}" data-day="${i}">${i}</div>`;
+        }
+        
+        // Dias do próximo mês
+        const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
+        const remainingCells = totalCells - (firstDay + daysInMonth);
+        
+        for (let i = 1; i <= remainingCells; i++) {
+          daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${i}</div>`;
+        }
+        
+        datepickerDays.innerHTML = daysHtml;
+        
+        // Adiciona eventos aos dias
+        document.querySelectorAll('.datepicker-day:not(.disabled)').forEach(day => {
+          day.addEventListener('click', () => {
+            const dayNum = parseInt(day.getAttribute('data-day'));
+            popupSelectedDate = new Date(year, month, dayNum);
+            
+            // Atualiza o campo de data
+            const formattedDay = String(dayNum).padStart(2, '0');
+            const formattedMonth = String(month + 1).padStart(2, '0');
+            selectedDate = `${formattedDay}/${formattedMonth}/${year}`;
+            datepickerInput.value = selectedDate;
+            
+            // Fecha o popup
+            datepickerPopup.classList.remove('active');
+            
+            // Atualiza o calendário principal
+            updateMainCalendarSelection(year, month + 1, dayNum);
+          });
+        });
+      }
+    }
+
+    function updateMainCalendarSelection(year, month, day) {
+      // Atualiza os seletores de mês/ano se necessário
+      if (parseInt(yearSelect.value) !== year || parseInt(monthSelect.value) + 1 !== month) {
+        yearSelect.value = year;
+        monthSelect.value = month - 1;
+        renderCalendarBody(year, month - 1);
+      }
+      
+      // Encontra e seleciona o dia no calendário principal
+      const calendarBody = document.getElementById('calendarBody');
+      const cells = calendarBody.querySelectorAll('td');
+      
+      cells.forEach(cell => {
+        if (parseInt(cell.textContent) === day) {
+          // Remove seleção anterior
+          if (selectedDay) {
+            selectedDay.classList.remove('selecionado');
+            const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
+            if (!agendamentosDoMes.find(d => d.dia === parseInt(selectedDay.textContent))) {
+              selectedDay.classList.add('disponivel');
+            }
+          }
+          
+          // Adiciona nova seleção
+          cell.classList.add('selecionado');
+          cell.classList.remove('disponivel');
+          selectedDay = cell;
+        }
+      });
+    }
+
+    // Funções do calendário principal
+    function populateMonthYearSelectors() {
+      const currentYear = new Date().getFullYear();
+
+      for (let y = currentYear - 1; y <= currentYear + 2; y++) {
+        const option = document.createElement('option');
+        option.value = y;
+        option.textContent = y;
+        yearSelect.appendChild(option);
+      }
+
+      monthNames.forEach((name, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = name;
+        monthSelect.appendChild(option);
+      });
+
+      const now = new Date();
+      monthSelect.value = now.getMonth();
+      yearSelect.value = now.getFullYear();
+    }
+
+    function getAgendamentos(year, month) {
+      const key = `${year}-${String(month + 1).padStart(2, '0')}`;
+      return agendamentos[key] || [];
+    }
+
+    function renderHistorico(agendamentosDoMes) {
+      const historicoBody = document.getElementById('historico-body');
+      historicoBody.innerHTML = '';
+      
+      agendamentosDoMes.forEach(({ dia, aparelho, professor, turma, numAparelhos, aula }) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${dia}/${monthSelect.value + 1}/${yearSelect.value}</td>
+          <td>${turma}</td>
+          <td>${numAparelhos}</td>
+          <td>${aparelho}</td>
+          <td>${professor}</td>
+          <td>${aula}</td>
+        `;
+        historicoBody.appendChild(row);
+      });
+    }
+
+    function renderCalendarBody(year, month) {
+      const calendarBody = document.getElementById('calendarBody');
+      calendarBody.innerHTML = '';
+
+      const date = new Date(year, month, 1);
+      const firstDay = date.getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      const agendamentosDoMes = getAgendamentos(year, month);
+
+      let day = 1;
+      for (let i = 0; i < 6; i++) {
+        const row = document.createElement('tr');
+
+        for (let j = 0; j < 7; j++) {
+          const cell = document.createElement('td');
+
+          if (i === 0 && j < firstDay) {
+            cell.innerHTML = '';
+          } else if (day > daysInMonth) {
+            cell.innerHTML = '';
+          } else {
+            cell.textContent = day;
+
+            const agendado = agendamentosDoMes.find(d => d.dia === day);
+            if (agendado) {
+              cell.classList.add('agendado');
+              cell.title = `${agendado.aparelho} - ${agendado.professor}`;
+            } else {
+              cell.classList.add('disponivel');
+              cell.addEventListener('click', () => {
+                // Remove a seleção anterior
+                if (selectedDay) {
+                  selectedDay.classList.remove('selecionado');
+                  if (!agendamentosDoMes.find(d => d.dia === parseInt(selectedDay.textContent))) {
+                    selectedDay.classList.add('disponivel');
+                  }
+                }
+                
+                // Adiciona a nova seleção
+                cell.classList.add('selecionado');
+                cell.classList.remove('disponivel');
+                selectedDay = cell;
+                
+                // Atualiza a data selecionada no formulário
+                const selectedMonth = parseInt(monthSelect.value) + 1;
+                const formattedMonth = String(selectedMonth).padStart(2, '0');
+                const formattedDay = String(day).padStart(2, '0');
+                selectedDate = `${formattedDay}/${formattedMonth}/${year}`;
+                document.getElementById('data-selecionada').value = selectedDate;
+                
+                // Atualiza a seleção no calendário popup
+                popupSelectedDate = new Date(year, month, day);
+                currentPopupDate = new Date(year, month, 1);
+              });
+            }
+
+            day++;
+          }
+
+          row.appendChild(cell);
+        }
+
+        calendarBody.appendChild(row);
+      }
+
+      renderHistorico(agendamentosDoMes);
+    }
+
+    function cadastrarAgendamento() {
+      const professor = document.getElementById("professor").value;
+      const aparelho = document.getElementById("tipo-aparelho").value;
+      const turma = document.getElementById("studentClass").value;
+      const numAparelhos = document.getElementById("numero-aparelhos").value;
+      const aula = document.getElementById("aula").value;
+      
+      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate) {
+        alert("Preencha todos os campos do formulário antes de agendar!");
+        return;
+      }
+      
+      const [dia, mes, ano] = selectedDate.split('/');
+      const key = `${ano}-${mes}`;
+      
+      if (!agendamentos[key]) {
+        agendamentos[key] = [];
+      }
+      
+      agendamentos[key].push({ 
+        dia: parseInt(dia),
+        aparelho,
+        professor,
+        turma,
+        numAparelhos: parseInt(numAparelhos),
+        aula
+      });
+      
+      // Atualiza o calendário e o histórico
+      renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
+      
+      // Limpa a seleção
+      if (selectedDay) {
+        selectedDay.classList.remove('selecionado');
+        selectedDay.classList.add('agendado');
+        selectedDay = null;
+      }
+      selectedDate = null;
+      document.getElementById('data-selecionada').value = '';
+      
+      alert("Agendamento cadastrado com sucesso!");
+    }
+
+    function limparFormulario() {
+      document.getElementById("professor").value = "Selecione";
+      document.getElementById("email-professor").value = "";
+      document.getElementById("tipo-aparelho").value = "";
+      document.getElementById("marca").value = "";
+      document.getElementById("numero-aparelhos").value = "1";
+      document.getElementById("studentClass").value = "";
+      document.getElementById("sala").value = "";
+      document.getElementById("hora-retirada").value = "";
+      document.getElementById("hora-entrega").value = "";
+      document.getElementById("aula").value = "1ª Aula";
+      
+      // Limpa a seleção de data
+      if (selectedDay) {
+        selectedDay.classList.remove('selecionado');
+        const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
+        if (!agendamentosDoMes.find(d => d.dia === parseInt(selectedDay.textContent))) {
+          selectedDay.classList.add('disponivel');
+        }
+        selectedDay = null;
+      }
+      selectedDate = null;
+      document.getElementById('data-selecionada').value = '';
+      popupSelectedDate = null;
+    }
+
+    // Inicialização
+    gerarOpcoesProfessores();
+    populateMonthYearSelectors();
+    renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
+    initDatepicker();
+
+    monthSelect.addEventListener('change', () => {
+      renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
+    });
+
+    yearSelect.addEventListener('change', () => {
+      renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
+    });
+  </script>
+</body>
+</html>
