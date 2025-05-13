@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -34,9 +33,16 @@
       padding: 20px;
     }
 
-    h2, h3 {
+    h2 {
       color: var(--azul-escuro);
       margin-bottom: 20px;
+      text-align: center;
+    }
+
+    h3 {
+      color: var(--azul-escuro);
+      margin-bottom: 20px;
+      text-align: center;
     }
 
     .container {
@@ -342,53 +348,53 @@
           <label>Selecione a Turma:</label>
           <select id="studentClass" class="form-control" required onchange="atualizarSala()">
             <option value="">Selecione a turma</option>
-            <option value="6° ANO A MANHA ANUAL">6° ANO A MANHA ANUAL</option>
-            <option value="6° ANO B MANHA ANUAL">6° ANO B MANHA ANUAL</option>
-            <option value="6° ANO C MANHA ANUAL">6° ANO C MANHA ANUAL</option>
-            <option value="6° ANO D MANHA">6° ANO D MANHA ANUAL</option>
-            <option value="6° ANO E TARDE">6° ANO E TARDE ANUAL</option>
-            <option value="6° ANO F TARDE">6° ANO F TARDE ANUAL</option>
-            <option value="7° ANO A TARDE">7° ANO A TARDE ANUAL</option>
-            <option value="7° ANO B TARDE">7° ANO B TARDE ANUAL</option>
-            <option value="7° ANO C TARDE">7° ANO C TARDE ANUAL</option>
-            <option value="7° ANO D TARDE">7° ANO D TARDE ANUAL</option>
-            <option value="7° ANO E TARDE">7° ANO E TARDE ANUAL</option>
-            <option value="7° ANO F TARDE">7° ANO F TARDE ANUAL</option>
-            <option value="8° ANO A TARDE">8° ANO A TARDE ANUAL</option>
-            <option value="8° ANO B TARDE">8° ANO B TARDE ANUAL</option>
-            <option value="8° ANO C TARDE">8° ANO C TARDE ANUAL</option>
-            <option value="8° ANO D TARDE">8° ANO D TARDE ANUAL</option>
-            <option value="8° ANO E TARDE">8° ANO E TARDE ANUAL</option>
-            <option value="9° ANO A TARDE">9° ANO A TARDE ANUAL</option>
-            <option value="9° ANO B TARDE">9° ANO B TARDE ANUAL</option>
-            <option value="9° ANO C TARDE">9° ANO C TARDE ANUAL</option>
-            <option value="9° ANO D TARDE">9° ANO D TARDE ANUAL</option>
-            <option value="1ª SERIE A MANHA">1ª SERIE A MANHA ANUAL</option>
-            <option value="1ª SERIE B MANHA">1ª SERIE B MANHA ANUAL</option>
-            <option value="1ª SERIE C MANHA">1ª SERIE C MANHA ANUAL</option>
-            <option value="1ª SERIE D MANHA">1ª SERIE D MANHA ANUAL</option>
-            <option value="1ª SERIE E MANHA">1ª SERIE E MANHA ANUAL</option>
-            <option value="1ª SERIE F MANHA">1ª SERIE F MANHA ANUAL</option>
-            <option value="1ª SERIE G TARDE">1ª SERIE G TARDE ANUAL</option>
-            <option value="1ª SERIE H NOITE">1ª SERIE H NOITE ANUAL</option>
-            <option value="1ª SERIE I NOITE">1ª SERIE I NOITE ANUAL</option>
-            <option value="2ª SERIE A MANHA">2ª SERIE A MANHA ANUAL</option>
-            <option value="2ª SERIE B MANHa">2ª SERIE B MANHA ANUAL</option>
-            <option value="2ª SERIE C MANHA">2ª SERIE C MANHA ANUAL</option>
-            <option value="2ª SERIE D MANHA">2ª SERIE D MANHA ANUAL</option>
-            <option value="2ª SERIE E MANHA">2ª SERIE E MANHA ANUAL</option>
-            <option value="2ª SERIE F NOITE">2ª SERIE F NOITE ANUAL</option>
-            <option value="2ª SERIE G NOITE">2ª SERIE G NOITE ANUAL</option>
-            <option value="2ª SERIE H NOITE">2ª SERIE H NOITE ANUAL</option>
-            <option value="2ª SERIE I NOITE">2ª SERIE I NOITE ANUAL</option>
-            <option value="3ª SERIE A MANHA">3ª SERIE A MANHA ANUAL</option>
-            <option value="3ª SERIE B MANHA">3ª SERIE B MANHA ANUAL</option>
-            <option value="3ª SERIE C MANHA">3ª SERIE C MANHA ANUAL</option>
-            <option value="3ª SERIE D NOITE">3ª SERIE D NOITE ANUAL</option>
-            <option value="3ª SERIE E NOITE">3ª SERIE E NOITE ANUAL</option>
-            <option value="3ª SERIE F NOITE">3ª SERIE F NOITE ANUAL</option>
-            <option value="3ª SERIE G NOITE">3ª SERIE G NOITE ANUAL</option>
-            <option value="4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA ANUAL">4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA ANUAL</option>
+            <option value="6° ANO A MANHA">6° ANO A MANHA</option>
+            <option value="6° ANO B MANHA">6° ANO B MANHA</option>
+            <option value="6° ANO C MANHA">6° ANO C MANHA</option>
+            <option value="6° ANO D MANHA">6° ANO D MANHA</option>
+            <option value="6° ANO E TARDE">6° ANO E TARDE</option>
+            <option value="6° ANO F TARDE">6° ANO F TARDE</option>
+            <option value="7° ANO A TARDE">7° ANO A TARDE</option>
+            <option value="7° ANO B TARDE">7° ANO B TARDE</option>
+            <option value="7° ANO C TARDE">7° ANO C TARDE</option>
+            <option value="7° ANO D TARDE">7° ANO D TARDE</option>
+            <option value="7° ANO E TARDE">7° ANO E TARDE</option>
+            <option value="7° ANO F TARDE">7° ANO F TARDE</option>
+            <option value="8° ANO A TARDE">8° ANO A TARDE</option>
+            <option value="8° ANO B TARDE">8° ANO B TARDE</option>
+            <option value="8° ANO C TARDE">8° ANO C TARDE</option>
+            <option value="8° ANO D TARDE">8° ANO D TARDE</option>
+            <option value="8° ANO E TARDE">8° ANO E TARDE</option>
+            <option value="9° ANO A TARDE">9° ANO A TARDE</option>
+            <option value="9° ANO B TARDE">9° ANO B TARDE</option>
+            <option value="9° ANO C TARDE">9° ANO C TARDE</option>
+            <option value="9° ANO D TARDE">9° ANO D TARDE</option>
+            <option value="1ª SERIE A MANHA">1ª SERIE A MANHA</option>
+            <option value="1ª SERIE B MANHA">1ª SERIE B MANHA</option>
+            <option value="1ª SERIE C MANHA">1ª SERIE C MANHA</option>
+            <option value="1ª SERIE D MANHA">1ª SERIE D MANHA</option>
+            <option value="1ª SERIE E MANHA">1ª SERIE E MANHA</option>
+            <option value="1ª SERIE F MANHA">1ª SERIE F MANHA</option>
+            <option value="1ª SERIE G TARDE">1ª SERIE G TARDE</option>
+            <option value="1ª SERIE H NOITE">1ª SERIE H NOITE</option>
+            <option value="1ª SERIE I NOITE">1ª SERIE I NOITE</option>
+            <option value="2ª SERIE A MANHA">2ª SERIE A MANHA</option>
+            <option value="2ª SERIE B MANHA">2ª SERIE B MANHA</option>
+            <option value="2ª SERIE C MANHA">2ª SERIE C MANHA</option>
+            <option value="2ª SERIE D MANHA">2ª SERIE D MANHA</option>
+            <option value="2ª SERIE E MANHA">2ª SERIE E MANHA</option>
+            <option value="2ª SERIE F NOITE">2ª SERIE F NOITE</option>
+            <option value="2ª SERIE G NOITE">2ª SERIE G NOITE</option>
+            <option value="2ª SERIE H NOITE">2ª SERIE H NOITE</option>
+            <option value="2ª SERIE I NOITE">2ª SERIE I NOITE</option>
+            <option value="3ª SERIE A MANHA">3ª SERIE A MANHA</option>
+            <option value="3ª SERIE B MANHA">3ª SERIE B MANHA</option>
+            <option value="3ª SERIE C MANHA">3ª SERIE C MANHA</option>
+            <option value="3ª SERIE D NOITE">3ª SERIE D NOITE</option>
+            <option value="3ª SERIE E NOITE">3ª SERIE E NOITE</option>
+            <option value="3ª SERIE F NOITE">3ª SERIE F NOITE</option>
+            <option value="3ª SERIE G NOITE">3ª SERIE G NOITE</option>
+            <option value="4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA">4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA</option>
           </select>
         </div>
 
@@ -476,6 +482,89 @@
       "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
       "ALEX LUTH PEREIRA MARANHAO": "luth@prof.educacao.sp.gov.br",
       "ALEXANDRE SILVA LIMA": "alexandresilvalima@prof.educacao.sp.gov.br",
+      "ALEXSANDRA PAULA VARELLA DE SOUZA": "avarella@prof.educacao.sp.gov.br",
+      "ALINE CARDOSO": "aline.cardoso@servidor.educacao.sp.gov.br",
+      "ALISON VASCONCELOS BESERRA": "alisonv@prof.educacao.sp.gov.br",
+      "AMAURI TEODORO DE OLIVEIRA": "amaurit@prof.educacao.sp.gov.br",
+      "ANA PAULA DE OLIVEIRA SOUZA": "ana.souza59@servidor.educacao.sp.gov.br",
+      "ANA PAULA DOS SANTOS": "paulasantosa@prof.educacao.sp.gov.br",
+      "ANDRE LUIZ TAVARES": "andreltavares@prof.educacao.sp.gov.br",
+      "ANDREIA DOS SANTOS FREITAS": "sanfreitas@prof.educacao.sp.gov.br",
+      "ANDREIA MADUREIRA REIS": "andreiamadureira@prof.educacao.sp.gov.br",
+      "ANTONIO CARLS DE OLIVEIRA": "antoniocarloso@prof.educacao.sp.gov.br",
+      "ANTONIO RAMOS DE ARAUJO": "antonioramosaraujo@prof.educacao.sp.gov.br",
+      "ANTONIO WILTON WANDERLEY CABRAL": "antoniowilton@prof.educacao.sp.gov.br",
+      "AUGUSTO LINO PESSOA NETO": "augustolino@prof.educacao.sp.gov.br",
+      "AUREA MARIA DE JESUS MARQUES": "aureamaria@prof.educacao.sp.gov.br",
+      "CAROLINA PERNOMIAN PARUSSOLO": "carolinapernomian@prof.educacao.sp.gov.br",
+      "CASSIA OLIVEIRA ANTONIAZI": "cassiaosilva@prof.educacao.sp.gov.br",
+      "CICERO FERREIRA": "cicero.ferreira@servidor.educacao.sp.gov.br",
+      "DANIEL DE FREITAS ALMEIDA": "danielalmeida@prof.educacao.sp.gov.br",
+      "DANIEL LOPES BARBOSA": "daniellopesbarbosa@prof.educacao.sp.gov.br",
+      "DANIELA FERREIRA LIMA": "danielaflima@prof.educacao.sp.gov.br",
+      "EDIANE VIEIRA DA SILVA": "ediane@prof.educacao.sp.gov.br",
+      "EDILEUSA NUNES PEREIRA": "edileusa@prof.educacao.sp.gov.br",
+      "EDUARDO HENRIQUE DA FONSECA": "henriquefonseca@prof.educacao.sp.gov.br",
+      "ELIANE SANTOS SILVA": "essantos@prof.educacao.sp.gov.br",
+      "ELIAS MONTEIRO DA SILVA": "elias1@prof.educacao.sp.gov.br",
+      "ELISABETE APARECIDA PIRES": "elisabetepires@prof.educacao.sp.gov.br",
+      "ELZA DE FARIA PEREIRA": "elzafariapereira@prof.educacao.sp.gov.br",
+      "EMERSON GABLER DE ALMEIDA": "egabler@prof.educacao.sp.gov.br",
+      "ERINEIDE LEITE ARAGAO NERY": "erineidearagao@prof.educacao.sp.gov.br",
+      "EUZELI ARAUJO DE OLIVEIRA": "euzeli@prof.educacao.sp.gov.br",
+      "FABIANO AUGUSTO PIEDADE": "fabianoaugusto@prof.educacao.sp.gov.br",
+      "FABIO CAMILO": "camilof@prof.educacao.sp.gov.br",
+      "FERNANDO JOSE DA SILVA FILHO": "fernandojs@prof.educacao.sp.gov.br",
+      "FLAVIA CRISTINA APARECIDA BICHLER": "flaviacri@prof.educacao.sp.gov.br",
+      "FLAVIO CARDOSO FLEURY": "flaviofleury@prof.educacao.sp.gov.br",
+      "GABRIELA SERIGHELLI DE MELO": "gabrielaserighelli@prof.educacao.sp.gov.br",
+      "GENILTON DE OLIVEIRA SILVA": "genilton@prof.educacao.sp.gov.br",
+      "GIANI CRISTINA DO PRADO": "gianiprado@prof.educacao.sp.gov.br",
+      "INGRYD CAROLINA SUGUIMOTO VIEIRA": "ingryd@prof.educacao.sp.gov.br",
+      "IVANILDES DOS SANTOS OSHIKAWA": "oshikawa@prof.educacao.sp.gov.br",
+      "JANINA DOS PASSOS BRAGA DE ALMEIDA": "janinabraga@prof.educacao.sp.gov.br",
+      "JUAREZ GOMES DE MAGALHAES FILHO": "juarezgomes@prof.educacao.sp.gov.br",
+      "JUREMA SOLEDADE FURINI SANTOS": "juremas@prof.educacao.sp.gov.br",
+      "KATIUSCIA ALVES BOMFIM": "katiusciabomfim@prof.educacao.sp.gov.br",
+      "KETHY REGINA DA SILVA DOMINGOS COSTA": "kethy@prof.educacao.sp.gov.br",
+      "LUANA CAROLINE ALVES LIMA": "luanalima01@prof.educacao.sp.gov.br",
+      "LUANA DE FREITAS SILVA": "luanafreitas@prof.educacao.sp.gov.br",
+      "LUCIANA NOVAIS CORREIA SANTOS": "novaiscorreia@prof.educacao.sp.gov.br",
+      "LUCIANO MOREIRA DE AZEVEDO": "lucianomoreira@prof.educacao.sp.gov.br",
+      "MARCELO FERNANDES DA SILVA": "marcelofs@prof.educacao.sp.gov.br",
+      "MARCIEL DA SILVA": "marcielsilva@prof.educacao.sp.gov.br",
+      "MARIA HELENA CUNHA MORO": "marcunha@prof.educacao.sp.gov.br",
+      "MARIA QUITÉRIA FERREIRA DOS SANTOS": "quiteriasantos@prof.educacao.sp.gov.br",
+      "MARINA DA CONCEICAO FRANCISCO SILVA": "marinafrancisco@prof.educacao.sp.gov.br",
+      "MAURICIO DE BARROS SANTOS": "mauriciobsantos@prof.educacao.sp.gov.br",
+      "MICHELE DE PINHO MORAES": "michelepinho@prof.educacao.sp.gov.br",
+      "MOISES ANTONIO DE BARROS": "moisesbarros@prof.educacao.sp.gov.br",
+      "PATRICIA GOMES ROCHA RIBEIRO": "patriciag@prof.educacao.sp.gov.br",
+      "PAULO ROBERTO DA SILVA ITO": "pauloito@prof.educacao.sp.gov.br",
+      "PEDRO ZANOTTI FILHO": "pedrozanotti@prof.educacao.sp.gov.br",
+      "RAUL PEREIRA VILERA JUNIOR": "vilera@prof.educacao.sp.gov.br",
+      "REGIANE CURTI DE SOUZA OLIVEIRA": "regianecurti@prof.educacao.sp.gov.br",
+      "REGINA DA SILVA CASTRO": "reginasilvacastro@prof.educacao.sp.gov.br",
+      "RICARDO AMERICO DA SILVA": "ricardoamerico@prof.educacao.sp.gov.br",
+      "ROBERTO SALGADO": "robertosalgado@prof.educacao.sp.gov.br",
+      "RODRIGO VIEIRA": "rodrigovieira1@prof.educacao.sp.gov.br",
+      "ROSANGELA CAFASSO MOREIRA": "cafasso@prof.educacao.sp.gov.br",
+      "ROSIMERY DE SOUZA PESSOA": "rosimerypessoa@prof.educacao.sp.gov.br",
+      "ROSMARA DA SILVA CARDOSO": "rosmaracardoso@prof.educacao.sp.gov.br",
+      "SANDRA CRISTINA MACEDO MORAES": "sandracristinamacedo@prof.educacao.sp.gov.br",
+      "SELMA GOMES DA SILVA": "selmagomess@prof.educacao.sp.gov.br",
+      "SERGIO AGRIPINO VILLA NOVA": "sergioagripino@prof.educacao.sp.gov.br",
+      "SOLANGE ALMEIDA DA SILVA": "almeidafazio@prof.educacao.sp.gov.br",
+      "SUELI SILVE PEREIRA": "suelisilve@prof.educacao.sp.gov.br",
+      "SUZINEIDE SILVA DE FREITAS": "suzineidefreitas@prof.educacao.sp.gov.br",
+      "THIAGO FABIANO BRITO": "thiagofabiano@prof.educacao.sp.gov.br",
+      "TITTO AUGUSTO NASCIMENTO SILVA": "titto@prof.educacao.sp.gov.br",
+      "VANDERSON HYPPOLITO": "vhypolito@prof.educacao.sp.gov.br",
+      "VANESSA IVETE GOMES DOS SANTOS": "vanessaivete@prof.educacao.sp.gov.br",
+      "VANIA PENHA DE BARROS": "vaniapenha@prof.educacao.sp.gov.br",
+      "VIVIANE LEAL CAMERA DE MORAES": "camera@prof.educacao.sp.gov.br",
+      "WILSON LUIZ DE SOUZA COSTA": "wilsonluizsouza@prof.educacao.sp.gov.br",
+      "WILSON RODRIGUES MOTA": "wmota@prof.educacao.sp.gov.br"
     };
 
     // Dados dos aparelhos
@@ -486,69 +575,74 @@
       "Notebook": "Positivo"
     };
 
-    // Dados das salas por turma
-    const salasPorTurma = {
-      "6° ANO A MANHA ANUAL": "Sala 101",
-      "6° ANO B MANHA ANUAL": "Sala 102",
-      "6° ANO C MANHA ANUAL": "Sala 103",
-      "6° ANO D MANHA ANUAL": "Sala 104",
-      "6° ANO E TARDE ANUAL": "Sala 105",
-      "6° ANO F TARDE ANUAL": "Sala 106",
-      "7° ANO A TARDE ANUAL": "Sala 201",
-      "7° ANO B TARDE ANUAL": "Sala 202",
-      "7° ANO C TARDE ANUAL": "Sala 203",
-      "7° ANO D TARDE ANUAL": "Sala 204",
-      "7° ANO E TARDE ANUAL": "Sala 205",
-      "7° ANO F TARDE ANUAL": "Sala 206",
-      "8° ANO A TARDE ANUAL": "Sala 301",
-      "8° ANO B TARDE ANUAL": "Sala 302",
-      "8° ANO C TARDE ANUAL": "Sala 303",
-      "8° ANO D TARDE ANUAL": "Sala 304",
-      "8° ANO E TARDE ANUAL": "Sala 305",
-      "9° ANO A TARDE ANUAL": "Sala 401",
-      "9° ANO B TARDE ANUAL": "Sala 402",
-      "9° ANO C TARde ANUAL": "Sala 403",
-      "9° ANO D TARDE ANUAL": "Sala 404",
-      "1ª SERIE A MANHA ANUAL": "Sala 501",
-      "1ª SERIE B MANHA ANUAL": "Sala 502",
-      "1ª SERIE C MANHA ANUAL": "Sala 503",
-      "1ª SERIE D MANHA ANUAL": "Sala 504",
-      "1ª SERIE E MANHA ANUAL": "Sala 505",
-      "1ª SERIE F MANHA ANUAL": "Sala 506",
-      "1ª SERIE G TARDE ANUAL": "Sala 507",
-      "1ª SERIE H NOITE ANUAL": "Sala 601",
-      "1ª SERIE I NOITE ANUAL": "Sala 602",
-      "2ª SERIE A MANHA ANUAL": "Sala 603",
-      "2ª SERIE B MANHA ANUAL": "Sala 604",
-      "2ª SERIE C MANHA ANUAL": "Sala 605",
-      "2ª SERIE D MANHA ANUAL": "Sala 606",
-      "2ª SERIE E MANHA ANUAL": "Sala 607",
-      "2ª SERIE F NOITE ANUAL": "Sala 701",
-      "2ª SERIE G NOITE ANUAL": "Sala 702",
-      "2ª SERIE H NOITE ANUAL": "Sala 703",
-      "2ª SERIE I NOITE ANUAL": "Sala 704",
-      "3ª SERIE A MANHA ANUAL": "Sala 801",
-      "3ª SERIE B MANHA ANUAL": "Sala 802",
-      "3ª SERIE C MANHA ANUAL": "Sala 803",
-      "3ª SERIE D NOITE ANUAL": "Sala 804",
-      "3ª SERIE E NOITE ANUAL": "Sala 805",
-      "3ª SERIE F NOITE ANUAL": "Sala 806",
-      "3ª SERIE G NOITE ANUAL": "Sala 807",
-      "4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA ANUAL": "Laboratório 1"
+    // Dados das salas por turma e período
+    const salasPorTurmaPeriodo = {
+      // 6° ANO
+      "6° ANO A MANHA": "Sala 101",
+      "6° ANO B MANHA": "Sala 102",
+      "6° ANO C MANHA": "Sala 103",
+      "6° ANO D MANHA": "Sala 104",
+      "6° ANO E TARDE": "Sala 101",
+      "6° ANO F TARDE": "Sala 102",
+      
+      // 7° ANO
+      "7° ANO A TARDE": "Sala 201",
+      "7° ANO B TARDE": "Sala 202",
+      "7° ANO C TARDE": "Sala 203",
+      "7° ANO D TARDE": "Sala 204",
+      "7° ANO E TARDE": "Sala 205",
+      "7° ANO F TARDE": "Sala 206",
+      
+      // 8° ANO
+      "8° ANO A TARDE": "Sala 301",
+      "8° ANO B TARDE": "Sala 302",
+      "8° ANO C TARDE": "Sala 303",
+      "8° ANO D TARDE": "Sala 304",
+      "8° ANO E TARDE": "Sala 305",
+      
+      // 9° ANO
+      "9° ANO A TARDE": "Sala 401",
+      "9° ANO B TARDE": "Sala 402",
+      "9° ANO C TARDE": "Sala 403",
+      "9° ANO D TARDE": "Sala 404",
+      
+      // 1ª SÉRIE
+      "1ª SERIE A MANHA": "Sala 501",
+      "1ª SERIE B MANHA": "Sala 502",
+      "1ª SERIE C MANHA": "Sala 503",
+      "1ª SERIE D MANHA": "Sala 504",
+      "1ª SERIE E MANHA": "Sala 505",
+      "1ª SERIE F MANHA": "Sala 506",
+      "1ª SERIE G TARDE": "Sala 501",
+      "1ª SERIE H NOITE": "Sala 601",
+      "1ª SERIE I NOITE": "Sala 602",
+      
+      // 2ª SÉRIE
+      "2ª SERIE A MANHA": "Sala 603",
+      "2ª SERIE B MANHA": "Sala 604",
+      "2ª SERIE C MANHA": "Sala 605",
+      "2ª SERIE D MANHA": "Sala 606",
+      "2ª SERIE E MANHA": "Sala 607",
+      "2ª SERIE F NOITE": "Sala 701",
+      "2ª SERIE G NOITE": "Sala 702",
+      "2ª SERIE H NOITE": "Sala 703",
+      "2ª SERIE I NOITE": "Sala 704",
+      
+      // 3ª SÉRIE
+      "3ª SERIE A MANHA": "Sala 801",
+      "3ª SERIE B MANHA": "Sala 802",
+      "3ª SERIE C MANHA": "Sala 803",
+      "3ª SERIE D NOITE": "Sala 804",
+      "3ª SERIE E NOITE": "Sala 805",
+      "3ª SERIE F NOITE": "Sala 806",
+      "3ª SERIE G NOITE": "Sala 807",
+      
+      // ADMINISTRAÇÃO
+      "4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA": "Laboratório 1"
     };
 
-    // Agendamentos
-    const agendamentos = {
-      '2025-05': [
-        { dia: 3, aparelho: "Tablet", professor: "ADEMAR RIBEIRO DE SOUZA", turma: "6° ANO A MANHA ANUAL", numAparelhos: 5, aula: "1ª Aula" },
-        { dia: 7, aparelho: "Chromebook", professor: "ALEX LUTH PEREIRA MARANHAO", turma: "7° ANO B TARDE ANUAL", numAparelhos: 10, aula: "3ª Aula" },
-        { dia: 12, aparelho: "Notebook", professor: "ALEXANDRE SILVA LIMA", turma: "8° ANO C TARDE ANUAL", numAparelhos: 8, aula: "2ª Aula" }
-      ],
-      '2025-06': [
-        { dia: 5, aparelho: "Smartphone", professor: "ADEMAR RIBEIRO DE SOUZA", turma: "9° ANO D TARDE ANUAL", numAparelhos: 6, aula: "4ª Aula" },
-        { dia: 15, aparelho: "Tablet", professor: "ALEXANDRE SILVA LIMA", turma: "1ª SERIE A MANHA ANUAL", numAparelhos: 12, aula: "1ª Aula" }
-      ]
-    };
+    // Agendamentos (vazio para começar sem exemplos)
+    const agendamentos = {};
 
     const monthNames = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -574,7 +668,16 @@
 
     function atualizarSala() {
       const turma = document.getElementById("studentClass").value;
-      document.getElementById("sala").value = salasPorTurma[turma] || "";
+      const periodo = turma.includes("MANHA") ? "MANHA" : 
+                     turma.includes("TARDE") ? "TARDE" : 
+                     turma.includes("NOITE") ? "NOITE" : "";
+      
+      // Verifica se a turma existe no mapeamento
+      if (salasPorTurmaPeriodo[turma]) {
+        document.getElementById("sala").value = salasPorTurmaPeriodo[turma];
+      } else {
+        document.getElementById("sala").value = "Sala não definida";
+      }
     }
 
     function abrirRelogio(idCampo) {
@@ -760,14 +863,26 @@
       return agendamentos[key] || [];
     }
 
+    function formatarDataParaHistorico(dia, mes, ano) {
+      const meses = [
+        "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
+        "Jul", "Ago", "Set", "Out", "Nov", "Dez"
+      ];
+      return `${dia} ${meses[mes - 1]}`;
+    }
+
     function renderHistorico(agendamentosDoMes) {
       const historicoBody = document.getElementById('historico-body');
       historicoBody.innerHTML = '';
       
       agendamentosDoMes.forEach(({ dia, aparelho, professor, turma, numAparelhos, aula }) => {
         const row = document.createElement('tr');
+        const mes = parseInt(monthSelect.value) + 1;
+        const ano = parseInt(yearSelect.value);
+        const dataFormatada = formatarDataParaHistorico(dia, mes, ano);
+        
         row.innerHTML = `
-          <td>${dia}/${monthSelect.value + 1}/${yearSelect.value}</td>
+          <td>${dataFormatada}</td>
           <td>${turma}</td>
           <td>${numAparelhos}</td>
           <td>${aparelho}</td>
@@ -808,31 +923,7 @@
               cell.title = `${agendado.aparelho} - ${agendado.professor}`;
             } else {
               cell.classList.add('disponivel');
-              cell.addEventListener('click', () => {
-                // Remove a seleção anterior
-                if (selectedDay) {
-                  selectedDay.classList.remove('selecionado');
-                  if (!agendamentosDoMes.find(d => d.dia === parseInt(selectedDay.textContent))) {
-                    selectedDay.classList.add('disponivel');
-                  }
-                }
-                
-                // Adiciona a nova seleção
-                cell.classList.add('selecionado');
-                cell.classList.remove('disponivel');
-                selectedDay = cell;
-                
-                // Atualiza a data selecionada no formulário
-                const selectedMonth = parseInt(monthSelect.value) + 1;
-                const formattedMonth = String(selectedMonth).padStart(2, '0');
-                const formattedDay = String(day).padStart(2, '0');
-                selectedDate = `${formattedDay}/${formattedMonth}/${year}`;
-                document.getElementById('data-selecionada').value = selectedDate;
-                
-                // Atualiza a seleção no calendário popup
-                popupSelectedDate = new Date(year, month, day);
-                currentPopupDate = new Date(year, month, 1);
-              });
+              // Removido o event listener de clique direto no calendário
             }
 
             day++;
@@ -853,8 +944,10 @@
       const turma = document.getElementById("studentClass").value;
       const numAparelhos = document.getElementById("numero-aparelhos").value;
       const aula = document.getElementById("aula").value;
+      const horaRetirada = document.getElementById("hora-retirada").value;
+      const horaEntrega = document.getElementById("hora-entrega").value;
       
-      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate) {
+      if (!professor || professor === "Selecione" || !aparelho || !turma || !numAparelhos || !selectedDate || !horaRetirada || !horaEntrega) {
         alert("Preencha todos os campos do formulário antes de agendar!");
         return;
       }
@@ -872,7 +965,9 @@
         professor,
         turma,
         numAparelhos: parseInt(numAparelhos),
-        aula
+        aula,
+        horaRetirada,
+        horaEntrega
       });
       
       // Atualiza o calendário e o histórico
