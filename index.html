@@ -867,7 +867,74 @@
       const key = `${year}-${String(month + 1).padStart(2, '0')}`;
       return agendamentos[key] || [];
     }
+const monthSelect = document.getElementById("monthSelect");
+  const yearSelect = document.getElementById("yearSelect");
+  const calendarBody = document.getElementById("calendarBody");
 
+  // Preenche os selects de mês e ano
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+
+  for (let m = 0; m < 12; m++) {
+    const option = document.createElement("option");
+    option.value = m;
+    option.text = new Date(0, m).toLocaleString("pt-BR", { month: "long" });
+    if (m === currentMonth) option.selected = true;
+    monthSelect.appendChild(option);
+  }
+
+  for (let y = currentYear - 5; y <= currentYear + 5; y++) {
+    const option = document.createElement("option");
+    option.value = y;
+    option.text = y;
+    if (y === currentYear) option.selected = true;
+    yearSelect.appendChild(option);
+  }
+
+  function generateCalendar(month, year) {
+    calendarBody.innerHTML = ""; // Limpa o conteúdo atual
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    let row = document.createElement("tr");
+    let dayCounter = 0;
+
+    for (let day = 1; day <= lastDay.getDate(); day++) {
+      const date = new Date(year, month, day);
+      const dayOfWeek = date.getDay(); // 0 (Dom) a 6 (Sáb)
+
+      // Pula sábado (6) e domingo (0)
+      if (dayOfWeek === 0 || dayOfWeek === 6) continue;
+
+      const cell = document.createElement("td");
+      cell.textContent = day;
+      row.appendChild(cell);
+      dayCounter++;
+
+      if (dayCounter % 5 === 0) {
+        calendarBody.appendChild(row);
+        row = document.createElement("tr");
+      }
+    }
+
+    // Adiciona a última linha se houver dias restantes
+    if (row.children.length > 0) {
+      calendarBody.appendChild(row);
+    }
+  }
+
+  // Inicializa o calendário
+  generateCalendar(currentMonth, currentYear);
+
+  // Atualiza ao mudar mês ou ano
+  monthSelect.addEventListener("change", () => {
+    generateCalendar(parseInt(monthSelect.value), parseInt(yearSelect.value));
+  });
+
+  yearSelect.addEventListener("change", () => {
+    generateCalendar(parseInt(monthSelect.value), parseInt(yearSelect.value));
+  });
     function formatarDataParaHistorico(dia, mes, ano) {
       const meses = [
         "01", "02", "03", "04", "05", "06",
