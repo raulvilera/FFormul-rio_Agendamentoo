@@ -440,20 +440,27 @@
         <select id="yearSelect"></select>
       </div>
 
-      <table class="calendar">
-        <thead>
-          <tr>
-            <th>Seg</th>
-            <th>Ter</th>
-            <th>Qua</th>
-            <th>Qui</th>
-            <th>Sex</th>
-          </tr>
-        </thead>
-        <tbody id="calendarBody">
-          <!-- Dias serão inseridos via JavaScript -->
-        </tbody>
-      </table>
+      <div class="calendar-container">
+  <div style="margin-bottom: 20px;">
+    <select id="monthSelect"></select>
+    <select id="yearSelect"></select>
+  </div>
+
+  <table class="calendar">
+    <thead>
+      <tr>
+        <th>Seg</th>
+        <th>Ter</th>
+        <th>Qua</th>
+        <th>Qui</th>
+        <th>Sex</th>
+      </tr>
+    </thead>
+    <tbody id="calendarBody">
+      <!-- Dias úteis serão inseridos via JavaScript -->
+    </tbody>
+  </table>
+</div>
 
       <h3>HISTÓRICO DE AGENDAMENTOS</h3>
       <table class="historico-table">
