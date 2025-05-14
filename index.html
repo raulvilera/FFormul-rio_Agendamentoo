@@ -868,27 +868,14 @@
       return agendamentos[key] || [];
     }
 
-  });
-    function formatarDataParaHistorico(dia, mes, ano) {
-      const meses = [
-        "01", "02", "03", "04", "05", "06",
-        "07", "08", "09", "10", "11", "12"
-      ];
-      return `${dia} ${meses[mes - 1]}`;
-    }
-
     function renderHistorico(agendamentosDoMes) {
       const historicoBody = document.getElementById('historico-body');
       historicoBody.innerHTML = '';
       
       agendamentosDoMes.forEach(({ dia, aparelho, professor, turma, numAparelhos, aula }) => {
         const row = document.createElement('tr');
-        const mes = parseInt(monthSelect.value) + 1;
-        const ano = parseInt(yearSelect.value);
-        const dataFormatada = formatarDataParaHistorico(dia, mes, ano);
-        
         row.innerHTML = `
-          <td>${dataFormatada}</td>
+          <td>${dia}/${monthSelect.value + 1}/${yearSelect.value}</td>
           <td>${turma}</td>
           <td>${numAparelhos}</td>
           <td>${aparelho}</td>
@@ -929,7 +916,31 @@
               cell.title = `${agendado.aparelho} - ${agendado.professor}`;
             } else {
               cell.classList.add('disponivel');
-              // Removido o event listener de clique direto no calendário
+              cell.addEventListener('click', () => {
+                // Remove a seleção anterior
+                if (selectedDay) {
+                  selectedDay.classList.remove('selecionado');
+                  if (!agendamentosDoMes.find(d => d.dia === parseInt(selectedDay.textContent))) {
+                    selectedDay.classList.add('disponivel');
+                  }
+                }
+                
+                // Adiciona a nova seleção
+                cell.classList.add('selecionado');
+                cell.classList.remove('disponivel');
+                selectedDay = cell;
+                
+                // Atualiza a data selecionada no formulário
+                const selectedMonth = parseInt(monthSelect.value) + 1;
+                const formattedMonth = String(selectedMonth).padStart(2, '0');
+                const formattedDay = String(day).padStart(2, '0');
+                selectedDate = `${formattedDay}/${formattedMonth}/${year}`;
+                document.getElementById('data-selecionada').value = selectedDate;
+                
+                // Atualiza a seleção no calendário popup
+                popupSelectedDate = new Date(year, month, day);
+                currentPopupDate = new Date(year, month, 1);
+              });
             }
 
             day++;
@@ -950,10 +961,8 @@
       const turma = document.getElementById("studentClass").value;
       const numAparelhos = document.getElementById("numero-aparelhos").value;
       const aula = document.getElementById("aula").value;
-      const horaRetirada = document.getElementById("hora-retirada").value;
-      const horaEntrega = document.getElementById("hora-entrega").value;
       
-      if (!professor || professor === "Selecione" || !aparelho || !turma || !numAparelhos || !selectedDate || !horaRetirada || !horaEntrega) {
+      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate) {
         alert("Preencha todos os campos do formulário antes de agendar!");
         return;
       }
@@ -971,9 +980,7 @@
         professor,
         turma,
         numAparelhos: parseInt(numAparelhos),
-        aula,
-        horaRetirada,
-        horaEntrega
+        aula
       });
       
       // Atualiza o calendário e o histórico
@@ -1030,87 +1037,6 @@
     yearSelect.addEventListener('change', () => {
       renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
     });
-    
-  function cadastrarAgendamento() {
-    const professor = document.getElementById("professor").value;
-    const aparelho = document.getElementById("tipo-aparelho").value;
-    const turma = document.getElementById("studentClass").value;
-    const numAparelhos = document.getElementById("numero-aparelhos").value;
-    const aula = document.getElementById("aula").value;
-    const horaRetirada = document.getElementById("hora-retirada").value;
-    const horaEntrega = document.getElementById("hora-entrega").value;
-    const sala = document.getElementById("sala").value;
-    const email = document.getElementById("email-professor").value;
-    
-    if (!professor || professor === "Selecione" || !aparelho || !turma || !numAparelhos || !selectedDate || !horaRetirada || !horaEntrega) {
-      alert("Preencha todos os campos do formulário antes de agendar!");
-      return;
-    }
-    
-    const [dia, mes, ano] = selectedDate.split('/');
-    const key = `${ano}-${mes}`;
-    
-    if (!agendamentos[key]) {
-      agendamentos[key] = [];
-    }
-    
-    // Cria objeto com todos os dados do agendamento
-    const agendamento = { 
-      dia: parseInt(dia),
-      mes: parseInt(mes),
-      ano: parseInt(ano),
-      aparelho,
-      professor,
-      turma,
-      numAparelhos: parseInt(numAparelhos),
-      aula,
-      horaRetirada,
-      horaEntrega,
-      sala,
-      email
-    };
-    
-    agendamentos[key].push(agendamento);
-    
-    // Atualiza o calendário e o histórico
-    renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
-    
-    // Limpa a seleção
-    if (selectedDay) {
-      selectedDay.classList.remove('selecionado');
-      selectedDay.classList.add('agendado');
-      selectedDay = null;
-    }
-    selectedDate = null;
-    document.getElementById('data-selecionada').value = '';
-    
-    // Chama a função para gerar o documento
-    gerarDocumentoPDF(agendamento);
-    
-    alert("Agendamento cadastrado com sucesso! O documento será gerado e enviado para seu email.");
-  }
-
-  // Função para enviar dados ao Google Apps Script e gerar PDF
-  function gerarDocumentoPDF(agendamento) {
-    // URL do seu Web App do Google Apps Script
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8Q6Z0lSr6A44Z8CxtyjQ1x6htanNVPcUsJwOUwcvohBBA6BZoeLo1qtnUK7k2S1aP/exec";
-    
-    // Envia os dados para o Apps Script
-    fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(agendamento)
-    })
-    .then(() => {
-      console.log("Dados enviados com sucesso para o Apps Script");
-    })
-    .catch(error => {
-      console.error("Erro ao enviar dados:", error);
-    });
-  }
   </script>
 </body>
 </html>
