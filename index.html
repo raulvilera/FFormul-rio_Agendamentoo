@@ -288,7 +288,7 @@
   </style>
 </head>
 <body>
-  <h2>Agendamento de Aparelhos</h2>
+  <h2>AGENDAMENTO DE APARELHOS</h2>
   <div class="container">
     <div class="form-container">
       <div class="form-row">
@@ -299,32 +299,32 @@
           </select>
         </div>
         <div class="form-group">
-          <label>Email:</label>
+          <label>EMAIL:</label>
           <input type="email" id="email-professor" readonly>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label>Tipo de Aparelho:</label>
+          <label>TIPO DE APARELHO:</label>
           <select id="tipo-aparelho" onchange="atualizarMarca()">
             <option value="">Selecione</option>
             <option value="Tablet">Tablet</option>
-            <option value="Smartphone">Smartphone</option>
-            <option value="Chromebook">Chromebook</option>
-            <option value="Notebook">Notebook</option>
+            <option value="SMARTPHONE">Smartphone</option>
+            <option value="CHROMEBOOK">Chromebook</option>
+            <option value="NOTEBOOK">Notebook</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label>Marca:</label>
+          <label>MARCA:</label>
           <input type="text" id="marca" readonly>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label>N° de Aparelhos:</label>
+          <label>N° DE APARELHOS:</label>
           <input type="number" id="numero-aparelhos" min="1" value="1">
         </div>
         
@@ -345,7 +345,7 @@
 
       <div class="form-row">
         <div class="form-group">
-          <label>Selecione a Turma:</label>
+          <label>SELECIONE A TURMA:</label>
           <select id="studentClass" class="form-control" required onchange="atualizarSala()">
             <option value="">Selecione a turma</option>
             <option value="6° ANO A MANHA">6° ANO A MANHA</option>
@@ -399,25 +399,25 @@
         </div>
 
         <div class="form-group">
-          <label>Sala:</label>
+          <label>SALA:</label>
           <input type="text" id="sala" readonly>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label>Retirada:</label>
+          <label>RETIRADA:</label>
           <input type="time" id="hora-retirada" onclick="abrirRelogio('hora-retirada')">
         </div>
 
         <div class="form-group">
-          <label>Entrega:</label>
+          <label>ENTREGA:</label>
           <input type="time" id="hora-entrega" onclick="abrirRelogio('hora-entrega')">
         </div>
       </div>
 
       <div class="form-group">
-        <label>Aula:</label>
+        <label>AULA:</label>
         <select id="aula">
           <option>1ª Aula</option>
           <option>2ª Aula</option>
@@ -429,8 +429,8 @@
       </div>
 
       <div class="buttons-container">
-        <button class="btn btn-cadastrar" onclick="cadastrarAgendamento()">Cadastrar</button>
-        <button class="btn btn-limpar" onclick="limparFormulario()">Limpar</button>
+        <button class="btn btn-cadastrar" onclick="cadastrarAgendamento()">CADASTRAR</button>
+        <button class="btn btn-limpar" onclick="limparFormulario()">LIMPAR</button>
       </div>
     </div>
 
@@ -457,16 +457,16 @@
         </tbody>
       </table>
 
-      <h3>Histórico de Agendamentos</h3>
+      <h3>HISTÓRICO DE AGENDAMENTOS</h3>
       <table class="historico-table">
         <thead>
           <tr>
-            <th>Data</th>
-            <th>Turma</th>
-            <th>N° Aparelhos</th>
-            <th>Tipo de Aparelho</th>
-            <th>Professor</th>
-            <th>Aula(s)</th>
+            <th>DATA</th>
+            <th>TURMA</th>
+            <th>N° APARELHOS</th>
+            <th>TIPO DE APARELHO</th>
+            <th>PROFESSOR</th>
+            <th>AULA(s)</th>
           </tr>
         </thead>
         <tbody id="historico-body">
