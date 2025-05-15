@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agendamento de Aparelhos</title>
+  <title>AGENDAMENTO DE APARELHOS</title>
   <style>
     :root {
       --azul-escuro: #0a2463;
@@ -14,9 +14,11 @@
       --cinza-escuro: #333;
       --cinza-claro: #f5f5f5;
       --branco: #ffffff;
+      --branco-brilhante: rgba(255, 255, 255, 0.9);
       --verde-disponivel: #2ecc71;
       --azul-agendado: #3498db;
       --azul-selecionado: #1a5276;
+      --fundo-cinza: #f0f0f0;
     }
     
     * {
@@ -27,22 +29,24 @@
     }
 
     body {
-      background-color: var(--cinza-claro);
-      color: var(--cinza-escuro);
+      background: linear-gradient(to bottom, var(--azul-escuro) 0%, var(--azul-escuro) 50%, #111 50%, #111 100%);
+      color: var(--cinza-claro);
       min-height: 100vh;
       padding: 20px;
     }
 
     h2 {
-      color: var(--azul-escuro);
+      color: var(--branco);
       margin-bottom: 20px;
       text-align: center;
+      text-transform: uppercase;
     }
 
     h3 {
-      color: var(--azul-escuro);
+      color: var(--branco);
       margin-bottom: 20px;
       text-align: center;
+      text-transform: uppercase;
     }
 
     .container {
@@ -54,11 +58,21 @@
     .form-container {
       flex: 1;
       min-width: 300px;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      color: var(--cinza-escuro);
     }
 
     .calendar-container {
       flex: 1;
       min-width: 300px;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      color: var(--cinza-escuro);
     }
 
     .form-row {
@@ -85,10 +99,11 @@
     .form-group select {
       width: 100%;
       padding: 12px 15px;
-      border: 2px solid var(--azul-claro);
+      border: 2px solid var(--branco-brilhante);
       border-radius: 8px;
       font-size: 1rem;
       transition: all 0.3s ease;
+      background-color: var(--branco);
     }
 
     .form-group input:focus,
@@ -110,42 +125,49 @@
       height: 40px;
       text-align: center;
       vertical-align: middle;
+      border: 1px solid var(--branco-brilhante);
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       background-color: var(--branco);
       padding: 10px;
     }
 
     .calendar th {
       background-color: var(--azul-claro);
+      border: 1px solid var(--branco-brilhante);
     }
 
     .calendar td.disponivel {
       background-color: var(--verde-disponivel);
       color: white;
-      cursor: pointer;
+      cursor: default;
+      border: 1px solid var(--branco-brilhante);
     }
 
     .calendar td.agendado {
       background-color: var(--azul-agendado);
       color: white;
+      border: 1px solid var(--branco-brilhante);
+      cursor: default;
     }
 
     .calendar td.selecionado {
       background-color: var(--azul-selecionado);
       color: white;
       font-weight: bold;
+      border: 1px solid var(--branco-brilhante);
+      cursor: default;
     }
 
     .calendar td.indisponivel {
       background-color: #ccc;
       cursor: not-allowed;
       color: #666;
+      border: 1px solid var(--branco-brilhante);
     }
 
     .calendar td:hover:not(.indisponivel) {
       opacity: 0.8;
-      transform: scale(1.05);
     }
 
     .historico-table {
@@ -284,6 +306,14 @@
 
     .datepicker-input {
       cursor: pointer;
+    }
+
+    .conflict-message {
+      color: var(--vermelho);
+      font-weight: bold;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
     }
   </style>
 </head>
@@ -428,6 +458,10 @@
         </select>
       </div>
 
+      <div class="conflict-message" id="conflictMessage">
+        Já existe um agendamento para esta turma nesta data e aula!
+      </div>
+
       <div class="buttons-container">
         <button class="btn btn-cadastrar" onclick="cadastrarAgendamento()">CADASTRAR</button>
         <button class="btn btn-limpar" onclick="limparFormulario()">LIMPAR</button>
@@ -440,27 +474,20 @@
         <select id="yearSelect"></select>
       </div>
 
-      <div class="calendar-container">
-  <div style="margin-bottom: 20px;">
-    <select id="monthSelect"></select>
-    <select id="yearSelect"></select>
-  </div>
-
-  <table class="calendar">
-    <thead>
-      <tr>
-        <th>Seg</th>
-        <th>Ter</th>
-        <th>Qua</th>
-        <th>Qui</th>
-        <th>Sex</th>
-      </tr>
-    </thead>
-    <tbody id="calendarBody">
-      <!-- Dias úteis serão inseridos via JavaScript -->
-    </tbody>
-  </table>
-</div>
+      <table class="calendar">
+        <thead>
+          <tr>
+            <th>Seg</th>
+            <th>Ter</th>
+            <th>Qua</th>
+            <th>Qui</th>
+            <th>Sex</th>
+          </tr>
+        </thead>
+        <tbody id="calendarBody">
+          <!-- Dias úteis serão inseridos via JavaScript -->
+        </tbody>
+      </table>
 
       <h3>HISTÓRICO DE AGENDAMENTOS</h3>
       <table class="historico-table">
@@ -654,7 +681,7 @@
       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
     ];
 
-    const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    const weekdays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'];
 
     const monthSelect = document.getElementById('monthSelect');
     const yearSelect = document.getElementById('yearSelect');
@@ -664,6 +691,20 @@
     // Variáveis para o calendário pop-up
     let currentPopupDate = new Date();
     let popupSelectedDate = null;
+
+    // Função para verificar conflito de agendamento
+    function verificarConflitoAgendamento(turma, data, aula) {
+      const [dia, mes, ano] = data.split('/');
+      const key = `${ano}-${mes}`;
+      
+      if (!agendamentos[key]) return false;
+      
+      return agendamentos[key].some(agendamento => 
+        agendamento.dia === parseInt(dia) && 
+        agendamento.turma === turma && 
+        agendamento.aula === aula
+      );
+    }
 
     // Funções do formulário
     function atualizarMarca() {
@@ -683,6 +724,9 @@
       } else {
         document.getElementById("sala").value = "Sala não definida";
       }
+      
+      // Verifica se há conflito de agendamento
+      verificarConflito();
     }
 
     function abrirRelogio(idCampo) {
@@ -704,6 +748,21 @@
       });
     }
 
+    // Função para verificar conflito quando os campos relevantes mudam
+    function verificarConflito() {
+      const turma = document.getElementById("studentClass").value;
+      const data = document.getElementById("data-selecionada").value;
+      const aula = document.getElementById("aula").value;
+      const conflictMessage = document.getElementById("conflictMessage");
+      
+      if (turma && data && aula) {
+        const conflito = verificarConflitoAgendamento(turma, data, aula);
+        conflictMessage.style.display = conflito ? "block" : "none";
+      } else {
+        conflictMessage.style.display = "none";
+      }
+    }
+
     // Funções do calendário pop-up
     function initDatepicker() {
       const datepickerInput = document.getElementById('data-selecionada');
@@ -714,7 +773,7 @@
       const datepickerWeekdays = document.getElementById('datepickerWeekdays');
       const datepickerDays = document.getElementById('datepickerDays');
 
-      // Preenche os dias da semana
+      // Preenche os dias da semana (apenas dias úteis)
       datepickerWeekdays.innerHTML = weekdays.map(day => 
         `<div class="datepicker-weekday">${day}</div>`
       ).join('');
@@ -756,33 +815,24 @@
         let daysHtml = '';
         const today = new Date();
         
-        // Dias do mês anterior
-        for (let i = 0; i < firstDay; i++) {
-          const day = daysInPrevMonth - firstDay + i + 1;
-          daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${day}</div>`;
-        }
-        
         // Dias do mês atual
         for (let i = 1; i <= daysInMonth; i++) {
           const date = new Date(year, month, i);
-          const isToday = date.toDateString() === today.toDateString();
-          const isSelected = popupSelectedDate && date.toDateString() === popupSelectedDate.toDateString();
-          const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+          const dayOfWeek = date.getDay(); // 0=Domingo, 1=Segunda, ..., 6=Sábado
           
-          let dayClass = 'datepicker-day';
-          if (isToday) dayClass += ' datepicker-today';
-          if (isSelected) dayClass += ' selected';
-          if (isPast) dayClass += ' disabled';
-          
-          daysHtml += `<div class="${dayClass}" data-day="${i}">${i}</div>`;
-        }
-        
-        // Dias do próximo mês
-        const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
-        const remainingCells = totalCells - (firstDay + daysInMonth);
-        
-        for (let i = 1; i <= remainingCells; i++) {
-          daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${i}</div>`;
+          // Mostrar apenas dias úteis (Segunda a Sexta)
+          if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+            const isToday = date.toDateString() === today.toDateString();
+            const isSelected = popupSelectedDate && date.toDateString() === popupSelectedDate.toDateString();
+            const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            
+            let dayClass = 'datepicker-day';
+            if (isToday) dayClass += ' datepicker-today';
+            if (isSelected) dayClass += ' selected';
+            if (isPast) dayClass += ' disabled';
+            
+            daysHtml += `<div class="${dayClass}" data-day="${i}">${i}</div>`;
+          }
         }
         
         datepickerDays.innerHTML = daysHtml;
@@ -804,6 +854,9 @@
             
             // Atualiza o calendário principal
             updateMainCalendarSelection(year, month + 1, dayNum);
+            
+            // Verifica se há conflito
+            verificarConflito();
           });
         });
       }
@@ -874,8 +927,14 @@
       
       agendamentosDoMes.forEach(({ dia, aparelho, professor, turma, numAparelhos, aula }) => {
         const row = document.createElement('tr');
+        
+        // Corrigido: Formata a data no formato DD/MM/AAAA corretamente
+        const formattedDay = String(dia).padStart(2, '0');
+        const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0'); // Corrigido aqui
+        const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
+        
         row.innerHTML = `
-          <td>${dia}/${monthSelect.value + 1}/${yearSelect.value}</td>
+          <td>${formattedDate}</td>
           <td>${turma}</td>
           <td>${numAparelhos}</td>
           <td>${aparelho}</td>
@@ -897,73 +956,85 @@
       const agendamentosDoMes = getAgendamentos(year, month);
 
       let day = 1;
-      for (let i = 0; i < 6; i++) {
-        const row = document.createElement('tr');
+      let currentRow = document.createElement('tr');
+      
+      // Ajusta o primeiro dia para começar na segunda-feira (1)
+      // Se o primeiro dia do mês for domingo (0), começamos na próxima linha
+      let startDay = firstDay === 0 ? 1 : firstDay;
+      
+      // Cria células vazias para os dias antes do primeiro dia do mês
+      for (let i = 1; i < startDay; i++) {
+        const emptyCell = document.createElement('td');
+        emptyCell.innerHTML = '';
+        currentRow.appendChild(emptyCell);
+      }
 
-        for (let j = 0; j < 7; j++) {
-          const cell = document.createElement('td');
+      for (let i = startDay; i <= 5 && day <= daysInMonth; i++) {
+        const cell = document.createElement('td');
+        cell.textContent = day;
 
-          if (i === 0 && j < firstDay) {
-            cell.innerHTML = '';
-          } else if (day > daysInMonth) {
-            cell.innerHTML = '';
-          } else {
-            cell.textContent = day;
-
-            const agendado = agendamentosDoMes.find(d => d.dia === day);
-            if (agendado) {
-              cell.classList.add('agendado');
-              cell.title = `${agendado.aparelho} - ${agendado.professor}`;
-            } else {
-              cell.classList.add('disponivel');
-              cell.addEventListener('click', () => {
-                // Remove a seleção anterior
-                if (selectedDay) {
-                  selectedDay.classList.remove('selecionado');
-                  if (!agendamentosDoMes.find(d => d.dia === parseInt(selectedDay.textContent))) {
-                    selectedDay.classList.add('disponivel');
-                  }
-                }
-                
-                // Adiciona a nova seleção
-                cell.classList.add('selecionado');
-                cell.classList.remove('disponivel');
-                selectedDay = cell;
-                
-                // Atualiza a data selecionada no formulário
-                const selectedMonth = parseInt(monthSelect.value) + 1;
-                const formattedMonth = String(selectedMonth).padStart(2, '0');
-                const formattedDay = String(day).padStart(2, '0');
-                selectedDate = `${formattedDay}/${formattedMonth}/${year}`;
-                document.getElementById('data-selecionada').value = selectedDate;
-                
-                // Atualiza a seleção no calendário popup
-                popupSelectedDate = new Date(year, month, day);
-                currentPopupDate = new Date(year, month, 1);
-              });
-            }
-
-            day++;
-          }
-
-          row.appendChild(cell);
+        const agendado = agendamentosDoMes.find(d => d.dia === day);
+        if (agendado) {
+          cell.classList.add('agendado');
+          cell.title = `${agendado.aparelho} - ${agendado.professor}`;
+        } else {
+          cell.classList.add('disponivel');
+          // Remove a possibilidade de clicar diretamente no calendário
+          cell.style.cursor = 'default';
         }
 
-        calendarBody.appendChild(row);
+        currentRow.appendChild(cell);
+        day++;
+      }
+
+      calendarBody.appendChild(currentRow);
+
+      // Continua com as outras linhas
+      while (day <= daysInMonth) {
+        currentRow = document.createElement('tr');
+        
+        for (let i = 1; i <= 5 && day <= daysInMonth; i++) {
+          const cell = document.createElement('td');
+          cell.textContent = day;
+
+          const agendado = agendamentosDoMes.find(d => d.dia === day);
+          if (agendado) {
+            cell.classList.add('agendado');
+            cell.title = `${agendado.aparelho} - ${agendado.professor}`;
+          } else {
+            cell.classList.add('disponivel');
+            // Remove a possibilidade de clicar diretamente no calendário
+            cell.style.cursor = 'default';
+          }
+
+          currentRow.appendChild(cell);
+          day++;
+        }
+
+        calendarBody.appendChild(currentRow);
       }
 
       renderHistorico(agendamentosDoMes);
     }
 
-    function cadastrarAgendamento() {
+    async function cadastrarAgendamento() {
       const professor = document.getElementById("professor").value;
       const aparelho = document.getElementById("tipo-aparelho").value;
       const turma = document.getElementById("studentClass").value;
       const numAparelhos = document.getElementById("numero-aparelhos").value;
       const aula = document.getElementById("aula").value;
+      const sala = document.getElementById("sala").value;
+      const horaRetirada = document.getElementById("hora-retirada").value;
+      const horaEntrega = document.getElementById("hora-entrega").value;
       
-      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate) {
+      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate || !sala || !horaRetirada || !horaEntrega) {
         alert("Preencha todos os campos do formulário antes de agendar!");
+        return;
+      }
+      
+      // Verifica se já existe agendamento para esta turma, data e aula
+      if (verificarConflitoAgendamento(turma, selectedDate, aula)) {
+        alert("Já existe um agendamento para esta turma nesta data e aula!");
         return;
       }
       
@@ -974,14 +1045,19 @@
         agendamentos[key] = [];
       }
       
-      agendamentos[key].push({ 
+      const novoAgendamento = { 
         dia: parseInt(dia),
         aparelho,
         professor,
         turma,
         numAparelhos: parseInt(numAparelhos),
-        aula
-      });
+        aula,
+        sala,
+        horaRetirada,
+        horaEntrega
+      };
+      
+      agendamentos[key].push(novoAgendamento);
       
       // Atualiza o calendário e o histórico
       renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
@@ -1009,6 +1085,7 @@
       document.getElementById("hora-retirada").value = "";
       document.getElementById("hora-entrega").value = "";
       document.getElementById("aula").value = "1ª Aula";
+      document.getElementById("conflictMessage").style.display = "none";
       
       // Limpa a seleção de data
       if (selectedDay) {
@@ -1029,6 +1106,11 @@
     populateMonthYearSelectors();
     renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
     initDatepicker();
+
+    // Adiciona listeners para verificar conflito quando os campos mudam
+    document.getElementById("studentClass").addEventListener("change", verificarConflito);
+    document.getElementById("aula").addEventListener("change", verificarConflito);
+    document.getElementById("data-selecionada").addEventListener("change", verificarConflito);
 
     monthSelect.addEventListener('change', () => {
       renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
