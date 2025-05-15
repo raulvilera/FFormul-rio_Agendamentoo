@@ -170,56 +170,57 @@
       opacity: 0.8;
     }
 
+        /* Adicione estas regras CSS ao seu estilo existente */
+    
     .historico-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
+      Width: 100%;
+      Border-collapse: collapse;
+      Margin-top: 20px;
+      Table-layout: fixed; /* Isso força a tabela a respeitar os widths definidos */
     }
 
     .historico-table th,
     .historico-table td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: left;
+      Border: 1px solid #ccc;
+      Padding: 8px;
+      Text-align: left;
+      Word-wrap: break-word; /* Permite que palavras longas quebrem */
+      Overflow-wrap: break-word; /* Similar ao word-wrap, mas mais moderno */
     }
 
     .historico-table th {
-      background-color: var(--azul-claro);
+      Background-color: var(--azul-claro);
     }
 
-    .buttons-container {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 30px;
-      margin-bottom: 30px;
+    /* Definindo larguras específicas para cada coluna */
+    .historico-table th:nth-child(1),
+    .historico-table td:nth-child(1) {
+      Width: 15%; /* DATA */
     }
 
-    .btn {
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
+    .historico-table th:nth-child(2),
+    .historico-table td:nth-child(2) {
+      Width: 20%; /* TURMA */
     }
 
-    .btn-cadastrar {
-      background-color: var(--verde);
-      color: white;
+    .historico-table th:nth-child(3),
+    .historico-table td:nth-child(3) {
+      Width: 10%; /* N° APARELHOS */
     }
 
-    .btn-cadastrar:hover {
-      background-color: #3e8e41;
+    .historico-table th:nth-child(4),
+    .historico-table td:nth-child(4) {
+      Width: 15%; /* TIPO DE APARELHO */
     }
 
-    .btn-limpar {
-      background-color: var(--vermelho);
-      color: white;
+    .historico-table th:nth-child(5),
+    .historico-table td:nth-child(5) {
+      Width: 25%; /* PROFESSOR */
     }
 
-    .btn-limpar:hover {
-      background-color: #d32f2f;
+    .historico-table th:nth-child(6),
+    .historico-table td:nth-child(6) {
+      Width: 15%; /* AULA(s) */
     }
 
     /* Estilos para o calendário pop-up */
