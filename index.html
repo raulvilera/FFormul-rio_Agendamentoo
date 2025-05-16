@@ -583,7 +583,7 @@
             <th>DATA</th>
             <th>TURMA</th>
             <th>N° APARELHOS</th>
-            <th>TIPO DE APARELHO</th>
+            <th>APARELHO</th>
             <th>PROFESSOR</th>
             <th>AULA(s)</th>
             <th>AÇÃO</th>
@@ -797,7 +797,7 @@
 
     // Funções do formulário
     function atualizarMarca() {
-      const tipo = document.getElementById("tipo-aparelho").value;
+      const tipo = document.getElementById("aparelho").value;
       document.getElementById("marca").value = marcas[tipo] || "";
     }
 
