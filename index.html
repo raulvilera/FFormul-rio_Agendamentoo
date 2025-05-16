@@ -609,7 +609,7 @@
     </div>
   </div>
 
-  <script>
+ <script>
     // Dados dos professores
     const teacherEmails = {
       "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
@@ -778,6 +778,25 @@
     const agendamentos = {};
     const historicoExcluidos = [];
 
+    // Função para limpar histórico antigo (mais de 15 dias)
+    function limparHistoricoAntigo() {
+      const hoje = new Date();
+      const limite = new Date(hoje);
+      limite.setDate(hoje.getDate() - 15); // 15 dias atrás
+      
+      // Filtra os itens do histórico que são mais recentes que o limite
+      const novosExcluidos = historicoExcluidos.filter(item => {
+        const [ano, mes] = item.mesAno.split('-');
+        const dia = item.dia;
+        const dataItem = new Date(ano, mes - 1, dia);
+        return dataItem >= limite;
+      });
+      
+      // Atualiza o histórico
+      historicoExcluidos.length = 0;
+      historicoExcluidos.push(...novosExcluidos);
+    }
+
     const monthNames = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
@@ -832,14 +851,13 @@
     }
 
     function abrirRelogio(idCampo) {
-  const campo = document.getElementById(idCampo);
-  if (campo && typeof campo.showPicker === 'function') {
-    campo.showPicker(); // Preferencial: abre diretamente o relógio (Chrome, Edge)
-  } else {
-    campo.focus(); // Fallback: para navegadores que não suportam showPicker
-  }
-}
-
+      const campo = document.getElementById(idCampo);
+      if (campo && typeof campo.showPicker === 'function') {
+        campo.showPicker(); // Preferencial: abre diretamente o relógio (Chrome, Edge)
+      } else {
+        campo.focus(); // Fallback: para navegadores que não suportam showPicker
+      }
+    }
 
     function atualizarEmail() {
       const nome = document.getElementById("professor").value;
@@ -1032,6 +1050,9 @@
     function renderHistorico(agendamentosDoMes) {
       const historicoBody = document.getElementById('historico-body');
       historicoBody.innerHTML = '';
+      
+      // Limpa o histórico antigo antes de renderizar
+      limparHistoricoAntigo();
       
       // Adiciona agendamentos atuais
       agendamentosDoMes.forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, id }) => {
