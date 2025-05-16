@@ -521,17 +521,19 @@
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label>RETIRADA:</label>
-          <input type="time" id="hora-retirada" onclick="abrirRelogio('hora-retirada')">
-        </div>
+     <div class="form-row">
+  <div class="form-group" onclick="abrirRelogio('hora-retirada')" style="cursor: pointer;">
+    <label for="hora-retirada">RETIRADA:</label>
+    <input type="time" id="hora-retirada">
+  </div>
+</div>
 
-        <div class="form-group">
-          <label>ENTREGA:</label>
-          <input type="time" id="hora-entrega" onclick="abrirRelogio('hora-entrega')">
-        </div>
-      </div>
+
+      <div class="form-group" onclick="abrirRelogio('hora-entrega')" style="cursor: pointer;">
+  <label for="hora-entrega">ENTREGA:</label>
+  <input type="time" id="hora-entrega">
+</div>
+
 
       <div class="form-group">
         <label>AULA:</label>
@@ -819,8 +821,14 @@
     }
 
     function abrirRelogio(idCampo) {
-      document.getElementById(idCampo).focus();
-    }
+  const campo = document.getElementById(idCampo);
+  if (campo && typeof campo.showPicker === 'function') {
+    campo.showPicker(); // Preferencial: abre diretamente o relógio (Chrome, Edge)
+  } else {
+    campo.focus(); // Fallback: para navegadores que não suportam showPicker
+  }
+}
+
 
     function atualizarEmail() {
       const nome = document.getElementById("professor").value;
