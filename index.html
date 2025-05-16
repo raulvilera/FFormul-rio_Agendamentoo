@@ -780,22 +780,27 @@
 
     // Função para limpar histórico antigo (mais de 15 dias)
     function limparHistoricoAntigo() {
-      const hoje = new Date();
-      const limite = new Date(hoje);
-      limite.setDate(hoje.getDate() - 15); // 15 dias atrás
+      const agora = new Date();
+      const quinzeDiasAtras = new Date(agora.getTime() - 15 * 24 * 60 * 60 * 1000);
       
-      // Filtra os itens do histórico que são mais recentes que o limite
-      const novosExcluidos = historicoExcluidos.filter(item => {
+      for (let i = historicoExcluidos.length - 1; i >= 0; i--) {
+        const item = historicoExcluidos[i];
         const [ano, mes] = item.mesAno.split('-');
-        const dia = item.dia;
-        const dataItem = new Date(ano, mes - 1, dia);
-        return dataItem >= limite;
-      });
+        const dataItem = new Date(ano, mes - 1, item.dia);
+        
+        if (dataItem < quinzeDiasAtras) {
+          historicoExcluidos.splice(i, 1);
+        }
+      }
       
-      // Atualiza o histórico
-      historicoExcluidos.length = 0;
-      historicoExcluidos.push(...novosExcluidos);
+      // Atualiza a exibição se estiver no mês atual
+      const mesAtual = `${yearSelect.value}-${String(parseInt(monthSelect.value) + 1).padStart(2, '0')}`;
+      renderHistorico(getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
     }
+
+    // Executa a limpeza ao carregar a página e periodicamente
+    setInterval(limparHistoricoAntigo, 24 * 60 * 60 * 1000); // Verifica diariamente
+    limparHistoricoAntigo(); // Executa imediatamente ao carregar
 
     const monthNames = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -1050,9 +1055,6 @@
     function renderHistorico(agendamentosDoMes) {
       const historicoBody = document.getElementById('historico-body');
       historicoBody.innerHTML = '';
-      
-      // Limpa o histórico antigo antes de renderizar
-      limparHistoricoAntigo();
       
       // Adiciona agendamentos atuais
       agendamentosDoMes.forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, id }) => {
