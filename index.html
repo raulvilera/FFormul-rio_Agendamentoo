@@ -609,7 +609,7 @@
     </div>
   </div>
 
- <script>
+  <script>
     // Dados dos professores
     const teacherEmails = {
       "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
@@ -778,30 +778,6 @@
     const agendamentos = {};
     const historicoExcluidos = [];
 
-    // Função para limpar histórico antigo (mais de 15 dias)
-    function limparHistoricoAntigo() {
-      const agora = new Date();
-      const quinzeDiasAtras = new Date(agora.getTime() - 15 * 24 * 60 * 60 * 1000);
-      
-      for (let i = historicoExcluidos.length - 1; i >= 0; i--) {
-        const item = historicoExcluidos[i];
-        const [ano, mes] = item.mesAno.split('-');
-        const dataItem = new Date(ano, mes - 1, item.dia);
-        
-        if (dataItem < quinzeDiasAtras) {
-          historicoExcluidos.splice(i, 1);
-        }
-      }
-      
-      // Atualiza a exibição se estiver no mês atual
-      const mesAtual = `${yearSelect.value}-${String(parseInt(monthSelect.value) + 1).padStart(2, '0')}`;
-      renderHistorico(getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
-    }
-
-    // Executa a limpeza ao carregar a página e periodicamente
-    setInterval(limparHistoricoAntigo, 24 * 60 * 60 * 1000); // Verifica diariamente
-    limparHistoricoAntigo(); // Executa imediatamente ao carregar
-
     const monthNames = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
@@ -856,13 +832,14 @@
     }
 
     function abrirRelogio(idCampo) {
-      const campo = document.getElementById(idCampo);
-      if (campo && typeof campo.showPicker === 'function') {
-        campo.showPicker(); // Preferencial: abre diretamente o relógio (Chrome, Edge)
-      } else {
-        campo.focus(); // Fallback: para navegadores que não suportam showPicker
-      }
-    }
+  const campo = document.getElementById(idCampo);
+  if (campo && typeof campo.showPicker === 'function') {
+    campo.showPicker(); // Preferencial: abre diretamente o relógio (Chrome, Edge)
+  } else {
+    campo.focus(); // Fallback: para navegadores que não suportam showPicker
+  }
+}
+
 
     function atualizarEmail() {
       const nome = document.getElementById("professor").value;
