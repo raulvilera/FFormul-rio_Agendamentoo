@@ -99,13 +99,20 @@
 .form-group input,
 .form-group select:not(#aula) {
   width: 100%;
-      padding: 12px 15px;
-      border: 2px solid var(--branco-brilhante);
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-      background-color: var(--branco);
-    }
+  padding: 12px 15px;
+  border: 2px solid var(--branco-brilhante);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: var(--branco);
+}
+
+/* Estilo específico para o campo "Aula" */
+.form-group select#aula {
+  width: 120px;
+  padding: 8px 10px;
+}
+
 .form-group input[type="time"] {
   width: 120px; /* ou ajuste conforme necessário */
   padding: 8px 10px; /* opcional: reduzir padding para caber melhor */
