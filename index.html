@@ -19,6 +19,8 @@
       --azul-agendado: #3498db;
       --azul-selecionado: #1a5276;
       --fundo-cinza: #f0f0f0;
+      --entregue: #d4edda;
+      --nao-entregue: #f8d7da;
     }
     
     * {
@@ -96,27 +98,27 @@
       color: var(--azul-escuro);
     }
 
-.form-group input,
-.form-group select:not(#aula) {
-  width: 100%;
-  padding: 12px 15px;
-  border: 2px solid var(--branco-brilhante);
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background-color: var(--branco);
-}
+    .form-group input,
+    .form-group select:not(#aula) {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid var(--branco-brilhante);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: var(--branco);
+    }
 
-/* Estilo específico para o campo "Aula" */
-.form-group select#aula {
-  width: 120px;
-  padding: 8px 10px;
-}
+    /* Estilo específico para o campo "Aula" */
+    .form-group select#aula {
+      width: 120px;
+      padding: 8px 10px;
+    }
 
-.form-group input[type="time"] {
-  width: 120px; /* ou ajuste conforme necessário */
-  padding: 8px 10px; /* opcional: reduzir padding para caber melhor */
-}
+    .form-group input[type="time"] {
+      width: 120px;
+      padding: 8px 10px;
+    }
 
     .form-group input:focus,
     .form-group select:focus {
@@ -203,13 +205,13 @@
     .historico-table td {
       border: 1px solid #ccc;
       padding: 8px;
-      text-align: center; /* Centralizado */
+      text-align: center;
       word-wrap: break-word;
       overflow-wrap: break-word;
       font-size: 0.8em;
-      white-space: nowrap; /* Impede quebra de linha */
+      white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+      text-overflow: ellipsis;
     }
 
     .historico-table th {
@@ -224,6 +226,14 @@
 
     .historico-table tr.excluido td {
       color: var(--vermelho);
+    }
+
+    .historico-table tr.entregue {
+      background-color: var(--entregue);
+    }
+
+    .historico-table tr.nao-entregue {
+      background-color: var(--nao-entregue);
     }
 
     /* Definindo larguras específicas para cada coluna */
@@ -509,7 +519,7 @@
             <option value="2ª SERIE A MANHA">2ª SERIE A MANHA</option>
             <option value="2ª SERIE B MANHA">2ª SERIE B MANHA</option>
             <option value="2ª SERIE C MANHA">2ª SERIE C MANHA</option>
-            <option value="2ª SERIE D MANHA">2ª SERIE D MANHA</option>
+            <option value="2ª SERIE D MANHA">2ª SERIE D MANha</option>
             <option value="2ª SERIE E MANHA">2ª SERIE E MANHA</option>
             <option value="2ª SERIE F NOITE">2ª SERIE F NOITE</option>
             <option value="2ª SERIE G NOITE">2ª SERIE G NOITE</option>
@@ -532,31 +542,28 @@
         </div>
       </div>
 
-     <div class="form-row">
-  <div class="form-group" onclick="abrirRelogio('hora-retirada')" style="cursor: pointer;">
-    <label for="hora-retirada">RETIRADA:</label>
-    <input type="time" id="hora-retirada">
-  </div>
-</div>
+      <div class="form-row">
+        <div class="form-group" onclick="abrirRelogio('hora-retirada')" style="cursor: pointer;">
+          <label for="hora-retirada">RETIRADA:</label>
+          <input type="time" id="hora-retirada" required>
+        </div>
+        <div class="form-group" onclick="abrirRelogio('hora-entrega')" style="cursor: pointer;">
+          <label for="hora-entrega">ENTREGA:</label>
+          <input type="time" id="hora-entrega">
+        </div>
+      </div>
 
-
-      <div class="form-group" onclick="abrirRelogio('hora-entrega')" style="cursor: pointer;">
-  <label for="hora-entrega">ENTREGA:</label>
-  <input type="time" id="hora-entrega">
-</div>
-
-
-    <div class="form-group">
-  <label for="aula">Aula:</label>
-  <select id="aula">
-    <option>1ª Aula</option>
-    <option>2ª Aula</option>
-    <option>3ª Aula</option>
-    <option>4ª Aula</option>
-    <option>5ª Aula</option>
-    <option>6ª Aula</option>
-  </select>
-</div>
+      <div class="form-group">
+        <label for="aula">Aula:</label>
+        <select id="aula">
+          <option>1ª Aula</option>
+          <option>2ª Aula</option>
+          <option>3ª Aula</option>
+          <option>4ª Aula</option>
+          <option>5ª Aula</option>
+          <option>6ª Aula</option>
+        </select>
+      </div>
 
       <div class="conflict-message" id="conflictMessage">
         Já existe um agendamento para esta turma nesta data e aula!
@@ -577,15 +584,17 @@
       <table class="calendar">
         <thead>
           <tr>
+            <th>Dom</th>
             <th>Seg</th>
             <th>Ter</th>
             <th>Qua</th>
             <th>Qui</th>
             <th>Sex</th>
+            <th>Sáb</th>
           </tr>
         </thead>
         <tbody id="calendarBody">
-          <!-- Dias úteis serão inseridos via JavaScript -->
+          <!-- Dias serão inseridos via JavaScript -->
         </tbody>
       </table>
 
@@ -599,6 +608,7 @@
             <th>APARELHO</th>
             <th>PROFESSOR</th>
             <th>AULA(s)</th>
+            <th>ENTREGA</th>
             <th>AÇÃO</th>
           </tr>
         </thead>
@@ -783,7 +793,7 @@
       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
     ];
 
-    const weekdays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'];
+    const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
     const monthSelect = document.getElementById('monthSelect');
     const yearSelect = document.getElementById('yearSelect');
@@ -832,14 +842,13 @@
     }
 
     function abrirRelogio(idCampo) {
-  const campo = document.getElementById(idCampo);
-  if (campo && typeof campo.showPicker === 'function') {
-    campo.showPicker(); // Preferencial: abre diretamente o relógio (Chrome, Edge)
-  } else {
-    campo.focus(); // Fallback: para navegadores que não suportam showPicker
-  }
-}
-
+      const campo = document.getElementById(idCampo);
+      if (campo && typeof campo.showPicker === 'function') {
+        campo.showPicker();
+      } else {
+        campo.focus();
+      }
+    }
 
     function atualizarEmail() {
       const nome = document.getElementById("professor").value;
@@ -881,7 +890,7 @@
       const datepickerWeekdays = document.getElementById('datepickerWeekdays');
       const datepickerDays = document.getElementById('datepickerDays');
 
-      // Preenche os dias da semana (apenas dias úteis)
+      // Preenche os dias da semana
       datepickerWeekdays.innerHTML = weekdays.map(day => 
         `<div class="datepicker-weekday">${day}</div>`
       ).join('');
@@ -923,24 +932,31 @@
         let daysHtml = '';
         const today = new Date();
         
+        // Dias do mês anterior (se necessário)
+        for (let i = 0; i < firstDay; i++) {
+          daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${daysInPrevMonth - firstDay + i + 1}</div>`;
+        }
+        
         // Dias do mês atual
         for (let i = 1; i <= daysInMonth; i++) {
           const date = new Date(year, month, i);
-          const dayOfWeek = date.getDay(); // 0=Domingo, 1=Segunda, ..., 6=Sábado
+          const isToday = date.toDateString() === today.toDateString();
+          const isSelected = popupSelectedDate && date.toDateString() === popupSelectedDate.toDateString();
+          const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
           
-          // Mostrar apenas dias úteis (Segunda a Sexta)
-          if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-            const isToday = date.toDateString() === today.toDateString();
-            const isSelected = popupSelectedDate && date.toDateString() === popupSelectedDate.toDateString();
-            const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-            
-            let dayClass = 'datepicker-day';
-            if (isToday) dayClass += ' datepicker-today';
-            if (isSelected) dayClass += ' selected';
-            if (isPast) dayClass += ' disabled';
-            
-            daysHtml += `<div class="${dayClass}" data-day="${i}">${i}</div>`;
-          }
+          let dayClass = 'datepicker-day';
+          if (isToday) dayClass += ' datepicker-today';
+          if (isSelected) dayClass += ' selected';
+          if (isPast) dayClass += ' disabled';
+          
+          daysHtml += `<div class="${dayClass}" data-day="${i}">${i}</div>`;
+        }
+        
+        // Dias do próximo mês (se necessário)
+        const totalCells = 42; // 6 semanas * 7 dias
+        const remainingCells = totalCells - (firstDay + daysInMonth);
+        for (let i = 1; i <= remainingCells; i++) {
+          daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${i}</div>`;
         }
         
         datepickerDays.innerHTML = daysHtml;
@@ -1034,12 +1050,19 @@
       historicoBody.innerHTML = '';
       
       // Adiciona agendamentos atuais
-      agendamentosDoMes.forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, id }) => {
+      agendamentosDoMes.forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega, id }) => {
         const row = document.createElement('tr');
         
         const formattedDay = String(dia).padStart(2, '0');
         const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0');
         const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
+        
+        // Adiciona classe de status de entrega
+        if (horaEntrega) {
+          row.classList.add('entregue');
+        } else {
+          row.classList.add('nao-entregue');
+        }
         
         row.innerHTML = `
           <td>${formattedDate}</td>
@@ -1048,6 +1071,7 @@
           <td>${aparelho}</td>
           <td>${professor}</td>
           <td>${aula}</td>
+          <td>${horaEntrega || 'Não entregue'}</td>
           <td><button class="btn btn-excluir" onclick="excluirAgendamento('${id}')">EXCLUIR</button></td>
         `;
         historicoBody.appendChild(row);
@@ -1057,7 +1081,7 @@
       const currentMonthKey = `${yearSelect.value}-${String(parseInt(monthSelect.value) + 1).padStart(2, '0')}`;
       historicoExcluidos
         .filter(item => item.mesAno === currentMonthKey)
-        .forEach(({ dia, aparelho, professor, turma, numAparelhos, aula }) => {
+        .forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega }) => {
           const row = document.createElement('tr');
           row.classList.add('excluido');
           
@@ -1072,6 +1096,7 @@
             <td>${aparelho}</td>
             <td>${professor}</td>
             <td>${aula}</td>
+            <td>${horaEntrega || 'Não entregue'}</td>
             <td>EXCLUÍDO</td>
           `;
           historicoBody.appendChild(row);
@@ -1085,30 +1110,27 @@
       const date = new Date(year, month, 1);
       const firstDay = date.getDay(); // 0=Domingo, 1=Segunda, ..., 6=Sábado
       const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const daysInPrevMonth = new Date(year, month, 0).getDate();
 
       const agendamentosDoMes = getAgendamentos(year, month);
 
       let day = 1;
       let currentRow = document.createElement('tr');
       
-      // Ajusta o primeiro dia para começar na segunda-feira (1)
-      // Se o primeiro dia do mês for domingo (0), começamos na próxima linha
-      let startDay = firstDay === 0 ? 1 : firstDay;
-      
-      // Cria células vazias para os dias antes do primeiro dia do mês
-      for (let i = 1; i < startDay; i++) {
+      // Células vazias para os dias do mês anterior
+      for (let i = 0; i < firstDay; i++) {
         const emptyCell = document.createElement('td');
-        emptyCell.innerHTML = '';
+        emptyCell.innerHTML = daysInPrevMonth - firstDay + i + 1;
+        emptyCell.classList.add('indisponivel');
         currentRow.appendChild(emptyCell);
       }
 
-      // Preenche os dias do mês
+      // Dias do mês atual
       while (day <= daysInMonth) {
-        // Se chegarmos ao sábado (6), criamos uma nova linha
-        if (startDay > 5) {
+        // Se chegarmos ao domingo (0), criamos uma nova linha
+        if (currentRow.children.length === 7) {
           calendarBody.appendChild(currentRow);
           currentRow = document.createElement('tr');
-          startDay = 1;
         }
 
         const cell = document.createElement('td');
@@ -1125,15 +1147,15 @@
 
         currentRow.appendChild(cell);
         day++;
-        startDay++;
       }
 
-      // Preenche as células restantes na última linha se necessário
-      while (startDay <= 5) {
-        const emptyCell = document.createElement('td');
-        emptyCell.innerHTML = '';
-        currentRow.appendChild(emptyCell);
-        startDay++;
+      // Preenche as células restantes na última linha com dias do próximo mês
+      while (currentRow.children.length < 7) {
+        const nextMonthDay = document.createElement('td');
+        nextMonthDay.innerHTML = day - daysInMonth;
+        nextMonthDay.classList.add('indisponivel');
+        currentRow.appendChild(nextMonthDay);
+        day++;
       }
 
       // Adiciona a última linha se ela tiver conteúdo
@@ -1158,8 +1180,8 @@
       const horaRetirada = document.getElementById("hora-retirada").value;
       const horaEntrega = document.getElementById("hora-entrega").value;
       
-      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate || !sala || !horaRetirada || !horaEntrega) {
-        alert("Preencha todos os campos do formulário antes de agendar!");
+      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate || !sala || !horaRetirada) {
+        alert("Preencha todos os campos obrigatórios do formulário antes de agendar!");
         return;
       }
       
@@ -1256,7 +1278,8 @@
               turma: agendamento.turma,
               aula: agendamento.aula,
               horaRetirada: agendamento.horaRetirada,
-              horaEntrega: agendamento.horaEntrega
+              horaEntrega: agendamento.horaEntrega,
+              statusEntrega: agendamento.horaEntrega ? 'Entregue' : 'Não entregue'
             }
           })
         });
@@ -1318,75 +1341,6 @@
     yearSelect.addEventListener('change', () => {
       renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
     });
-  </script>
-
-  <!-- Código Google Apps Script para ser implementado separadamente -->
-  <script>
-    // Este código seria implementado no Google Apps Script (separadamente)
-    /*
-    function doPost(e) {
-      const data = JSON.parse(e.postData.contents);
-      let response;
-      
-      if (data.action === 'gerarDocumento') {
-        response = gerarDocumentoAgendamento(data.dados);
-      } else {
-        response = { success: false, message: 'Ação não reconhecida' };
-      }
-      
-      return ContentService.createTextOutput(JSON.stringify(response))
-        .setMimeType(ContentService.MimeType.JSON);
-    }
-
-    function gerarDocumentoAgendamento(dados) {
-      try {
-        const modelDocId = "1mQ1s3cbwY3Ok1rb6sf-kVCvXvErNOGjKaP7C5IR7XF4";
-        const folderId = "1C-nDUJk8_rBIkebtr1Vv-3yB9C0v87YQ";
-        
-        // Copia o modelo para um novo documento
-        const newDoc = DriveApp.getFileById(modelDocId).makeCopy(
-          `Termo de Retirada - ${dados.professor} - ${dados.data}`,
-          DriveApp.getFolderById(folderId)
-        );
-        
-        const doc = DocumentApp.openById(newDoc.getId());
-        const body = doc.getBody();
-        
-        // Substitui os placeholders pelos dados reais
-        body.replaceText("NOME DO PROFESSOR", dados.professor);
-        body.replaceText("QUANTIDADE", dados.quantidade);
-        body.replaceText("DATA DE RETIRADA", dados.data);
-        
-        // Adiciona mais substituições conforme necessário
-        body.replaceText("TIPO DE APARELHO", dados.tipoAparelho);
-        body.replaceText("TURMA", dados.turma);
-        body.replaceText("AULA", dados.aula);
-        body.replaceText("HORA RETIRADA", dados.horaRetirada);
-        body.replaceText("HORA ENTREGA", dados.horaEntrega);
-        
-        doc.saveAndClose();
-        
-        // Converte para PDF
-        const pdf = DriveApp.getFileById(newDoc.getId()).getAs('application/pdf');
-        const pdfFile = DriveApp.getFolderById(folderId).createFile(pdf);
-        pdfFile.setName(`Termo de Retirada - ${dados.professor} - ${dados.data}.pdf`);
-        
-        // Opcional: exclui o documento DOCX após criar o PDF
-        DriveApp.getFileById(newDoc.getId()).setTrashed(true);
-        
-        return {
-          success: true,
-          url: pdfFile.getUrl(),
-          message: "Documento gerado com sucesso"
-        };
-      } catch (error) {
-        return {
-          success: false,
-          message: error.toString()
-        };
-      }
-    }
-    */
   </script>
 </body>
 </html>
