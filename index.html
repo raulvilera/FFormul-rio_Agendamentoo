@@ -1083,7 +1083,7 @@
       calendarBody.innerHTML = '';
 
       const date = new Date(year, month, 1);
-      const firstDay = date.getDay();
+      const firstDay = date.getDay(); // 0=Domingo, 1=Segunda, ..., 6=Sábado
       const daysInMonth = new Date(year, month + 1, 0).getDate();
 
       const agendamentosDoMes = getAgendamentos(year, month);
@@ -1102,7 +1102,15 @@
         currentRow.appendChild(emptyCell);
       }
 
-      for (let i = startDay; i <= 5 && day <= daysInMonth; i++) {
+      // Preenche os dias do mês
+      while (day <= daysInMonth) {
+        // Se chegarmos ao sábado (6), criamos uma nova linha
+        if (startDay > 5) {
+          calendarBody.appendChild(currentRow);
+          currentRow = document.createElement('tr');
+          startDay = 1;
+        }
+
         const cell = document.createElement('td');
         cell.textContent = day;
 
@@ -1112,38 +1120,24 @@
           cell.title = `${agendado.aparelho} - ${agendado.professor}`;
         } else {
           cell.classList.add('disponivel');
-          // Remove a possibilidade de clicar diretamente no calendário
           cell.style.cursor = 'default';
         }
 
         currentRow.appendChild(cell);
         day++;
+        startDay++;
       }
 
-      calendarBody.appendChild(currentRow);
+      // Preenche as células restantes na última linha se necessário
+      while (startDay <= 5) {
+        const emptyCell = document.createElement('td');
+        emptyCell.innerHTML = '';
+        currentRow.appendChild(emptyCell);
+        startDay++;
+      }
 
-      // Continua com as outras linhas
-      while (day <= daysInMonth) {
-        currentRow = document.createElement('tr');
-        
-        for (let i = 1; i <= 5 && day <= daysInMonth; i++) {
-          const cell = document.createElement('td');
-          cell.textContent = day;
-
-          const agendado = agendamentosDoMes.find(d => d.dia === day);
-          if (agendado) {
-            cell.classList.add('agendado');
-            cell.title = `${agendado.aparelho} - ${agendado.professor}`;
-          } else {
-            cell.classList.add('disponivel');
-            // Remove a possibilidade de clicar diretamente no calendário
-            cell.style.cursor = 'default';
-          }
-
-          currentRow.appendChild(cell);
-          day++;
-        }
-
+      // Adiciona a última linha se ela tiver conteúdo
+      if (currentRow.children.length > 0) {
         calendarBody.appendChild(currentRow);
       }
 
