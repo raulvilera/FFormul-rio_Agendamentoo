@@ -423,6 +423,34 @@
       text-align: center;
       display: none;
     }
+
+    /* Estilos para as abas */
+    .abas-historico {
+      margin: 20px 0;
+      display: flex;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .aba-btn {
+      padding: 10px 20px;
+      background: #f1f1f1;
+      border: none;
+      border-radius: 5px 5px 0 0;
+      margin-right: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .aba-btn.active {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .aba-conteudo {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-top: none;
+    }
   </style>
 </head>
 <body>
@@ -519,7 +547,7 @@
             <option value="2ª SERIE A MANHA">2ª SERIE A MANHA</option>
             <option value="2ª SERIE B MANHA">2ª SERIE B MANHA</option>
             <option value="2ª SERIE C MANHA">2ª SERIE C MANHA</option>
-            <option value="2ª SERIE D MANHA">2ª SERIE D MANha</option>
+            <option value="2ª SERIE D MANha">2ª SERIE D MANha</option>
             <option value="2ª SERIE E MANHA">2ª SERIE E MANHA</option>
             <option value="2ª SERIE F NOITE">2ª SERIE F NOITE</option>
             <option value="2ª SERIE G NOITE">2ª SERIE G NOITE</option>
@@ -599,23 +627,49 @@
       </table>
 
       <h3>HISTÓRICO DE AGENDAMENTOS</h3>
-      <table class="historico-table">
-        <thead>
-          <tr>
-            <th>DATA</th>
-            <th>TURMA</th>
-            <th>N° APARELHOS</th>
-            <th>APARELHO</th>
-            <th>PROFESSOR</th>
-            <th>AULA(s)</th>
-            <th>ENTREGA</th>
-            <th>AÇÃO</th>
-          </tr>
-        </thead>
-        <tbody id="historico-body">
-          <!-- Histórico dinâmico -->
-        </tbody>
-      </table>
+      
+      <div class="abas-historico">
+        <button class="aba-btn active" onclick="mostrarAba('historico-mensal')">Histórico Mensal</button>
+        <button class="aba-btn" onclick="mostrarAba('historico-completo')">Histórico Completo</button>
+      </div>
+
+      <div id="historico-mensal" class="aba-conteudo" style="display: block;">
+        <table class="historico-table">
+          <thead>
+            <tr>
+              <th>DATA</th>
+              <th>TURMA</th>
+              <th>N° APARELHOS</th>
+              <th>APARELHO</th>
+              <th>PROFESSOR</th>
+              <th>AULA(s)</th>
+              <th>ENTREGA</th>
+              <th>AÇÃO</th>
+            </tr>
+          </thead>
+          <tbody id="historico-body">
+            <!-- Histórico dinâmico -->
+          </tbody>
+        </table>
+      </div>
+
+      <div id="historico-completo" class="aba-conteudo" style="display: none;">
+        <table class="historico-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Turma</th>
+              <th>Quantidade</th>
+              <th>Aparelho</th>
+              <th>Professor</th>
+              <th>Aula</th>
+              <th>Hora Entrega</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="historico-completo-body"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -787,6 +841,7 @@
     // Agendamentos e histórico (incluindo agendamentos excluídos)
     const agendamentos = {};
     const historicoExcluidos = [];
+    const historicoCompleto = []; // Novo array para armazenar todo o histórico
 
     const monthNames = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -1101,6 +1156,9 @@
           `;
           historicoBody.appendChild(row);
         });
+      
+      // Atualiza o histórico completo
+      renderHistoricoCompleto();
     }
 
     function renderCalendarBody(year, month) {
@@ -1203,6 +1261,8 @@
       const novoAgendamento = { 
         id,
         dia: parseInt(dia),
+        mes: parseInt(mes), // Adicionado
+        ano: parseInt(ano), // Adicionado
         aparelho,
         professor,
         turma,
@@ -1210,10 +1270,17 @@
         aula,
         sala,
         horaRetirada,
-        horaEntrega
+        horaEntrega,
+        status: 'ativo' // Adicionado
       };
       
       agendamentos[key].push(novoAgendamento);
+      
+      // Adiciona ao histórico completo
+      historicoCompleto.push({
+        ...novoAgendamento,
+        status: 'ativo'
+      });
       
       // Atualiza o calendário e o histórico
       renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
@@ -1251,11 +1318,74 @@
             mesAno: key
           });
           
+          // Adiciona ao histórico completo com status 'excluido'
+          historicoCompleto.push({
+            ...agendamentoExcluido,
+            status: 'excluido'
+          });
+          
           // Atualiza a exibição
           renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
           break;
         }
       }
+    }
+
+    function renderHistoricoCompleto() {
+      const historicoCompletoBody = document.getElementById('historico-completo-body');
+      historicoCompletoBody.innerHTML = '';
+      
+      // Ordena o histórico por data (mais recente primeiro)
+      const historicoOrdenado = [...historicoCompleto].sort((a, b) => {
+        const dateA = new Date(`${b.ano}-${b.mes}-${b.dia}`);
+        const dateB = new Date(`${a.ano}-${a.mes}-${a.dia}`);
+        return dateA - dateB;
+      });
+      
+      historicoOrdenado.forEach(({ dia, mes, ano, aparelho, professor, turma, numAparelhos, aula, horaEntrega, status }) => {
+        const row = document.createElement('tr');
+        
+        const formattedDay = String(dia).padStart(2, '0');
+        const formattedMonth = String(mes).padStart(2, '0');
+        const formattedDate = `${formattedDay}/${formattedMonth}/${ano}`;
+        
+        // Adiciona classe de status
+        if (status === 'excluido') {
+          row.classList.add('excluido');
+        } else if (horaEntrega) {
+          row.classList.add('entregue');
+        } else {
+          row.classList.add('nao-entregue');
+        }
+        
+        row.innerHTML = `
+          <td>${formattedDate}</td>
+          <td>${turma}</td>
+          <td>${numAparelhos}</td>
+          <td>${aparelho}</td>
+          <td>${professor}</td>
+          <td>${aula}</td>
+          <td>${horaEntrega || 'Não entregue'}</td>
+          <td>${status === 'excluido' ? 'EXCLUÍDO' : 'ATIVO'}</td>
+        `;
+        historicoCompletoBody.appendChild(row);
+      });
+    }
+
+    function mostrarAba(abaId) {
+      // Esconde todas as abas
+      document.querySelectorAll('.aba-conteudo').forEach(aba => {
+        aba.style.display = 'none';
+      });
+      
+      // Mostra apenas a aba selecionada
+      document.getElementById(abaId).style.display = 'block';
+      
+      // Atualiza os botões de aba
+      document.querySelectorAll('.aba-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`.aba-btn[onclick="mostrarAba('${abaId}')"]`).classList.add('active');
     }
 
     async function gerarDocumento(agendamento) {
@@ -1328,6 +1458,7 @@
     populateMonthYearSelectors();
     renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
     initDatepicker();
+    renderHistoricoCompleto(); // Renderiza o histórico completo na inicialização
 
     // Adiciona listeners para verificar conflito quando os campos mudam
     document.getElementById("studentClass").addEventListener("change", verificarConflito);
