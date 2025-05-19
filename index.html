@@ -1170,90 +1170,49 @@
       return Date.now().toString(36) + Math.random().toString(36).substr(2);
     }
 
-async function cadastrarAgendamento() {
-  // Coletar dados do formulário
-  const dados = {
-    professor: document.getElementById("professor").value,
-    aparelho: document.getElementById("aparelho").value,
-    turma: document.getElementById("studentClass").value,
-    numAparelhos: document.getElementById("numero-aparelhos").value,
-    aula: document.getElementById("aula").value,
-    sala: document.getElementById("sala").value,
-    horaRetirada: document.getElementById("hora-retirada").value,
-    horaEntrega: document.getElementById("hora-entrega").value,
-    data: document.getElementById("data-selecionada").value
-  };
-
-  // Validação básica
-  if (!dados.professor || !dados.aparelho || !dados.turma || !dados.data) {
-    alert("Preencha todos os campos obrigatórios!");
-    return;
-  }
-
-  console.log("Dados a serem enviados:", dados);
-
-
-  if (!professor || !aparelho || !turma || !numAparelhos || !dataSelecionada || !sala || !horaRetirada) {
-    const msg = "Preencha todos os campos obrigatórios!";
-    console.error(msg);
-    alert(msg);
-    return;
-  }
-
-try {
-    // Chamada para o Google Apps Script
-    const resultado = await new Promise((resolve, reject) => {
-      google.script.run
-        .withSuccessHandler(resolve)
-        .withFailureHandler((error) => {
-          console.error("Erro na comunicação:", error);
-          reject(error);
-        })
-        .salvarAgendamentoBackend(dados);
-    });
-
-    console.log("Resultado do servidor:", resultado);
-    
-    if (resultado.success) {
-      alert("Agendamento salvo com sucesso!\nID: " + resultado.id);
-      limparFormulario();
-  // Atualizar a exibição se necessário
-      if (selectedDay) {
-        selectedDay.classList.remove('selecionado');
-        selectedDay.classList.add('agendado');
-        selectedDay.title = `${dados.aparelho} - ${dados.professor}`;
-      }
-    } else {
-      alert("Erro: " + resultado.message);
-    }
-  } catch (error) {
-    console.error("Erro completo:", error);
-    alert("Falha ao salvar: " + error.message);
-  }
-}
-    // 6. Tratamento do resultado
-    if (resultado.success) {
-      alert(`Agendamento realizado com sucesso!\n\nDetalhes:\nProfessor: ${professor}\nTurma: ${turma}\nData: ${dataSelecionada}\nAula: ${aula}\n\nDocumento gerado: ${resultado.docUrl || 'N/A'}`);
-      limparFormulario();
+    async function cadastrarAgendamento() {
+      const professor = document.getElementById("professor").value;
+      const aparelho = document.getElementById("aparelho").value;
+      const turma = document.getElementById("studentClass").value;
+      const numAparelhos = document.getElementById("numero-aparelhos").value;
+      const aula = document.getElementById("aula").value;
+      const sala = document.getElementById("sala").value;
+      const horaRetirada = document.getElementById("hora-retirada").value;
+      const horaEntrega = document.getElementById("hora-entrega").value;
       
-      // Atualiza a exibição do calendário
-      const [dia, mes, ano] = dataSelecionada.split('/');
-      if (selectedDay) {
-        selectedDay.classList.remove('selecionado');
-        selectedDay.classList.add('agendado');
-        selectedDay.title = `${aparelho} - ${professor}`;
-        selectedDay = null;
+      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate || !sala || !horaRetirada) {
+        alert("Preencha todos os campos obrigatórios do formulário antes de agendar!");
+        return;
       }
-      selectedDate = null;
-    } else {
-      alert("Erro ao processar agendamento:\n" + resultado.message);
-    }
-
-  } catch (error) {
-    console.error('Erro no processo de agendamento:', error);
-    alert("Ocorreu um erro inesperado:\n" + error.message);
-  }
-}
+      
+      // Verifica se já existe agendamento para esta turma, data e aula
+      if (verificarConflitoAgendamento(turma, selectedDate, aula)) {
+        alert("Já existe um agendamento para esta turma nesta data e aula!");
+        return;
+      }
+      
+      const [dia, mes, ano] = selectedDate.split('/');
+      const key = `${ano}-${mes}`;
+      
+      if (!agendamentos[key]) {
+        agendamentos[key] = [];
+      }
+      
+      const id = gerarIdUnico();
+      
+      const novoAgendamento = { 
+        id,
+        dia: parseInt(dia),
+        aparelho,
+        professor,
+        turma,
+        numAparelhos: parseInt(numAparelhos),
+        aula,
+        sala,
+        horaRetirada,
+        horaEntrega
+      };
+      
       agendamentos[key].push(novoAgendamento);
       
       // Atualiza o calendário e o histórico
@@ -1304,7 +1263,7 @@ try {
         // Esta função seria implementada para integrar com o Google Docs usando o Google Apps Script
         // Aqui está apenas um esboço da implementação que seria chamada pelo Google Apps Script
         
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzLTYocL6r6XLTnAyWZghFyeMjdl1XXH1ZSLz9GlN_mXooejJB_i7HqgWTAelIkTbr4/exec', {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbw3I3K5zveoPB398z2EyTfrd91nFmFQr3sspk2E01G8YWS2itYWJ6q7tPicsr-J4U0D/exec', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
