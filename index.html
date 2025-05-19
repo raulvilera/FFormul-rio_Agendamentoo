@@ -1171,23 +1171,27 @@
     }
 
 async function cadastrarAgendamento() {
-  console.log('Iniciando cadastro...');
-  
   // Coletar dados do formulário
-  const professor = document.getElementById("professor").value;
-  const aparelho = document.getElementById("aparelho").value;
-  const turma = document.getElementById("studentClass").value;
-  const numAparelhos = document.getElementById("numero-aparelhos").value;
-  const aula = document.getElementById("aula").value;
-  const sala = document.getElementById("sala").value;
-  const horaRetirada = document.getElementById("hora-retirada").value;
-  const horaEntrega = document.getElementById("hora-entrega").value;
-  const dataSelecionada = document.getElementById("data-selecionada").value;
-  
-  console.log('Dados coletados:', {
-    professor, aparelho, turma, numAparelhos, aula, sala, 
-    horaRetirada, horaEntrega, dataSelecionada
-  });
+  const dados = {
+    professor: document.getElementById("professor").value,
+    aparelho: document.getElementById("aparelho").value,
+    turma: document.getElementById("studentClass").value,
+    numAparelhos: document.getElementById("numero-aparelhos").value,
+    aula: document.getElementById("aula").value,
+    sala: document.getElementById("sala").value,
+    horaRetirada: document.getElementById("hora-retirada").value,
+    horaEntrega: document.getElementById("hora-entrega").value,
+    data: document.getElementById("data-selecionada").value
+  };
+
+  // Validação básica
+  if (!dados.professor || !dados.aparelho || !dados.turma || !dados.data) {
+    alert("Preencha todos os campos obrigatórios!");
+    return;
+  }
+
+  console.log("Dados a serem enviados:", dados);
+
 
   if (!professor || !aparelho || !turma || !numAparelhos || !dataSelecionada || !sala || !horaRetirada) {
     const msg = "Preencha todos os campos obrigatórios!";
@@ -1196,42 +1200,37 @@ async function cadastrarAgendamento() {
     return;
   }
 
-  try {
-    console.log('Chamando Google Script...');
-    const resultado = await google.script.run
-      .withSuccessHandler((result) => {
-        console.log('Resultado do servidor:', result);
-        if (result.success) {
-          alert("SUCESSO!\n" + result.message + "\nDocumento: " + (result.docUrl || ""));
-          limparFormulario();
-        } else {
-          alert("ERRO:\n" + result.message);
-        }
-      })
-      .withFailureHandler((error) => {
-        console.error('Falha na comunicação:', error);
-        alert("FALHA NA COMUNICAÇÃO:\n" + error.message);
-      })
-      .processarAgendamentoCompleto({
-        professor: professor,
-        aparelho: aparelho,
-        turma: turma,
-        numAparelhos: numAparelhos,
-        aula: aula,
-        sala: sala,
-        horaRetirada: horaRetirada,
-        horaEntrega: horaEntrega,
-        data: dataSelecionada
-      });
-      
-    console.log('Requisição enviada');
+try {
+    // Chamada para o Google Apps Script
+    const resultado = await new Promise((resolve, reject) => {
+      google.script.run
+        .withSuccessHandler(resolve)
+        .withFailureHandler((error) => {
+          console.error("Erro na comunicação:", error);
+          reject(error);
+        })
+        .salvarAgendamentoBackend(dados);
+    });
+
+    console.log("Resultado do servidor:", resultado);
     
+    if (resultado.success) {
+      alert("Agendamento salvo com sucesso!\nID: " + resultado.id);
+      limparFormulario();
+  // Atualizar a exibição se necessário
+      if (selectedDay) {
+        selectedDay.classList.remove('selecionado');
+        selectedDay.classList.add('agendado');
+        selectedDay.title = `${dados.aparelho} - ${dados.professor}`;
+      }
+    } else {
+      alert("Erro: " + resultado.message);
+    }
   } catch (error) {
-    console.error('Erro no cadastro:', error);
-    alert("ERRO NO CADASTRO:\n" + error.message);
+    console.error("Erro completo:", error);
+    alert("Falha ao salvar: " + error.message);
   }
 }
-
     // 6. Tratamento do resultado
     if (resultado.success) {
       alert(`Agendamento realizado com sucesso!\n\nDetalhes:\nProfessor: ${professor}\nTurma: ${turma}\nData: ${dataSelecionada}\nAula: ${aula}\n\nDocumento gerado: ${resultado.docUrl || 'N/A'}`);
