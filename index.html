@@ -1171,105 +1171,66 @@
     }
 
 async function cadastrarAgendamento() {
+  console.log('Iniciando cadastro...');
+  
+  // Coletar dados do formulário
+  const professor = document.getElementById("professor").value;
+  const aparelho = document.getElementById("aparelho").value;
+  const turma = document.getElementById("studentClass").value;
+  const numAparelhos = document.getElementById("numero-aparelhos").value;
+  const aula = document.getElementById("aula").value;
+  const sala = document.getElementById("sala").value;
+  const horaRetirada = document.getElementById("hora-retirada").value;
+  const horaEntrega = document.getElementById("hora-entrega").value;
+  const dataSelecionada = document.getElementById("data-selecionada").value;
+  
+  console.log('Dados coletados:', {
+    professor, aparelho, turma, numAparelhos, aula, sala, 
+    horaRetirada, horaEntrega, dataSelecionada
+  });
+
+  if (!professor || !aparelho || !turma || !numAparelhos || !dataSelecionada || !sala || !horaRetirada) {
+    const msg = "Preencha todos os campos obrigatórios!";
+    console.error(msg);
+    alert(msg);
+    return;
+  }
+
   try {
-    console.log('Iniciando processo de agendamento...');
+    console.log('Chamando Google Script...');
+    const resultado = await google.script.run
+      .withSuccessHandler((result) => {
+        console.log('Resultado do servidor:', result);
+        if (result.success) {
+          alert("SUCESSO!\n" + result.message + "\nDocumento: " + (result.docUrl || ""));
+          limparFormulario();
+        } else {
+          alert("ERRO:\n" + result.message);
+        }
+      })
+      .withFailureHandler((error) => {
+        console.error('Falha na comunicação:', error);
+        alert("FALHA NA COMUNICAÇÃO:\n" + error.message);
+      })
+      .processarAgendamentoCompleto({
+        professor: professor,
+        aparelho: aparelho,
+        turma: turma,
+        numAparelhos: numAparelhos,
+        aula: aula,
+        sala: sala,
+        horaRetirada: horaRetirada,
+        horaEntrega: horaEntrega,
+        data: dataSelecionada
+      });
+      
+    console.log('Requisição enviada');
     
-    // 1. Coletar todos os dados do formulário
-    const professor = document.getElementById("professor").value.trim();
-    const aparelho = document.getElementById("aparelho").value.trim();
-    const turma = document.getElementById("studentClass").value.trim();
-    const numAparelhos = parseInt(document.getElementById("numero-aparelhos").value) || 1;
-    const aula = document.getElementById("aula").value.trim();
-    const sala = document.getElementById("sala").value.trim();
-    const horaRetirada = document.getElementById("hora-retirada").value.trim();
-    const horaEntrega = document.getElementById("hora-entrega").value.trim();
-    const dataSelecionada = document.getElementById("data-selecionada").value.trim();
-
-    console.log('Dados coletados:', {
-      professor, aparelho, turma, numAparelhos, aula, 
-      sala, horaRetirada, horaEntrega, dataSelecionada
-    });
-
-    // 2. Validação dos campos obrigatórios
-    if (!professor || professor === "Selecione") {
-      alert("Selecione um professor válido!");
-      document.getElementById("professor").focus();
-      return;
-    }
-
-    if (!aparelho || aparelho === "Selecione") {
-      alert("Selecione um tipo de aparelho!");
-      document.getElementById("aparelho").focus();
-      return;
-    }
-
-    if (!turma || turma === "Selecione a turma") {
-      alert("Selecione uma turma válida!");
-      document.getElementById("studentClass").focus();
-      return;
-    }
-
-    if (!dataSelecionada) {
-      alert("Selecione uma data válida!");
-      document.getElementById("data-selecionada").focus();
-      return;
-    }
-
-    if (!horaRetirada) {
-      alert("Informe a hora de retirada!");
-      document.getElementById("hora-retirada").focus();
-      return;
-    }
-
-    // 3. Verificação de conflito (chamada assíncrona para o servidor)
-    console.log('Verificando conflito de agendamento...');
-    const conflito = await new Promise((resolve) => {
-      google.script.run
-        .withSuccessHandler(resolve)
-        .withFailureHandler((error) => {
-          console.error("Erro ao verificar conflito:", error);
-          resolve(false); // Em caso de erro, assume que não há conflito
-        })
-        .verificarConflitoAgendamento(turma, dataSelecionada, aula);
-    });
-
-    if (conflito) {
-      alert("Já existe um agendamento para esta turma nesta data e aula!");
-      document.getElementById("aula").focus();
-      return;
-    }
-
-    // 4. Preparação dos dados para envio
-    const dadosAgendamento = {
-      professor: professor,
-      aparelho: aparelho,
-      turma: turma,
-      numAparelhos: numAparelhos,
-      aula: aula,
-      sala: sala,
-      horaRetirada: horaRetirada,
-      horaEntrega: horaEntrega || '',
-      data: dataSelecionada
-    };
-
-    console.log('Dados preparados para envio:', dadosAgendamento);
-
-    // 5. Envio dos dados para o servidor (Google Apps Script)
-    console.log('Enviando dados para o servidor...');
-    const resultado = await new Promise((resolve) => {
-      google.script.run
-        .withSuccessHandler(resolve)
-        .withFailureHandler((error) => {
-          console.error("Erro no servidor:", error);
-          resolve({
-            success: false,
-            message: "Erro na comunicação com o servidor: " + error.message
-          });
-        })
-        .processarAgendamentoCompleto(dadosAgendamento);
-    });
-
-    console.log('Resultado do servidor:', resultado);
+  } catch (error) {
+    console.error('Erro no cadastro:', error);
+    alert("ERRO NO CADASTRO:\n" + error.message);
+  }
+}
 
     // 6. Tratamento do resultado
     if (resultado.success) {
