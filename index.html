@@ -1282,6 +1282,9 @@
         status: 'ativo'
       });
       
+      // Limpa agendamentos antigos antes de renderizar
+      limparAgendamentosAntigos();
+      
       // Atualiza o calendário e o histórico
       renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
       
@@ -1323,6 +1326,9 @@
             ...agendamentoExcluido,
             status: 'excluido'
           });
+          
+          // Limpa agendamentos antigos antes de renderizar
+          limparAgendamentosAntigos();
           
           // Atualiza a exibição
           renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
@@ -1459,6 +1465,9 @@
     renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
     initDatepicker();
     renderHistoricoCompleto(); // Renderiza o histórico completo na inicialização
+
+    // Limpa agendamentos antigos ao carregar a página
+    limparAgendamentosAntigos();
 
     // Adiciona listeners para verificar conflito quando os campos mudam
     document.getElementById("studentClass").addEventListener("change", verificarConflito);
