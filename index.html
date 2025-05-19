@@ -21,6 +21,7 @@
       --fundo-cinza: #f0f0f0;
       --entregue: #d4edda;
       --nao-entregue: #f8d7da;
+      --expirado: #fff3cd;
     }
     
     * {
@@ -234,6 +235,10 @@
 
     .historico-table tr.nao-entregue {
       background-color: var(--nao-entregue);
+    }
+    
+    .historico-table tr.expirado {
+      background-color: var(--expirado);
     }
 
     /* Definindo larguras específicas para cada coluna */
@@ -519,7 +524,7 @@
             <option value="2ª SERIE A MANHA">2ª SERIE A MANHA</option>
             <option value="2ª SERIE B MANHA">2ª SERIE B MANHA</option>
             <option value="2ª SERIE C MANHA">2ª SERIE C MANHA</option>
-            <option value="2ª SERIE D MANHA">2ª SERIE D MANha</option>
+            <option value="2ª SERIE D MANha">2ª SERIE D MANha</option>
             <option value="2ª SERIE E MANHA">2ª SERIE E MANHA</option>
             <option value="2ª SERIE F NOITE">2ª SERIE F NOITE</option>
             <option value="2ª SERIE G NOITE">2ª SERIE G NOITE</option>
@@ -804,6 +809,20 @@
     let currentPopupDate = new Date();
     let popupSelectedDate = null;
 
+    // Função para verificar se uma data está dentro do período de 15 dias
+    function estaDentroDoPeriodo(dataAgendamento) {
+      const hoje = new Date();
+      const dataAgendamentoObj = new Date(dataAgendamento);
+      const diferencaDias = Math.floor((hoje - dataAgendamentoObj) / (1000 * 60 * 60 * 24));
+      
+      return diferencaDias <= 15;
+    }
+
+    // Função para formatar a data no formato YYYY-MM-DD
+    function formatarDataParaComparacao(dia, mes, ano) {
+      return `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+    }
+
     // Função para verificar conflito de agendamento
     function verificarConflitoAgendamento(turma, data, aula) {
       const [dia, mes, ano] = data.split('/');
@@ -1056,12 +1075,18 @@
         const formattedDay = String(dia).padStart(2, '0');
         const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0');
         const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
+        const dataAgendamento = formatarDataParaComparacao(dia, parseInt(monthSelect.value) + 1, yearSelect.value);
         
         // Adiciona classe de status de entrega
         if (horaEntrega) {
           row.classList.add('entregue');
         } else {
           row.classList.add('nao-entregue');
+        }
+        
+        // Verifica se o agendamento está expirado (mais de 15 dias)
+        if (!estaDentroDoPeriodo(dataAgendamento)) {
+          row.classList.add('expirado');
         }
         
         row.innerHTML = `
@@ -1072,7 +1097,7 @@
           <td>${professor}</td>
           <td>${aula}</td>
           <td>${horaEntrega || 'Não entregue'}</td>
-          <td><button class="btn btn-excluir" onclick="excluirAgendamento('${id}')">EXCLUIR</button></td>
+          <td><button class="btn btn-excluir" onclick="excluirAgendamento('${id}')" ${!estaDentroDoPeriodo(dataAgendamento) ? 'disabled' : ''}>EXCLUIR</button></td>
         `;
         historicoBody.appendChild(row);
       });
@@ -1081,13 +1106,19 @@
       const currentMonthKey = `${yearSelect.value}-${String(parseInt(monthSelect.value) + 1).padStart(2, '0')}`;
       historicoExcluidos
         .filter(item => item.mesAno === currentMonthKey)
-        .forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega }) => {
+        .forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega, dataExclusao }) => {
           const row = document.createElement('tr');
           row.classList.add('excluido');
           
           const formattedDay = String(dia).padStart(2, '0');
           const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0');
           const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
+          const dataAgendamento = formatarDataParaComparacao(dia, parseInt(monthSelect.value) + 1, yearSelect.value);
+          
+          // Verifica se o agendamento está expirado (mais de 15 dias)
+          if (!estaDentroDoPeriodo(dataAgendamento)) {
+            row.classList.add('expirado');
+          }
           
           row.innerHTML = `
             <td>${formattedDate}</td>
@@ -1244,11 +1275,12 @@
         if (index !== -1) {
           const [agendamentoExcluido] = agendamentos[key].splice(index, 1);
           
-          // Adiciona ao histórico de excluídos
+          // Adiciona ao histórico de excluídos com a data de exclusão
           const [ano, mes] = key.split('-');
           historicoExcluidos.push({
             ...agendamentoExcluido,
-            mesAno: key
+            mesAno: key,
+            dataExclusao: new Date().toISOString()
           });
           
           // Atualiza a exibição
