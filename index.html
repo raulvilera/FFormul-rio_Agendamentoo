@@ -1170,49 +1170,130 @@
       return Date.now().toString(36) + Math.random().toString(36).substr(2);
     }
 
-    async function cadastrarAgendamento() {
-      const professor = document.getElementById("professor").value;
-      const aparelho = document.getElementById("aparelho").value;
-      const turma = document.getElementById("studentClass").value;
-      const numAparelhos = document.getElementById("numero-aparelhos").value;
-      const aula = document.getElementById("aula").value;
-      const sala = document.getElementById("sala").value;
-      const horaRetirada = document.getElementById("hora-retirada").value;
-      const horaEntrega = document.getElementById("hora-entrega").value;
+async function cadastrarAgendamento() {
+  try {
+    console.log('Iniciando processo de agendamento...');
+    
+    // 1. Coletar todos os dados do formulário
+    const professor = document.getElementById("professor").value.trim();
+    const aparelho = document.getElementById("aparelho").value.trim();
+    const turma = document.getElementById("studentClass").value.trim();
+    const numAparelhos = parseInt(document.getElementById("numero-aparelhos").value) || 1;
+    const aula = document.getElementById("aula").value.trim();
+    const sala = document.getElementById("sala").value.trim();
+    const horaRetirada = document.getElementById("hora-retirada").value.trim();
+    const horaEntrega = document.getElementById("hora-entrega").value.trim();
+    const dataSelecionada = document.getElementById("data-selecionada").value.trim();
+
+    console.log('Dados coletados:', {
+      professor, aparelho, turma, numAparelhos, aula, 
+      sala, horaRetirada, horaEntrega, dataSelecionada
+    });
+
+    // 2. Validação dos campos obrigatórios
+    if (!professor || professor === "Selecione") {
+      alert("Selecione um professor válido!");
+      document.getElementById("professor").focus();
+      return;
+    }
+
+    if (!aparelho || aparelho === "Selecione") {
+      alert("Selecione um tipo de aparelho!");
+      document.getElementById("aparelho").focus();
+      return;
+    }
+
+    if (!turma || turma === "Selecione a turma") {
+      alert("Selecione uma turma válida!");
+      document.getElementById("studentClass").focus();
+      return;
+    }
+
+    if (!dataSelecionada) {
+      alert("Selecione uma data válida!");
+      document.getElementById("data-selecionada").focus();
+      return;
+    }
+
+    if (!horaRetirada) {
+      alert("Informe a hora de retirada!");
+      document.getElementById("hora-retirada").focus();
+      return;
+    }
+
+    // 3. Verificação de conflito (chamada assíncrona para o servidor)
+    console.log('Verificando conflito de agendamento...');
+    const conflito = await new Promise((resolve) => {
+      google.script.run
+        .withSuccessHandler(resolve)
+        .withFailureHandler((error) => {
+          console.error("Erro ao verificar conflito:", error);
+          resolve(false); // Em caso de erro, assume que não há conflito
+        })
+        .verificarConflitoAgendamento(turma, dataSelecionada, aula);
+    });
+
+    if (conflito) {
+      alert("Já existe um agendamento para esta turma nesta data e aula!");
+      document.getElementById("aula").focus();
+      return;
+    }
+
+    // 4. Preparação dos dados para envio
+    const dadosAgendamento = {
+      professor: professor,
+      aparelho: aparelho,
+      turma: turma,
+      numAparelhos: numAparelhos,
+      aula: aula,
+      sala: sala,
+      horaRetirada: horaRetirada,
+      horaEntrega: horaEntrega || '',
+      data: dataSelecionada
+    };
+
+    console.log('Dados preparados para envio:', dadosAgendamento);
+
+    // 5. Envio dos dados para o servidor (Google Apps Script)
+    console.log('Enviando dados para o servidor...');
+    const resultado = await new Promise((resolve) => {
+      google.script.run
+        .withSuccessHandler(resolve)
+        .withFailureHandler((error) => {
+          console.error("Erro no servidor:", error);
+          resolve({
+            success: false,
+            message: "Erro na comunicação com o servidor: " + error.message
+          });
+        })
+        .processarAgendamentoCompleto(dadosAgendamento);
+    });
+
+    console.log('Resultado do servidor:', resultado);
+
+    // 6. Tratamento do resultado
+    if (resultado.success) {
+      alert(`Agendamento realizado com sucesso!\n\nDetalhes:\nProfessor: ${professor}\nTurma: ${turma}\nData: ${dataSelecionada}\nAula: ${aula}\n\nDocumento gerado: ${resultado.docUrl || 'N/A'}`);
+      limparFormulario();
       
-      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate || !sala || !horaRetirada) {
-        alert("Preencha todos os campos obrigatórios do formulário antes de agendar!");
-        return;
+      // Atualiza a exibição do calendário
+      const [dia, mes, ano] = dataSelecionada.split('/');
+      if (selectedDay) {
+        selectedDay.classList.remove('selecionado');
+        selectedDay.classList.add('agendado');
+        selectedDay.title = `${aparelho} - ${professor}`;
+        selectedDay = null;
       }
-      
-      // Verifica se já existe agendamento para esta turma, data e aula
-      if (verificarConflitoAgendamento(turma, selectedDate, aula)) {
-        alert("Já existe um agendamento para esta turma nesta data e aula!");
-        return;
-      }
-      
-      const [dia, mes, ano] = selectedDate.split('/');
-      const key = `${ano}-${mes}`;
-      
-      if (!agendamentos[key]) {
-        agendamentos[key] = [];
-      }
-      
-      const id = gerarIdUnico();
-      
-      const novoAgendamento = { 
-        id,
-        dia: parseInt(dia),
-        aparelho,
-        professor,
-        turma,
-        numAparelhos: parseInt(numAparelhos),
-        aula,
-        sala,
-        horaRetirada,
-        horaEntrega
-      };
-      
+      selectedDate = null;
+    } else {
+      alert("Erro ao processar agendamento:\n" + resultado.message);
+    }
+
+  } catch (error) {
+    console.error('Erro no processo de agendamento:', error);
+    alert("Ocorreu um erro inesperado:\n" + error.message);
+  }
+}
       agendamentos[key].push(novoAgendamento);
       
       // Atualiza o calendário e o histórico
