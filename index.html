@@ -22,6 +22,7 @@
       --entregue: #d4edda;
       --nao-entregue: #f8d7da;
       --expirado: #fff3cd;
+      --recente: #ffebee;
     }
     
     * {
@@ -240,35 +241,49 @@
     .historico-table tr.expirado {
       background-color: var(--expirado);
     }
+    
+    .historico-table tr.recente {
+      background-color: var(--recente);
+    }
 
     /* Definindo larguras específicas para cada coluna */
     .historico-table th:nth-child(1),
     .historico-table td:nth-child(1) {
-      width: 15%;
+      width: 10%;
     }
 
     .historico-table th:nth-child(2),
     .historico-table td:nth-child(2) {
-      width: 20%;
+      width: 15%;
     }
 
     .historico-table th:nth-child(3),
     .historico-table td:nth-child(3) {
-      width: 10%;
+      width: 8%;
     }
 
     .historico-table th:nth-child(4),
     .historico-table td:nth-child(4) {
-      width: 15%;
+      width: 12%;
     }
 
     .historico-table th:nth-child(5),
     .historico-table td:nth-child(5) {
-      width: 25%;
+      width: 20%;
     }
 
     .historico-table th:nth-child(6),
     .historico-table td:nth-child(6) {
+      width: 10%;
+    }
+    
+    .historico-table th:nth-child(7),
+    .historico-table td:nth-child(7) {
+      width: 10%;
+    }
+    
+    .historico-table th:nth-child(8),
+    .historico-table td:nth-child(8) {
       width: 15%;
     }
 
@@ -333,6 +348,15 @@
 
     .btn-excluir:active {
       box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-entregar {
+      background-color: var(--verde);
+      color: white;
+    }
+
+    .btn-entregar:hover {
+      background-color: #3d8b40;
     }
 
     /* Estilos para o calendário pop-up */
@@ -427,6 +451,47 @@
       margin-top: 10px;
       text-align: center;
       display: none;
+    }
+    
+    /* Estilos para o modal de devolução */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1001;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 500px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: black;
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -624,6 +689,23 @@
     </div>
   </div>
 
+  <!-- Modal para confirmação de devolução -->
+  <div id="devolucaoModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="fecharModal()">&times;</span>
+      <h3>Registrar Devolução</h3>
+      <p id="modalText"></p>
+      <div class="form-group">
+        <label for="horaEntregaModal">Hora da Entrega:</label>
+        <input type="time" id="horaEntregaModal" value="">
+      </div>
+      <div class="modal-buttons">
+        <button class="btn btn-limpar" onclick="fecharModal()">Cancelar</button>
+        <button class="btn btn-entregar" onclick="confirmarDevolucao()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Dados dos professores
     const teacherEmails = {
@@ -808,6 +890,9 @@
     // Variáveis para o calendário pop-up
     let currentPopupDate = new Date();
     let popupSelectedDate = null;
+    
+    // Variáveis para o modal de devolução
+    let agendamentoParaDevolver = null;
 
     // Função para verificar se uma data está dentro do período de 15 dias
     function estaDentroDoPeriodo(dataAgendamento) {
@@ -1084,6 +1169,11 @@
           row.classList.add('nao-entregue');
         }
         
+        // Verifica se o agendamento está dentro do período de 15 dias
+        if (estaDentroDoPeriodo(dataAgendamento)) {
+          row.classList.add('recente');
+        }
+        
         // Verifica se o agendamento está expirado (mais de 15 dias)
         if (!estaDentroDoPeriodo(dataAgendamento)) {
           row.classList.add('expirado');
@@ -1097,7 +1187,10 @@
           <td>${professor}</td>
           <td>${aula}</td>
           <td>${horaEntrega || 'Não entregue'}</td>
-          <td><button class="btn btn-excluir" onclick="excluirAgendamento('${id}')" ${!estaDentroDoPeriodo(dataAgendamento) ? 'disabled' : ''}>EXCLUIR</button></td>
+          <td>
+            ${!horaEntrega ? `<button class="btn btn-entregar" onclick="abrirModalDevolucao('${id}')">ENTREGAR</button>` : ''}
+            <button class="btn btn-excluir" onclick="excluirAgendamento('${id}')" ${!estaDentroDoPeriodo(dataAgendamento) ? 'disabled' : ''}>EXCLUIR</button>
+          </td>
         `;
         historicoBody.appendChild(row);
       });
@@ -1114,6 +1207,11 @@
           const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0');
           const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
           const dataAgendamento = formatarDataParaComparacao(dia, parseInt(monthSelect.value) + 1, yearSelect.value);
+          
+          // Verifica se o agendamento está dentro do período de 15 dias
+          if (estaDentroDoPeriodo(dataAgendamento)) {
+            row.classList.add('recente');
+          }
           
           // Verifica se o agendamento está expirado (mais de 15 dias)
           if (!estaDentroDoPeriodo(dataAgendamento)) {
@@ -1288,6 +1386,64 @@
           break;
         }
       }
+    }
+    
+    // Funções para controle de devolução
+    function abrirModalDevolucao(id) {
+      // Encontra o agendamento
+      for (const key in agendamentos) {
+        const agendamento = agendamentos[key].find(ag => ag.id === id);
+        if (agendamento) {
+          agendamentoParaDevolver = agendamento;
+          
+          // Preenche o modal
+          document.getElementById('modalText').textContent = 
+            `Confirmar devolução de ${agendamento.numAparelhos} ${agendamento.aparelho}(s) pelo professor ${agendamento.professor}?`;
+          
+          // Define a hora atual como padrão
+          const now = new Date();
+          const horaAtual = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+          document.getElementById('horaEntregaModal').value = horaAtual;
+          
+          // Mostra o modal
+          document.getElementById('devolucaoModal').style.display = 'block';
+          break;
+        }
+      }
+    }
+    
+    function fecharModal() {
+      document.getElementById('devolucaoModal').style.display = 'none';
+      agendamentoParaDevolver = null;
+    }
+    
+    function confirmarDevolucao() {
+      if (!agendamentoParaDevolver) return;
+      
+      const horaEntrega = document.getElementById('horaEntregaModal').value;
+      if (!horaEntrega) {
+        alert("Informe a hora da entrega!");
+        return;
+      }
+      
+      // Atualiza o agendamento com a hora de entrega
+      const [dia, mes, ano] = [
+        agendamentoParaDevolver.dia,
+        parseInt(monthSelect.value) + 1,
+        yearSelect.value
+      ];
+      const key = `${ano}-${String(mes).padStart(2, '0')}`;
+      
+      const index = agendamentos[key].findIndex(ag => ag.id === agendamentoParaDevolver.id);
+      if (index !== -1) {
+        agendamentos[key][index].horaEntrega = horaEntrega;
+        
+        // Atualiza a exibição
+        renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
+      }
+      
+      fecharModal();
+      alert("Devolução registrada com sucesso!");
     }
 
     async function gerarDocumento(agendamento) {
