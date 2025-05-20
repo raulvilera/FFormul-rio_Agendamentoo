@@ -1346,7 +1346,8 @@
       
       // Atualiza o calendário e o histórico
       renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
-      
+      renderHistorico(getAgendamentos(parseInt(ano), parseInt(mes) - 1));
+
       // Limpa a seleção
       if (selectedDay) {
         selectedDay.classList.remove('selecionado');
