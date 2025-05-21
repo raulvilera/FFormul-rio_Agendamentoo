@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AGENDAMENTO DE APARELHOS</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <style>
     :root {
       --azul-escuro: #0a2463;
@@ -493,6 +495,14 @@
       gap: 10px;
       margin-top: 20px;
     }
+    
+    /* Estilo para o botão de exportar */
+    .export-buttons {
+      margin-bottom: 15px;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
   </style>
 </head>
 <body>
@@ -646,6 +656,11 @@
     </div>
 
     <div class="calendar-container">
+      <div class="export-buttons">
+        <button class="btn btn-cadastrar" onclick="exportarParaPDF()">Exportar para PDF</button>
+        <button class="btn btn-cadastrar" onclick="exportarParaCSV()">Exportar para CSV</button>
+      </div>
+      
       <div style="margin-bottom: 20px;">
         <select id="monthSelect"></select>
         <select id="yearSelect"></select>
@@ -707,6 +722,9 @@
   </div>
 
   <script>
+    // Inicializa o jsPDF
+    const { jsPDF } = window.jspdf;
+    
     // Dados dos professores
     const teacherEmails = {
       "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
@@ -871,9 +889,13 @@
       "4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA": "Laboratório 1"
     };
 
-    // Agendamentos e histórico (incluindo agendamentos excluídos)
-    const agendamentos = {};
-    const historicoExcluidos = [];
+    // Chave para armazenamento local
+    const LOCAL_STORAGE_KEY = 'agendamentos_aparelhos';
+    const LOCAL_STORAGE_KEY_EXCLUIDOS = 'agendamentos_excluidos';
+
+    // Carrega agendamentos do localStorage ou inicializa vazio
+    let agendamentos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+    let historicoExcluidos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_EXCLUIDOS)) || [];
 
     const monthNames = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -893,6 +915,12 @@
     
     // Variáveis para o modal de devolução
     let agendamentoParaDevolver = null;
+
+    // Função para salvar agendamentos no localStorage
+    function salvarAgendamentos() {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(agendamentos));
+      localStorage.setItem(LOCAL_STORAGE_KEY_EXCLUIDOS, JSON.stringify(historicoExcluidos));
+    }
 
     // Função para verificar se uma data está dentro do período de 15 dias
     function estaDentroDoPeriodo(dataAgendamento) {
@@ -1344,10 +1372,12 @@
       
       agendamentos[key].push(novoAgendamento);
       
+      // Salva no localStorage
+      salvarAgendamentos();
+      
       // Atualiza o calendário e o histórico
       renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
-      renderHistorico(getAgendamentos(parseInt(ano), parseInt(mes) - 1));
-
+      
       // Limpa a seleção
       if (selectedDay) {
         selectedDay.classList.remove('selecionado');
@@ -1357,8 +1387,8 @@
       selectedDate = null;
       document.getElementById('data-selecionada').value = '';
       
-      // Gera documento
-      await gerarDocumento(novoAgendamento);
+      // Gera documento PDF
+      gerarDocumentoPDF(novoAgendamento);
       
       alert("Agendamento cadastrado com sucesso!");
     }
@@ -1381,6 +1411,9 @@
             mesAno: key,
             dataExclusao: new Date().toISOString()
           });
+          
+          // Salva no localStorage
+          salvarAgendamentos();
           
           // Atualiza a exibição
           renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
@@ -1439,50 +1472,193 @@
       if (index !== -1) {
         agendamentos[key][index].horaEntrega = horaEntrega;
         
+        // Salva no localStorage
+        salvarAgendamentos();
+        
         // Atualiza a exibição
         renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
+        
+        // Gera documento PDF
+        gerarDocumentoPDF(agendamentos[key][index]);
       }
       
       fecharModal();
       alert("Devolução registrada com sucesso!");
     }
 
-    async function gerarDocumento(agendamento) {
-      try {
-        // Esta função seria implementada para integrar com o Google Docs usando o Google Apps Script
-        // Aqui está apenas um esboço da implementação que seria chamada pelo Google Apps Script
+    // Função para gerar documento PDF
+    function gerarDocumentoPDF(agendamento) {
+      const doc = new jsPDF();
+      
+      // Cabeçalho
+      doc.setFontSize(18);
+      doc.setTextColor(10, 36, 99); // Azul escuro
+      doc.text("TERMO DE EMPRÉSTIMO DE EQUIPAMENTOS", 105, 20, null, null, 'center');
+      
+      // Logo ou informações da escola
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      doc.text("ESCOLA ESTADUAL - NOME DA ESCOLA", 105, 30, null, null, 'center');
+      doc.text("Departamento de Tecnologia", 105, 36, null, null, 'center');
+      
+      // Linha divisória
+      doc.setDrawColor(10, 36, 99);
+      doc.setLineWidth(0.5);
+      doc.line(20, 42, 190, 42);
+      
+      // Dados do agendamento
+      doc.setFontSize(12);
+      doc.text("PROFESSOR: " + agendamento.professor, 20, 50);
+      doc.text("EMAIL: " + teacherEmails[agendamento.professor] || "Não informado", 20, 58);
+      
+      doc.text("TURMA: " + agendamento.turma, 20, 66);
+      doc.text("SALA: " + agendamento.sala, 20, 74);
+      
+      doc.text("EQUIPAMENTO: " + agendamento.aparelho + " - " + marcas[agendamento.aparelho], 20, 82);
+      doc.text("QUANTIDADE: " + agendamento.numAparelhos, 20, 90);
+      
+      const dataFormatada = `${agendamento.dia.toString().padStart(2, '0')}/${(parseInt(monthSelect.value) + 1).toString().padStart(2, '0')}/${yearSelect.value}`;
+      doc.text("DATA: " + dataFormatada, 20, 98);
+      doc.text("AULA: " + agendamento.aula, 20, 106);
+      
+      doc.text("HORA DE RETIRADA: " + agendamento.horaRetirada, 20, 114);
+      doc.text("HORA DE ENTREGA: " + (agendamento.horaEntrega || "Não entregue"), 20, 122);
+      
+      // Linha divisória
+      doc.line(20, 130, 190, 130);
+      
+      // Termos e condições
+      doc.setFontSize(10);
+      doc.text("DECLARO QUE RECEBI O(S) EQUIPAMENTO(S) EM PERFEITO ESTADO E ME COMPROMETO A:", 20, 138);
+      doc.text("- Utilizar o(s) equipamento(s) exclusivamente para fins pedagógicos;", 25, 146);
+      doc.text("- Zelar pela conservação e segurança do(s) equipamento(s);", 25, 154);
+      doc.text("- Devolver o(s) equipamento(s) no prazo combinado;", 25, 162);
+      doc.text("- Comunicar imediatamente qualquer problema ou dano ocorrido.", 25, 170);
+      
+      // Assinaturas
+      doc.setFontSize(12);
+      doc.text("__________________________________________", 50, 190);
+      doc.text("Assinatura do Professor", 105, 198, null, null, 'center');
+      
+      doc.text("__________________________________________", 50, 210);
+      doc.text("Assinatura do Responsável", 105, 218, null, null, 'center');
+      
+      // Data e hora de geração
+      const agora = new Date();
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      doc.text(`Documento gerado em: ${agora.toLocaleString()}`, 105, 285, null, null, 'center');
+      
+      // Salva o PDF
+      const nomeArquivo = `Termo_${agendamento.professor.replace(/\s+/g, '_')}_${dataFormatada.replace(/\//g, '-')}.pdf`;
+      doc.save(nomeArquivo);
+    }
+    
+    // Função para exportar todos os agendamentos para PDF
+    function exportarParaPDF() {
+      const doc = new jsPDF();
+      
+      // Cabeçalho
+      doc.setFontSize(18);
+      doc.setTextColor(10, 36, 99);
+      doc.text("RELATÓRIO DE AGENDAMENTOS", 105, 20, null, null, 'center');
+      
+      doc.setFontSize(12);
+      doc.text(`Período: ${monthNames[parseInt(monthSelect.value)]} de ${yearSelect.value}`, 105, 30, null, null, 'center');
+      
+      // Tabela de agendamentos
+      const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
+      
+      if (agendamentosDoMes.length === 0) {
+        doc.setFontSize(12);
+        doc.text("Nenhum agendamento encontrado para este período.", 105, 40, null, null, 'center');
+      } else {
+        // Cabeçalhos da tabela
+        const headers = [
+          "Data", 
+          "Turma", 
+          "Qtd", 
+          "Equipamento", 
+          "Professor", 
+          "Aula", 
+          "Entrega"
+        ];
         
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzXbs5QBQKN0wi8fdGB3k3I76jIVbJOEZyg_6zyhknXKI8zUrOCb6_q6c3-6MaDNZkm/exec', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            action: 'gerarDocumento',
-            dados: {
-              professor: agendamento.professor,
-              quantidade: agendamento.numAparelhos,
-              data: agendamento.dia + '/' + (parseInt(monthSelect.value) + 1) + '/' + yearSelect.value,
-              tipoAparelho: agendamento.aparelho,
-              turma: agendamento.turma,
-              aula: agendamento.aula,
-              horaRetirada: agendamento.horaRetirada,
-              horaEntrega: agendamento.horaEntrega,
-              statusEntrega: agendamento.horaEntrega ? 'Entregue' : 'Não entregue'
-            }
-          })
+        // Dados da tabela
+        const data = agendamentosDoMes.map(ag => {
+          const diaFormatado = ag.dia.toString().padStart(2, '0');
+          const mesFormatado = (parseInt(monthSelect.value) + 1).toString().padStart(2, '0');
+          return [
+            `${diaFormatado}/${mesFormatado}/${yearSelect.value}`,
+            ag.turma,
+            ag.numAparelhos.toString(),
+            ag.aparelho,
+            ag.professor,
+            ag.aula,
+            ag.horaEntrega || "Não entregue"
+          ];
         });
         
-        const result = await response.json();
-        
-        if (result.success) {
-          console.log("Documento gerado com sucesso:", result.url);
-        } else {
-          console.error("Erro ao gerar documento:", result.message);
-        }
-      } catch (error) {
-        console.error("Erro ao chamar o Google Apps Script:", error);
+        // Adiciona a tabela ao PDF
+        doc.autoTable({
+          head: [headers],
+          body: data,
+          startY: 40,
+          theme: 'grid',
+          headStyles: {
+            fillColor: [10, 36, 99],
+            textColor: 255,
+            fontStyle: 'bold'
+          },
+          alternateRowStyles: {
+            fillColor: [240, 240, 240]
+          },
+          margin: { top: 40 }
+        });
       }
+      
+      // Data e hora de geração
+      const agora = new Date();
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      doc.text(`Relatório gerado em: ${agora.toLocaleString()}`, 105, 285, null, null, 'center');
+      
+      // Salva o PDF
+      const nomeArquivo = `Relatorio_Agendamentos_${monthNames[parseInt(monthSelect.value)]}_${yearSelect.value}.pdf`;
+      doc.save(nomeArquivo);
+    }
+    
+    // Função para exportar para CSV
+    function exportarParaCSV() {
+      const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
+      
+      if (agendamentosDoMes.length === 0) {
+        alert("Nenhum agendamento encontrado para este período.");
+        return;
+      }
+      
+      // Cabeçalhos
+      let csv = "Data,Turma,Quantidade,Equipamento,Professor,Aula,Hora Retirada,Hora Entrega,Sala\n";
+      
+      // Dados
+      agendamentosDoMes.forEach(ag => {
+        const diaFormatado = ag.dia.toString().padStart(2, '0');
+        const mesFormatado = (parseInt(monthSelect.value) + 1).toString().padStart(2, '0');
+        const data = `${diaFormatado}/${mesFormatado}/${yearSelect.value}`;
+        
+        csv += `"${data}","${ag.turma}","${ag.numAparelhos}","${ag.aparelho}","${ag.professor}","${ag.aula}","${ag.horaRetirada}","${ag.horaEntrega || ''}","${ag.sala}"\n`;
+      });
+      
+      // Cria o arquivo CSV
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Agendamentos_${monthNames[parseInt(monthSelect.value)]}_${yearSelect.value}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
     function limparFormulario() {
