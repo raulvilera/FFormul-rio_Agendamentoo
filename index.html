@@ -525,7 +525,7 @@
       <div class="form-row">
         <div class="form-group">
           <label>APARELHO:</label>
-          <select id="aparelho" onchange="atualizarMarca()">
+          <select id="equipamentoAgendamento" onchange="atualizarMarca()">
             <option value="">Selecione</option>
             <option value="TABLET">TABLET</option>
             <option value="SMARTPHONE">SMARTPHONE</option>
@@ -543,12 +543,33 @@
       <div class="form-row">
         <div class="form-group">
           <label>N° DE APARELHOS:</label>
-          <input type="number" id="numero-aparelhos" min="1" value="1">
+          <input type="number" id="quantidadeAgendamento" min="1" value="1">
         </div>
         
+        <div class="form-group">
+          <label>LOCAL:</label>
+          <select id="localAgendamento">
+            <option value="">Selecione</option>
+            <option value="LABORATÓRIO 1">LABORATÓRIO 1</option>
+            <option value="LABORATÓRIO 2">LABORATÓRIO 2</option>
+            <option value="SALA 1">SALA 1</option>
+            <option value="SALA 2">SALA 2</option>
+            <option value="SALA 3">SALA 3</option>
+            <option value="SALA 4">SALA 4</option>
+            <option value="SALA 5">SALA 5</option>
+            <option value="SALA 6">SALA 6</option>
+            <option value="SALA 7">SALA 7</option>
+            <option value="SALA 8">SALA 8</option>
+            <option value="SALA 9">SALA 9</option>
+            <option value="SALA 10">SALA 10</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
         <div class="form-group datepicker-container">
           <label>DATA:</label>
-          <input type="text" id="data-selecionada" class="datepicker-input" readonly placeholder="Clique para selecionar">
+          <input type="text" id="dataAgendamento" class="datepicker-input" readonly placeholder="Clique para selecionar">
           <div class="datepicker-popup" id="datepickerPopup">
             <div class="datepicker-header">
               <button class="datepicker-nav" id="prevMonth">&lt;</button>
@@ -561,96 +582,12 @@
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label>SELECIONE A TURMA:</label>
-          <select id="studentClass" class="form-control" required onchange="atualizarSala()">
-            <option value="">Selecione a turma</option>
-            <option value="6° ANO A MANHA">6° ANO A MANHA</option>
-            <option value="6° ANO B MANHA">6° ANO B MANHA</option>
-            <option value="6° ANO C MANHA">6° ANO C MANHA</option>
-            <option value="6° ANO D MANHA">6° ANO D MANHA</option>
-            <option value="6° ANO E TARDE">6° ANO E TARDE</option>
-            <option value="6° ANO F TARDE">6° ANO F TARDE</option>
-            <option value="7° ANO A TARDE">7° ANO A TARDE</option>
-            <option value="7° ANO B TARDE">7° ANO B TARDE</option>
-            <option value="7° ANO C TARDE">7° ANO C TARDE</option>
-            <option value="7° ANO D TARDE">7° ANO D TARDE</option>
-            <option value="7° ANO E TARDE">7° ANO E TARDE</option>
-            <option value="7° ANO F TARDE">7° ANO F TARDE</option>
-            <option value="8° ANO A TARDE">8° ANO A TARDE</option>
-            <option value="8° ANO B TARDE">8° ANO B TARDE</option>
-            <option value="8° ANO C TARDE">8° ANO C TARDE</option>
-            <option value="8° ANO D TARDE">8° ANO D TARDE</option>
-            <option value="8° ANO E TARDE">8° ANO E TARDE</option>
-            <option value="9° ANO A TARDE">9° ANO A TARDE</option>
-            <option value="9° ANO B TARDE">9° ANO B TARDE</option>
-            <option value="9° ANO C TARDE">9° ANO C TARDE</option>
-            <option value="9° ANO D TARDE">9° ANO D TARDE</option>
-            <option value="1ª SERIE A MANHA">1ª SERIE A MANHA</option>
-            <option value="1ª SERIE B MANHA">1ª SERIE B MANHA</option>
-            <option value="1ª SERIE C MANHA">1ª SERIE C MANHA</option>
-            <option value="1ª SERIE D MANHA">1ª SERIE D MANHA</option>
-            <option value="1ª SERIE E MANHA">1ª SERIE E MANHA</option>
-            <option value="1ª SERIE F MANHA">1ª SERIE F MANHA</option>
-            <option value="1ª SERIE G TARDE">1ª SERIE G TARDE</option>
-            <option value="1ª SERIE H NOITE">1ª SERIE H NOITE</option>
-            <option value="1ª SERIE I NOITE">1ª SERIE I NOITE</option>
-            <option value="2ª SERIE A MANHA">2ª SERIE A MANHA</option>
-            <option value="2ª SERIE B MANHA">2ª SERIE B MANHA</option>
-            <option value="2ª SERIE C MANHA">2ª SERIE C MANHA</option>
-            <option value="2ª SERIE D MANha">2ª SERIE D MANha</option>
-            <option value="2ª SERIE E MANHA">2ª SERIE E MANHA</option>
-            <option value="2ª SERIE F NOITE">2ª SERIE F NOITE</option>
-            <option value="2ª SERIE G NOITE">2ª SERIE G NOITE</option>
-            <option value="2ª SERIE H NOITE">2ª SERIE H NOITE</option>
-            <option value="2ª SERIE I NOITE">2ª SERIE I NOITE</option>
-            <option value="3ª SERIE A MANHA">3ª SERIE A MANHA</option>
-            <option value="3ª SERIE B MANHA">3ª SERIE B MANHA</option>
-            <option value="3ª SERIE C MANHA">3ª SERIE C MANHA</option>
-            <option value="3ª SERIE D NOITE">3ª SERIE D NOITE</option>
-            <option value="3ª SERIE E NOITE">3ª SERIE E NOITE</option>
-            <option value="3ª SERIE F NOITE">3ª SERIE F NOITE</option>
-            <option value="3ª SERIE G NOITE">3ª SERIE G NOITE</option>
-            <option value="4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA">4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>SALA:</label>
-          <input type="text" id="sala" readonly>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group" onclick="abrirRelogio('hora-retirada')" style="cursor: pointer;">
-          <label for="hora-retirada">RETIRADA:</label>
-          <input type="time" id="hora-retirada" required>
-        </div>
-        <div class="form-group" onclick="abrirRelogio('hora-entrega')" style="cursor: pointer;">
-          <label for="hora-entrega">ENTREGA:</label>
-          <input type="time" id="hora-entrega">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="aula">Aula:</label>
-        <select id="aula">
-          <option>1ª Aula</option>
-          <option>2ª Aula</option>
-          <option>3ª Aula</option>
-          <option>4ª Aula</option>
-          <option>5ª Aula</option>
-          <option>6ª Aula</option>
-        </select>
-      </div>
-
       <div class="conflict-message" id="conflictMessage">
-        Já existe um agendamento para esta turma nesta data e aula!
+        Já existe um agendamento para este local/horário!
       </div>
 
       <div class="buttons-container">
-        <button class="btn btn-cadastrar" onclick="cadastrarAgendamento()">CADASTRAR</button>
+        <button class="btn btn-cadastrar" onclick="agendarEquipamento()">AGENDAR</button>
         <button class="btn btn-limpar" onclick="limparFormulario()">LIMPAR</button>
       </div>
     </div>
@@ -708,7 +645,7 @@
   <div id="devolucaoModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="fecharModal()">&times;</span>
-      <h3>Registrar Devolução</h3>
+      <h3>Finalizar Agendamento</h3>
       <p id="modalText"></p>
       <div class="form-group">
         <label for="horaEntregaModal">Hora da Entrega:</label>
@@ -716,7 +653,7 @@
       </div>
       <div class="modal-buttons">
         <button class="btn btn-limpar" onclick="fecharModal()">Cancelar</button>
-        <button class="btn btn-entregar" onclick="confirmarDevolucao()">Confirmar</button>
+        <button class="btn btn-entregar" onclick="finalizarAgendamento()">Confirmar</button>
       </div>
     </div>
   </div>
@@ -725,6 +662,156 @@
     // Inicializa o jsPDF
     const { jsPDF } = window.jspdf;
     
+    // Banco de dados simulado para equipamentos
+    const sistemaDB = {
+      equipamentos: {
+        "1": { id: "1", categoria: "TABLET", quantidade_disponivel: 10, localizacao: "LABORATÓRIO 1", status: "Disponível", agendamentos: [] },
+        "2": { id: "2", categoria: "SMARTPHONE", quantidade_disponivel: 15, localizacao: "LABORATÓRIO 1", status: "Disponível", agendamentos: [] },
+        "3": { id: "3", categoria: "CHROMEBOOK", quantidade_disponivel: 5, localizacao: "LABORATÓRIO 2", status: "Disponível", agendamentos: [] },
+        "4": { id: "4", categoria: "NOTEBOOK", quantidade_disponivel: 8, localizacao: "LABORATÓRIO 2", status: "Disponível", agendamentos: [] },
+        "5": { id: "5", categoria: "TABLET", quantidade_disponivel: 12, localizacao: "SALA 1", status: "Disponível", agendamentos: [] }
+      },
+      agendamentos: [],
+      historico: []
+    };
+
+    // Funções de integração fornecidas
+    function verificarDisponibilidade(categoria, quantidade, local) {
+      const equipamentos = sistemaDB.equipamentos;
+      let disponivel = 0;
+
+      for (const id in equipamentos) {
+        const eq = equipamentos[id];
+        if (eq.categoria === categoria && eq.localizacao === local && eq.status === "Disponível") {
+          disponivel += eq.quantidade_disponivel;
+        }
+      }
+      return disponivel >= quantidade;
+    }
+
+    function registrarAgendamento(agendamento) {
+      const { categoria, quantidade, local } = agendamento;
+      let quantidadeRestante = quantidade;
+
+      // Atualiza o estoque
+      for (const id in sistemaDB.equipamentos) {
+        const eq = sistemaDB.equipamentos[id];
+        if (eq.categoria === categoria && eq.localizacao === local && eq.status === "Disponível") {
+          const reservar = Math.min(quantidadeRestante, eq.quantidade_disponivel);
+          eq.quantidade_disponivel -= reservar;
+          eq.status = eq.quantidade_disponivel > 0 ? "Disponível" : "Em uso";
+          quantidadeRestante -= reservar;
+
+          // Vincula o agendamento ao equipamento
+          eq.agendamentos.push({
+            id: agendamento.id,
+            quantidade: reservar,
+            data: agendamento.data
+          });
+
+          if (quantidadeRestante === 0) break;
+        }
+      }
+
+      // Adiciona ao histórico
+      sistemaDB.agendamentos.push(agendamento);
+      sistemaDB.historico.push({
+        tipo: "agendamento",
+        equipamento: categoria,
+        local,
+        quantidade,
+        data: new Date().toISOString(),
+        detalhes: `Agendado por ${agendamento.professor}`
+      });
+
+      salvarBancoDados();
+      atualizarListaEquipamentos(); // Atualiza a UI
+    }
+
+    function finalizarAgendamento(idAgendamento) {
+      const agendamento = sistemaDB.agendamentos.find(ag => ag.id === idAgendamento);
+      if (!agendamento) return;
+
+      // Libera os equipamentos
+      for (const id in sistemaDB.equipamentos) {
+        const eq = sistemaDB.equipamentos[id];
+        const agendamentoEquip = eq.agendamentos.find(ag => ag.id === idAgendamento);
+        
+        if (agendamentoEquip) {
+          eq.quantidade_disponivel += agendamentoEquip.quantidade;
+          eq.status = "Disponível";
+          eq.agendamentos = eq.agendamentos.filter(ag => ag.id !== idAgendamento);
+        }
+      }
+
+      // Atualiza o status do agendamento
+      agendamento.status = "Finalizado";
+      sistemaDB.historico.push({
+        tipo: "devolucao",
+        equipamento: agendamento.categoria,
+        local: agendamento.local,
+        quantidade: agendamento.quantidade,
+        data: new Date().toISOString()
+      });
+
+      salvarBancoDados();
+      atualizarListaAgendamentos(); // Atualiza a UI
+    }
+
+    function validarConflitos(novoAgendamento) {
+      return sistemaDB.agendamentos.some(ag => (
+        ag.local === novoAgendamento.local &&
+        ag.data === novoAgendamento.data &&
+        ag.status !== "Finalizado"
+      ));
+    }
+
+    function agendarEquipamento() {
+      const agendamento = {
+        id: gerarIdUnico(),
+        categoria: document.getElementById("equipamentoAgendamento").value,
+        quantidade: parseInt(document.getElementById("quantidadeAgendamento").value),
+        local: document.getElementById("localAgendamento").value,
+        data: document.getElementById("dataAgendamento").value,
+        professor: document.getElementById("professor").value
+      };
+
+      if (!verificarDisponibilidade(agendamento.categoria, agendamento.quantidade, agendamento.local)) {
+        alert("Quantidade indisponível!");
+        return;
+      }
+
+      if (validarConflitos(agendamento)) {
+        alert("Já existe um agendamento para este local/horário!");
+        return;
+      }
+
+      registrarAgendamento(agendamento);
+      alert("Agendamento realizado com sucesso!");
+    }
+
+    // Funções auxiliares
+    function salvarBancoDados() {
+      localStorage.setItem('sistemaDB', JSON.stringify(sistemaDB));
+    }
+
+    function carregarBancoDados() {
+      const dados = localStorage.getItem('sistemaDB');
+      if (dados) {
+        Object.assign(sistemaDB, JSON.parse(dados));
+      }
+    }
+
+    function atualizarListaEquipamentos() {
+      // Implementação para atualizar a UI com os equipamentos
+      console.log("Atualizando lista de equipamentos...");
+    }
+
+    function atualizarListaAgendamentos() {
+      // Implementação para atualizar a UI com os agendamentos
+      console.log("Atualizando lista de agendamentos...");
+    }
+
     // Dados dos professores
     const teacherEmails = {
       "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
@@ -952,7 +1039,7 @@
 
     // Funções do formulário
     function atualizarMarca() {
-      const tipo = document.getElementById("aparelho").value;
+      const tipo = document.getElementById("equipamentoAgendamento").value;
       document.getElementById("marca").value = marcas[tipo] || "";
     }
 
@@ -1000,7 +1087,7 @@
     // Função para verificar conflito quando os campos relevantes mudam
     function verificarConflito() {
       const turma = document.getElementById("studentClass").value;
-      const data = document.getElementById("data-selecionada").value;
+      const data = document.getElementById("dataAgendamento").value;
       const aula = document.getElementById("aula").value;
       const conflictMessage = document.getElementById("conflictMessage");
       
@@ -1014,7 +1101,7 @@
 
     // Funções do calendário pop-up
     function initDatepicker() {
-      const datepickerInput = document.getElementById('data-selecionada');
+      const datepickerInput = document.getElementById('dataAgendamento');
       const datepickerPopup = document.getElementById('datepickerPopup');
       const prevMonthBtn = document.getElementById('prevMonth');
       const nextMonthBtn = document.getElementById('nextMonth');
@@ -1329,9 +1416,9 @@
 
     async function cadastrarAgendamento() {
       const professor = document.getElementById("professor").value;
-      const aparelho = document.getElementById("aparelho").value;
+      const aparelho = document.getElementById("equipamentoAgendamento").value;
       const turma = document.getElementById("studentClass").value;
-      const numAparelhos = document.getElementById("numero-aparelhos").value;
+      const numAparelhos = document.getElementById("quantidadeAgendamento").value;
       const aula = document.getElementById("aula").value;
       const sala = document.getElementById("sala").value;
       const horaRetirada = document.getElementById("hora-retirada").value;
@@ -1385,7 +1472,7 @@
         selectedDay = null;
       }
       selectedDate = null;
-      document.getElementById('data-selecionada').value = '';
+      document.getElementById('dataAgendamento').value = '';
       
       // Gera documento PDF
       gerarDocumentoPDF(novoAgendamento);
@@ -1451,7 +1538,7 @@
       agendamentoParaDevolver = null;
     }
     
-    function confirmarDevolucao() {
+    function finalizarAgendamento() {
       if (!agendamentoParaDevolver) return;
       
       const horaEntrega = document.getElementById('horaEntregaModal').value;
@@ -1662,9 +1749,9 @@
     function limparFormulario() {
       document.getElementById("professor").value = "Selecione";
       document.getElementById("email-professor").value = "";
-      document.getElementById("aparelho").value = "";
+      document.getElementById("equipamentoAgendamento").value = "";
       document.getElementById("marca").value = "";
-      document.getElementById("numero-aparelhos").value = "1";
+      document.getElementById("quantidadeAgendamento").value = "1";
       document.getElementById("studentClass").value = "";
       document.getElementById("sala").value = "";
       document.getElementById("hora-retirada").value = "";
@@ -1682,11 +1769,12 @@
         selectedDay = null;
       }
       selectedDate = null;
-      document.getElementById('data-selecionada').value = '';
+      document.getElementById('dataAgendamento').value = '';
       popupSelectedDate = null;
     }
 
     // Inicialização
+    carregarBancoDados();
     gerarOpcoesProfessores();
     populateMonthYearSelectors();
     renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
@@ -1695,7 +1783,7 @@
     // Adiciona listeners para verificar conflito quando os campos mudam
     document.getElementById("studentClass").addEventListener("change", verificarConflito);
     document.getElementById("aula").addEventListener("change", verificarConflito);
-    document.getElementById("data-selecionada").addEventListener("change", verificarConflito);
+    document.getElementById("dataAgendamento").addEventListener("change", verificarConflito);
 
     monthSelect.addEventListener('change', () => {
       renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
