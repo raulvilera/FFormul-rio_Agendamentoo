@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AGENDAMENTO DE APARELHOS</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <style>
     :root {
       --azul-escuro: #0a2463;
@@ -23,8 +21,6 @@
       --fundo-cinza: #f0f0f0;
       --entregue: #d4edda;
       --nao-entregue: #f8d7da;
-      --expirado: #fff3cd;
-      --recente: #ffebee;
     }
     
     * {
@@ -239,53 +235,35 @@
     .historico-table tr.nao-entregue {
       background-color: var(--nao-entregue);
     }
-    
-    .historico-table tr.expirado {
-      background-color: var(--expirado);
-    }
-    
-    .historico-table tr.recente {
-      background-color: var(--recente);
-    }
 
     /* Definindo larguras específicas para cada coluna */
     .historico-table th:nth-child(1),
     .historico-table td:nth-child(1) {
-      width: 10%;
+      width: 15%;
     }
 
     .historico-table th:nth-child(2),
     .historico-table td:nth-child(2) {
-      width: 15%;
+      width: 20%;
     }
 
     .historico-table th:nth-child(3),
     .historico-table td:nth-child(3) {
-      width: 8%;
+      width: 10%;
     }
 
     .historico-table th:nth-child(4),
     .historico-table td:nth-child(4) {
-      width: 12%;
+      width: 15%;
     }
 
     .historico-table th:nth-child(5),
     .historico-table td:nth-child(5) {
-      width: 20%;
+      width: 25%;
     }
 
     .historico-table th:nth-child(6),
     .historico-table td:nth-child(6) {
-      width: 10%;
-    }
-    
-    .historico-table th:nth-child(7),
-    .historico-table td:nth-child(7) {
-      width: 10%;
-    }
-    
-    .historico-table th:nth-child(8),
-    .historico-table td:nth-child(8) {
       width: 15%;
     }
 
@@ -350,15 +328,6 @@
 
     .btn-excluir:active {
       box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
-    }
-    
-    .btn-entregar {
-      background-color: var(--verde);
-      color: white;
-    }
-
-    .btn-entregar:hover {
-      background-color: #3d8b40;
     }
 
     /* Estilos para o calendário pop-up */
@@ -454,55 +423,6 @@
       text-align: center;
       display: none;
     }
-    
-    /* Estilos para o modal de devolução */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1001;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    .modal-content {
-      background-color: #fefefe;
-      margin: 15% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      border-radius: 8px;
-      width: 80%;
-      max-width: 500px;
-    }
-
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: black;
-    }
-
-    .modal-buttons {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    
-    /* Estilo para o botão de exportar */
-    .export-buttons {
-      margin-bottom: 15px;
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
   </style>
 </head>
 <body>
@@ -514,90 +434,6 @@
           <label>PROFESSOR:</label>
           <select id="professor" onchange="atualizarEmail()">
             <option>Selecione</option>
-           <option value="ADEMAR RIBEIRO DE SOUZA">ADEMAR RIBEIRO DE SOUZA</option>
-<option value="ALEX LUTH PEREIRA MARANHAO">ALEX LUTH PEREIRA MARANHAO</option>
-<option value="ALEXANDRE SILVA LIMA">ALEXANDRE SILVA LIMA</option>
-<option value="ALEXSANDRA PAULA VARELLA DE SOUZA">ALEXSANDRA PAULA VARELLA DE SOUZA</option>
-<option value="ALISON VASCONCELOS BESERRA">ALISON VASCONCELOS BESERRA</option>
-<option value="AMAURI TEODORO DE OLIVEIRA">AMAURI TEODORO DE OLIVEIRA</option>
-<option value="ANA PAULA DOS SANTOS">ANA PAULA DOS SANTOS</option>
-<option value="ANDRE LUIZ TAVARES">ANDRE LUIZ TAVARES</option>
-<option value="ANDREIA DOS SANTOS FREITAS">ANDREIA DOS SANTOS FREITAS</option>
-<option value="ANDREIA MADUREIRA REIS">ANDREIA MADUREIRA REIS</option>
-<option value="ANTONIO CARLOS DE OLIVEIRA">ANTONIO CARLOS DE OLIVEIRA</option>
-<option value="ANTONIO RAMOS DE ARAUJO">ANTONIO RAMOS DE ARAUJO</option>
-<option value="ANTONIO WILTON WANDERLEY CABRAL">ANTONIO WILTON WANDERLEY CABRAL</option>
-<option value="AUGUSTO LINO PESSOA NETO">AUGUSTO LINO PESSOA NETO</option>
-<option value="AUREA MARIA DE JESUS MARQUES">AUREA MARIA DE JESUS MARQUES</option>
-<option value="CAROLINA PERNOMIAN PARUSSOLO">CAROLINA PERNOMIAN PARUSSOLO</option>
-<option value="CASSIA OLIVEIRA ANTONIAZI">CASSIA OLIVEIRA ANTONIAZI</option>
-<option value="DANIEL DE FREITAS ALMEIDA">DANIEL DE FREITAS ALMEIDA</option>
-<option value="DANIEL LOPES BARBOSA">DANIEL LOPES BARBOSA</option>
-<option value="DANIELA FERREIRA LIMA">DANIELA FERREIRA LIMA</option>
-<option value="EDIANE VIEIRA DA SILVA">EDIANE VIEIRA DA SILVA</option>
-<option value="EDILEUSA NUNES PEREIRA">EDILEUSA NUNES PEREIRA</option>
-<option value="EDUARDO HENRIQUE DA FONSECA">EDUARDO HENRIQUE DA FONSECA</option>
-<option value="ELIANE SANTOS SILVA">ELIANE SANTOS SILVA</option>
-<option value="ELIAS MONTEIRO DA SILVA">ELIAS MONTEIRO DA SILVA</option>
-<option value="ELISABETE APARECIDA PIRES">ELISABETE APARECIDA PIRES</option>
-<option value="ELZA DE FARIA PEREIRA">ELZA DE FARIA PEREIRA</option>
-<option value="EMERSON GABLER DE ALMEIDA">EMERSON GABLER DE ALMEIDA</option>
-<option value="ERINEIDE LEITE ARAGAO NERY">ERINEIDE LEITE ARAGAO NERY</option>
-<option value="EUZELI ARAUJO DE OLIVEIRA">EUZELI ARAUJO DE OLIVEIRA</option>
-<option value="FABIANO AUGUSTO PIEDADE">FABIANO AUGUSTO PIEDADE</option>
-<option value="FABIO CAMILO">FABIO CAMILO</option>
-<option value="FERNANDO JOSE DA SILVA FILHO">FERNANDO JOSE DA SILVA FILHO</option>
-<option value="FLAVIA CRISTINA APARECIDA BICHLER">FLAVIA CRISTINA APARECIDA BICHLER</option>
-<option value="FLAVIO CARDOSO FLEURY">FLAVIO CARDOSO FLEURY</option>
-<option value="GABRIELA SERIGHELLI DE MELO">GABRIELA SERIGHELLI DE MELO</option>
-<option value="GENILTON DE OLIVEIRA SILVA">GENILTON DE OLIVEIRA SILVA</option>
-<option value="GIANI CRISTINA DO PRADO">GIANI CRISTINA DO PRADO</option>
-<option value="INGRYD CAROLINA SUGUIMOTO VIEIRA">INGRYD CAROLINA SUGUIMOTO VIEIRA</option>
-<option value="IVANILDES DOS SANTOS OSHIKAWA">IVANILDES DOS SANTOS OSHIKAWA</option>
-<option value="JANINA DOS PASSOS BRAGA DE ALMEIDA">JANINA DOS PASSOS BRAGA DE ALMEIDA</option>
-<option value="JUAREZ GOMES DE MAGALHAES FILHO">JUAREZ GOMES DE MAGALHAES FILHO</option>
-<option value="JUREMA SOLEDADE FURINI SANTOS">JUREMA SOLEDADE FURINI SANTOS</option>
-<option value="KATIUSCIA ALVES BOMFIM">KATIUSCIA ALVES BOMFIM</option>
-<option value="KETHY REGINA DA SILVA DOMINGOS COSTA">KETHY REGINA DA SILVA DOMINGOS COSTA</option>
-<option value="LUANA CAROLINE ALVES LIMA">LUANA CAROLINE ALVES LIMA</option>
-<option value="LUANA DE FREITAS SILVA">LUANA DE FREITAS SILVA</option>
-<option value="LUCIANA NOVAIS CORREIA SANTOS">LUCIANA NOVAIS CORREIA SANTOS</option>
-<option value="LUCIANO MOREIRA DE AZEVEDO">LUCIANO MOREIRA DE AZEVEDO</option>
-<option value="MARCELO FERNANDES DA SILVA">MARCELO FERNANDES DA SILVA</option>
-<option value="MARCIEL DA SILVA">MARCIEL DA SILVA</option>
-<option value="MARIA HELENA CUNHA MORO">MARIA HELENA CUNHA MORO</option>
-<option value="MARIA QUITÉRIA FERREIRA DOS SANTOS">MARIA QUITÉRIA FERREIRA DOS SANTOS</option>
-<option value="MARINA DA CONCEICAO FRANCISCO SILVA">MARINA DA CONCEICAO FRANCISCO SILVA</option>
-<option value="MAURICIO DE BARROS SANTOS">MAURICIO DE BARROS SANTOS</option>
-<option value="MICHELE DE PINHO MORAES">MICHELE DE PINHO MORAES</option>
-<option value="MOISES ANTONIO DE BARROS">MOISES ANTONIO DE BARROS</option>
-<option value="PATRICIA GOMES ROCHA RIBEIRO">PATRICIA GOMES ROCHA RIBEIRO</option>
-<option value="PAULA ARMANI VILA">PAULA ARMANI VILA</option>
-<option value="PAULO ROBERTO DA SILVA ITO">PAULO ROBERTO DA SILVA ITO</option>
-<option value="PEDRO ZANOTTI FILHO">PEDRO ZANOTTI FILHO</option>
-<option value="RAUL PEREIRA VILERA JUNIOR">RAUL PEREIRA VILERA JUNIOR</option>
-<option value="REGIANE CURTI DE SOUZA OLIVEIRA">REGIANE CURTI DE SOUZA OLIVEIRA</option>
-<option value="REGINA DA SILVA CASTRO">REGINA DA SILVA CASTRO</option>
-<option value="RICARDO AMERICO DA SILVA">RICARDO AMERICO DA SILVA</option>
-<option value="ROBERTO SALGADO">ROBERTO SALGADO</option>
-<option value="RODRIGO VIEIRA">RODRIGO VIEIRA</option>
-<option value="ROSANGELA CAFASSO MOREIRA">ROSANGELA CAFASSO MOREIRA</option>
-<option value="ROSIMERY DE SOUZA PESSOA">ROSIMERY DE SOUZA PESSOA</option>
-<option value="ROSMARA DA SILVA CARDOSO">ROSMARA DA SILVA CARDOSO</option>
-<option value="SANDRA CRISTINA MACEDO MORAES">SANDRA CRISTINA MACEDO MORAES</option>
-<option value="SELMA GOMES DA SILVA">SELMA GOMES DA SILVA</option>
-<option value="SERGIO AGRIPINO VILLA NOVA">SERGIO AGRIPINO VILLA NOVA</option>
-<option value="SOLANGE ALMEIDA DA SILVA">SOLANGE ALMEIDA DA SILVA</option>
-<option value="SUELI SILVE PEREIRA">SUELI SILVE PEREIRA</option>
-<option value="SUZINEIDE SILVA DE FREITAS">SUZINEIDE SILVA DE FREITAS</option>
-<option value="THIAGO FABIANO BRITO">THIAGO FABIANO BRITO</option>
-<option value="TITTO AUGUSTO NASCIMENTO SILVA">TITTO AUGUSTO NASCIMENTO SILVA</option>
-<option value="VANDERSON HYPPOLITO">VANDERSON HYPPOLITO</option>
-<option value="VANESSA IVETE GOMES DOS SANTOS">VANESSA IVETE GOMES DOS SANTOS</option>
-<option value="VANIA PENHA DE BARROS">VANIA PENHA DE BARROS</option>
-<option value="VIVIANE LEAL CAMERA DE MORAES">VIVIANE LEAL CAMERA DE MORAES</option>
-<option value="WILSON LUIZ DE SOUZA COSTA">WILSON LUIZ DE SOUZA COSTA</option>
-<option value="WILSON RODRIGUES MOTA">WILSON RODRIGUES MOTA</option>
           </select>
         </div>
         <div class="form-group">
@@ -615,12 +451,6 @@
             <option value="SMARTPHONE">SMARTPHONE</option>
             <option value="CHROMEBOOK">CHROMEBOOK</option>
             <option value="NOTEBOOK">NOTEBOOK</option>
-            <option value="PROJETOR">PROJETOR</option>
-            <option value="CAIXA DE SOM">CAIXA DE SOM</option>
-            <option value="MICROFONE">MICROFONE</option>
-            <option value="WEBCAM">WEBCAM</option>
-            <option value="ROTEADOR">ROTEADOR</option>
-            <option value="IMPRESSORA">IMPRESSORA</option>
           </select>
         </div>
 
@@ -689,7 +519,7 @@
             <option value="2ª SERIE A MANHA">2ª SERIE A MANHA</option>
             <option value="2ª SERIE B MANHA">2ª SERIE B MANHA</option>
             <option value="2ª SERIE C MANHA">2ª SERIE C MANHA</option>
-            <option value="2ª SERIE D MANha">2ª SERIE D MANha</option>
+            <option value="2ª SERIE D MANHA">2ª SERIE D MANha</option>
             <option value="2ª SERIE E MANHA">2ª SERIE E MANHA</option>
             <option value="2ª SERIE F NOITE">2ª SERIE F NOITE</option>
             <option value="2ª SERIE G NOITE">2ª SERIE G NOITE</option>
@@ -732,10 +562,6 @@
           <option>4ª Aula</option>
           <option>5ª Aula</option>
           <option>6ª Aula</option>
-          <option>7ª Aula</option>
-          <option>8ª Aula</option>
-          <option>9ª Aula</option>
-          <option>10ª Aula</option>
         </select>
       </div>
 
@@ -750,11 +576,6 @@
     </div>
 
     <div class="calendar-container">
-      <div class="export-buttons">
-        <button class="btn btn-cadastrar" onclick="exportarParaPDF()">Exportar para PDF</button>
-        <button class="btn btn-cadastrar" onclick="exportarParaCSV()">Exportar para CSV</button>
-      </div>
-      
       <div style="margin-bottom: 20px;">
         <select id="monthSelect"></select>
         <select id="yearSelect"></select>
@@ -798,141 +619,284 @@
     </div>
   </div>
 
-  <!-- Modal para confirmação de devolução -->
-  <div id="devolucaoModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="fecharModal()">&times;</span>
-      <h3>Registrar Devolução</h3>
-      <p id="modalText"></p>
-      <div class="form-group">
-        <label for="horaEntregaModal">Hora da Entrega:</label>
-        <input type="time" id="horaEntregaModal" value="">
-      </div>
-      <div class="modal-buttons">
-        <button class="btn btn-limpar" onclick="fecharModal()">Cancelar</button>
-        <button class="btn btn-entregar" onclick="confirmarDevolucao()">Confirmar</button>
-      </div>
-    </div>
-  </div>
-
   <script>
-    // Inicializa o jsPDF
-    const { jsPDF } = window.jspdf;
-    
-    // Dados dos professores
-    const teacherEmails = {
-{
-  "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
-  "ALEX LUTH PEREIRA MARANHAO": "luth@prof.educacao.sp.gov.br",
-  "ALEXANDRE SILVA LIMA": "alexandresilvalima@prof.educacao.sp.gov.br",
-  "ALEXSANDRA PAULA VARELLA DE SOUZA": "avarella@prof.educacao.sp.gov.br",
-  "ALISON VASCONCELOS BESERRA": "alisonv@prof.educacao.sp.gov.br",
-  "AMAURI TEODORO DE OLIVEIRA": "amaurit@prof.educacao.sp.gov.br",
-  "ANA PAULA DOS SANTOS": "paulasantosa@prof.educacao.sp.gov.br",
-  "ANDRE LUIZ TAVARES": "andreltavares@prof.educacao.sp.gov.br",
-  "ANDREIA DOS SANTOS FREITAS": "sanfreitas@prof.educacao.sp.gov.br",
-  "ANDREIA MADUREIRA REIS": "andreiamadureira@prof.educacao.sp.gov.br",
-  "ANTONIO CARLOS DE OLIVEIRA": "antoniocarloso@prof.educacao.sp.gov.br",
-  "ANTONIO RAMOS DE ARAUJO": "antonioramosaraujo@prof.educacao.sp.gov.br",
-  "ANTONIO WILTON WANDERLEY CABRAL": "antoniowilton@prof.educacao.sp.gov.br",
-  "AUGUSTO LINO PESSOA NETO": "augustolino@prof.educacao.sp.gov.br",
-  "AUREA MARIA DE JESUS MARQUES": "aureamaria@prof.educacao.sp.gov.br",
-  "CAROLINA PERNOMIAN PARUSSOLO": "carolinapernomian@prof.educacao.sp.gov.br",
-  "CASSIA OLIVEIRA ANTONIAZI": "cassiaosilva@prof.educacao.sp.gov.br",
-  "DANIEL DE FREITAS ALMEIDA": "danielalmeida@prof.educacao.sp.gov.br",
-  "DANIEL LOPES BARBOSA": "daniellopesbarbosa@prof.educacao.sp.gov.br",
-  "DANIELA FERREIRA LIMA": "danielaflima@prof.educacao.sp.gov.br",
-  "EDIANE VIEIRA DA SILVA": "ediane@prof.educacao.sp.gov.br",
-  "EDILEUSA NUNES PEREIRA": "edileusa@prof.educacao.sp.gov.br",
-  "EDUARDO HENRIQUE DA FONSECA": "henriquefonseca@prof.educacao.sp.gov.br",
-  "ELIANE SANTOS SILVA": "essantos@prof.educacao.sp.gov.br",
-  "ELIAS MONTEIRO DA SILVA": "elias1@prof.educacao.sp.gov.br",
-  "ELISABETE APARECIDA PIRES": "elisabetepires@prof.educacao.sp.gov.br",
-  "ELZA DE FARIA PEREIRA": "elzafariapereira@prof.educacao.sp.gov.br",
-  "EMERSON GABLER DE ALMEIDA": "egabler@prof.educacao.sp.gov.br",
-  "ERINEIDE LEITE ARAGAO NERY": "erineidearagao@prof.educacao.sp.gov.br",
-  "EUZELI ARAUJO DE OLIVEIRA": "euzeli@prof.educacao.sp.gov.br",
-  "FABIANO AUGUSTO PIEDADE": "fabianoaugusto@prof.educacao.sp.gov.br",
-  "FABIO CAMILO": "camilof@prof.educacao.sp.gov.br",
-  "FERNANDO JOSE DA SILVA FILHO": "fernandojs@prof.educacao.sp.gov.br",
-  "FLAVIA CRISTINA APARECIDA BICHLER": "flaviacri@prof.educacao.sp.gov.br",
-  "FLÁVIA CRISTINA APARECIDA BICHLER": "flaviacri@prof.educacao.sp.gov.br",
-  "FLAVIO CARDOSO FLEURY": "flaviofleury@prof.educacao.sp.gov.br",
-  "GABRIELA SERIGHELLI DE MELO": "gabrielaserighelli@prof.educacao.sp.gov.br",
-  "GENILTON DE OLIVEIRA SILVA": "genilton@prof.educacao.sp.gov.br",
-  "GIANI CRISTINA DO PRADO": "gianiprado@prof.educacao.sp.gov.br",
-  "INGRYD CAROLINA SUGUIMOTO VIEIRA": "ingryd@prof.educacao.sp.gov.br",
-  "IVANILDES DOS SANTOS OSHIKAWA": "oshikawa@prof.educacao.sp.gov.br",
-  "JANINA DOS PASSOS BRAGA DE ALMEIDA": "janinabraga@prof.educacao.sp.gov.br",
-  "JUAREZ GOMES DE MAGALHAES FILHO": "juarezgomes@prof.educacao.sp.gov.br",
-  "JUREMA SOLEDADE FURINI SANTOS": "juremas@prof.educacao.sp.gov.br",
-  "KATIUSCIA ALVES BOMFIM": "katiusciabomfim@prof.educacao.sp.gov.br",
-  "KETHY REGINA DA SILVA DOMINGOS COSTA": "kethy@prof.educacao.sp.gov.br",
-  "LUANA CAROLINE ALVES LIMA": "luanalima01@prof.educacao.sp.gov.br",
-  "LUANA DE FREITAS SILVA": "luanafreitas@prof.educacao.sp.gov.br",
-  "LUCIANA NOVAIS CORREIA SANTOS": "novaiscorreia@prof.educacao.sp.gov.br",
-  "LUCIANO MOREIRA DE AZEVEDO": "lucianomoreira@prof.educacao.sp.gov.br",
-  "MARCELO FERNANDES DA SILVA": "marcelofs@prof.educacao.sp.gov.br",
-  "MARCIEL DA SILVA": "marcielsilva@prof.educacao.sp.gov.br",
-  "MARIA HELENA CUNHA MORO": "marcunha@prof.educacao.sp.gov.br",
-  "MARIA QUITÉRIA FERREIRA DOS SANTOS": "quiteriasantos@prof.educacao.sp.gov.br",
-  "MARINA DA CONCEICAO FRANCISCO SILVA": "marinafrancisco@prof.educacao.sp.gov.br",
-  "MAURICIO DE BARROS SANTOS": "mauriciobsantos@prof.educacao.sp.gov.br",
-  "MICHELE DE PINHO MORAES": "michelepinho@prof.educacao.sp.gov.br",
-  "MOISES ANTONIO DE BARROS": "moisesbarros@prof.educacao.sp.gov.br",
-  "PATRICIA GOMES ROCHA RIBEIRO": "patriciag@prof.educacao.sp.gov.br",
-  "PAULA ARMANI VILA": "paulaarmani@prof.educacao.sp.gov.br",
-  "PAULO ROBERTO DA SILVA ITO": "pauloito@prof.educacao.sp.gov.br",
-  "PEDRO ZANOTTI FILHO": "pedrozanotti@prof.educacao.sp.gov.br",
-  "RAUL PEREIRA VILERA JUNIOR": "vilera@prof.educacao.sp.gov.br",
-  "REGIANE CURTI DE SOUZA OLIVEIRA": "regianecurti@prof.educacao.sp.gov.br",
-  "REGINA DA SILVA CASTRO": "reginasilvacastro@prof.educacao.sp.gov.br",
-  "RICARDO AMERICO DA SILVA": "ricardoamerico@prof.educacao.sp.gov.br",
-  "ROBERTO SALGADO": "robertosalgado@prof.educacao.sp.gov.br",
-  "RODRIGO VIEIRA": "rodrigovieira1@prof.educacao.sp.gov.br",
-  "ROSANGELA CAFASSO MOREIRA": "cafasso@prof.educacao.sp.gov.br",
-  "ROSIMERY DE SOUZA PESSOA": "rosimerypessoa@prof.educacao.sp.gov.br",
-  "ROSMARA DA SILVA CARDOSO": "rosmaracardoso@prof.educacao.sp.gov.br",
-  "SANDRA CRISTINA MACEDO MORAES": "sandracristinamacedo@prof.educacao.sp.gov.br",
-  "SELMA GOMES DA SILVA": "selmagomess@prof.educacao.sp.gov.br",
-  "SERGIO AGRIPINO VILLA NOVA": "sergioagripino@prof.educacao.sp.gov.br",
-  "SOLANGE ALMEIDA DA SILVA": "almeidafazio@prof.educacao.sp.gov.br",
-  "SUELI SILVE PEREIRA": "suelisilve@prof.educacao.sp.gov.br",
-  "SUZINEIDE SILVA DE FREITAS": "suzineidefreitas@prof.educacao.sp.gov.br",
-  "THIAGO FABIANO BRITO": "thiagofabiano@prof.educacao.sp.gov.br",
-  "TITTO AUGUSTO NASCIMENTO SILVA": "titto@prof.educacao.sp.gov.br",
-  "VANDERSON HYPPOLITO": "vhypolito@prof.educacao.sp.gov.br",
-  "VANESSA IVETE GOMES DOS SANTOS": "vanessaivete@prof.educacao.sp.gov.br",
-  "VANIA PENHA DE BARROS": "vaniapenha@prof.educacao.sp.gov.br",
-  "VIVIANE LEAL CAMERA DE MORAES": "camera@prof.educacao.sp.gov.br",
-  "WILSON LUIZ DE SOUZA COSTA": "wilsonluizsouza@prof.educacao.sp.gov.br",
-  "WILSON RODRIGUES MOTA": "wmota@prof.educacao.sp.gov.br"
-}
+    // Banco de dados do sistema
+    const sistemaDB = {
+      equipamentos: {
+        "1": { id: "1", categoria: "TABLET", localizacao: "Sala 1", status: "Disponível", quantidade_disponivel: 10, agendamentos: [] },
+        "2": { id: "2", categoria: "SMARTPHONE", localizacao: "Sala 1", status: "Disponível", quantidade_disponivel: 8, agendamentos: [] },
+        "3": { id: "3", categoria: "CHROMEBOOK", localizacao: "Sala 2", status: "Disponível", quantidade_disponivel: 15, agendamentos: [] },
+        "4": { id: "4", categoria: "NOTEBOOK", localizacao: "Sala 2", status: "Disponível", quantidade_disponivel: 5, agendamentos: [] }
+      },
+      agendamentos: [],
+      historico: []
     };
 
-    // Dados das salas por turma
-    const turmasSalas = {
+    // Função para verificar disponibilidade de equipamentos
+    function verificarDisponibilidade(categoria, quantidade, local) {
+      const equipamentos = sistemaDB.equipamentos;
+      let disponivel = 0;
+
+      for (const id in equipamentos) {
+        const eq = equipamentos[id];
+        if (eq.categoria === categoria && eq.localizacao === local && eq.status === "Disponível") {
+          disponivel += eq.quantidade_disponivel;
+        }
+      }
+      return disponivel >= quantidade;
+    }
+
+    // Função para registrar um novo agendamento
+    function registrarAgendamento(agendamento) {
+      const { categoria, quantidade, local } = agendamento;
+      let quantidadeRestante = quantidade;
+
+      // Atualiza o estoque
+      for (const id in sistemaDB.equipamentos) {
+        const eq = sistemaDB.equipamentos[id];
+        if (eq.categoria === categoria && eq.localizacao === local && eq.status === "Disponível") {
+          const reservar = Math.min(quantidadeRestante, eq.quantidade_disponivel);
+          eq.quantidade_disponivel -= reservar;
+          eq.status = eq.quantidade_disponivel > 0 ? "Disponível" : "Em uso";
+          quantidadeRestante -= reservar;
+
+          // Vincula o agendamento ao equipamento
+          eq.agendamentos.push({
+            id: agendamento.id,
+            quantidade: reservar,
+            data: agendamento.data
+          });
+
+          if (quantidadeRestante === 0) break;
+        }
+      }
+
+      // Adiciona ao histórico
+      sistemaDB.agendamentos.push(agendamento);
+      sistemaDB.historico.push({
+        tipo: "agendamento",
+        equipamento: categoria,
+        local,
+        quantidade,
+        data: new Date().toISOString(),
+        detalhes: `Agendado por ${agendamento.professor}`
+      });
+
+      salvarBancoDados();
+      atualizarListaEquipamentos(); // Atualiza a UI
+    }
+
+    // Função para finalizar um agendamento
+    function finalizarAgendamento(idAgendamento) {
+      const agendamento = sistemaDB.agendamentos.find(ag => ag.id === idAgendamento);
+      if (!agendamento) return;
+
+      // Libera os equipamentos
+      for (const id in sistemaDB.equipamentos) {
+        const eq = sistemaDB.equipamentos[id];
+        const agendamentoEquip = eq.agendamentos.find(ag => ag.id === idAgendamento);
+        
+        if (agendamentoEquip) {
+          eq.quantidade_disponivel += agendamentoEquip.quantidade;
+          eq.status = "Disponível";
+          eq.agendamentos = eq.agendamentos.filter(ag => ag.id !== idAgendamento);
+        }
+      }
+
+      // Atualiza o status do agendamento
+      agendamento.status = "Finalizado";
+      sistemaDB.historico.push({
+        tipo: "devolucao",
+        equipamento: agendamento.categoria,
+        local: agendamento.local,
+        quantidade: agendamento.quantidade,
+        data: new Date().toISOString()
+      });
+
+      salvarBancoDados();
+      atualizarListaAgendamentos(); // Atualiza a UI
+    }
+
+    // Função para validar conflitos de agendamento
+    function validarConflitos(novoAgendamento) {
+      return sistemaDB.agendamentos.some(ag => (
+        ag.local === novoAgendamento.local &&
+        ag.data === novoAgendamento.data &&
+        ag.status !== "Finalizado"
+      ));
+    }
+
+    // Função para agendar equipamento
+    function agendarEquipamento() {
+      const agendamento = {
+        id: gerarIdUnico(),
+        categoria: document.getElementById("equipamentoAgendamento").value,
+        quantidade: parseInt(document.getElementById("quantidadeAgendamento").value),
+        local: document.getElementById("localAgendamento").value,
+        data: document.getElementById("dataAgendamento").value,
+        professor: document.getElementById("professor").value
+      };
+
+      if (!verificarDisponibilidade(agendamento.categoria, agendamento.quantidade, agendamento.local)) {
+        alert("Quantidade indisponível!");
+        return;
+      }
+
+      if (validarConflitos(agendamento)) {
+        alert("Já existe um agendamento para este local/horário!");
+        return;
+      }
+
+      registrarAgendamento(agendamento);
+      alert("Agendamento realizado com sucesso!");
+    }
+
+    // Funções auxiliares (simuladas)
+    function salvarBancoDados() {
+      // Simula a persistência dos dados
+      console.log("Banco de dados salvo");
+    }
+
+    function atualizarListaEquipamentos() {
+      // Simula a atualização da UI
+      console.log("Lista de equipamentos atualizada");
+    }
+
+    function atualizarListaAgendamentos() {
+      // Simula a atualização da UI
+      console.log("Lista de agendamentos atualizada");
+    }
+
+    // Dados dos professores
+    const teacherEmails = {
+      "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
+      "ALEX LUTH PEREIRA MARANHAO": "luth@prof.educacao.sp.gov.br",
+      "ALEXANDRE SILVA LIMA": "alexandresilvalima@prof.educacao.sp.gov.br",
+      "ALEXSANDRA PAULA VARELLA DE SOUZA": "avarella@prof.educacao.sp.gov.br",
+      "ALINE CARDOSO": "aline.cardoso@servidor.educacao.sp.gov.br",
+      "ALISON VASCONCELOS BESERRA": "alisonv@prof.educacao.sp.gov.br",
+      "AMAURI TEODORO DE OLIVEIRA": "amaurit@prof.educacao.sp.gov.br",
+      "ANA PAULA DE OLIVEIRA SOUZA": "ana.souza59@servidor.educacao.sp.gov.br",
+      "ANA PAULA DOS SANTOS": "paulasantosa@prof.educacao.sp.gov.br",
+      "ANDRE LUIZ TAVARES": "andreltavares@prof.educacao.sp.gov.br",
+      "ANDREIA DOS SANTOS FREITAS": "sanfreitas@prof.educacao.sp.gov.br",
+      "ANDREIA MADUREIRA REIS": "andreiamadureira@prof.educacao.sp.gov.br",
+      "ANTONIO CARLS DE OLIVEIRA": "antoniocarloso@prof.educacao.sp.gov.br",
+      "ANTONIO RAMOS DE ARAUJO": "antonioramosaraujo@prof.educacao.sp.gov.br",
+      "ANTONIO WILTON WANDERLEY CABRAL": "antoniowilton@prof.educacao.sp.gov.br",
+      "AUGUSTO LINO PESSOA NETO": "augustolino@prof.educacao.sp.gov.br",
+      "AUREA MARIA DE JESUS MARQUES": "aureamaria@prof.educacao.sp.gov.br",
+      "CAROLINA PERNOMIAN PARUSSOLO": "carolinapernomian@prof.educacao.sp.gov.br",
+      "CASSIA OLIVEIRA ANTONIAZI": "cassiaosilva@prof.educacao.sp.gov.br",
+      "CICERO FERREIRA": "cicero.ferreira@servidor.educacao.sp.gov.br",
+      "DANIEL DE FREITAS ALMEIDA": "danielalmeida@prof.educacao.sp.gov.br",
+      "DANIEL LOPES BARBOSA": "daniellopesbarbosa@prof.educacao.sp.gov.br",
+      "DANIELA FERREIRA LIMA": "danielaflima@prof.educacao.sp.gov.br",
+      "EDIANE VIEIRA DA SILVA": "ediane@prof.educacao.sp.gov.br",
+      "EDILEUSA NUNES PEREIRA": "edileusa@prof.educacao.sp.gov.br",
+      "EDUARDO HENRIQUE DA FONSECA": "henriquefonseca@prof.educacao.sp.gov.br",
+      "ELIANE SANTOS SILVA": "essantos@prof.educacao.sp.gov.br",
+      "ELIAS MONTEIRO DA SILVA": "elias1@prof.educacao.sp.gov.br",
+      "ELISABETE APARECIDA PIRES": "elisabetepires@prof.educacao.sp.gov.br",
+      "ELZA DE FARIA PEREIRA": "elzafariapereira@prof.educacao.sp.gov.br",
+      "EMERSON GABLER DE ALMEIDA": "egabler@prof.educacao.sp.gov.br",
+      "ERINEIDE LEITE ARAGAO NERY": "erineidearagao@prof.educacao.sp.gov.br",
+      "EUZELI ARAUJO DE OLIVEIRA": "euzeli@prof.educacao.sp.gov.br",
+      "FABIANO AUGUSTO PIEDADE": "fabianoaugusto@prof.educacao.sp.gov.br",
+      "FABIO CAMILO": "camilof@prof.educacao.sp.gov.br",
+      "FERNANDO JOSE DA SILVA FILHO": "fernandojs@prof.educacao.sp.gov.br",
+      "FLAVIA CRISTINA APARECIDA BICHLER": "flaviacri@prof.educacao.sp.gov.br",
+      "FLAVIO CARDOSO FLEURY": "flaviofleury@prof.educacao.sp.gov.br",
+      "GABRIELA SERIGHELLI DE MELO": "gabrielaserighelli@prof.educacao.sp.gov.br",
+      "GENILTON DE OLIVEIRA SILVA": "genilton@prof.educacao.sp.gov.br",
+      "GIANI CRISTINA DO PRADO": "gianiprado@prof.educacao.sp.gov.br",
+      "INGRYD CAROLINA SUGUIMOTO VIEIRA": "ingryd@prof.educacao.sp.gov.br",
+      "IVANILDES DOS SANTOS OSHIKAWA": "oshikawa@prof.educacao.sp.gov.br",
+      "JANINA DOS PASSOS BRAGA DE ALMEIDA": "janinabraga@prof.educacao.sp.gov.br",
+      "JUAREZ GOMES DE MAGALHAES FILHO": "juarezgomes@prof.educacao.sp.gov.br",
+      "JUREMA SOLEDADE FURINI SANTOS": "juremas@prof.educacao.sp.gov.br",
+      "KATIUSCIA ALVES BOMFIM": "katiusciabomfim@prof.educacao.sp.gov.br",
+      "KETHY REGINA DA SILVA DOMINGOS COSTA": "kethy@prof.educacao.sp.gov.br",
+      "LUANA CAROLINE ALVES LIMA": "luanalima01@prof.educacao.sp.gov.br",
+      "LUANA DE FREITAS SILVA": "luanafreitas@prof.educacao.sp.gov.br",
+      "LUCIANA NOVAIS CORREIA SANTOS": "novaiscorreia@prof.educacao.sp.gov.br",
+      "LUCIANO MOREIRA DE AZEVEDO": "lucianomoreira@prof.educacao.sp.gov.br",
+      "MARCELO FERNANDES DA SILVA": "marcelofs@prof.educacao.sp.gov.br",
+      "MARCIEL DA SILVA": "marcielsilva@prof.educacao.sp.gov.br",
+      "MARIA HELENA CUNHA MORO": "marcunha@prof.educacao.sp.gov.br",
+      "MARIA QUITÉRIA FERREIRA DOS SANTOS": "quiteriasantos@prof.educacao.sp.gov.br",
+      "MARINA DA CONCEICAO FRANCISCO SILVA": "marinafrancisco@prof.educacao.sp.gov.br",
+      "MAURICIO DE BARROS SANTOS": "mauriciobsantos@prof.educacao.sp.gov.br",
+      "MICHELE DE PINHO MORAES": "michelepinho@prof.educacao.sp.gov.br",
+      "MOISES ANTONIO DE BARROS": "moisesbarros@prof.educacao.sp.gov.br",
+      "PATRICIA GOMES ROCHA RIBEIRO": "patriciag@prof.educacao.sp.gov.br",
+      "PAULO ROBERTO DA SILVA ITO": "pauloito@prof.educacao.sp.gov.br",
+      "PEDRO ZANOTTI FILHO": "pedrozanotti@prof.educacao.sp.gov.br",
+      "RAUL PEREIRA VILERA JUNIOR": "vilera@prof.educacao.sp.gov.br",
+      "REGIANE CURTI DE SOUZA OLIVEIRA": "regianecurti@prof.educacao.sp.gov.br",
+      "REGINA DA SILVA CASTRO": "reginasilvacastro@prof.educacao.sp.gov.br",
+      "RICARDO AMERICO DA SILVA": "ricardoamerico@prof.educacao.sp.gov.br",
+      "ROBERTO SALGADO": "robertosalgado@prof.educacao.sp.gov.br",
+      "RODRIGO VIEIRA": "rodrigovieira1@prof.educacao.sp.gov.br",
+      "ROSANGELA CAFASSO MOREIRA": "cafasso@prof.educacao.sp.gov.br",
+      "ROSIMERY DE SOUZA PESSOA": "rosimerypessoa@prof.educacao.sp.gov.br",
+      "ROSMARA DA SILVA CARDOSO": "rosmaracardoso@prof.educacao.sp.gov.br",
+      "SANDRA CRISTINA MACEDO MORAES": "sandracristinamacedo@prof.educacao.sp.gov.br",
+      "SELMA GOMES DA SILVA": "selmagomess@prof.educacao.sp.gov.br",
+      "SERGIO AGRIPINO VILLA NOVA": "sergioagripino@prof.educacao.sp.gov.br",
+      "SOLANGE ALMEIDA DA SILVA": "almeidafazio@prof.educacao.sp.gov.br",
+      "SUELI SILVE PEREIRA": "suelisilve@prof.educacao.sp.gov.br",
+      "SUZINEIDE SILVA DE FREITAS": "suzineidefreitas@prof.educacao.sp.gov.br",
+      "THIAGO FABIANO BRITO": "thiagofabiano@prof.educacao.sp.gov.br",
+      "TITTO AUGUSTO NASCIMENTO SILVA": "titto@prof.educacao.sp.gov.br",
+      "VANDERSON HYPPOLITO": "vhypolito@prof.educacao.sp.gov.br",
+      "VANESSA IVETE GOMES DOS SANTOS": "vanessaivete@prof.educacao.sp.gov.br",
+      "VANIA PENHA DE BARROS": "vaniapenha@prof.educacao.sp.gov.br",
+      "VIVIANE LEAL CAMERA DE MORAES": "camera@prof.educacao.sp.gov.br",
+      "WILSON LUIZ DE SOUZA COSTA": "wilsonluizsouza@prof.educacao.sp.gov.br",
+      "WILSON RODRIGUES MOTA": "wmota@prof.educacao.sp.gov.br"
+    };
+
+    // Dados dos aparelhos
+    const marcas = {
+      "TABLET": "POSITIVO",
+      "SMARTPHONE": "POSITIVO",
+      "CHROMEBOOK": "SAMSUNG",
+      "NOTEBOOK": "POSITIVO"
+    };
+
+    // Dados das salas por turma e período
+    const salasPorTurmaPeriodo = {
+      // 6° ANO
       "6° ANO A MANHA": "Sala 1",
       "6° ANO B MANHA": "Sala 2",
       "6° ANO C MANHA": "Sala 3",
       "6° ANO D MANHA": "Sala 4",
       "6° ANO E TARDE": "Sala 1",
       "6° ANO F TARDE": "Sala 2",
+      
+      // 7° ANO
       "7° ANO A TARDE": "Sala 3",
       "7° ANO B TARDE": "Sala 4",
       "7° ANO C TARDE": "Sala 5",
       "7° ANO D TARDE": "Sala 6",
       "7° ANO E TARDE": "Sala 7",
       "7° ANO F TARDE": "Sala 8",
+      
+      // 8° ANO
       "8° ANO A TARDE": "Sala 10",
       "8° ANO B TARDE": "Sala 11",
       "8° ANO C TARDE": "Sala 12",
       "8° ANO D TARDE": "Sala 13",
       "8° ANO E TARDE": "Sala 14",
+      
+      // 9° ANO
       "9° ANO A TARDE": "Sala 15",
       "9° ANO B TARDE": "Sala 16",
       "9° ANO C TARDE": "Sala 17",
       "9° ANO D TARDE": "Sala 18",
+      
+      // 1ª SÉRIE
       "1ª SERIE A MANHA": "Sala 10",
       "1ª SERIE B MANHA": "Sala 11",
       "1ª SERIE C MANHA": "Sala 12",
@@ -941,7 +905,9 @@
       "1ª SERIE F MANHA": "Sala 15",
       "1ª SERIE G TARDE": "Sala 9",
       "1ª SERIE H NOITE": "Sala 9",
-      "1ª SERIE I NOITE": "Sala 10",
+      "1ª SERIE I NOITE": "Sala 602",
+      
+      // 2ª SÉRIE
       "2ª SERIE A MANHA": "Sala 5",
       "2ª SERIE B MANHA": "Sala 6",
       "2ª SERIE C MANHA": "Sala 7",
@@ -951,6 +917,8 @@
       "2ª SERIE G NOITE": "Sala 2",
       "2ª SERIE H NOITE": "Sala 3",
       "2ª SERIE I NOITE": "Sala 4",
+      
+      // 3ª SÉRIE
       "3ª SERIE A MANHA": "Sala 16",
       "3ª SERIE B MANHA": "Sala 17",
       "3ª SERIE C MANHA": "Sala 18",
@@ -958,83 +926,109 @@
       "3ª SERIE E NOITE": "Sala 6",
       "3ª SERIE F NOITE": "Sala 7",
       "3ª SERIE G NOITE": "Sala 8",
+      
+      // ADMINISTRAÇÃO
       "4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA": "Laboratório 1"
     };
 
-    // Dados das marcas por tipo de aparelho
-    const aparelhosMarcas = {
-      "TABLET": "Samsung Galaxy Tab A",
-      "SMARTPHONE": "Motorola Moto G",
-      "CHROMEBOOK": "Acer Chromebook 314",
-      "NOTEBOOK": "Dell Inspiron 15",
-      "PROJETOR": "Epson EB-X41",
-      "CAIXA DE SOM": "JBL Flip 5",
-      "MICROFONE": "HyperX QuadCast",
-      "WEBCAM": "Logitech C920",
-      "ROTEADOR": "TP-Link Archer C6",
-      "IMPRESSORA": "HP LaserJet Pro"
-    };
+    // Agendamentos e histórico (incluindo agendamentos excluídos)
+    const agendamentos = {};
+    const historicoExcluidos = [];
 
-    // Variáveis globais
-    let agendamentos = [];
-    let currentDate = new Date();
+    const monthNames = [
+      "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+      "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    ];
+
+    const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+    const monthSelect = document.getElementById('monthSelect');
+    const yearSelect = document.getElementById('yearSelect');
+    let selectedDay = null;
     let selectedDate = null;
-    let currentAgendamentoId = null;
 
-    // Inicialização do sistema
-    document.addEventListener('DOMContentLoaded', function() {
-      inicializarCalendario();
-      carregarAgendamentos();
-      carregarMesesAnos();
-      atualizarSala(); // Atualiza sala baseada na turma selecionada
-    });
+    // Variáveis para o calendário pop-up
+    let currentPopupDate = new Date();
+    let popupSelectedDate = null;
 
-    // Função para atualizar email do professor
-    function atualizarEmail() {
-      const professorSelecionado = document.getElementById('professor').value;
-      const emailProfessor = document.getElementById('email-professor');
+    // Função para verificar conflito de agendamento
+    function verificarConflitoAgendamento(turma, data, aula) {
+      const [dia, mes, ano] = data.split('/');
+      const key = `${ano}-${mes}`;
       
-      if (professorSelecionado && professorSelecionado !== 'Selecione') {
-        emailProfessor.value = teacherEmails[professorSelecionado] || '';
-      } else {
-        emailProfessor.value = '';
-      }
+      if (!agendamentos[key]) return false;
+      
+      return agendamentos[key].some(agendamento => 
+        agendamento.dia === parseInt(dia) && 
+        agendamento.turma === turma && 
+        agendamento.aula === aula
+      );
     }
 
-    // Função para atualizar marca do aparelho
+    // Funções do formulário
     function atualizarMarca() {
-      const aparelhoSelecionado = document.getElementById('aparelho').value;
-      const marcaInput = document.getElementById('marca');
-      
-      if (aparelhoSelecionado) {
-        marcaInput.value = aparelhosMarcas[aparelhoSelecionado] || '';
-      } else {
-        marcaInput.value = '';
-      }
-      
-      // Verificar disponibilidade ao mudar o aparelho
-      verificarDisponibilidade();
+      const tipo = document.getElementById("aparelho").value;
+      document.getElementById("marca").value = marcas[tipo] || "";
     }
 
-    // Função para atualizar sala baseada na turma selecionada
     function atualizarSala() {
-      const turmaSelecionada = document.getElementById('studentClass').value;
-      const salaInput = document.getElementById('sala');
+      const turma = document.getElementById("studentClass").value;
+      const periodo = turma.includes("MANHA") ? "MANHA" : 
+                     turma.includes("TARDE") ? "TARDE" : 
+                     turma.includes("NOITE") ? "NOITE" : "";
       
-      if (turmaSelecionada) {
-        salaInput.value = turmasSalas[turmaSelecionada] || '';
+      // Verifica se a turma existe no mapeamento
+      if (salasPorTurmaPeriodo[turma]) {
+        document.getElementById("sala").value = salasPorTurmaPeriodo[turma];
       } else {
-        salaInput.value = '';
+        document.getElementById("sala").value = "Sala não definida";
+      }
+      
+      // Verifica se há conflito de agendamento
+      verificarConflito();
+    }
+
+    function abrirRelogio(idCampo) {
+      const campo = document.getElementById(idCampo);
+      if (campo && typeof campo.showPicker === 'function') {
+        campo.showPicker();
+      } else {
+        campo.focus();
       }
     }
 
-    // Função para abrir o relógio (time picker)
-    function abrirRelogio(id) {
-      document.getElementById(id).showPicker();
+    function atualizarEmail() {
+      const nome = document.getElementById("professor").value;
+      document.getElementById("email-professor").value = teacherEmails[nome] || "";
     }
 
-    // Função para inicializar o calendário
-    function inicializarCalendario() {
+    function gerarOpcoesProfessores() {
+      const select = document.getElementById("professor");
+      Object.keys(teacherEmails).forEach(nome => {
+        const option = document.createElement("option");
+        option.value = nome;
+        option.textContent = nome;
+        select.appendChild(option);
+      });
+    }
+
+    // Função para verificar conflito quando os campos relevantes mudam
+    function verificarConflito() {
+      const turma = document.getElementById("studentClass").value;
+      const data = document.getElementById("data-selecionada").value;
+      const aula = document.getElementById("aula").value;
+      const conflictMessage = document.getElementById("conflictMessage");
+      
+      if (turma && data && aula) {
+        const conflito = verificarConflitoAgendamento(turma, data, aula);
+        conflictMessage.style.display = conflito ? "block" : "none";
+      } else {
+        conflictMessage.style.display = "none";
+      }
+    }
+
+    // Funções do calendário pop-up
+    function initDatepicker() {
       const datepickerInput = document.getElementById('data-selecionada');
       const datepickerPopup = document.getElementById('datepickerPopup');
       const prevMonthBtn = document.getElementById('prevMonth');
@@ -1043,669 +1037,457 @@
       const datepickerWeekdays = document.getElementById('datepickerWeekdays');
       const datepickerDays = document.getElementById('datepickerDays');
 
-      // Dias da semana
-      const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-      datepickerWeekdays.innerHTML = weekdays.map(day => `<div class="datepicker-weekday">${day}</div>`).join('');
+      // Preenche os dias da semana
+      datepickerWeekdays.innerHTML = weekdays.map(day => 
+        `<div class="datepicker-weekday">${day}</div>`
+      ).join('');
 
-      // Atualizar calendário
-      function updateCalendar() {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
+      // Mostra/oculta o popup
+      datepickerInput.addEventListener('click', () => {
+        datepickerPopup.classList.toggle('active');
+        renderDatepicker();
+      });
 
-        datepickerMonthYear.textContent = `${new Date(year, month).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}`.toUpperCase();
+      // Navegação do calendário
+      prevMonthBtn.addEventListener('click', () => {
+        currentPopupDate.setMonth(currentPopupDate.getMonth() - 1);
+        renderDatepicker();
+      });
 
-        const firstDay = new Date(year, month, 1);
-        const lastDay = new Date(year, month + 1, 0);
-        const daysInMonth = lastDay.getDate();
-        const firstDayIndex = firstDay.getDay();
+      nextMonthBtn.addEventListener('click', () => {
+        currentPopupDate.setMonth(currentPopupDate.getMonth() + 1);
+        renderDatepicker();
+      });
 
-        let days = '';
-
-        // Dias do mês anterior
-        const prevLastDay = new Date(year, month, 0).getDate();
-        for (let i = firstDayIndex; i > 0; i--) {
-          days += `<div class="datepicker-day datepicker-other-month" data-day="${prevLastDay - i + 1}" data-month="${month - 1}" data-year="${year}">${prevLastDay - i + 1}</div>`;
+      // Fecha o popup quando clicar fora
+      document.addEventListener('click', (e) => {
+        if (!datepickerPopup.contains(e.target) && e.target !== datepickerInput) {
+          datepickerPopup.classList.remove('active');
         }
+      });
 
-        // Dias do mês atual
+      function renderDatepicker() {
+        const year = currentPopupDate.getFullYear();
+        const month = currentPopupDate.getMonth();
+        
+        datepickerMonthYear.textContent = `${monthNames[month]} ${year}`;
+        
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const daysInPrevMonth = new Date(year, month, 0).getDate();
+        
+        let daysHtml = '';
         const today = new Date();
+        
+        // Dias do mês anterior (se necessário)
+        for (let i = 0; i < firstDay; i++) {
+          daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${daysInPrevMonth - firstDay + i + 1}</div>`;
+        }
+        
+        // Dias do mês atual
         for (let i = 1; i <= daysInMonth; i++) {
-          const dayDate = new Date(year, month, i);
-          const isToday = dayDate.toDateString() === today.toDateString();
-          const isSelected = selectedDate && dayDate.toDateString() === selectedDate.toDateString();
+          const date = new Date(year, month, i);
+          const isToday = date.toDateString() === today.toDateString();
+          const isSelected = popupSelectedDate && date.toDateString() === popupSelectedDate.toDateString();
+          const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
           
           let dayClass = 'datepicker-day';
           if (isToday) dayClass += ' datepicker-today';
           if (isSelected) dayClass += ' selected';
+          if (isPast) dayClass += ' disabled';
           
-          days += `<div class="${dayClass}" data-day="${i}" data-month="${month}" data-year="${year}">${i}</div>`;
-        }
-
-        // Dias do próximo mês
-        const daysToShow = 42 - (firstDayIndex + daysInMonth);
-        for (let i = 1; i <= daysToShow; i++) {
-          days += `<div class="datepicker-day datepicker-other-month" data-day="${i}" data-month="${month + 1}" data-year="${year}">${i}</div>`;
-        }
-
-        datepickerDays.innerHTML = days;
-      }
-
-      // Mostrar/ocultar calendário
-      datepickerInput.addEventListener('click', function(e) {
-        e.stopPropagation();
-        datepickerPopup.classList.toggle('active');
-        updateCalendar();
-      });
-
-      // Selecionar data
-      datepickerDays.addEventListener('click', function(e) {
-        if (e.target.classList.contains('datepicker-day') && !e.target.classList.contains('datepicker-other-month')) {
-          const day = parseInt(e.target.getAttribute('data-day'));
-          const month = parseInt(e.target.getAttribute('data-month'));
-          const year = parseInt(e.target.getAttribute('data-year'));
-          
-          selectedDate = new Date(year, month, day);
-          datepickerInput.value = selectedDate.toLocaleDateString('pt-BR');
-          datepickerPopup.classList.remove('active');
-          
-          // Atualizar calendário principal
-          updateMainCalendar();
-          // Verificar disponibilidade ao selecionar data
-          verificarDisponibilidade();
-        }
-      });
-
-      // Navegar entre meses
-      prevMonthBtn.addEventListener('click', function() {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        updateCalendar();
-      });
-
-      nextMonthBtn.addEventListener('click', function() {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        updateCalendar();
-      });
-
-      // Fechar calendário ao clicar fora
-      document.addEventListener('click', function() {
-        datepickerPopup.classList.remove('active');
-      });
-
-      datepickerPopup.addEventListener('click', function(e) {
-        e.stopPropagation();
-      });
-
-      updateCalendar();
-    }
-
-    // Função para atualizar o calendário principal
-    function updateMainCalendar() {
-      const calendarBody = document.getElementById('calendarBody');
-      const monthSelect = document.getElementById('monthSelect');
-      const yearSelect = document.getElementById('yearSelect');
-      
-      const month = monthSelect.value ? parseInt(monthSelect.value) : currentDate.getMonth();
-      const year = yearSelect.value ? parseInt(yearSelect.value) : currentDate.getFullYear();
-      
-      const firstDay = new Date(year, month, 1);
-      const lastDay = new Date(year, month + 1, 0);
-      const daysInMonth = lastDay.getDate();
-      const firstDayIndex = firstDay.getDay();
-      
-      let date = 1;
-      let html = '';
-      
-      for (let i = 0; i < 6; i++) {
-        html += '<tr>';
-        
-        for (let j = 0; j < 7; j++) {
-          if (i === 0 && j < firstDayIndex) {
-            html += '<td></td>';
-          } else if (date > daysInMonth) {
-            html += '<td></td>';
-          } else {
-            const currentDate = new Date(year, month, date);
-            const dateString = currentDate.toISOString().split('T')[0];
-            
-            // Verificar se há agendamentos para esta data
-            const agendamentosDia = agendamentos.filter(a => a.data === dateString);
-            
-            let cellClass = '';
-            if (agendamentosDia.length > 0) {
-              cellClass = 'agendado';
-            } else if (currentDate < new Date(new Date().setHours(0, 0, 0, 0))) {
-              cellClass = 'indisponivel';
-            } else {
-              cellClass = 'disponivel';
-            }
-            
-            if (selectedDate && currentDate.toDateString() === selectedDate.toDateString()) {
-              cellClass = 'selecionado';
-            }
-            
-            html += `<td class="${cellClass}" data-date="${dateString}">${date}</td>`;
-            date++;
-          }
+          daysHtml += `<div class="${dayClass}" data-day="${i}">${i}</div>`;
         }
         
-        html += '</tr>';
-        
-        if (date > daysInMonth) {
-          break;
+        // Dias do próximo mês (se necessário)
+        const totalCells = 42; // 6 semanas * 7 dias
+        const remainingCells = totalCells - (firstDay + daysInMonth);
+        for (let i = 1; i <= remainingCells; i++) {
+          daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${i}</div>`;
         }
-      }
-      
-      calendarBody.innerHTML = html;
-      
-      // Adicionar eventos de clique às células do calendário
-      document.querySelectorAll('#calendarBody td').forEach(cell => {
-        if (!cell.classList.contains('indisponivel')) {
-          cell.addEventListener('click', function() {
-            const dateString = this.getAttribute('data-date');
-            if (dateString) {
-              selectedDate = new Date(dateString);
-              document.getElementById('data-selecionada').value = selectedDate.toLocaleDateString('pt-BR');
-              
-              // Atualizar calendário para mostrar a data selecionada
-              updateMainCalendar();
-              // Verificar disponibilidade ao selecionar data
-              verificarDisponibilidade();
-            }
+        
+        datepickerDays.innerHTML = daysHtml;
+        
+        // Adiciona eventos aos dias
+        document.querySelectorAll('.datepicker-day:not(.disabled)').forEach(day => {
+          day.addEventListener('click', () => {
+            const dayNum = parseInt(day.getAttribute('data-day'));
+            popupSelectedDate = new Date(year, month, dayNum);
+            
+            // Atualiza o campo de data
+            const formattedDay = String(dayNum).padStart(2, '0');
+            const formattedMonth = String(month + 1).padStart(2, '0');
+            selectedDate = `${formattedDay}/${formattedMonth}/${year}`;
+            datepickerInput.value = selectedDate;
+            
+            // Fecha o popup
+            datepickerPopup.classList.remove('active');
+            
+            // Atualiza o calendário principal
+            updateMainCalendarSelection(year, month + 1, dayNum);
+            
+            // Verifica se há conflito
+            verificarConflito();
           });
+        });
+      }
+    }
+
+    function updateMainCalendarSelection(year, month, day) {
+      // Atualiza os seletores de mês/ano se necessário
+      if (parseInt(yearSelect.value) !== year || parseInt(monthSelect.value) + 1 !== month) {
+        yearSelect.value = year;
+        monthSelect.value = month - 1;
+        renderCalendarBody(year, month - 1);
+      }
+      
+      // Encontra e seleciona o dia no calendário principal
+      const calendarBody = document.getElementById('calendarBody');
+      const cells = calendarBody.querySelectorAll('td');
+      
+      cells.forEach(cell => {
+        if (parseInt(cell.textContent) === day) {
+          // Remove seleção anterior
+          if (selectedDay) {
+            selectedDay.classList.remove('selecionado');
+            const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
+            if (!agendamentosDoMes.find(d => d.dia === parseInt(selectedDay.textContent))) {
+              selectedDay.classList.add('disponivel');
+            }
+          }
+          
+          // Adiciona nova seleção
+          cell.classList.add('selecionado');
+          cell.classList.remove('disponivel');
+          selectedDay = cell;
         }
       });
     }
 
-    // Função para carregar meses e anos nos selects
-    function carregarMesesAnos() {
-      const monthSelect = document.getElementById('monthSelect');
-      const yearSelect = document.getElementById('yearSelect');
-      
-      // Meses
-      const months = [
-        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-      ];
-      
-      monthSelect.innerHTML = months.map((month, index) => 
-        `<option value="${index}" ${index === currentDate.getMonth() ? 'selected' : ''}>${month}</option>`
-      ).join('');
-      
-      // Anos (5 anos antes e depois do atual)
-      const currentYear = currentDate.getFullYear();
-      yearSelect.innerHTML = '';
-      
-      for (let year = currentYear - 5; year <= currentYear + 5; year++) {
+    // Funções do calendário principal
+    function populateMonthYearSelectors() {
+      const currentYear = new Date().getFullYear();
+
+      for (let y = currentYear - 1; y <= currentYear + 2; y++) {
         const option = document.createElement('option');
-        option.value = year;
-        option.textContent = year;
-        if (year === currentYear) option.selected = true;
+        option.value = y;
+        option.textContent = y;
         yearSelect.appendChild(option);
       }
-      
-      // Atualizar calendário quando mês/ano mudar
-      monthSelect.addEventListener('change', updateMainCalendar);
-      yearSelect.addEventListener('change', updateMainCalendar);
+
+      monthNames.forEach((name, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = name;
+        monthSelect.appendChild(option);
+      });
+
+      const now = new Date();
+      monthSelect.value = now.getMonth();
+      yearSelect.value = now.getFullYear();
     }
 
-    // Função para carregar agendamentos (simulação)
-    function carregarAgendamentos() {
-      // Em um sistema real, isso viria de uma API ou banco de dados
-      agendamentos = [
-        {
-          id: 1,
-          professor: "ADEMAR RIBEIRO DE SOUZA",
-          email: "ademarribeirosouza@prof.educacao.sp.gov.br",
-          aparelho: "TABLET",
-          marca: "Samsung Galaxy Tab A",
-          quantidade: 5,
-          data: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0],
-          turma: "6° ANO A MANHA",
-          sala: "Sala 101",
-          horaRetirada: "08:00",
-          horaEntrega: "10:00",
-          aula: "1ª Aula",
-          status: "pendente"
-        },
-        {
-          id: 2,
-          professor: "ALEX LUTH PEREIRA MARANHAO",
-          email: "luth@prof.educacao.sp.gov.br",
-          aparelho: "NOTEBOOK",
-          marca: "Dell Inspiron 15",
-          quantidade: 3,
-          data: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split('T')[0],
-          turma: "7° ANO B TARDE",
-          sala: "Sala 202",
-          horaRetirada: "14:00",
-          horaEntrega: "16:00",
-          aula: "3ª Aula",
-          status: "entregue"
-        },
-        {
-          id: 3,
-          professor: "ALEXANDRE SILVA LIMA",
-          email: "alexandresilvalima@prof.educacao.sp.gov.br",
-          aparelho: "PROJETOR",
-          marca: "Epson EB-X41",
-          quantidade: 1,
-          data: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0],
-          turma: "9° ANO B TARDE",
-          sala: "Sala 402",
-          horaRetirada: "10:00",
-          horaEntrega: "12:00",
-          aula: "2ª Aula",
-          status: "entregue"
-        }
-      ];
-      
-      atualizarHistorico();
-      updateMainCalendar();
+    function getAgendamentos(year, month) {
+      const key = `${year}-${String(month + 1).padStart(2, '0')}`;
+      return agendamentos[key] || [];
     }
 
-    // Função para atualizar o histórico de agendamentos
-    function atualizarHistorico() {
+    function renderHistorico(agendamentosDoMes) {
       const historicoBody = document.getElementById('historico-body');
       historicoBody.innerHTML = '';
       
-      // Ordenar agendamentos por data (mais recentes primeiro)
-      agendamentos.sort((a, b) => new Date(b.data) - new Date(a.data));
-      
-      agendamentos.forEach(agendamento => {
+      // Adiciona agendamentos atuais
+      agendamentosDoMes.forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega, id }) => {
         const row = document.createElement('tr');
-        if (agendamento.status === 'entregue') row.classList.add('entregue');
-        if (agendamento.status === 'excluido') row.classList.add('excluido');
         
-        const dataFormatada = new Date(agendamento.data).toLocaleDateString('pt-BR');
+        const formattedDay = String(dia).padStart(2, '0');
+        const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0');
+        const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
+        
+        // Adiciona classe de status de entrega
+        if (horaEntrega) {
+          row.classList.add('entregue');
+        } else {
+          row.classList.add('nao-entregue');
+        }
         
         row.innerHTML = `
-          <td>${dataFormatada}</td>
-          <td>${agendamento.turma}</td>
-          <td>${agendamento.quantidade}</td>
-          <td>${agendamento.aparelho} (${agendamento.marca})</td>
-          <td>${agendamento.professor}</td>
-          <td>${agendamento.aula}</td>
-          <td>${agendamento.horaEntrega || '--:--'}</td>
-          <td>
-            ${agendamento.status !== 'entregue' && agendamento.status !== 'excluido' ? 
-              `<button class="btn btn-entregar" onclick="abrirModalDevolucao(${agendamento.id})">Entregar</button>` : 
-              ''}
-            ${agendamento.status !== 'excluido' ? 
-              `<button class="btn btn-excluir" onclick="excluirAgendamento(${agendamento.id})">${agendamento.status === 'excluido' ? 'Excluído' : 'Excluir'}</button>` : 
-              ''}
-          </td>
+          <td>${formattedDate}</td>
+          <td>${turma}</td>
+          <td>${numAparelhos}</td>
+          <td>${aparelho}</td>
+          <td>${professor}</td>
+          <td>${aula}</td>
+          <td>${horaEntrega || 'Não entregue'}</td>
+          <td><button class="btn btn-excluir" onclick="excluirAgendamento('${id}')">EXCLUIR</button></td>
         `;
-        
         historicoBody.appendChild(row);
       });
-    }
-
-    // Função para abrir modal de devolução
-    function abrirModalDevolucao(id) {
-      const agendamento = agendamentos.find(a => a.id === id);
-      if (agendamento) {
-        currentAgendamentoId = id;
-        document.getElementById('modalText').textContent = 
-          `Confirmar devolução de ${agendamento.quantidade} ${agendamento.aparelho}(s) para ${agendamento.professor}?`;
-        document.getElementById('horaEntregaModal').value = '';
-        document.getElementById('devolucaoModal').style.display = 'block';
-      }
-    }
-
-    // Função para fechar modal
-    function fecharModal() {
-      document.getElementById('devolucaoModal').style.display = 'none';
-      currentAgendamentoId = null;
-    }
-
-    // Função para confirmar devolução
-    function confirmarDevolucao() {
-      const horaEntrega = document.getElementById('horaEntregaModal').value;
       
-      if (!horaEntrega) {
-        alert('Por favor, informe a hora da entrega.');
-        return;
-      }
-      
-      const index = agendamentos.findIndex(a => a.id === currentAgendamentoId);
-      if (index !== -1) {
-        agendamentos[index].horaEntrega = horaEntrega;
-        agendamentos[index].status = 'entregue';
-        atualizarHistorico();
-        updateMainCalendar();
-        fecharModal();
-        
-        // Integração com sistema de cadastro - marcar equipamentos como disponíveis
-        const agendamento = agendamentos[index];
-        marcarEquipamentosDisponiveis(agendamento.aparelho, agendamento.quantidade, agendamento.data);
-      }
+      // Adiciona agendamentos excluídos (apenas do mês atual)
+      const currentMonthKey = `${yearSelect.value}-${String(parseInt(monthSelect.value) + 1).padStart(2, '0')}`;
+      historicoExcluidos
+        .filter(item => item.mesAno === currentMonthKey)
+        .forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega }) => {
+          const row = document.createElement('tr');
+          row.classList.add('excluido');
+          
+          const formattedDay = String(dia).padStart(2, '0');
+          const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0');
+          const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
+          
+          row.innerHTML = `
+            <td>${formattedDate}</td>
+            <td>${turma}</td>
+            <td>${numAparelhos}</td>
+            <td>${aparelho}</td>
+            <td>${professor}</td>
+            <td>${aula}</td>
+            <td>${horaEntrega || 'Não entregue'}</td>
+            <td>EXCLUÍDO</td>
+          `;
+          historicoBody.appendChild(row);
+        });
     }
 
-    // Função para excluir agendamento
-    function excluirAgendamento(id) {
-      if (confirm('Tem certeza que deseja excluir este agendamento?')) {
-        const index = agendamentos.findIndex(a => a.id === id);
-        if (index !== -1) {
-          const agendamento = agendamentos[index];
-          
-          // Se não foi entregue, marcar equipamentos como disponíveis
-          if (agendamento.status !== 'entregue') {
-            marcarEquipamentosDisponiveis(agendamento.aparelho, agendamento.quantidade, agendamento.data);
-          }
-          
-          agendamentos[index].status = 'excluido';
-          atualizarHistorico();
-          updateMainCalendar();
+    function renderCalendarBody(year, month) {
+      const calendarBody = document.getElementById('calendarBody');
+      calendarBody.innerHTML = '';
+
+      const date = new Date(year, month, 1);
+      const firstDay = date.getDay(); // 0=Domingo, 1=Segunda, ..., 6=Sábado
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+      const agendamentosDoMes = getAgendamentos(year, month);
+
+      let day = 1;
+      let currentRow = document.createElement('tr');
+      
+      // Células vazias para os dias do mês anterior
+      for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('td');
+        emptyCell.innerHTML = daysInPrevMonth - firstDay + i + 1;
+        emptyCell.classList.add('indisponivel');
+        currentRow.appendChild(emptyCell);
+      }
+
+      // Dias do mês atual
+      while (day <= daysInMonth) {
+        // Se chegarmos ao domingo (0), criamos uma nova linha
+        if (currentRow.children.length === 7) {
+          calendarBody.appendChild(currentRow);
+          currentRow = document.createElement('tr');
         }
+
+        const cell = document.createElement('td');
+        cell.textContent = day;
+
+        const agendado = agendamentosDoMes.find(d => d.dia === day);
+        if (agendado) {
+          cell.classList.add('agendado');
+          cell.title = `${agendado.aparelho} - ${agendado.professor}`;
+        } else {
+          cell.classList.add('disponivel');
+          cell.style.cursor = 'default';
+        }
+
+        currentRow.appendChild(cell);
+        day++;
       }
+
+      // Preenche as células restantes na última linha com dias do próximo mês
+      while (currentRow.children.length < 7) {
+        const nextMonthDay = document.createElement('td');
+        nextMonthDay.innerHTML = day - daysInMonth;
+        nextMonthDay.classList.add('indisponivel');
+        currentRow.appendChild(nextMonthDay);
+        day++;
+      }
+
+      // Adiciona a última linha se ela tiver conteúdo
+      if (currentRow.children.length > 0) {
+        calendarBody.appendChild(currentRow);
+      }
+
+      renderHistorico(agendamentosDoMes);
     }
 
-    // Função para cadastrar novo agendamento
-    function cadastrarAgendamento() {
-      const professor = document.getElementById('professor').value;
-      const email = document.getElementById('email-professor').value;
-      const aparelho = document.getElementById('aparelho').value;
-      const marca = document.getElementById('marca').value;
-      const quantidade = parseInt(document.getElementById('numero-aparelhos').value);
-      const data = document.getElementById('data-selecionada').value;
-      const turma = document.getElementById('studentClass').value;
-      const sala = document.getElementById('sala').value;
-      const horaRetirada = document.getElementById('hora-retirada').value;
-      const horaEntrega = document.getElementById('hora-entrega').value;
-      const aula = document.getElementById('aula').value;
+    function gerarIdUnico() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    async function cadastrarAgendamento() {
+      const professor = document.getElementById("professor").value;
+      const aparelho = document.getElementById("aparelho").value;
+      const turma = document.getElementById("studentClass").value;
+      const numAparelhos = document.getElementById("numero-aparelhos").value;
+      const aula = document.getElementById("aula").value;
+      const sala = document.getElementById("sala").value;
+      const horaRetirada = document.getElementById("hora-retirada").value;
+      const horaEntrega = document.getElementById("hora-entrega").value;
       
-      // Validações
-      if (professor === 'Selecione' || !professor) {
-        alert('Por favor, selecione um professor.');
+      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate || !sala || !horaRetirada) {
+        alert("Preencha todos os campos obrigatórios do formulário antes de agendar!");
         return;
       }
       
-      if (!aparelho) {
-        alert('Por favor, selecione um aparelho.');
+      // Verifica se já existe agendamento para esta turma, data e aula
+      if (verificarConflitoAgendamento(turma, selectedDate, aula)) {
+        alert("Já existe um agendamento para esta turma nesta data e aula!");
         return;
       }
       
-      if (!quantidade || quantidade < 1) {
-        alert('Por favor, informe um número válido de aparelhos.');
-        return;
+      const [dia, mes, ano] = selectedDate.split('/');
+      const key = `${ano}-${mes}`;
+      
+      if (!agendamentos[key]) {
+        agendamentos[key] = [];
       }
       
-      if (!data) {
-        alert('Por favor, selecione uma data.');
-        return;
-      }
+      const id = gerarIdUnico();
       
-      if (!turma) {
-        alert('Por favor, selecione uma turma.');
-        return;
-      }
-      
-      if (!horaRetirada) {
-        alert('Por favor, informe a hora de retirada.');
-        return;
-      }
-      
-      // Verificar conflito de agendamento
-      const dataISO = new Date(data.split('/').reverse().join('-')).toISOString().split('T')[0];
-      const conflito = agendamentos.some(a => 
-        a.data === dataISO && 
-        a.turma === turma && 
-        a.aula === aula && 
-        a.status !== 'excluido'
-      );
-      
-      if (conflito) {
-        document.getElementById('conflictMessage').style.display = 'block';
-        setTimeout(() => {
-          document.getElementById('conflictMessage').style.display = 'none';
-        }, 3000);
-        return;
-      }
-      
-      // Verificar disponibilidade de equipamentos
-      if (!verificarDisponibilidadeNoCadastro(aparelho, quantidade, dataISO)) {
-        alert(`Não há ${quantidade} ${aparelho}(s) disponível(eis) para a data selecionada.`);
-        return;
-      }
-      
-      // Criar novo agendamento
-      const novoAgendamento = {
-        id: agendamentos.length > 0 ? Math.max(...agendamentos.map(a => a.id)) + 1 : 1,
-        professor,
-        email,
+      const novoAgendamento = { 
+        id,
+        dia: parseInt(dia),
         aparelho,
-        marca,
-        quantidade,
-        data: dataISO,
+        professor,
         turma,
+        numAparelhos: parseInt(numAparelhos),
+        aula,
         sala,
         horaRetirada,
-        horaEntrega,
-        aula,
-        status: 'pendente'
+        horaEntrega
       };
       
-      // Marcar equipamentos como indisponíveis no sistema de cadastro
-      marcarEquipamentosIndisponiveis(aparelho, quantidade, dataISO);
+      agendamentos[key].push(novoAgendamento);
       
-      agendamentos.push(novoAgendamento);
-      atualizarHistorico();
-      updateMainCalendar();
-      limparFormulario();
+      // Atualiza o calendário e o histórico
+      renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
       
-      alert('Agendamento cadastrado com sucesso!');
-    }
-
-    // Função para limpar formulário
-    function limparFormulario() {
-      document.getElementById('professor').value = 'Selecione';
-      document.getElementById('email-professor').value = '';
-      document.getElementById('aparelho').value = '';
-      document.getElementById('marca').value = '';
-      document.getElementById('numero-aparelhos').value = '1';
-      document.getElementById('data-selecionada').value = '';
-      document.getElementById('studentClass').value = '';
-      document.getElementById('sala').value = '';
-      document.getElementById('hora-retirada').value = '';
-      document.getElementById('hora-entrega').value = '';
-      document.getElementById('aula').value = '1ª Aula';
+      // Limpa a seleção
+      if (selectedDay) {
+        selectedDay.classList.remove('selecionado');
+        selectedDay.classList.add('agendado');
+        selectedDay = null;
+      }
       selectedDate = null;
+      document.getElementById('data-selecionada').value = '';
+      
+      // Gera documento
+      await gerarDocumento(novoAgendamento);
+      
+      alert("Agendamento cadastrado com sucesso!");
     }
 
-    // Função para exportar para PDF
-    function exportarParaPDF() {
-      const doc = new jsPDF();
+    function excluirAgendamento(id) {
+      if (!confirm("Tem certeza que deseja excluir este agendamento?")) {
+        return;
+      }
       
-      // Título
-      doc.setFontSize(18);
-      doc.text('Histórico de Agendamentos', 105, 15, { align: 'center' });
-      
-      // Data de emissão
-      doc.setFontSize(10);
-      doc.text(`Emitido em: ${new Date().toLocaleDateString('pt-BR')}`, 105, 25, { align: 'center' });
-      
-      // Cabeçalho da tabela
-      const headers = [
-        'Data', 
-        'Turma', 
-        'N° Aparelhos', 
-        'Aparelho', 
-        'Professor', 
-        'Aula', 
-        'Entrega',
-        'Status'
-      ];
-      
-      // Dados da tabela
-      const data = agendamentos.map(a => [
-        new Date(a.data).toLocaleDateString('pt-BR'),
-        a.turma,
-        a.quantidade.toString(),
-        `${a.aparelho} (${a.marca})`,
-        a.professor,
-        a.aula,
-        a.horaEntrega || '--:--',
-        a.status === 'entregue' ? 'Entregue' : 
-        a.status === 'excluido' ? 'Excluído' : 'Pendente'
-      ]);
-      
-      // Adicionar tabela
-      doc.autoTable({
-        head: [headers],
-        body: data,
-        startY: 30,
-        styles: {
-          fontSize: 8,
-          cellPadding: 2,
-          overflow: 'linebreak'
-        },
-        columnStyles: {
-          0: { cellWidth: 20 },
-          1: { cellWidth: 30 },
-          2: { cellWidth: 15 },
-          3: { cellWidth: 30 },
-          4: { cellWidth: 40 },
-          5: { cellWidth: 15 },
-          6: { cellWidth: 15 },
-          7: { cellWidth: 15 }
-        }
-      });
-      
-      // Salvar PDF
-      doc.save('historico_agendamentos.pdf');
-    }
-
-    // Função para exportar para CSV
-    function exportarParaCSV() {
-      const headers = [
-        'Data', 
-        'Turma', 
-        'N° Aparelhos', 
-        'Aparelho', 
-        'Professor', 
-        'Aula', 
-        'Entrega',
-        'Status'
-      ];
-      
-      const data = agendamentos.map(a => [
-        new Date(a.data).toLocaleDateString('pt-BR'),
-        a.turma,
-        a.quantidade.toString(),
-        `${a.aparelho} (${a.marca})`,
-        a.professor,
-        a.aula,
-        a.horaEntrega || '--:--',
-        a.status === 'entregue' ? 'Entregue' : 
-        a.status === 'excluido' ? 'Excluído' : 'Pendente'
-      ]);
-      
-      let csvContent = "data:text/csv;charset=utf-8," 
-        + headers.join(";") + "\n" 
-        + data.map(row => row.join(";")).join("\n");
-      
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "historico_agendamentos.csv");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    // ==============================================
-    // FUNÇÕES DE INTEGRAÇÃO COM SISTEMA DE CADASTRO
-    // ==============================================
-
-    // Função para verificar disponibilidade de equipamentos
-    function verificarDisponibilidade() {
-      const aparelho = document.getElementById('aparelho').value;
-      const data = document.getElementById('data-selecionada').value;
-      const quantidade = document.getElementById('numero-aparelhos').value;
-      
-      if (!aparelho || !data || !quantidade) return;
-      
-      const dataISO = new Date(data.split('/').reverse().join('-')).toISOString().split('T')[0];
-      
-      buscarEquipamentosDisponiveis(aparelho, dataISO, (equipamentos) => {
-        const disponiveis = equipamentos.filter(e => e.disponivel).length;
-        
-        if (disponiveis < quantidade) {
-          alert(`Atenção! Há apenas ${disponiveis} ${aparelho}(s) disponível(eis) para a data selecionada.`);
-        }
-      });
-    }
-
-    // Função para buscar equipamentos disponíveis (simulação de API)
-    function buscarEquipamentosDisponiveis(tipo, data, callback) {
-      // Simulando uma chamada assíncrona à API do sistema de cadastro
-      setTimeout(() => {
-        const equipamentos = [];
-        const quantidadeTotal = tipo === 'TABLET' ? 15 : 
-                              tipo === 'NOTEBOOK' ? 10 : 
-                              tipo === 'PROJETOR' ? 5 : 8;
-        
-        // Verificar quantos já estão agendados para esta data
-        const agendados = agendamentos.filter(a => 
-          a.aparelho === tipo && 
-          a.data === data && 
-          a.status !== 'excluido' && 
-          a.status !== 'entregue'
-        ).reduce((total, a) => total + a.quantidade, 0);
-        
-        const disponiveis = Math.max(0, quantidadeTotal - agendados);
-        
-        // Gerar lista de equipamentos disponíveis
-        for (let i = 1; i <= disponiveis; i++) {
-          equipamentos.push({
-            id: `${tipo}-${i}`,
-            tipo: tipo,
-            marca: aparelhosMarcas[tipo],
-            modelo: `${tipo} Modelo ${i}`,
-            disponivel: true
+      // Encontra e remove o agendamento
+      for (const key in agendamentos) {
+        const index = agendamentos[key].findIndex(ag => ag.id === id);
+        if (index !== -1) {
+          const [agendamentoExcluido] = agendamentos[key].splice(index, 1);
+          
+          // Adiciona ao histórico de excluídos
+          const [ano, mes] = key.split('-');
+          historicoExcluidos.push({
+            ...agendamentoExcluido,
+            mesAno: key
           });
+          
+          // Atualiza a exibição
+          renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
+          break;
         }
+      }
+    }
+
+    async function gerarDocumento(agendamento) {
+      try {
+        // Esta função seria implementada para integrar com o Google Docs usando o Google Apps Script
+        // Aqui está apenas um esboço da implementação que seria chamada pelo Google Apps Script
         
-        callback(equipamentos);
-      }, 300);
+        const response = await fetch('https://script.google.com/macros/s/AKfycbw3I3K5zveoPB398z2EyTfrd91nFmFQr3sspk2E01G8YWS2itYWJ6q7tPicsr-J4U0D/exec', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'gerarDocumento',
+            dados: {
+              professor: agendamento.professor,
+              quantidade: agendamento.numAparelhos,
+              data: agendamento.dia + '/' + (parseInt(monthSelect.value) + 1) + '/' + yearSelect.value,
+              tipoAparelho: agendamento.aparelho,
+              turma: agendamento.turma,
+              aula: agendamento.aula,
+              horaRetirada: agendamento.horaRetirada,
+              horaEntrega: agendamento.horaEntrega,
+              statusEntrega: agendamento.horaEntrega ? 'Entregue' : 'Não entregue'
+            }
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          console.log("Documento gerado com sucesso:", result.url);
+        } else {
+          console.error("Erro ao gerar documento:", result.message);
+        }
+      } catch (error) {
+        console.error("Erro ao chamar o Google Apps Script:", error);
+      }
     }
 
-    // Função para verificar disponibilidade no cadastro (síncrona)
-    function verificarDisponibilidadeNoCadastro(tipo, quantidade, data) {
-      // Em um sistema real, isso seria uma chamada à API do sistema de cadastro
-      const quantidadeTotal = tipo === 'TABLET' ? 15 : 
-                            tipo === 'NOTEBOOK' ? 10 : 
-                            tipo === 'PROJETOR' ? 5 : 8;
+    function limparFormulario() {
+      document.getElementById("professor").value = "Selecione";
+      document.getElementById("email-professor").value = "";
+      document.getElementById("aparelho").value = "";
+      document.getElementById("marca").value = "";
+      document.getElementById("numero-aparelhos").value = "1";
+      document.getElementById("studentClass").value = "";
+      document.getElementById("sala").value = "";
+      document.getElementById("hora-retirada").value = "";
+      document.getElementById("hora-entrega").value = "";
+      document.getElementById("aula").value = "1ª Aula";
+      document.getElementById("conflictMessage").style.display = "none";
       
-      // Verificar quantos já estão agendados para esta data
-      const agendados = agendamentos.filter(a => 
-        a.aparelho === tipo && 
-        a.data === data && 
-        a.status !== 'excluido' && 
-        a.status !== 'entregue'
-      ).reduce((total, a) => total + a.quantidade, 0);
-      
-      return (quantidadeTotal - agendados) >= quantidade;
+      // Limpa a seleção de data
+      if (selectedDay) {
+        selectedDay.classList.remove('selecionado');
+        const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
+        if (!agendamentosDoMes.find(d => d.dia === parseInt(selectedDay.textContent))) {
+          selectedDay.classList.add('disponivel');
+        }
+        selectedDay = null;
+      }
+      selectedDate = null;
+      document.getElementById('data-selecionada').value = '';
+      popupSelectedDate = null;
     }
 
-    // Função para marcar equipamentos como indisponíveis no cadastro
-    function marcarEquipamentosIndisponiveis(tipo, quantidade, data) {
-      // Em um sistema real, isso seria uma chamada à API do sistema de cadastro
-      console.log(`Marcando ${quantidade} ${tipo}(s) como indisponíveis para ${data}`);
-      // Implementação real faria a chamada à API para atualizar o status dos equipamentos
-    }
+    // Inicialização
+    gerarOpcoesProfessores();
+    populateMonthYearSelectors();
+    renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
+    initDatepicker();
 
-    // Função para marcar equipamentos como disponíveis no cadastro
-    function marcarEquipamentosDisponiveis(tipo, quantidade, data) {
-      // Em um sistema real, isso seria uma chamada à API do sistema de cadastro
-      console.log(`Marcando ${quantidade} ${tipo}(s) como disponíveis para ${data}`);
-      // Implementação real faria a chamada à API para atualizar o status dos equipamentos
-    }
+    // Adiciona listeners para verificar conflito quando os campos mudam
+    document.getElementById("studentClass").addEventListener("change", verificarConflito);
+    document.getElementById("aula").addEventListener("change", verificarConflito);
+    document.getElementById("data-selecionada").addEventListener("change", verificarConflito);
 
-    // Ouvintes de eventos para verificação de disponibilidade
-    document.getElementById('aparelho').addEventListener('change', verificarDisponibilidade);
-    document.getElementById('data-selecionada').addEventListener('change', verificarDisponibilidade);
-    document.getElementById('numero-aparelhos').addEventListener('change', verificarDisponibilidade);
+    monthSelect.addEventListener('change', () => {
+      renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
+    });
+
+    yearSelect.addEventListener('change', () => {
+      renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
+    });
   </script>
 </body>
 </html>
