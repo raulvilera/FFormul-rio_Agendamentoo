@@ -124,6 +124,13 @@
       padding: 8px 10px;
     }
 
+    /* Estilo para o campo data com tamanho ajustável */
+    .form-group input[type="text"]#dataAgendamento {
+      width: auto;
+      min-width: 100px;
+      padding: 8px 10px;
+    }
+
     .form-group input:focus,
     .form-group select:focus {
       border-color: var(--azul-medio);
@@ -546,27 +553,6 @@
           <input type="number" id="quantidadeAgendamento" min="1" value="1">
         </div>
         
-        <div class="form-group">
-          <label>LOCAL:</label>
-          <select id="localAgendamento">
-            <option value="">Selecione</option>
-            <option value="LABORATÓRIO 1">LABORATÓRIO 1</option>
-            <option value="LABORATÓRIO 2">LABORATÓRIO 2</option>
-            <option value="SALA 1">SALA 1</option>
-            <option value="SALA 2">SALA 2</option>
-            <option value="SALA 3">SALA 3</option>
-            <option value="SALA 4">SALA 4</option>
-            <option value="SALA 5">SALA 5</option>
-            <option value="SALA 6">SALA 6</option>
-            <option value="SALA 7">SALA 7</option>
-            <option value="SALA 8">SALA 8</option>
-            <option value="SALA 9">SALA 9</option>
-            <option value="SALA 10">SALA 10</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-row">
         <div class="form-group datepicker-container">
           <label>DATA:</label>
           <input type="text" id="dataAgendamento" class="datepicker-input" readonly placeholder="Clique para selecionar">
@@ -579,6 +565,67 @@
             <div class="datepicker-grid" id="datepickerWeekdays"></div>
             <div class="datepicker-grid" id="datepickerDays"></div>
           </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>TURMA:</label>
+          <select id="studentClass" class="form-control" required onchange="atualizarSala()">
+            <option value="">Selecione a turma</option>
+            <option value="6° ANO A MANHA">6° ANO A MANHA</option>
+            <option value="6° ANO B MANHA">6° ANO B MANHA</option>
+            <option value="6° ANO C MANHA">6° ANO C MANHA</option>
+            <option value="6° ANO D MANHA">6° ANO D MANHA</option>
+            <option value="6° ANO E TARDE">6° ANO E TARDE</option>
+            <option value="6° ANO F TARDE">6° ANO F TARDE</option>
+            <option value="7° ANO A TARDE">7° ANO A TARDE</option>
+            <option value="7° ANO B TARDE">7° ANO B TARDE</option>
+            <option value="7° ANO C TARDE">7° ANO C TARDE</option>
+            <option value="7° ANO D TARDE">7° ANO D TARDE</option>
+            <option value="7° ANO E TARDE">7° ANO E TARDE</option>
+            <option value="7° ANO F TARDE">7° ANO F TARDE</option>
+            <option value="8° ANO A TARDE">8° ANO A TARDE</option>
+            <option value="8° ANO B TARDE">8° ANO B TARDE</option>
+            <option value="8° ANO C TARDE">8° ANO C TARDE</option>
+            <option value="8° ANO D TARDE">8° ANO D TARDE</option>
+            <option value="8° ANO E TARDE">8° ANO E TARDE</option>
+            <option value="9° ANO A TARDE">9° ANO A TARDE</option>
+            <option value="9° ANO B TARDE">9° ANO B TARDE</option>
+            <option value="9° ANO C TARDE">9° ANO C TARDE</option>
+            <option value="9° ANO D TARDE">9° ANO D TARDE</option>
+            <option value="1ª SERIE A MANHA">1ª SERIE A MANHA</option>
+            <option value="1ª SERIE B MANHA">1ª SERIE B MANHA</option>
+            <option value="1ª SERIE C MANHA">1ª SERIE C MANHA</option>
+            <option value="1ª SERIE D MANHA">1ª SERIE D MANHA</option>
+            <option value="1ª SERIE E MANHA">1ª SERIE E MANHA</option>
+            <option value="1ª SERIE F MANHA">1ª SERIE F MANHA</option>
+            <option value="1ª SERIE G TARDE">1ª SERIE G TARDE</option>
+            <option value="1ª SERIE H NOITE">1ª SERIE H NOITE</option>
+            <option value="1ª SERIE I NOITE">1ª SERIE I NOITE</option>
+            <option value="2ª SERIE A MANHA">2ª SERIE A MANHA</option>
+            <option value="2ª SERIE B MANHA">2ª SERIE B MANHA</option>
+            <option value="2ª SERIE C MANHA">2ª SERIE C MANHA</option>
+            <option value="2ª SERIE D MANHA">2ª SERIE D MANHA</option>
+            <option value="2ª SERIE E MANHA">2ª SERIE E MANHA</option>
+            <option value="2ª SERIE F NOITE">2ª SERIE F NOITE</option>
+            <option value="2ª SERIE G NOITE">2ª SERIE G NOITE</option>
+            <option value="2ª SERIE H NOITE">2ª SERIE H NOITE</option>
+            <option value="2ª SERIE I NOITE">2ª SERIE I NOITE</option>
+            <option value="3ª SERIE A MANHA">3ª SERIE A MANHA</option>
+            <option value="3ª SERIE B MANHA">3ª SERIE B MANHA</option>
+            <option value="3ª SERIE C MANHA">3ª SERIE C MANHA</option>
+            <option value="3ª SERIE D NOITE">3ª SERIE D NOITE</option>
+            <option value="3ª SERIE E NOITE">3ª SERIE E NOITE</option>
+            <option value="3ª SERIE F NOITE">3ª SERIE F NOITE</option>
+            <option value="3ª SERIE G NOITE">3ª SERIE G NOITE</option>
+            <option value="4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA">4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>SALA:</label>
+          <input type="text" id="sala" readonly>
         </div>
       </div>
 
@@ -766,27 +813,59 @@
       ));
     }
 
+
+    // FUNÇÃO ALTERADA - AQUI ESTÁ A MUDANÇA SOLICITADA
     function agendarEquipamento() {
-      const agendamento = {
-        id: gerarIdUnico(),
-        categoria: document.getElementById("equipamentoAgendamento").value,
-        quantidade: parseInt(document.getElementById("quantidadeAgendamento").value),
-        local: document.getElementById("localAgendamento").value,
-        data: document.getElementById("dataAgendamento").value,
-        professor: document.getElementById("professor").value
+      const professor = document.getElementById("professor").value;
+      const aparelho = document.getElementById("equipamentoAgendamento").value;
+      const turma = document.getElementById("studentClass").value;
+      const numAparelhos = parseInt(document.getElementById("quantidadeAgendamento").value);
+      const data = document.getElementById("dataAgendamento").value;
+      const sala = document.getElementById("sala").value;
+      
+      if (!professor || professor === "Selecione" || !aparelho || !turma || !numAparelhos || !data || !sala) {
+        alert("Preencha todos os campos obrigatórios do formulário antes de agendar!");
+        return;
+      }
+
+      const [dia, mes, ano] = data.split('/');
+      const key = `${ano}-${mes}`;
+      
+      if (!agendamentos[key]) {
+        agendamentos[key] = [];
+      }
+      
+      const id = gerarIdUnico();
+      
+      const novoAgendamento = { 
+        id,
+        dia: parseInt(dia),
+        aparelho,
+        professor,
+        turma,
+        numAparelhos,
+        aula: "1ª Aula", // Valor padrão já que não temos o campo aula no formulário
+        sala,
+        horaRetirada: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) // Hora atual como padrão
       };
-
-      if (!verificarDisponibilidade(agendamento.categoria, agendamento.quantidade, agendamento.local)) {
-        alert("Quantidade indisponível!");
-        return;
+      
+      agendamentos[key].push(novoAgendamento);
+      
+      // Salva no localStorage
+      salvarAgendamentos();
+      
+      // Atualiza o calendário e o histórico
+      renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
+      
+      // Limpa a seleção
+      if (selectedDay) {
+        selectedDay.classList.remove('selecionado');
+        selectedDay.classList.add('agendado');
+        selectedDay = null;
       }
-
-      if (validarConflitos(agendamento)) {
-        alert("Já existe um agendamento para este local/horário!");
-        return;
-      }
-
-      registrarAgendamento(agendamento);
+      selectedDate = null;
+      document.getElementById('dataAgendamento').value = '';
+      
       alert("Agendamento realizado com sucesso!");
     }
 
@@ -1045,9 +1124,6 @@
 
     function atualizarSala() {
       const turma = document.getElementById("studentClass").value;
-      const periodo = turma.includes("MANHA") ? "MANHA" : 
-                     turma.includes("TARDE") ? "TARDE" : 
-                     turma.includes("NOITE") ? "NOITE" : "";
       
       // Verifica se a turma existe no mapeamento
       if (salasPorTurmaPeriodo[turma]) {
