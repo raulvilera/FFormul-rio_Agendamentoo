@@ -239,11 +239,11 @@
     .historico-table tr.nao-entregue {
       background-color: var(--nao-entregue);
     }
-
+    
     .historico-table tr.expirado {
       background-color: var(--expirado);
     }
-
+    
     .historico-table tr.recente {
       background-color: var(--recente);
     }
@@ -278,12 +278,12 @@
     .historico-table td:nth-child(6) {
       width: 10%;
     }
-
+    
     .historico-table th:nth-child(7),
     .historico-table td:nth-child(7) {
       width: 10%;
     }
-
+    
     .historico-table th:nth-child(8),
     .historico-table td:nth-child(8) {
       width: 15%;
@@ -350,6 +350,15 @@
 
     .btn-excluir:active {
       box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-entregar {
+      background-color: var(--verde);
+      color: white;
+    }
+
+    .btn-entregar:hover {
+      background-color: #3d8b40;
     }
 
     /* Estilos para o calendário pop-up */
@@ -445,16 +454,8 @@
       text-align: center;
       display: none;
     }
-
-    /* Estilo para o botão de exportar */
-    .export-buttons {
-      margin-bottom: 15px;
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
-
-    /* Modal de confirmação */
+    
+    /* Estilos para o modal de devolução */
     .modal {
       display: none;
       position: fixed;
@@ -494,6 +495,14 @@
       gap: 10px;
       margin-top: 20px;
     }
+    
+    /* Estilo para o botão de exportar */
+    .export-buttons {
+      margin-bottom: 15px;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
   </style>
 </head>
 <body>
@@ -516,7 +525,7 @@
       <div class="form-row">
         <div class="form-group">
           <label>APARELHO:</label>
-          <select id="aparelho" onchange="atualizarMarca()">
+          <select id="equipamentoAgendamento" onchange="atualizarMarca()">
             <option value="">Selecione</option>
             <option value="TABLET">TABLET</option>
             <option value="SMARTPHONE">SMARTPHONE</option>
@@ -534,12 +543,33 @@
       <div class="form-row">
         <div class="form-group">
           <label>N° DE APARELHOS:</label>
-          <input type="number" id="numero-aparelhos" min="1" value="1">
+          <input type="number" id="quantidadeAgendamento" min="1" value="1">
         </div>
         
+        <div class="form-group">
+          <label>LOCAL:</label>
+          <select id="localAgendamento">
+            <option value="">Selecione</option>
+            <option value="LABORATÓRIO 1">LABORATÓRIO 1</option>
+            <option value="LABORATÓRIO 2">LABORATÓRIO 2</option>
+            <option value="SALA 1">SALA 1</option>
+            <option value="SALA 2">SALA 2</option>
+            <option value="SALA 3">SALA 3</option>
+            <option value="SALA 4">SALA 4</option>
+            <option value="SALA 5">SALA 5</option>
+            <option value="SALA 6">SALA 6</option>
+            <option value="SALA 7">SALA 7</option>
+            <option value="SALA 8">SALA 8</option>
+            <option value="SALA 9">SALA 9</option>
+            <option value="SALA 10">SALA 10</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
         <div class="form-group datepicker-container">
           <label>DATA:</label>
-          <input type="text" id="data-selecionada" class="datepicker-input" readonly placeholder="Clique para selecionar">
+          <input type="text" id="dataAgendamento" class="datepicker-input" readonly placeholder="Clique para selecionar">
           <div class="datepicker-popup" id="datepickerPopup">
             <div class="datepicker-header">
               <button class="datepicker-nav" id="prevMonth">&lt;</button>
@@ -552,96 +582,12 @@
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label>SELECIONE A TURMA:</label>
-          <select id="studentClass" class="form-control" required onchange="atualizarSala()">
-            <option value="">Selecione a turma</option>
-            <option value="6° ANO A MANHA">6° ANO A MANHA</option>
-            <option value="6° ANO B MANHA">6° ANO B MANHA</option>
-            <option value="6° ANO C MANHA">6° ANO C MANHA</option>
-            <option value="6° ANO D MANHA">6° ANO D MANHA</option>
-            <option value="6° ANO E TARDE">6° ANO E TARDE</option>
-            <option value="6° ANO F TARDE">6° ANO F TARDE</option>
-            <option value="7° ANO A TARDE">7° ANO A TARDE</option>
-            <option value="7° ANO B TARDE">7° ANO B TARDE</option>
-            <option value="7° ANO C TARDE">7° ANO C TARDE</option>
-            <option value="7° ANO D TARDE">7° ANO D TARDE</option>
-            <option value="7° ANO E TARDE">7° ANO E TARDE</option>
-            <option value="7° ANO F TARDE">7° ANO F TARDE</option>
-            <option value="8° ANO A TARDE">8° ANO A TARDE</option>
-            <option value="8° ANO B TARDE">8° ANO B TARDE</option>
-            <option value="8° ANO C TARDE">8° ANO C TARDE</option>
-            <option value="8° ANO D TARDE">8° ANO D TARDE</option>
-            <option value="8° ANO E TARDE">8° ANO E TARDE</option>
-            <option value="9° ANO A TARDE">9° ANO A TARDE</option>
-            <option value="9° ANO B TARDE">9° ANO B TARDE</option>
-            <option value="9° ANO C TARDE">9° ANO C TARDE</option>
-            <option value="9° ANO D TARDE">9° ANO D TARDE</option>
-            <option value="1ª SERIE A MANHA">1ª SERIE A MANHA</option>
-            <option value="1ª SERIE B MANHA">1ª SERIE B MANHA</option>
-            <option value="1ª SERIE C MANHA">1ª SERIE C MANHA</option>
-            <option value="1ª SERIE D MANHA">1ª SERIE D MANHA</option>
-            <option value="1ª SERIE E MANHA">1ª SERIE E MANHA</option>
-            <option value="1ª SERIE F MANHA">1ª SERIE F MANHA</option>
-            <option value="1ª SERIE G TARDE">1ª SERIE G TARDE</option>
-            <option value="1ª SERIE H NOITE">1ª SERIE H NOITE</option>
-            <option value="1ª SERIE I NOITE">1ª SERIE I NOITE</option>
-            <option value="2ª SERIE A MANHA">2ª SERIE A MANHA</option>
-            <option value="2ª SERIE B MANHA">2ª SERIE B MANHA</option>
-            <option value="2ª SERIE C MANHA">2ª SERIE C MANHA</option>
-            <option value="2ª SERIE D MANHA">2ª SERIE D MANHA</option>
-            <option value="2ª SERIE E MANHA">2ª SERIE E MANHA</option>
-            <option value="2ª SERIE F NOITE">2ª SERIE F NOITE</option>
-            <option value="2ª SERIE G NOITE">2ª SERIE G NOITE</option>
-            <option value="2ª SERIE H NOITE">2ª SERIE H NOITE</option>
-            <option value="2ª SERIE I NOITE">2ª SERIE I NOITE</option>
-            <option value="3ª SERIE A MANHA">3ª SERIE A MANHA</option>
-            <option value="3ª SERIE B MANHA">3ª SERIE B MANHA</option>
-            <option value="3ª SERIE C MANHA">3ª SERIE C MANHA</option>
-            <option value="3ª SERIE D NOITE">3ª SERIE D NOITE</option>
-            <option value="3ª SERIE E NOITE">3ª SERIE E NOITE</option>
-            <option value="3ª SERIE F NOITE">3ª SERIE F NOITE</option>
-            <option value="3ª SERIE G NOITE">3ª SERIE G NOITE</option>
-            <option value="4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA">4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>SALA:</label>
-          <input type="text" id="sala" readonly>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group" onclick="abrirRelogio('hora-retirada')" style="cursor: pointer;">
-          <label for="hora-retirada">RETIRADA:</label>
-          <input type="time" id="hora-retirada" required>
-        </div>
-        <div class="form-group" onclick="abrirRelogio('hora-entrega')" style="cursor: pointer;">
-          <label for="hora-entrega">ENTREGA:</label>
-          <input type="time" id="hora-entrega">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="aula">Aula:</label>
-        <select id="aula">
-          <option>1ª Aula</option>
-          <option>2ª Aula</option>
-          <option>3ª Aula</option>
-          <option>4ª Aula</option>
-          <option>5ª Aula</option>
-          <option>6ª Aula</option>
-        </select>
-      </div>
-
       <div class="conflict-message" id="conflictMessage">
-        Já existe um agendamento para esta turma nesta data e aula!
+        Já existe um agendamento para este local/horário!
       </div>
 
       <div class="buttons-container">
-        <button class="btn btn-cadastrar" onclick="cadastrarAgendamento()">CADASTRAR</button>
+        <button class="btn btn-cadastrar" onclick="agendarEquipamento()">AGENDAR</button>
         <button class="btn btn-limpar" onclick="limparFormulario()">LIMPAR</button>
       </div>
     </div>
@@ -651,7 +597,7 @@
         <button class="btn btn-cadastrar" onclick="exportarParaPDF()">Exportar para PDF</button>
         <button class="btn btn-cadastrar" onclick="exportarParaCSV()">Exportar para CSV</button>
       </div>
-
+      
       <div style="margin-bottom: 20px;">
         <select id="monthSelect"></select>
         <select id="yearSelect"></select>
@@ -695,15 +641,19 @@
     </div>
   </div>
 
-  <!-- Modal para confirmação de exclusão -->
-  <div id="confirmModal" class="modal">
+  <!-- Modal para confirmação de devolução -->
+  <div id="devolucaoModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="fecharModal()">&times;</span>
-      <h3>Confirmar Exclusão</h3>
-      <p id="modalText">Tem certeza que deseja excluir este agendamento?</p>
+      <h3>Finalizar Agendamento</h3>
+      <p id="modalText"></p>
+      <div class="form-group">
+        <label for="horaEntregaModal">Hora da Entrega:</label>
+        <input type="time" id="horaEntregaModal" value="">
+      </div>
       <div class="modal-buttons">
         <button class="btn btn-limpar" onclick="fecharModal()">Cancelar</button>
-        <button class="btn btn-excluir" onclick="confirmarExclusao()">Confirmar</button>
+        <button class="btn btn-entregar" onclick="finalizarAgendamento()">Confirmar</button>
       </div>
     </div>
   </div>
@@ -711,6 +661,156 @@
   <script>
     // Inicializa o jsPDF
     const { jsPDF } = window.jspdf;
+    
+    // Banco de dados simulado para equipamentos
+    const sistemaDB = {
+      equipamentos: {
+        "1": { id: "1", categoria: "TABLET", quantidade_disponivel: 10, localizacao: "LABORATÓRIO 1", status: "Disponível", agendamentos: [] },
+        "2": { id: "2", categoria: "SMARTPHONE", quantidade_disponivel: 15, localizacao: "LABORATÓRIO 1", status: "Disponível", agendamentos: [] },
+        "3": { id: "3", categoria: "CHROMEBOOK", quantidade_disponivel: 5, localizacao: "LABORATÓRIO 2", status: "Disponível", agendamentos: [] },
+        "4": { id: "4", categoria: "NOTEBOOK", quantidade_disponivel: 8, localizacao: "LABORATÓRIO 2", status: "Disponível", agendamentos: [] },
+        "5": { id: "5", categoria: "TABLET", quantidade_disponivel: 12, localizacao: "SALA 1", status: "Disponível", agendamentos: [] }
+      },
+      agendamentos: [],
+      historico: []
+    };
+
+    // Funções de integração fornecidas
+    function verificarDisponibilidade(categoria, quantidade, local) {
+      const equipamentos = sistemaDB.equipamentos;
+      let disponivel = 0;
+
+      for (const id in equipamentos) {
+        const eq = equipamentos[id];
+        if (eq.categoria === categoria && eq.localizacao === local && eq.status === "Disponível") {
+          disponivel += eq.quantidade_disponivel;
+        }
+      }
+      return disponivel >= quantidade;
+    }
+
+    function registrarAgendamento(agendamento) {
+      const { categoria, quantidade, local } = agendamento;
+      let quantidadeRestante = quantidade;
+
+      // Atualiza o estoque
+      for (const id in sistemaDB.equipamentos) {
+        const eq = sistemaDB.equipamentos[id];
+        if (eq.categoria === categoria && eq.localizacao === local && eq.status === "Disponível") {
+          const reservar = Math.min(quantidadeRestante, eq.quantidade_disponivel);
+          eq.quantidade_disponivel -= reservar;
+          eq.status = eq.quantidade_disponivel > 0 ? "Disponível" : "Em uso";
+          quantidadeRestante -= reservar;
+
+          // Vincula o agendamento ao equipamento
+          eq.agendamentos.push({
+            id: agendamento.id,
+            quantidade: reservar,
+            data: agendamento.data
+          });
+
+          if (quantidadeRestante === 0) break;
+        }
+      }
+
+      // Adiciona ao histórico
+      sistemaDB.agendamentos.push(agendamento);
+      sistemaDB.historico.push({
+        tipo: "agendamento",
+        equipamento: categoria,
+        local,
+        quantidade,
+        data: new Date().toISOString(),
+        detalhes: `Agendado por ${agendamento.professor}`
+      });
+
+      salvarBancoDados();
+      atualizarListaEquipamentos(); // Atualiza a UI
+    }
+
+    function finalizarAgendamento(idAgendamento) {
+      const agendamento = sistemaDB.agendamentos.find(ag => ag.id === idAgendamento);
+      if (!agendamento) return;
+
+      // Libera os equipamentos
+      for (const id in sistemaDB.equipamentos) {
+        const eq = sistemaDB.equipamentos[id];
+        const agendamentoEquip = eq.agendamentos.find(ag => ag.id === idAgendamento);
+        
+        if (agendamentoEquip) {
+          eq.quantidade_disponivel += agendamentoEquip.quantidade;
+          eq.status = "Disponível";
+          eq.agendamentos = eq.agendamentos.filter(ag => ag.id !== idAgendamento);
+        }
+      }
+
+      // Atualiza o status do agendamento
+      agendamento.status = "Finalizado";
+      sistemaDB.historico.push({
+        tipo: "devolucao",
+        equipamento: agendamento.categoria,
+        local: agendamento.local,
+        quantidade: agendamento.quantidade,
+        data: new Date().toISOString()
+      });
+
+      salvarBancoDados();
+      atualizarListaAgendamentos(); // Atualiza a UI
+    }
+
+    function validarConflitos(novoAgendamento) {
+      return sistemaDB.agendamentos.some(ag => (
+        ag.local === novoAgendamento.local &&
+        ag.data === novoAgendamento.data &&
+        ag.status !== "Finalizado"
+      ));
+    }
+
+    function agendarEquipamento() {
+      const agendamento = {
+        id: gerarIdUnico(),
+        categoria: document.getElementById("equipamentoAgendamento").value,
+        quantidade: parseInt(document.getElementById("quantidadeAgendamento").value),
+        local: document.getElementById("localAgendamento").value,
+        data: document.getElementById("dataAgendamento").value,
+        professor: document.getElementById("professor").value
+      };
+
+      if (!verificarDisponibilidade(agendamento.categoria, agendamento.quantidade, agendamento.local)) {
+        alert("Quantidade indisponível!");
+        return;
+      }
+
+      if (validarConflitos(agendamento)) {
+        alert("Já existe um agendamento para este local/horário!");
+        return;
+      }
+
+      registrarAgendamento(agendamento);
+      alert("Agendamento realizado com sucesso!");
+    }
+
+    // Funções auxiliares
+    function salvarBancoDados() {
+      localStorage.setItem('sistemaDB', JSON.stringify(sistemaDB));
+    }
+
+    function carregarBancoDados() {
+      const dados = localStorage.getItem('sistemaDB');
+      if (dados) {
+        Object.assign(sistemaDB, JSON.parse(dados));
+      }
+    }
+
+    function atualizarListaEquipamentos() {
+      // Implementação para atualizar a UI com os equipamentos
+      console.log("Atualizando lista de equipamentos...");
+    }
+
+    function atualizarListaAgendamentos() {
+      // Implementação para atualizar a UI com os agendamentos
+      console.log("Atualizando lista de agendamentos...");
+    }
 
     // Dados dos professores
     const teacherEmails = {
@@ -819,6 +919,7 @@
       "6° ANO D MANHA": "Sala 4",
       "6° ANO E TARDE": "Sala 1",
       "6° ANO F TARDE": "Sala 2",
+      
       // 7° ANO
       "7° ANO A TARDE": "Sala 3",
       "7° ANO B TARDE": "Sala 4",
@@ -826,17 +927,20 @@
       "7° ANO D TARDE": "Sala 6",
       "7° ANO E TARDE": "Sala 7",
       "7° ANO F TARDE": "Sala 8",
+      
       // 8° ANO
       "8° ANO A TARDE": "Sala 10",
       "8° ANO B TARDE": "Sala 11",
       "8° ANO C TARDE": "Sala 12",
       "8° ANO D TARDE": "Sala 13",
       "8° ANO E TARDE": "Sala 14",
+      
       // 9° ANO
       "9° ANO A TARDE": "Sala 15",
       "9° ANO B TARDE": "Sala 16",
       "9° ANO C TARDE": "Sala 17",
       "9° ANO D TARDE": "Sala 18",
+      
       // 1ª SÉRIE
       "1ª SERIE A MANHA": "Sala 10",
       "1ª SERIE B MANHA": "Sala 11",
@@ -847,6 +951,7 @@
       "1ª SERIE G TARDE": "Sala 9",
       "1ª SERIE H NOITE": "Sala 9",
       "1ª SERIE I NOITE": "Sala 602",
+      
       // 2ª SÉRIE
       "2ª SERIE A MANHA": "Sala 5",
       "2ª SERIE B MANHA": "Sala 6",
@@ -857,6 +962,7 @@
       "2ª SERIE G NOITE": "Sala 2",
       "2ª SERIE H NOITE": "Sala 3",
       "2ª SERIE I NOITE": "Sala 4",
+      
       // 3ª SÉRIE
       "3ª SERIE A MANHA": "Sala 16",
       "3ª SERIE B MANHA": "Sala 17",
@@ -865,6 +971,7 @@
       "3ª SERIE E NOITE": "Sala 6",
       "3ª SERIE F NOITE": "Sala 7",
       "3ª SERIE G NOITE": "Sala 8",
+      
       // ADMINISTRAÇÃO
       "4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA": "Laboratório 1"
     };
@@ -872,12 +979,10 @@
     // Chave para armazenamento local
     const LOCAL_STORAGE_KEY = 'agendamentos_aparelhos';
     const LOCAL_STORAGE_KEY_EXCLUIDOS = 'agendamentos_excluidos';
-    const LOCAL_STORAGE_KEY_EQUIPAMENTOS = 'equipamentos_cadastrados';
 
     // Carrega agendamentos do localStorage ou inicializa vazio
     let agendamentos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
     let historicoExcluidos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_EXCLUIDOS)) || [];
-    let equipamentosCadastrados = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_EQUIPAMENTOS)) || [];
 
     const monthNames = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -888,20 +993,20 @@
 
     const monthSelect = document.getElementById('monthSelect');
     const yearSelect = document.getElementById('yearSelect');
-
     let selectedDay = null;
     let selectedDate = null;
-    let agendamentoParaExcluir = null;
 
     // Variáveis para o calendário pop-up
     let currentPopupDate = new Date();
     let popupSelectedDate = null;
+    
+    // Variáveis para o modal de devolução
+    let agendamentoParaDevolver = null;
 
     // Função para salvar agendamentos no localStorage
     function salvarAgendamentos() {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(agendamentos));
       localStorage.setItem(LOCAL_STORAGE_KEY_EXCLUIDOS, JSON.stringify(historicoExcluidos));
-      localStorage.setItem(LOCAL_STORAGE_KEY_EQUIPAMENTOS, JSON.stringify(equipamentosCadastrados));
     }
 
     // Função para verificar se uma data está dentro do período de 15 dias
@@ -909,6 +1014,7 @@
       const hoje = new Date();
       const dataAgendamentoObj = new Date(dataAgendamento);
       const diferencaDias = Math.floor((hoje - dataAgendamentoObj) / (1000 * 60 * 60 * 24));
+      
       return diferencaDias <= 15;
     }
 
@@ -921,9 +1027,9 @@
     function verificarConflitoAgendamento(turma, data, aula) {
       const [dia, mes, ano] = data.split('/');
       const key = `${ano}-${mes}`;
-
+      
       if (!agendamentos[key]) return false;
-
+      
       return agendamentos[key].some(agendamento => 
         agendamento.dia === parseInt(dia) && 
         agendamento.turma === turma && 
@@ -933,12 +1039,15 @@
 
     // Funções do formulário
     function atualizarMarca() {
-      const tipo = document.getElementById("aparelho").value;
+      const tipo = document.getElementById("equipamentoAgendamento").value;
       document.getElementById("marca").value = marcas[tipo] || "";
     }
 
     function atualizarSala() {
       const turma = document.getElementById("studentClass").value;
+      const periodo = turma.includes("MANHA") ? "MANHA" : 
+                     turma.includes("TARDE") ? "TARDE" : 
+                     turma.includes("NOITE") ? "NOITE" : "";
       
       // Verifica se a turma existe no mapeamento
       if (salasPorTurmaPeriodo[turma]) {
@@ -946,7 +1055,7 @@
       } else {
         document.getElementById("sala").value = "Sala não definida";
       }
-
+      
       // Verifica se há conflito de agendamento
       verificarConflito();
     }
@@ -978,10 +1087,10 @@
     // Função para verificar conflito quando os campos relevantes mudam
     function verificarConflito() {
       const turma = document.getElementById("studentClass").value;
-      const data = document.getElementById("data-selecionada").value;
+      const data = document.getElementById("dataAgendamento").value;
       const aula = document.getElementById("aula").value;
       const conflictMessage = document.getElementById("conflictMessage");
-
+      
       if (turma && data && aula) {
         const conflito = verificarConflitoAgendamento(turma, data, aula);
         conflictMessage.style.display = conflito ? "block" : "none";
@@ -992,7 +1101,7 @@
 
     // Funções do calendário pop-up
     function initDatepicker() {
-      const datepickerInput = document.getElementById('data-selecionada');
+      const datepickerInput = document.getElementById('dataAgendamento');
       const datepickerPopup = document.getElementById('datepickerPopup');
       const prevMonthBtn = document.getElementById('prevMonth');
       const nextMonthBtn = document.getElementById('nextMonth');
@@ -1032,64 +1141,63 @@
       function renderDatepicker() {
         const year = currentPopupDate.getFullYear();
         const month = currentPopupDate.getMonth();
-
+        
         datepickerMonthYear.textContent = `${monthNames[month]} ${year}`;
-
+        
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const daysInPrevMonth = new Date(year, month, 0).getDate();
-
+        
         let daysHtml = '';
-
         const today = new Date();
-
+        
         // Dias do mês anterior (se necessário)
         for (let i = 0; i < firstDay; i++) {
           daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${daysInPrevMonth - firstDay + i + 1}</div>`;
         }
-
+        
         // Dias do mês atual
         for (let i = 1; i <= daysInMonth; i++) {
           const date = new Date(year, month, i);
           const isToday = date.toDateString() === today.toDateString();
           const isSelected = popupSelectedDate && date.toDateString() === popupSelectedDate.toDateString();
           const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
+          
           let dayClass = 'datepicker-day';
           if (isToday) dayClass += ' datepicker-today';
           if (isSelected) dayClass += ' selected';
           if (isPast) dayClass += ' disabled';
-
+          
           daysHtml += `<div class="${dayClass}" data-day="${i}">${i}</div>`;
         }
-
+        
         // Dias do próximo mês (se necessário)
         const totalCells = 42; // 6 semanas * 7 dias
         const remainingCells = totalCells - (firstDay + daysInMonth);
         for (let i = 1; i <= remainingCells; i++) {
           daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${i}</div>`;
         }
-
+        
         datepickerDays.innerHTML = daysHtml;
-
+        
         // Adiciona eventos aos dias
         document.querySelectorAll('.datepicker-day:not(.disabled)').forEach(day => {
           day.addEventListener('click', () => {
             const dayNum = parseInt(day.getAttribute('data-day'));
             popupSelectedDate = new Date(year, month, dayNum);
-
+            
             // Atualiza o campo de data
             const formattedDay = String(dayNum).padStart(2, '0');
             const formattedMonth = String(month + 1).padStart(2, '0');
             selectedDate = `${formattedDay}/${formattedMonth}/${year}`;
             datepickerInput.value = selectedDate;
-
+            
             // Fecha o popup
             datepickerPopup.classList.remove('active');
-
+            
             // Atualiza o calendário principal
             updateMainCalendarSelection(year, month + 1, dayNum);
-
+            
             // Verifica se há conflito
             verificarConflito();
           });
@@ -1104,11 +1212,11 @@
         monthSelect.value = month - 1;
         renderCalendarBody(year, month - 1);
       }
-
+      
       // Encontra e seleciona o dia no calendário principal
       const calendarBody = document.getElementById('calendarBody');
       const cells = calendarBody.querySelectorAll('td');
-
+      
       cells.forEach(cell => {
         if (parseInt(cell.textContent) === day) {
           // Remove seleção anterior
@@ -1119,7 +1227,7 @@
               selectedDay.classList.add('disponivel');
             }
           }
-
+          
           // Adiciona nova seleção
           cell.classList.add('selecionado');
           cell.classList.remove('disponivel');
@@ -1159,7 +1267,7 @@
     function renderHistorico(agendamentosDoMes) {
       const historicoBody = document.getElementById('historico-body');
       historicoBody.innerHTML = '';
-
+      
       // Adiciona agendamentos atuais
       agendamentosDoMes.forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega, id }) => {
         const row = document.createElement('tr');
@@ -1167,26 +1275,25 @@
         const formattedDay = String(dia).padStart(2, '0');
         const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0');
         const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
-
         const dataAgendamento = formatarDataParaComparacao(dia, parseInt(monthSelect.value) + 1, yearSelect.value);
-
+        
         // Adiciona classe de status de entrega
         if (horaEntrega) {
           row.classList.add('entregue');
         } else {
           row.classList.add('nao-entregue');
         }
-
+        
         // Verifica se o agendamento está dentro do período de 15 dias
         if (estaDentroDoPeriodo(dataAgendamento)) {
           row.classList.add('recente');
         }
-
+        
         // Verifica se o agendamento está expirado (mais de 15 dias)
         if (!estaDentroDoPeriodo(dataAgendamento)) {
           row.classList.add('expirado');
         }
-
+        
         row.innerHTML = `
           <td>${formattedDate}</td>
           <td>${turma}</td>
@@ -1196,14 +1303,13 @@
           <td>${aula}</td>
           <td>${horaEntrega || 'Não entregue'}</td>
           <td>
-            <button class="btn btn-excluir" onclick="abrirModalExclusao('${id}')"
-              ${!estaDentroDoPeriodo(dataAgendamento) ? 'disabled' : ''}>EXCLUIR</button>
+            ${!horaEntrega ? `<button class="btn btn-entregar" onclick="abrirModalDevolucao('${id}')">ENTREGAR</button>` : ''}
+            <button class="btn btn-excluir" onclick="excluirAgendamento('${id}')" ${!estaDentroDoPeriodo(dataAgendamento) ? 'disabled' : ''}>EXCLUIR</button>
           </td>
         `;
-
         historicoBody.appendChild(row);
       });
-
+      
       // Adiciona agendamentos excluídos (apenas do mês atual)
       const currentMonthKey = `${yearSelect.value}-${String(parseInt(monthSelect.value) + 1).padStart(2, '0')}`;
       historicoExcluidos
@@ -1211,23 +1317,22 @@
         .forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega, dataExclusao }) => {
           const row = document.createElement('tr');
           row.classList.add('excluido');
-
+          
           const formattedDay = String(dia).padStart(2, '0');
           const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0');
           const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
-
           const dataAgendamento = formatarDataParaComparacao(dia, parseInt(monthSelect.value) + 1, yearSelect.value);
-
+          
           // Verifica se o agendamento está dentro do período de 15 dias
           if (estaDentroDoPeriodo(dataAgendamento)) {
             row.classList.add('recente');
           }
-
+          
           // Verifica se o agendamento está expirado (mais de 15 dias)
           if (!estaDentroDoPeriodo(dataAgendamento)) {
             row.classList.add('expirado');
           }
-
+          
           row.innerHTML = `
             <td>${formattedDate}</td>
             <td>${turma}</td>
@@ -1238,7 +1343,6 @@
             <td>${horaEntrega || 'Não entregue'}</td>
             <td>EXCLUÍDO</td>
           `;
-
           historicoBody.appendChild(row);
         });
     }
@@ -1256,7 +1360,7 @@
 
       let day = 1;
       let currentRow = document.createElement('tr');
-
+      
       // Células vazias para os dias do mês anterior
       for (let i = 0; i < firstDay; i++) {
         const emptyCell = document.createElement('td');
@@ -1312,35 +1416,35 @@
 
     async function cadastrarAgendamento() {
       const professor = document.getElementById("professor").value;
-      const aparelho = document.getElementById("aparelho").value;
+      const aparelho = document.getElementById("equipamentoAgendamento").value;
       const turma = document.getElementById("studentClass").value;
-      const numAparelhos = document.getElementById("numero-aparelhos").value;
+      const numAparelhos = document.getElementById("quantidadeAgendamento").value;
       const aula = document.getElementById("aula").value;
       const sala = document.getElementById("sala").value;
       const horaRetirada = document.getElementById("hora-retirada").value;
       const horaEntrega = document.getElementById("hora-entrega").value;
-
+      
       if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate || !sala || !horaRetirada) {
         alert("Preencha todos os campos obrigatórios do formulário antes de agendar!");
         return;
       }
-
+      
       // Verifica se já existe agendamento para esta turma, data e aula
       if (verificarConflitoAgendamento(turma, selectedDate, aula)) {
         alert("Já existe um agendamento para esta turma nesta data e aula!");
         return;
       }
-
+      
       const [dia, mes, ano] = selectedDate.split('/');
       const key = `${ano}-${mes}`;
-
+      
       if (!agendamentos[key]) {
         agendamentos[key] = [];
       }
-
+      
       const id = gerarIdUnico();
-
-      const novoAgendamento = {
+      
+      const novoAgendamento = { 
         id,
         dia: parseInt(dia),
         aparelho,
@@ -1352,103 +1456,121 @@
         horaRetirada,
         horaEntrega
       };
-
+      
       agendamentos[key].push(novoAgendamento);
-
-      // Adiciona os equipamentos ao cadastro de equipamentos
-      for (let i = 0; i < numAparelhos; i++) {
-        equipamentosCadastrados.push({
-          id: gerarIdUnico(),
-          tipo: aparelho,
-          marca: marcas[aparelho],
-          status: 'Em uso',
-          professor,
-          turma,
-          dataAgendamento: selectedDate,
-          horaRetirada,
-          agendamentoId: id,
-          excluido: false
-        });
-      }
-
+      
       // Salva no localStorage
       salvarAgendamentos();
-
+      
       // Atualiza o calendário e o histórico
       renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
-
+      
       // Limpa a seleção
       if (selectedDay) {
         selectedDay.classList.remove('selecionado');
         selectedDay.classList.add('agendado');
         selectedDay = null;
       }
-
       selectedDate = null;
-      document.getElementById('data-selecionada').value = '';
-      popupSelectedDate = null;
-
+      document.getElementById('dataAgendamento').value = '';
+      
       // Gera documento PDF
       gerarDocumentoPDF(novoAgendamento);
-
+      
       alert("Agendamento cadastrado com sucesso!");
     }
 
-    function abrirModalExclusao(id) {
-      // Encontra o agendamento
-      for (const key in agendamentos) {
-        const agendamento = agendamentos[key].find(ag => ag.id === id);
-        if (agendamento) {
-          agendamentoParaExcluir = agendamento;
-          document.getElementById('modalText').textContent = 
-            `Tem certeza que deseja excluir o agendamento de ${agendamento.numAparelhos} ${agendamento.aparelho}(s) para a turma ${agendamento.turma}?`;
-          document.getElementById('confirmModal').style.display = 'block';
-          break;
-        }
+    function excluirAgendamento(id) {
+      if (!confirm("Tem certeza que deseja excluir este agendamento?")) {
+        return;
       }
-    }
-
-    function fecharModal() {
-      document.getElementById('confirmModal').style.display = 'none';
-      agendamentoParaExcluir = null;
-    }
-
-    function confirmarExclusao() {
-      if (!agendamentoParaExcluir) return;
-
+      
       // Encontra e remove o agendamento
       for (const key in agendamentos) {
-        const index = agendamentos[key].findIndex(ag => ag.id === agendamentoParaExcluir.id);
+        const index = agendamentos[key].findIndex(ag => ag.id === id);
         if (index !== -1) {
           const [agendamentoExcluido] = agendamentos[key].splice(index, 1);
           
           // Adiciona ao histórico de excluídos com a data de exclusão
-          const [dia, mes, ano] = key.split('-');
+          const [ano, mes] = key.split('-');
           historicoExcluidos.push({
             ...agendamentoExcluido,
             mesAno: key,
             dataExclusao: new Date().toISOString()
           });
-
-          // Marca os equipamentos como excluídos
-          equipamentosCadastrados.forEach(equip => {
-            if (equip.agendamentoId === agendamentoParaExcluir.id) {
-              equip.excluido = true;
-              equip.dataExclusao = new Date().toISOString();
-            }
-          });
-
+          
           // Salva no localStorage
           salvarAgendamentos();
-
+          
           // Atualiza a exibição
           renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
           break;
         }
       }
-
+    }
+    
+    // Funções para controle de devolução
+    function abrirModalDevolucao(id) {
+      // Encontra o agendamento
+      for (const key in agendamentos) {
+        const agendamento = agendamentos[key].find(ag => ag.id === id);
+        if (agendamento) {
+          agendamentoParaDevolver = agendamento;
+          
+          // Preenche o modal
+          document.getElementById('modalText').textContent = 
+            `Confirmar devolução de ${agendamento.numAparelhos} ${agendamento.aparelho}(s) pelo professor ${agendamento.professor}?`;
+          
+          // Define a hora atual como padrão
+          const now = new Date();
+          const horaAtual = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+          document.getElementById('horaEntregaModal').value = horaAtual;
+          
+          // Mostra o modal
+          document.getElementById('devolucaoModal').style.display = 'block';
+          break;
+        }
+      }
+    }
+    
+    function fecharModal() {
+      document.getElementById('devolucaoModal').style.display = 'none';
+      agendamentoParaDevolver = null;
+    }
+    
+    function finalizarAgendamento() {
+      if (!agendamentoParaDevolver) return;
+      
+      const horaEntrega = document.getElementById('horaEntregaModal').value;
+      if (!horaEntrega) {
+        alert("Informe a hora da entrega!");
+        return;
+      }
+      
+      // Atualiza o agendamento com a hora de entrega
+      const [dia, mes, ano] = [
+        agendamentoParaDevolver.dia,
+        parseInt(monthSelect.value) + 1,
+        yearSelect.value
+      ];
+      const key = `${ano}-${String(mes).padStart(2, '0')}`;
+      
+      const index = agendamentos[key].findIndex(ag => ag.id === agendamentoParaDevolver.id);
+      if (index !== -1) {
+        agendamentos[key][index].horaEntrega = horaEntrega;
+        
+        // Salva no localStorage
+        salvarAgendamentos();
+        
+        // Atualiza a exibição
+        renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
+        
+        // Gera documento PDF
+        gerarDocumentoPDF(agendamentos[key][index]);
+      }
+      
       fecharModal();
-      alert("Agendamento excluído com sucesso!");
+      alert("Devolução registrada com sucesso!");
     }
 
     // Função para gerar documento PDF
@@ -1465,33 +1587,33 @@
       doc.setTextColor(0, 0, 0);
       doc.text("ESCOLA ESTADUAL - NOME DA ESCOLA", 105, 30, null, null, 'center');
       doc.text("Departamento de Tecnologia", 105, 36, null, null, 'center');
-
+      
       // Linha divisória
       doc.setDrawColor(10, 36, 99);
       doc.setLineWidth(0.5);
       doc.line(20, 42, 190, 42);
-
+      
       // Dados do agendamento
       doc.setFontSize(12);
       doc.text("PROFESSOR: " + agendamento.professor, 20, 50);
       doc.text("EMAIL: " + teacherEmails[agendamento.professor] || "Não informado", 20, 58);
+      
       doc.text("TURMA: " + agendamento.turma, 20, 66);
       doc.text("SALA: " + agendamento.sala, 20, 74);
+      
       doc.text("EQUIPAMENTO: " + agendamento.aparelho + " - " + marcas[agendamento.aparelho], 20, 82);
       doc.text("QUANTIDADE: " + agendamento.numAparelhos, 20, 90);
-
-      const formattedDay = agendamento.dia.toString().padStart(2, '0');
-      const formattedMonth = (parseInt(monthSelect.value) + 1).toString().padStart(2, '0');
-      const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
       
-      doc.text("DATA: " + formattedDate, 20, 98);
+      const dataFormatada = `${agendamento.dia.toString().padStart(2, '0')}/${(parseInt(monthSelect.value) + 1).toString().padStart(2, '0')}/${yearSelect.value}`;
+      doc.text("DATA: " + dataFormatada, 20, 98);
       doc.text("AULA: " + agendamento.aula, 20, 106);
+      
       doc.text("HORA DE RETIRADA: " + agendamento.horaRetirada, 20, 114);
       doc.text("HORA DE ENTREGA: " + (agendamento.horaEntrega || "Não entregue"), 20, 122);
-
+      
       // Linha divisória
       doc.line(20, 130, 190, 130);
-
+      
       // Termos e condições
       doc.setFontSize(10);
       doc.text("DECLARO QUE RECEBI O(S) EQUIPAMENTO(S) EM PERFEITO ESTADO E ME COMPROMETO A:", 20, 138);
@@ -1499,69 +1621,119 @@
       doc.text("- Zelar pela conservação e segurança do(s) equipamento(s);", 25, 154);
       doc.text("- Devolver o(s) equipamento(s) no prazo combinado;", 25, 162);
       doc.text("- Comunicar imediatamente qualquer problema ou dano ocorrido.", 25, 170);
-
-      // Lista de equipamentos
-      doc.setFontSize(12);
-      doc.text("EQUIPAMENTOS RETIRADOS:", 20, 190);
       
-      let yPos = 198;
-      for (let i = 1; i <= agendamento.numAparelhos; i++) {
-        doc.text(`${i}. ${agendamento.aparelho} - ${marcas[agendamento.aparelho]}`, 25, yPos);
-        yPos += 8;
-      }
-
       // Assinaturas
       doc.setFontSize(12);
-      doc.text("___________________________", 50, 250);
-      doc.text("Assinatura do Professor", 105, 258, null, null, 'center');
-
+      doc.text("__________________________________________", 50, 190);
+      doc.text("Assinatura do Professor", 105, 198, null, null, 'center');
+      
+      
       // Data e hora de geração
       const agora = new Date();
       doc.setFontSize(8);
       doc.setTextColor(100, 100, 100);
       doc.text(`Documento gerado em: ${agora.toLocaleString()}`, 105, 285, null, null, 'center');
-
+      
       // Salva o PDF
-      const nomeArquivo = `Termo_${agendamento.professor.replace(/\s+/g, '_')}_${formattedDate.replace(/\//g, '-')}.pdf`;
+      const nomeArquivo = `Termo_${agendamento.professor.replace(/\s+/g, '_')}_${dataFormatada.replace(/\//g, '-')}.pdf`;
       doc.save(nomeArquivo);
     }
-
+    
     // Função para exportar todos os agendamentos para PDF
     function exportarParaPDF() {
+      const doc = new jsPDF();
+      
+      // Cabeçalho
+      doc.setFontSize(18);
+      doc.setTextColor(10, 36, 99);
+      doc.text("RELATÓRIO DE AGENDAMENTOS", 105, 20, null, null, 'center');
+      
+      doc.setFontSize(12);
+      doc.text(`Período: ${monthNames[parseInt(monthSelect.value)]} de ${yearSelect.value}`, 105, 30, null, null, 'center');
+      
+      // Tabela de agendamentos
+      const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
+      
+      if (agendamentosDoMes.length === 0) {
+        doc.setFontSize(12);
+        doc.text("Nenhum agendamento encontrado para este período.", 105, 40, null, null, 'center');
+      } else {
+        // Cabeçalhos da tabela
+        const headers = [
+          "Data", 
+          "Turma", 
+          "Qtd", 
+          "Equipamento", 
+          "Professor", 
+          "Aula", 
+          "Entrega"
+        ];
+        
+        // Dados da tabela
+        const data = agendamentosDoMes.map(ag => {
+          const diaFormatado = ag.dia.toString().padStart(2, '0');
+          const mesFormatado = (parseInt(monthSelect.value) + 1).toString().padStart(2, '0');
+          return [
+            `${diaFormatado}/${mesFormatado}/${yearSelect.value}`,
+            ag.turma,
+            ag.numAparelhos.toString(),
+            ag.aparelho,
+            ag.professor,
+            ag.aula,
+            ag.horaEntrega || "Não entregue"
+          ];
+        });
+        
+        // Adiciona a tabela ao PDF
+        doc.autoTable({
+          head: [headers],
+          body: data,
+          startY: 40,
+          theme: 'grid',
+          headStyles: {
+            fillColor: [10, 36, 99],
+            textColor: 255,
+            fontStyle: 'bold'
+          },
+          alternateRowStyles: {
+            fillColor: [240, 240, 240]
+          },
+          margin: { top: 40 }
+        });
+      }
+      
+      // Data e hora de geração
+      const agora = new Date();
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      doc.text(`Relatório gerado em: ${agora.toLocaleString()}`, 105, 285, null, null, 'center');
+      
+      // Salva o PDF
+      const nomeArquivo = `Relatorio_Agendamentos_${monthNames[parseInt(monthSelect.value)]}_${yearSelect.value}.pdf`;
+      doc.save(nomeArquivo);
+    }
+    
+    // Função para exportar para CSV
+    function exportarParaCSV() {
       const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
       
       if (agendamentosDoMes.length === 0) {
         alert("Nenhum agendamento encontrado para este período.");
         return;
       }
-
-      // Gera um PDF para cada agendamento
-      agendamentosDoMes.forEach(agendamento => {
-        gerarDocumentoPDF(agendamento);
-      });
-    }
-
-    // Função para exportar para CSV
-    function exportarParaCSV() {
-      const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
-
-      if (agendamentosDoMes.length === 0) {
-        alert("Nenhum agendamento encontrado para este período.");
-        return;
-      }
-
+      
       // Cabeçalhos
       let csv = "Data,Turma,Quantidade,Equipamento,Professor,Aula,Hora Retirada,Hora Entrega,Sala\n";
-
+      
       // Dados
       agendamentosDoMes.forEach(ag => {
         const diaFormatado = ag.dia.toString().padStart(2, '0');
         const mesFormatado = (parseInt(monthSelect.value) + 1).toString().padStart(2, '0');
         const data = `${diaFormatado}/${mesFormatado}/${yearSelect.value}`;
-
+        
         csv += `"${data}","${ag.turma}","${ag.numAparelhos}","${ag.aparelho}","${ag.professor}","${ag.aula}","${ag.horaRetirada}","${ag.horaEntrega || ''}","${ag.sala}"\n`;
       });
-
+      
       // Cria o arquivo CSV
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -1577,16 +1749,16 @@
     function limparFormulario() {
       document.getElementById("professor").value = "Selecione";
       document.getElementById("email-professor").value = "";
-      document.getElementById("aparelho").value = "";
+      document.getElementById("equipamentoAgendamento").value = "";
       document.getElementById("marca").value = "";
-      document.getElementById("numero-aparelhos").value = "1";
+      document.getElementById("quantidadeAgendamento").value = "1";
       document.getElementById("studentClass").value = "";
       document.getElementById("sala").value = "";
       document.getElementById("hora-retirada").value = "";
       document.getElementById("hora-entrega").value = "";
       document.getElementById("aula").value = "1ª Aula";
       document.getElementById("conflictMessage").style.display = "none";
-
+      
       // Limpa a seleção de data
       if (selectedDay) {
         selectedDay.classList.remove('selecionado');
@@ -1596,13 +1768,13 @@
         }
         selectedDay = null;
       }
-
       selectedDate = null;
-      document.getElementById('data-selecionada').value = '';
+      document.getElementById('dataAgendamento').value = '';
       popupSelectedDate = null;
     }
 
     // Inicialização
+    carregarBancoDados();
     gerarOpcoesProfessores();
     populateMonthYearSelectors();
     renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
@@ -1611,7 +1783,7 @@
     // Adiciona listeners para verificar conflito quando os campos mudam
     document.getElementById("studentClass").addEventListener("change", verificarConflito);
     document.getElementById("aula").addEventListener("change", verificarConflito);
-    document.getElementById("data-selecionada").addEventListener("change", verificarConflito);
+    document.getElementById("dataAgendamento").addEventListener("change", verificarConflito);
 
     monthSelect.addEventListener('change', () => {
       renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
