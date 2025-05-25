@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AGENDAMENTO DE APARELHOS</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <style>
     :root {
       --azul-escuro: #0a2463;
@@ -23,8 +21,6 @@
       --fundo-cinza: #f0f0f0;
       --entregue: #d4edda;
       --nao-entregue: #f8d7da;
-      --expirado: #fff3cd;
-      --recente: #ffebee;
     }
     
     * {
@@ -239,53 +235,35 @@
     .historico-table tr.nao-entregue {
       background-color: var(--nao-entregue);
     }
-    
-    .historico-table tr.expirado {
-      background-color: var(--expirado);
-    }
-    
-    .historico-table tr.recente {
-      background-color: var(--recente);
-    }
 
     /* Definindo larguras específicas para cada coluna */
     .historico-table th:nth-child(1),
     .historico-table td:nth-child(1) {
-      width: 10%;
+      width: 15%;
     }
 
     .historico-table th:nth-child(2),
     .historico-table td:nth-child(2) {
-      width: 15%;
+      width: 20%;
     }
 
     .historico-table th:nth-child(3),
     .historico-table td:nth-child(3) {
-      width: 8%;
+      width: 10%;
     }
 
     .historico-table th:nth-child(4),
     .historico-table td:nth-child(4) {
-      width: 12%;
+      width: 15%;
     }
 
     .historico-table th:nth-child(5),
     .historico-table td:nth-child(5) {
-      width: 20%;
+      width: 25%;
     }
 
     .historico-table th:nth-child(6),
     .historico-table td:nth-child(6) {
-      width: 10%;
-    }
-    
-    .historico-table th:nth-child(7),
-    .historico-table td:nth-child(7) {
-      width: 10%;
-    }
-    
-    .historico-table th:nth-child(8),
-    .historico-table td:nth-child(8) {
       width: 15%;
     }
 
@@ -350,15 +328,6 @@
 
     .btn-excluir:active {
       box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
-    }
-    
-    .btn-entregar {
-      background-color: var(--verde);
-      color: white;
-    }
-
-    .btn-entregar:hover {
-      background-color: #3d8b40;
     }
 
     /* Estilos para o calendário pop-up */
@@ -454,56 +423,8 @@
       text-align: center;
       display: none;
     }
-    
-    /* Estilos para o modal de devolução */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1001;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    .modal-content {
-      background-color: #fefefe;
-      margin: 15% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      border-radius: 8px;
-      width: 80%;
-      max-width: 500px;
-    }
-
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: black;
-    }
-
-    .modal-buttons {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    
-    /* Estilo para o botão de exportar */
-    .export-buttons {
-      margin-bottom: 15px;
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
   </style>
+
 </head>
 <body>
   <h2>AGENDAMENTO DE APARELHOS</h2>
@@ -525,7 +446,7 @@
       <div class="form-row">
         <div class="form-group">
           <label>APARELHO:</label>
-          <select id="equipamentoAgendamento" onchange="atualizarMarca()">
+          <select id="aparelho" onchange="atualizarMarca()">
             <option value="">Selecione</option>
             <option value="TABLET">TABLET</option>
             <option value="SMARTPHONE">SMARTPHONE</option>
@@ -543,33 +464,12 @@
       <div class="form-row">
         <div class="form-group">
           <label>N° DE APARELHOS:</label>
-          <input type="number" id="quantidadeAgendamento" min="1" value="1">
+          <input type="number" id="numero-aparelhos" min="1" value="1">
         </div>
         
-        <div class="form-group">
-          <label>LOCAL:</label>
-          <select id="localAgendamento">
-            <option value="">Selecione</option>
-            <option value="LABORATÓRIO 1">LABORATÓRIO 1</option>
-            <option value="LABORATÓRIO 2">LABORATÓRIO 2</option>
-            <option value="SALA 1">SALA 1</option>
-            <option value="SALA 2">SALA 2</option>
-            <option value="SALA 3">SALA 3</option>
-            <option value="SALA 4">SALA 4</option>
-            <option value="SALA 5">SALA 5</option>
-            <option value="SALA 6">SALA 6</option>
-            <option value="SALA 7">SALA 7</option>
-            <option value="SALA 8">SALA 8</option>
-            <option value="SALA 9">SALA 9</option>
-            <option value="SALA 10">SALA 10</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-row">
         <div class="form-group datepicker-container">
           <label>DATA:</label>
-          <input type="text" id="dataAgendamento" class="datepicker-input" readonly placeholder="Clique para selecionar">
+          <input type="text" id="data-selecionada" class="datepicker-input" readonly placeholder="Clique para selecionar">
           <div class="datepicker-popup" id="datepickerPopup">
             <div class="datepicker-header">
               <button class="datepicker-nav" id="prevMonth">&lt;</button>
@@ -582,22 +482,101 @@
         </div>
       </div>
 
+      <div class="form-row">
+        <div class="form-group">
+          <label>SELECIONE A TURMA:</label>
+          <select id="studentClass" class="form-control" required onchange="atualizarSala()">
+            <option value="">Selecione a turma</option>
+            <option value="6° ANO A MANHA">6° ANO A MANHA</option>
+            <option value="6° ANO B MANHA">6° ANO B MANHA</option>
+            <option value="6° ANO C MANHA">6° ANO C MANHA</option>
+            <option value="6° ANO D MANHA">6° ANO D MANHA</option>
+            <option value="6° ANO E TARDE">6° ANO E TARDE</option>
+            <option value="6° ANO F TARDE">6° ANO F TARDE</option>
+            <option value="7° ANO A TARDE">7° ANO A TARDE</option>
+            <option value="7° ANO B TARDE">7° ANO B TARDE</option>
+            <option value="7° ANO C TARDE">7° ANO C TARDE</option>
+            <option value="7° ANO D TARDE">7° ANO D TARDE</option>
+            <option value="7° ANO E TARDE">7° ANO E TARDE</option>
+            <option value="7° ANO F TARDE">7° ANO F TARDE</option>
+            <option value="8° ANO A TARDE">8° ANO A TARDE</option>
+            <option value="8° ANO B TARDE">8° ANO B TARDE</option>
+            <option value="8° ANO C TARDE">8° ANO C TARDE</option>
+            <option value="8° ANO D TARDE">8° ANO D TARDE</option>
+            <option value="8° ANO E TARDE">8° ANO E TARDE</option>
+            <option value="9° ANO A TARDE">9° ANO A TARDE</option>
+            <option value="9° ANO B TARDE">9° ANO B TARDE</option>
+            <option value="9° ANO C TARDE">9° ANO C TARDE</option>
+            <option value="9° ANO D TARDE">9° ANO D TARDE</option>
+            <option value="1ª SERIE A MANHA">1ª SERIE A MANHA</option>
+            <option value="1ª SERIE B MANHA">1ª SERIE B MANHA</option>
+            <option value="1ª SERIE C MANHA">1ª SERIE C MANHA</option>
+            <option value="1ª SERIE D MANHA">1ª SERIE D MANHA</option>
+            <option value="1ª SERIE E MANHA">1ª SERIE E MANHA</option>
+            <option value="1ª SERIE F MANHA">1ª SERIE F MANHA</option>
+            <option value="1ª SERIE G TARDE">1ª SERIE G TARDE</option>
+            <option value="1ª SERIE H NOITE">1ª SERIE H NOITE</option>
+            <option value="1ª SERIE I NOITE">1ª SERIE I NOITE</option>
+            <option value="2ª SERIE A MANHA">2ª SERIE A MANHA</option>
+            <option value="2ª SERIE B MANHA">2ª SERIE B MANHA</option>
+            <option value="2ª SERIE C MANHA">2ª SERIE C MANHA</option>
+            <option value="2ª SERIE D MANHA">2ª SERIE D MANha</option>
+            <option value="2ª SERIE E MANHA">2ª SERIE E MANHA</option>
+            <option value="2ª SERIE F NOITE">2ª SERIE F NOITE</option>
+            <option value="2ª SERIE G NOITE">2ª SERIE G NOITE</option>
+            <option value="2ª SERIE H NOITE">2ª SERIE H NOITE</option>
+            <option value="2ª SERIE I NOITE">2ª SERIE I NOITE</option>
+            <option value="3ª SERIE A MANHA">3ª SERIE A MANHA</option>
+            <option value="3ª SERIE B MANHA">3ª SERIE B MANHA</option>
+            <option value="3ª SERIE C MANHA">3ª SERIE C MANHA</option>
+            <option value="3ª SERIE D NOITE">3ª SERIE D NOITE</option>
+            <option value="3ª SERIE E NOITE">3ª SERIE E NOITE</option>
+            <option value="3ª SERIE F NOITE">3ª SERIE F NOITE</option>
+            <option value="3ª SERIE G NOITE">3ª SERIE G NOITE</option>
+            <option value="4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA">4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>SALA:</label>
+          <input type="text" id="sala" readonly>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" onclick="abrirRelogio('hora-retirada')" style="cursor: pointer;">
+          <label for="hora-retirada">RETIRADA:</label>
+          <input type="time" id="hora-retirada" required>
+        </div>
+        <div class="form-group" onclick="abrirRelogio('hora-entrega')" style="cursor: pointer;">
+          <label for="hora-entrega">ENTREGA:</label>
+          <input type="time" id="hora-entrega">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="aula">Aula:</label>
+        <select id="aula">
+          <option>1ª Aula</option>
+          <option>2ª Aula</option>
+          <option>3ª Aula</option>
+          <option>4ª Aula</option>
+          <option>5ª Aula</option>
+          <option>6ª Aula</option>
+        </select>
+      </div>
+
       <div class="conflict-message" id="conflictMessage">
-        Já existe um agendamento para este local/horário!
+        Já existe um agendamento para esta turma nesta data e aula!
       </div>
 
       <div class="buttons-container">
-        <button class="btn btn-cadastrar" onclick="agendarEquipamento()">AGENDAR</button>
+        <button class="btn btn-cadastrar" onclick="cadastrarAgendamento()">CADASTRAR</button>
         <button class="btn btn-limpar" onclick="limparFormulario()">LIMPAR</button>
       </div>
     </div>
 
     <div class="calendar-container">
-      <div class="export-buttons">
-        <button class="btn btn-cadastrar" onclick="exportarParaPDF()">Exportar para PDF</button>
-        <button class="btn btn-cadastrar" onclick="exportarParaCSV()">Exportar para CSV</button>
-      </div>
-      
       <div style="margin-bottom: 20px;">
         <select id="monthSelect"></select>
         <select id="yearSelect"></select>
@@ -641,22 +620,7 @@
     </div>
   </div>
 
-  <!-- Modal para confirmação de devolução -->
-  <div id="devolucaoModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="fecharModal()">&times;</span>
-      <h3>Finalizar Agendamento</h3>
-      <p id="modalText"></p>
-      <div class="form-group">
-        <label for="horaEntregaModal">Hora da Entrega:</label>
-        <input type="time" id="horaEntregaModal" value="">
-      </div>
-      <div class="modal-buttons">
-        <button class="btn btn-limpar" onclick="fecharModal()">Cancelar</button>
-        <button class="btn btn-entregar" onclick="finalizarAgendamento()">Confirmar</button>
-      </div>
-    </div>
-  </div>
+
 
   <script>
     // Inicializa o jsPDF
