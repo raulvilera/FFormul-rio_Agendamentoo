@@ -140,11 +140,10 @@
       background-color: var(--branco);
     }
 
-    .calendar {
+        .calendar {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
-      margin-bottom: 0.4cm;
     }
 
     .calendar th,
@@ -153,49 +152,44 @@
       height: 40px;
       text-align: center;
       vertical-align: middle;
-      border: 1px solid var(--branco-brilhante);
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       background-color: var(--branco);
       padding: 10px;
+      border: 1px solid var(--borda-brilhante);
     }
 
     .calendar th {
       background-color: var(--azul-claro);
-      border: 1px solid var(--branco-brilhante);
+      border: 1px solid var(--borda-brilhante);
     }
 
     .calendar td.disponivel {
       background-color: var(--verde-disponivel);
       color: white;
-      cursor: default;
-      border: 1px solid var(--branco-brilhante);
+      cursor: pointer;
     }
 
     .calendar td.agendado {
       background-color: var(--azul-agendado);
       color: white;
-      border: 1px solid var(--branco-brilhante);
-      cursor: default;
     }
 
     .calendar td.selecionado {
       background-color: var(--azul-selecionado);
       color: white;
       font-weight: bold;
-      border: 1px solid var(--branco-brilhante);
-      cursor: default;
     }
 
     .calendar td.indisponivel {
       background-color: #ccc;
       cursor: not-allowed;
       color: #666;
-      border: 1px solid var(--branco-brilhante);
     }
 
     .calendar td:hover:not(.indisponivel) {
       opacity: 0.8;
+      transform: scale(1.05);
     }
 
     /* Estilos para a tabela de histórico */
