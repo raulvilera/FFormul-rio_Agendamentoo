@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -629,6 +631,16 @@
         </div>
       </div>
 
+      <!-- CAMPO AULA ADICIONADO -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>AULA:</label>
+          <select id="aula" disabled>
+            <option value="">Selecione a turma primeiro</option>
+          </select>
+        </div>
+      </div>
+
       <div class="conflict-message" id="conflictMessage">
         Já existe um agendamento para este local/horário!
       </div>
@@ -813,8 +825,6 @@
       ));
     }
 
-
-    // FUNÇÃO ALTERADA - AQUI ESTÁ A MUDANÇA SOLICITADA
     function agendarEquipamento() {
       const professor = document.getElementById("professor").value;
       const aparelho = document.getElementById("equipamentoAgendamento").value;
@@ -822,8 +832,9 @@
       const numAparelhos = parseInt(document.getElementById("quantidadeAgendamento").value);
       const data = document.getElementById("dataAgendamento").value;
       const sala = document.getElementById("sala").value;
+      const aula = document.getElementById("aula").value;
       
-      if (!professor || professor === "Selecione" || !aparelho || !turma || !numAparelhos || !data || !sala) {
+      if (!professor || professor === "Selecione" || !aparelho || !turma || !numAparelhos || !data || !sala || !aula) {
         alert("Preencha todos os campos obrigatórios do formulário antes de agendar!");
         return;
       }
@@ -844,7 +855,7 @@
         professor,
         turma,
         numAparelhos,
-        aula: "1ª Aula", // Valor padrão já que não temos o campo aula no formulário
+        aula,
         sala,
         horaRetirada: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) // Hora atual como padrão
       };
@@ -882,12 +893,10 @@
     }
 
     function atualizarListaEquipamentos() {
-      // Implementação para atualizar a UI com os equipamentos
       console.log("Atualizando lista de equipamentos...");
     }
 
     function atualizarListaAgendamentos() {
-      // Implementação para atualizar a UI com os agendamentos
       console.log("Atualizando lista de agendamentos...");
     }
 
@@ -1124,10 +1133,42 @@
 
     function atualizarSala() {
       const turma = document.getElementById("studentClass").value;
+      const aulaSelect = document.getElementById("aula");
+      
+      // Limpa e desabilita o campo aula inicialmente
+      aulaSelect.innerHTML = '<option value="">Selecione a aula</option>';
+      aulaSelect.disabled = true;
       
       // Verifica se a turma existe no mapeamento
       if (salasPorTurmaPeriodo[turma]) {
         document.getElementById("sala").value = salasPorTurmaPeriodo[turma];
+        
+        // Habilita o campo aula e preenche com as opções adequadas
+        aulaSelect.disabled = false;
+        
+        // Determina o período da turma
+        const periodo = turma.includes("MANHA") ? "MANHA" : 
+                       turma.includes("TARDE") ? "TARDE" : 
+                       turma.includes("NOITE") ? "NOITE" : "";
+        
+        // Cria as opções de aula baseadas no período
+        if (periodo === "MANHA" || periodo === "TARDE") {
+          // 6 aulas para manhã e tarde
+          for (let i = 1; i <= 6; i++) {
+            const option = document.createElement("option");
+            option.value = `${i}ª Aula`;
+            option.textContent = `${i}ª Aula`;
+            aulaSelect.appendChild(option);
+          }
+        } else if (periodo === "NOITE") {
+          // 5 aulas para noite
+          for (let i = 1; i <= 5; i++) {
+            const option = document.createElement("option");
+            option.value = `${i}ª Aula`;
+            option.textContent = `${i}ª Aula`;
+            aulaSelect.appendChild(option);
+          }
+        }
       } else {
         document.getElementById("sala").value = "Sala não definida";
       }
@@ -1585,7 +1626,7 @@
       }
     }
     
-    // Funções para controle de devolução
+     // Funções para controle de devolução
     function abrirModalDevolucao(id) {
       // Encontra o agendamento
       for (const key in agendamentos) {
