@@ -423,6 +423,54 @@
       text-align: center;
       display: none;
     }
+
+    /* Novos estilos para os botões de exportação */
+    .export-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      justify-content: flex-end;
+    }
+
+    .btn-export {
+      background-color: var(--azul-escuro);
+      color: white;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-export:hover {
+      background-color: #081b4a;
+    }
+
+    .btn-export:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-export.pdf {
+      background-color: #e74c3c;
+    }
+
+    .btn-export.pdf:hover {
+      background-color: #c0392b;
+    }
+
+    .btn-export.csv {
+      background-color: #27ae60;
+    }
+
+    .btn-export.csv:hover {
+      background-color: #219653;
+    }
   </style>
 </head>
 <body>
@@ -519,7 +567,7 @@
             <option value="2ª SERIE A MANHA">2ª SERIE A MANHA</option>
             <option value="2ª SERIE B MANHA">2ª SERIE B MANHA</option>
             <option value="2ª SERIE C MANHA">2ª SERIE C MANHA</option>
-            <option value="2ª SERIE D MANHA">2ª SERIE D MANha</option>
+            <option value="2ª SERIE D MANha">2ª SERIE D MANHA</option>
             <option value="2ª SERIE E MANHA">2ª SERIE E MANHA</option>
             <option value="2ª SERIE F NOITE">2ª SERIE F NOITE</option>
             <option value="2ª SERIE G NOITE">2ª SERIE G NOITE</option>
@@ -576,6 +624,23 @@
     </div>
 
     <div class="calendar-container">
+      <div class="export-buttons">
+        <button class="btn-export pdf" onclick="downloadPDF()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M5.523 10.424q.21-.124.459-.238a8 8 0 0 1-.45.606c-.28.337-.498.516-.635.572l-.262.066a1 1 0 0 1-.171-.035l-.002-.002a1 1 0 0 1 .215-.248q.086-.073.258-.187a1 1 0 0 0 .165-.16c.037-.038.08-.103.108-.169.013-.028.028-.06.045-.096l.01-.023a2 2 0 0 0 .166-.69q0-.352-.166-.69a1 1 0 0 0-.065-.152 1 1 0 0 0-.108-.17.8.8 0 0 0-.2-.194 1 1 0 0 0-.57-.138h-.01a1 1 0 0 0-.27.04l-.01.003a1 1 0 0 0-.17.036l-.003.001a1 1 0 0 0-.215.248q-.086.073-.258.187a1 1 0 0 0-.165.16c-.037.038-.08.103-.108.169a2 2 0 0 0-.045.096l-.01.023a2 2 0 0 0-.166.69q0 .352.166.69c.013.028.028.06.045.096l.01.023c.028.066.07.131.108.169a1 1 0 0 0 .165.16q.172.114.258.187a1 1 0 0 1 .215.248l.003.001a1 1 0 0 1 .17.036l.01.003a1 1 0 0 1 .27.04h.01a1 1 0 0 1 .57-.138 1 1 0 0 1 .2.194c.028.037.065.092.108.17.028.066.07.131.108.169z"/>
+            <path d="M9.5 1.5A1.5 1.5 0 0 1 11 0h1v5a1 1 0 0 1-1 1H8v7a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5zM11 3.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5z"/>
+          </svg>
+          Termo de Responsabilidade
+        </button>
+        <button class="btn-export csv" onclick="exportToCSV()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+            <path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0z"/>
+          </svg>
+          Exportar CSV
+        </button>
+      </div>
+
       <div style="margin-bottom: 20px;">
         <select id="monthSelect"></select>
         <select id="yearSelect"></select>
@@ -1468,6 +1533,54 @@
       selectedDate = null;
       document.getElementById('data-selecionada').value = '';
       popupSelectedDate = null;
+    }
+
+    // Função para baixar o Termo de Responsabilidade em PDF
+    function downloadPDF() {
+      // Cria um link temporário para o PDF
+      const link = document.createElement('a');
+      link.href = 'https://drive.google.com/file/d/1SEv5XQ5Q5ZQ5ZQ5ZQ5ZQ5ZQ5ZQ5ZQ5ZQ/view?usp=sharing'; // Substitua pelo link real do seu PDF
+      link.target = '_blank';
+      link.download = 'Termo_de_Responsabilidade.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Função para exportar os dados para CSV
+    function exportToCSV() {
+      const year = parseInt(yearSelect.value);
+      const month = parseInt(monthSelect.value);
+      const agendamentosDoMes = getAgendamentos(year, month);
+      
+      if (agendamentosDoMes.length === 0) {
+        alert("Não há dados para exportar neste mês!");
+        return;
+      }
+      
+      // Cabeçalho do CSV
+      let csvContent = "DATA,TURMA,APARELHO,QUANTIDADE,PROFESSOR,AULA,HORA_RETIRADA,HORA_ENTREGA,SALA\n";
+      
+      // Adiciona cada agendamento como uma linha no CSV
+      agendamentosDoMes.forEach(agendamento => {
+        const formattedDay = String(agendamento.dia).padStart(2, '0');
+        const formattedMonth = String(month + 1).padStart(2, '0');
+        const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
+        
+        csvContent += `"${formattedDate}","${agendamento.turma}","${agendamento.aparelho}","${agendamento.numAparelhos}","${agendamento.professor}","${agendamento.aula}","${agendamento.horaRetirada}","${agendamento.horaEntrega || ''}","${agendamento.sala}"\n`;
+      });
+      
+      // Cria um blob com o conteúdo CSV
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      
+      // Cria um link para download
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `agendamentos_${monthNames[month]}_${year}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
     // Inicialização
