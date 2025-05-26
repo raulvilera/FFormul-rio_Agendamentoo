@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -826,57 +824,28 @@
     }
 
     function agendarEquipamento() {
-      const professor = document.getElementById("professor").value;
-      const aparelho = document.getElementById("equipamentoAgendamento").value;
-      const turma = document.getElementById("studentClass").value;
-      const numAparelhos = parseInt(document.getElementById("quantidadeAgendamento").value);
-      const data = document.getElementById("dataAgendamento").value;
-      const sala = document.getElementById("sala").value;
-      const aula = document.getElementById("aula").value;
-      
-      if (!professor || professor === "Selecione" || !aparelho || !turma || !numAparelhos || !data || !sala || !aula) {
-        alert("Preencha todos os campos obrigatórios do formulário antes de agendar!");
+      const agendamento = {
+        id: gerarIdUnico(),
+        categoria: document.getElementById("equipamentoAgendamento").value,
+        quantidade: parseInt(document.getElementById("quantidadeAgendamento").value),
+        local: document.getElementById("sala").value,
+        data: document.getElementById("dataAgendamento").value,
+        professor: document.getElementById("professor").value,
+        turma: document.getElementById("studentClass").value,
+        aula: document.getElementById("aula").value
+      };
+
+      if (!verificarDisponibilidade(agendamento.categoria, agendamento.quantidade, agendamento.local)) {
+        alert("Quantidade indisponível!");
         return;
       }
 
-      const [dia, mes, ano] = data.split('/');
-      const key = `${ano}-${mes}`;
-      
-      if (!agendamentos[key]) {
-        agendamentos[key] = [];
+      if (validarConflitos(agendamento)) {
+        alert("Já existe um agendamento para este local/horário!");
+        return;
       }
-      
-      const id = gerarIdUnico();
-      
-      const novoAgendamento = { 
-        id,
-        dia: parseInt(dia),
-        aparelho,
-        professor,
-        turma,
-        numAparelhos,
-        aula,
-        sala,
-        horaRetirada: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) // Hora atual como padrão
-      };
-      
-      agendamentos[key].push(novoAgendamento);
-      
-      // Salva no localStorage
-      salvarAgendamentos();
-      
-      // Atualiza o calendário e o histórico
-      renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
-      
-      // Limpa a seleção
-      if (selectedDay) {
-        selectedDay.classList.remove('selecionado');
-        selectedDay.classList.add('agendado');
-        selectedDay = null;
-      }
-      selectedDate = null;
-      document.getElementById('dataAgendamento').value = '';
-      
+
+      registrarAgendamento(agendamento);
       alert("Agendamento realizado com sucesso!");
     }
 
