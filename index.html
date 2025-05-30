@@ -3,10 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AGENDAMENTO DE APARELHOS</title>
+  <title>AGENDAMENTO DE APARELHOS - CORRIGIDO</title>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
+    /* Estilos permanecem os mesmos */
     :root {
       --azul-escuro: #0a2463;
       --azul-medio: #3e92cc;
@@ -46,6 +53,9 @@
       margin-bottom: 20px;
       text-align: center;
       text-transform: uppercase;
+      font-size: 2rem;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
 
     h3 {
@@ -54,32 +64,39 @@
       text-align: center;
       text-transform: uppercase;
       font-size: 0.9em;
+      background-color: var(--azul-claro);
+      padding: 8px;
+      border-radius: 5px;
+      font-weight: 600;
     }
 
     .container {
       display: flex;
       gap: 30px;
       flex-wrap: wrap;
+      max-width: 1800px;
+      margin: 0 auto;
     }
 
     .form-container {
       flex: 1;
       min-width: 300px;
-      background-color: rgba(255, 255, 255, 0.9);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
       color: var(--cinza-escuro);
     }
 
     .calendar-container {
       flex: 1;
       min-width: 300px;
-      background-color: rgba(255, 255, 255, 0.9);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
       color: var(--cinza-escuro);
+      overflow: auto;
     }
 
     .form-row {
@@ -98,22 +115,30 @@
     .form-group label {
       display: block;
       margin-bottom: 0.5rem;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--azul-escuro);
+      font-size: 0.9rem;
     }
 
     .form-group input,
     .form-group select:not(#aula) {
       width: 100%;
       padding: 12px 15px;
-      border: 2px solid var(--branco-brilhante);
+      border: 2px solid #ddd;
       border-radius: 8px;
       font-size: 1rem;
       transition: all 0.3s ease;
       background-color: var(--branco);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
     }
 
-    /* Estilo específico para o campo "Aula" */
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--azul-medio);
+      box-shadow: 0 0 0 3px rgba(62, 146, 204, 0.2);
+      outline: none;
+    }
+
     .form-group select#aula {
       width: 120px;
       padding: 8px 10px;
@@ -124,21 +149,14 @@
       padding: 8px 10px;
     }
 
-    /* Estilo para o campo data com tamanho ajustável */
     .form-group input[type="text"]#dataAgendamento {
       width: auto;
       min-width: 100px;
       padding: 8px 10px;
+      background-color: #f8f9fa;
+      cursor: pointer;
     }
 
-    .form-group input:focus,
-    .form-group select:focus {
-      border-color: var(--azul-medio);
-      box-shadow: 0 0 0 3px rgba(62, 146, 204, 0.2);
-      outline: none;
-    }
-
-    /* Estilo para dropdown com cores alternadas */
     .form-group select option:nth-child(odd) {
       background-color: var(--azul-claro);
     }
@@ -152,6 +170,7 @@
       border-collapse: collapse;
       margin-top: 20px;
       margin-bottom: 0.4cm;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .calendar th,
@@ -160,29 +179,32 @@
       height: 40px;
       text-align: center;
       vertical-align: middle;
-      border: 1px solid var(--branco-brilhante);
+      border: 1px solid #ddd;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       background-color: var(--branco);
       padding: 10px;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
     }
 
     .calendar th {
-      background-color: var(--azul-claro);
-      border: 1px solid var(--branco-brilhante);
+      background-color: var(--azul-escuro);
+      color: white;
+      border: 1px solid var(--azul-escuro);
+      font-weight: 500;
     }
 
     .calendar td.disponivel {
       background-color: var(--verde-disponivel);
       color: white;
       cursor: default;
-      border: 1px solid var(--branco-brilhante);
+      border: 1px solid var(--verde-disponivel);
     }
 
     .calendar td.agendado {
       background-color: var(--azul-agendado);
       color: white;
-      border: 1px solid var(--branco-brilhante);
+      border: 1px solid var(--azul-agendado);
       cursor: default;
     }
 
@@ -190,53 +212,57 @@
       background-color: var(--azul-selecionado);
       color: white;
       font-weight: bold;
-      border: 1px solid var(--branco-brilhante);
+      border: 1px solid var(--azul-selecionado);
       cursor: default;
+      transform: scale(1.05);
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
     }
 
     .calendar td.indisponivel {
-      background-color: #ccc;
+      background-color: #e9ecef;
       cursor: not-allowed;
-      color: #666;
-      border: 1px solid var(--branco-brilhante);
+      color: #868e96;
+      border: 1px solid #ddd;
     }
 
     .calendar td:hover:not(.indisponivel) {
       opacity: 0.8;
     }
 
-    /* Estilos para a tabela de histórico */
     .historico-table {
       width: 100%;
       border-collapse: collapse;
       table-layout: fixed;
+      font-size: 0.85rem;
     }
 
     .historico-table th,
     .historico-table td {
-      border: 1px solid #ccc;
-      padding: 8px;
+      border: 1px solid #dee2e6;
+      padding: 10px 8px;
       text-align: center;
       word-wrap: break-word;
       overflow-wrap: break-word;
-      font-size: 0.8em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .historico-table th {
-      background-color: var(--azul-claro);
-      color: #000;
-      font-weight: bold;
+      background-color: var(--azul-escuro);
+      color: white;
+      font-weight: 500;
+      position: sticky;
+      top: 0;
     }
 
     .historico-table td {
-      color: #000;
+      color: #495057;
     }
 
     .historico-table tr.excluido td {
       color: var(--vermelho);
+      text-decoration: line-through;
     }
 
     .historico-table tr.entregue {
@@ -255,7 +281,6 @@
       background-color: var(--recente);
     }
 
-    /* Definindo larguras específicas para cada coluna */
     .historico-table th:nth-child(1),
     .historico-table td:nth-child(1) {
       width: 10%;
@@ -296,23 +321,28 @@
       width: 15%;
     }
 
-    /* Estilos para os botões */
     .buttons-container {
       display: flex;
       gap: 10px;
       margin-top: 20px;
+      justify-content: center;
     }
 
     .btn {
-      padding: 10px 20px;
+      padding: 12px 24px;
       border: none;
-      border-radius: 5px;
-      font-weight: bold;
+      border-radius: 8px;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       position: relative;
       overflow: hidden;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .btn:active {
@@ -349,6 +379,8 @@
     .btn-excluir {
       background-color: var(--vermelho);
       color: white;
+      padding: 6px 12px;
+      font-size: 0.8rem;
     }
 
     .btn-excluir:hover {
@@ -362,13 +394,14 @@
     .btn-entregar {
       background-color: var(--verde);
       color: white;
+      padding: 6px 12px;
+      font-size: 0.8rem;
     }
 
     .btn-entregar:hover {
       background-color: #3d8b40;
     }
 
-    /* Estilos para o calendário pop-up */
     .datepicker-container {
       position: relative;
     }
@@ -382,31 +415,51 @@
       background-color: white;
       border: 1px solid #ddd;
       border-radius: 8px;
-      padding: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
       width: 300px;
     }
 
     .datepicker-popup.active {
       display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .datepicker-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
 
     .datepicker-nav {
       background: none;
       border: none;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       cursor: pointer;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s;
+      color: var(--azul-escuro);
+    }
+
+    .datepicker-nav:hover {
+      background-color: var(--azul-claro);
     }
 
     .datepicker-title {
-      font-weight: bold;
+      font-weight: 600;
+      color: var(--azul-escuro);
+      font-size: 1.1rem;
     }
 
     .datepicker-grid {
@@ -417,15 +470,19 @@
 
     .datepicker-weekday {
       text-align: center;
-      font-weight: bold;
-      padding: 5px;
+      font-weight: 600;
+      padding: 8px 0;
+      color: var(--azul-escuro);
+      font-size: 0.9rem;
     }
 
     .datepicker-day {
       text-align: center;
-      padding: 5px;
+      padding: 8px 0;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 50%;
+      transition: all 0.2s;
+      font-weight: 500;
     }
 
     .datepicker-day:hover {
@@ -435,6 +492,7 @@
     .datepicker-day.selected {
       background-color: var(--azul-medio);
       color: white;
+      font-weight: 600;
     }
 
     .datepicker-day.disabled {
@@ -443,7 +501,21 @@
     }
 
     .datepicker-today {
-      font-weight: bold;
+      position: relative;
+      color: var(--azul-medio);
+      font-weight: 700;
+    }
+
+    .datepicker-today::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      background-color: var(--azul-medio);
+      border-radius: 50%;
     }
 
     .datepicker-other-month {
@@ -457,12 +529,15 @@
     .conflict-message {
       color: var(--vermelho);
       font-weight: bold;
-      margin-top: 10px;
+      margin-top: 15px;
       text-align: center;
       display: none;
+      padding: 10px;
+      background-color: #ffebee;
+      border-radius: 5px;
+      border-left: 4px solid var(--vermelho);
     }
     
-    /* Estilos para o modal de devolução */
     .modal {
       display: none;
       position: fixed;
@@ -477,23 +552,28 @@
     .modal-content {
       background-color: #fefefe;
       margin: 15% auto;
-      padding: 20px;
+      padding: 25px;
       border: 1px solid #888;
-      border-radius: 8px;
-      width: 80%;
+      border-radius: 12px;
+      width: 90%;
       max-width: 500px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      position: relative;
     }
 
     .close {
       color: #aaa;
-      float: right;
+      position: absolute;
+      top: 15px;
+      right: 20px;
       font-size: 28px;
       font-weight: bold;
       cursor: pointer;
+      transition: color 0.2s;
     }
 
     .close:hover {
-      color: black;
+      color: #000;
     }
 
     .modal-buttons {
@@ -503,17 +583,69 @@
       margin-top: 20px;
     }
     
-    /* Estilo para o botão de exportar */
     .export-buttons {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       display: flex;
-      gap: 10px;
+      gap: 15px;
       justify-content: flex-end;
+    }
+    
+    .status-indicator {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+    
+    .status-disponivel {
+      background-color: var(--verde-disponivel);
+    }
+    
+    .status-agendado {
+      background-color: var(--azul-agendado);
+    }
+    
+    .status-entregue {
+      background-color: var(--verde);
+    }
+    
+    .status-excluido {
+      background-color: var(--vermelho);
+    }
+    
+    @media (max-width: 1200px) {
+      .container {
+        flex-direction: column;
+      }
+      
+      .calendar-container {
+        max-height: 600px;
+      }
+      
+      .historico-table {
+        font-size: 0.8rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .form-row {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .buttons-container {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <h2>AGENDAMENTO DE APARELHOS</h2>
+  <h2>AGENDAMENTO DE APARELHOS - CORRIGIDO</h2>
   <div class="container">
     <div class="form-container">
       <div class="form-row">
@@ -629,7 +761,6 @@
         </div>
       </div>
 
-      <!-- CAMPO AULA ADICIONADO -->
       <div class="form-row">
         <div class="form-group">
           <label>AULA:</label>
@@ -640,24 +771,32 @@
       </div>
 
       <div class="conflict-message" id="conflictMessage">
-        Já existe um agendamento para este local/horário!
+        <i class="fas fa-exclamation-circle"></i> Já existe um agendamento para este local/horário!
       </div>
 
       <div class="buttons-container">
-        <button class="btn btn-cadastrar" onclick="agendarEquipamento()">AGENDAR</button>
-        <button class="btn btn-limpar" onclick="limparFormulario()">LIMPAR</button>
+        <button class="btn btn-cadastrar" onclick="agendarEquipamento()">
+          <i class="fas fa-calendar-check"></i> AGENDAR
+        </button>
+        <button class="btn btn-limpar" onclick="limparFormulario()">
+          <i class="fas fa-broom"></i> LIMPAR
+        </button>
       </div>
     </div>
 
     <div class="calendar-container">
       <div class="export-buttons">
-        <button class="btn btn-cadastrar" onclick="exportarParaPDF()">Exportar para PDF</button>
-        <button class="btn btn-cadastrar" onclick="exportarParaCSV()">Exportar para CSV</button>
+        <button class="btn btn-cadastrar" onclick="exportarParaPDF()">
+          <i class="fas fa-file-pdf"></i> Exportar PDF
+        </button>
+        <button class="btn btn-cadastrar" onclick="exportarParaCSV()">
+          <i class="fas fa-file-csv"></i> Exportar CSV
+        </button>
       </div>
       
-      <div style="margin-bottom: 20px;">
-        <select id="monthSelect"></select>
-        <select id="yearSelect"></select>
+      <div style="margin-bottom: 20px; display: flex; gap: 15px;">
+        <select id="monthSelect" style="flex: 1; padding: 10px; border-radius: 8px; border: 2px solid #ddd;"></select>
+        <select id="yearSelect" style="flex: 1; padding: 10px; border-radius: 8px; border: 2px solid #ddd;"></select>
       </div>
 
       <table class="calendar">
@@ -698,7 +837,6 @@
     </div>
   </div>
 
-  <!-- Modal para confirmação de devolução -->
   <div id="devolucaoModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="fecharModal()">&times;</span>
@@ -716,159 +854,28 @@
   </div>
 
   <script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBOoXyjLQPfgzQM06LVy-TRSPdSM_8CjcE",
+      authDomain: "gerenciamentoaparelho.firebaseapp.com",
+      projectId: "gerenciamentoaparelho",
+      storageBucket: "gerenciamentoaparelho.appspot.com",
+      messagingSenderId: "751628186418",
+      appId: "1:751628186418:web:dd68af74d9e3723c179d2b",
+      measurementId: "G-K02ZZQ4JBK"
+    };
+
+    // Inicializa o Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Referências às coleções
+    const agendamentosRef = db.collection("agendamentos");
+    const historicoExcluidosRef = db.collection("historico_excluidos");
+
     // Inicializa o jsPDF
     const { jsPDF } = window.jspdf;
     
-    // Banco de dados simulado para equipamentos
-    const sistemaDB = {
-      equipamentos: {
-        "1": { id: "1", categoria: "TABLET", quantidade_disponivel: 10, localizacao: "LABORATÓRIO 1", status: "Disponível", agendamentos: [] },
-        "2": { id: "2", categoria: "SMARTPHONE", quantidade_disponivel: 15, localizacao: "LABORATÓRIO 1", status: "Disponível", agendamentos: [] },
-        "3": { id: "3", categoria: "CHROMEBOOK", quantidade_disponivel: 5, localizacao: "LABORATÓRIO 2", status: "Disponível", agendamentos: [] },
-        "4": { id: "4", categoria: "NOTEBOOK", quantidade_disponivel: 8, localizacao: "LABORATÓRIO 2", status: "Disponível", agendamentos: [] },
-        "5": { id: "5", categoria: "TABLET", quantidade_disponivel: 12, localizacao: "SALA 1", status: "Disponível", agendamentos: [] }
-      },
-      agendamentos: [],
-      historico: []
-    };
-
-    // Funções de integração fornecidas
-    function verificarDisponibilidade(categoria, quantidade, local) {
-      const equipamentos = sistemaDB.equipamentos;
-      let disponivel = 0;
-
-      for (const id in equipamentos) {
-        const eq = equipamentos[id];
-        if (eq.categoria === categoria && eq.localizacao === local && eq.status === "Disponível") {
-          disponivel += eq.quantidade_disponivel;
-        }
-      }
-      return disponivel >= quantidade;
-    }
-
-    function registrarAgendamento(agendamento) {
-      const { categoria, quantidade, local } = agendamento;
-      let quantidadeRestante = quantidade;
-
-      // Atualiza o estoque
-      for (const id in sistemaDB.equipamentos) {
-        const eq = sistemaDB.equipamentos[id];
-        if (eq.categoria === categoria && eq.localizacao === local && eq.status === "Disponível") {
-          const reservar = Math.min(quantidadeRestante, eq.quantidade_disponivel);
-          eq.quantidade_disponivel -= reservar;
-          eq.status = eq.quantidade_disponivel > 0 ? "Disponível" : "Em uso";
-          quantidadeRestante -= reservar;
-
-          // Vincula o agendamento ao equipamento
-          eq.agendamentos.push({
-            id: agendamento.id,
-            quantidade: reservar,
-            data: agendamento.data
-          });
-
-          if (quantidadeRestante === 0) break;
-        }
-      }
-
-      // Adiciona ao histórico
-      sistemaDB.agendamentos.push(agendamento);
-      sistemaDB.historico.push({
-        tipo: "agendamento",
-        equipamento: categoria,
-        local,
-        quantidade,
-        data: new Date().toISOString(),
-        detalhes: `Agendado por ${agendamento.professor}`
-      });
-
-      salvarBancoDados();
-      atualizarListaEquipamentos(); // Atualiza a UI
-    }
-
-    function finalizarAgendamento(idAgendamento) {
-      const agendamento = sistemaDB.agendamentos.find(ag => ag.id === idAgendamento);
-      if (!agendamento) return;
-
-      // Libera os equipamentos
-      for (const id in sistemaDB.equipamentos) {
-        const eq = sistemaDB.equipamentos[id];
-        const agendamentoEquip = eq.agendamentos.find(ag => ag.id === idAgendamento);
-        
-        if (agendamentoEquip) {
-          eq.quantidade_disponivel += agendamentoEquip.quantidade;
-          eq.status = "Disponível";
-          eq.agendamentos = eq.agendamentos.filter(ag => ag.id !== idAgendamento);
-        }
-      }
-
-      // Atualiza o status do agendamento
-      agendamento.status = "Finalizado";
-      sistemaDB.historico.push({
-        tipo: "devolucao",
-        equipamento: agendamento.categoria,
-        local: agendamento.local,
-        quantidade: agendamento.quantidade,
-        data: new Date().toISOString()
-      });
-
-      salvarBancoDados();
-      atualizarListaAgendamentos(); // Atualiza a UI
-    }
-
-    function validarConflitos(novoAgendamento) {
-      return sistemaDB.agendamentos.some(ag => (
-        ag.local === novoAgendamento.local &&
-        ag.data === novoAgendamento.data &&
-        ag.status !== "Finalizado"
-      ));
-    }
-
-    function agendarEquipamento() {
-      const agendamento = {
-        id: gerarIdUnico(),
-        categoria: document.getElementById("equipamentoAgendamento").value,
-        quantidade: parseInt(document.getElementById("quantidadeAgendamento").value),
-        local: document.getElementById("sala").value,
-        data: document.getElementById("dataAgendamento").value,
-        professor: document.getElementById("professor").value,
-        turma: document.getElementById("studentClass").value,
-        aula: document.getElementById("aula").value
-      };
-
-      if (!verificarDisponibilidade(agendamento.categoria, agendamento.quantidade, agendamento.local)) {
-        alert("Quantidade indisponível!");
-        return;
-      }
-
-      if (validarConflitos(agendamento)) {
-        alert("Já existe um agendamento para este local/horário!");
-        return;
-      }
-
-      registrarAgendamento(agendamento);
-      alert("Agendamento realizado com sucesso!");
-    }
-
-    // Funções auxiliares
-    function salvarBancoDados() {
-      localStorage.setItem('sistemaDB', JSON.stringify(sistemaDB));
-    }
-
-    function carregarBancoDados() {
-      const dados = localStorage.getItem('sistemaDB');
-      if (dados) {
-        Object.assign(sistemaDB, JSON.parse(dados));
-      }
-    }
-
-    function atualizarListaEquipamentos() {
-      console.log("Atualizando lista de equipamentos...");
-    }
-
-    function atualizarListaAgendamentos() {
-      console.log("Atualizando lista de agendamentos...");
-    }
-
     // Dados dos professores
     const teacherEmails = {
       "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
@@ -969,36 +976,27 @@
 
     // Dados das salas por turma e período
     const salasPorTurmaPeriodo = {
-      // 6° ANO
       "6° ANO A MANHA": "Sala 1",
       "6° ANO B MANHA": "Sala 2",
       "6° ANO C MANHA": "Sala 3",
       "6° ANO D MANHA": "Sala 4",
       "6° ANO E TARDE": "Sala 1",
       "6° ANO F TARDE": "Sala 2",
-      
-      // 7° ANO
       "7° ANO A TARDE": "Sala 3",
       "7° ANO B TARDE": "Sala 4",
       "7° ANO C TARDE": "Sala 5",
       "7° ANO D TARDE": "Sala 6",
       "7° ANO E TARDE": "Sala 7",
       "7° ANO F TARDE": "Sala 8",
-      
-      // 8° ANO
       "8° ANO A TARDE": "Sala 10",
       "8° ANO B TARDE": "Sala 11",
       "8° ANO C TARDE": "Sala 12",
       "8° ANO D TARDE": "Sala 13",
       "8° ANO E TARDE": "Sala 14",
-      
-      // 9° ANO
       "9° ANO A TARDE": "Sala 15",
       "9° ANO B TARDE": "Sala 16",
       "9° ANO C TARDE": "Sala 17",
       "9° ANO D TARDE": "Sala 18",
-      
-      // 1ª SÉRIE
       "1ª SERIE A MANHA": "Sala 10",
       "1ª SERIE B MANHA": "Sala 11",
       "1ª SERIE C MANHA": "Sala 12",
@@ -1008,8 +1006,6 @@
       "1ª SERIE G TARDE": "Sala 9",
       "1ª SERIE H NOITE": "Sala 9",
       "1ª SERIE I NOITE": "Sala 602",
-      
-      // 2ª SÉRIE
       "2ª SERIE A MANHA": "Sala 5",
       "2ª SERIE B MANHA": "Sala 6",
       "2ª SERIE C MANHA": "Sala 7",
@@ -1019,8 +1015,6 @@
       "2ª SERIE G NOITE": "Sala 2",
       "2ª SERIE H NOITE": "Sala 3",
       "2ª SERIE I NOITE": "Sala 4",
-      
-      // 3ª SÉRIE
       "3ª SERIE A MANHA": "Sala 16",
       "3ª SERIE B MANHA": "Sala 17",
       "3ª SERIE C MANHA": "Sala 18",
@@ -1028,18 +1022,8 @@
       "3ª SERIE E NOITE": "Sala 6",
       "3ª SERIE F NOITE": "Sala 7",
       "3ª SERIE G NOITE": "Sala 8",
-      
-      // ADMINISTRAÇÃO
       "4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA": "Laboratório 1"
     };
-
-    // Chave para armazenamento local
-    const LOCAL_STORAGE_KEY = 'agendamentos_aparelhos';
-    const LOCAL_STORAGE_KEY_EXCLUIDOS = 'agendamentos_excluidos';
-
-    // Carrega agendamentos do localStorage ou inicializa vazio
-    let agendamentos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
-    let historicoExcluidos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_EXCLUIDOS)) || [];
 
     const monthNames = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -1052,49 +1036,109 @@
     const yearSelect = document.getElementById('yearSelect');
     let selectedDay = null;
     let selectedDate = null;
-
-    // Variáveis para o calendário pop-up
     let currentPopupDate = new Date();
     let popupSelectedDate = null;
-    
-    // Variáveis para o modal de devolução
     let agendamentoParaDevolver = null;
+    let agendamentos = {};
+    let historicoExcluidos = [];
 
-    // Função para salvar agendamentos no localStorage
-    function salvarAgendamentos() {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(agendamentos));
-      localStorage.setItem(LOCAL_STORAGE_KEY_EXCLUIDOS, JSON.stringify(historicoExcluidos));
+    // Funções do Firebase
+    async function carregarDadosIniciais() {
+      try {
+        // Carrega agendamentos
+        const snapshotAgendamentos = await agendamentosRef.get();
+        agendamentos = {};
+        snapshotAgendamentos.forEach(doc => {
+          const data = doc.data();
+          const mesAno = data.mesAno;
+          if (!agendamentos[mesAno]) {
+            agendamentos[mesAno] = [];
+          }
+          agendamentos[mesAno].push({ id: doc.id, ...data });
+        });
+        
+        // Carrega histórico excluído
+        const snapshotHistorico = await historicoExcluidosRef.get();
+        historicoExcluidos = [];
+        snapshotHistorico.forEach(doc => {
+          historicoExcluidos.push(doc.data());
+        });
+        
+        // Renderiza o calendário
+        renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
+      } catch (error) {
+        console.error("Erro ao carregar dados:", error);
+      }
     }
 
-    // Função para verificar se uma data está dentro do período de 15 dias
+    async function salvarAgendamentoFirestore(agendamento) {
+      try {
+        await agendamentosRef.add(agendamento);
+        return true;
+      } catch (error) {
+        console.error("Erro ao salvar agendamento:", error);
+        return false;
+      }
+    }
+
+    async function atualizarAgendamentoFirestore(id, dados) {
+      try {
+        await agendamentosRef.doc(id).update(dados);
+        return true;
+      } catch (error) {
+        console.error("Erro ao atualizar agendamento:", error);
+        return false;
+      }
+    }
+
+    async function excluirAgendamentoFirestore(id, agendamento) {
+      try {
+        // Adiciona ao histórico
+        await historicoExcluidosRef.add({
+          ...agendamento,
+          dataExclusao: new Date().toISOString()
+        });
+        
+        // Exclui o agendamento
+        await agendamentosRef.doc(id).delete();
+        return true;
+      } catch (error) {
+        console.error("Erro ao excluir agendamento:", error);
+        return false;
+      }
+    }
+
+    // Funções do sistema
     function estaDentroDoPeriodo(dataAgendamento) {
       const hoje = new Date();
       const dataAgendamentoObj = new Date(dataAgendamento);
       const diferencaDias = Math.floor((hoje - dataAgendamentoObj) / (1000 * 60 * 60 * 24));
-      
       return diferencaDias <= 15;
     }
 
-    // Função para formatar a data no formato YYYY-MM-DD
     function formatarDataParaComparacao(dia, mes, ano) {
       return `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
     }
 
-    // Função para verificar conflito de agendamento
-    function verificarConflitoAgendamento(turma, data, aula) {
+    async function verificarConflitoAgendamento(turma, data, aula) {
       const [dia, mes, ano] = data.split('/');
-      const key = `${ano}-${mes}`;
+      const mesAno = `${ano}-${mes}`;
       
-      if (!agendamentos[key]) return false;
-      
-      return agendamentos[key].some(agendamento => 
-        agendamento.dia === parseInt(dia) && 
-        agendamento.turma === turma && 
-        agendamento.aula === aula
-      );
+      try {
+        const querySnapshot = await agendamentosRef
+          .where("mesAno", "==", mesAno)
+          .where("dia", "==", parseInt(dia))
+          .where("turma", "==", turma)
+          .where("aula", "==", aula)
+          .get();
+          
+        return !querySnapshot.empty;
+      } catch (error) {
+        console.error("Erro ao verificar conflito:", error);
+        return false;
+      }
     }
 
-    // Funções do formulário
     function atualizarMarca() {
       const tipo = document.getElementById("equipamentoAgendamento").value;
       document.getElementById("marca").value = marcas[tipo] || "";
@@ -1104,25 +1148,18 @@
       const turma = document.getElementById("studentClass").value;
       const aulaSelect = document.getElementById("aula");
       
-      // Limpa e desabilita o campo aula inicialmente
       aulaSelect.innerHTML = '<option value="">Selecione a aula</option>';
       aulaSelect.disabled = true;
       
-      // Verifica se a turma existe no mapeamento
       if (salasPorTurmaPeriodo[turma]) {
         document.getElementById("sala").value = salasPorTurmaPeriodo[turma];
-        
-        // Habilita o campo aula e preenche com as opções adequadas
         aulaSelect.disabled = false;
         
-        // Determina o período da turma
         const periodo = turma.includes("MANHA") ? "MANHA" : 
                        turma.includes("TARDE") ? "TARDE" : 
                        turma.includes("NOITE") ? "NOITE" : "";
         
-        // Cria as opções de aula baseadas no período
         if (periodo === "MANHA" || periodo === "TARDE") {
-          // 6 aulas para manhã e tarde
           for (let i = 1; i <= 6; i++) {
             const option = document.createElement("option");
             option.value = `${i}ª Aula`;
@@ -1130,7 +1167,6 @@
             aulaSelect.appendChild(option);
           }
         } else if (periodo === "NOITE") {
-          // 5 aulas para noite
           for (let i = 1; i <= 5; i++) {
             const option = document.createElement("option");
             option.value = `${i}ª Aula`;
@@ -1142,17 +1178,7 @@
         document.getElementById("sala").value = "Sala não definida";
       }
       
-      // Verifica se há conflito de agendamento
       verificarConflito();
-    }
-
-    function abrirRelogio(idCampo) {
-      const campo = document.getElementById(idCampo);
-      if (campo && typeof campo.showPicker === 'function') {
-        campo.showPicker();
-      } else {
-        campo.focus();
-      }
     }
 
     function atualizarEmail() {
@@ -1170,22 +1196,20 @@
       });
     }
 
-    // Função para verificar conflito quando os campos relevantes mudam
-    function verificarConflito() {
+    async function verificarConflito() {
       const turma = document.getElementById("studentClass").value;
       const data = document.getElementById("dataAgendamento").value;
       const aula = document.getElementById("aula").value;
       const conflictMessage = document.getElementById("conflictMessage");
       
       if (turma && data && aula) {
-        const conflito = verificarConflitoAgendamento(turma, data, aula);
+        const conflito = await verificarConflitoAgendamento(turma, data, aula);
         conflictMessage.style.display = conflito ? "block" : "none";
       } else {
         conflictMessage.style.display = "none";
       }
     }
 
-    // Funções do calendário pop-up
     function initDatepicker() {
       const datepickerInput = document.getElementById('dataAgendamento');
       const datepickerPopup = document.getElementById('datepickerPopup');
@@ -1195,18 +1219,15 @@
       const datepickerWeekdays = document.getElementById('datepickerWeekdays');
       const datepickerDays = document.getElementById('datepickerDays');
 
-      // Preenche os dias da semana
       datepickerWeekdays.innerHTML = weekdays.map(day => 
         `<div class="datepicker-weekday">${day}</div>`
       ).join('');
 
-      // Mostra/oculta o popup
       datepickerInput.addEventListener('click', () => {
         datepickerPopup.classList.toggle('active');
         renderDatepicker();
       });
 
-      // Navegação do calendário
       prevMonthBtn.addEventListener('click', () => {
         currentPopupDate.setMonth(currentPopupDate.getMonth() - 1);
         renderDatepicker();
@@ -1217,7 +1238,6 @@
         renderDatepicker();
       });
 
-      // Fecha o popup quando clicar fora
       document.addEventListener('click', (e) => {
         if (!datepickerPopup.contains(e.target) && e.target !== datepickerInput) {
           datepickerPopup.classList.remove('active');
@@ -1237,12 +1257,10 @@
         let daysHtml = '';
         const today = new Date();
         
-        // Dias do mês anterior (se necessário)
         for (let i = 0; i < firstDay; i++) {
           daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${daysInPrevMonth - firstDay + i + 1}</div>`;
         }
         
-        // Dias do mês atual
         for (let i = 1; i <= daysInMonth; i++) {
           const date = new Date(year, month, i);
           const isToday = date.toDateString() === today.toDateString();
@@ -1257,8 +1275,7 @@
           daysHtml += `<div class="${dayClass}" data-day="${i}">${i}</div>`;
         }
         
-        // Dias do próximo mês (se necessário)
-        const totalCells = 42; // 6 semanas * 7 dias
+        const totalCells = 42;
         const remainingCells = totalCells - (firstDay + daysInMonth);
         for (let i = 1; i <= remainingCells; i++) {
           daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${i}</div>`;
@@ -1266,46 +1283,38 @@
         
         datepickerDays.innerHTML = daysHtml;
         
-        // Adiciona eventos aos dias
         document.querySelectorAll('.datepicker-day:not(.disabled)').forEach(day => {
           day.addEventListener('click', () => {
             const dayNum = parseInt(day.getAttribute('data-day'));
             popupSelectedDate = new Date(year, month, dayNum);
             
-            // Atualiza o campo de data
             const formattedDay = String(dayNum).padStart(2, '0');
             const formattedMonth = String(month + 1).padStart(2, '0');
             selectedDate = `${formattedDay}/${formattedMonth}/${year}`;
             datepickerInput.value = selectedDate;
             
-            // Fecha o popup
             datepickerPopup.classList.remove('active');
-            
-            // Atualiza o calendário principal
             updateMainCalendarSelection(year, month + 1, dayNum);
-            
-            // Verifica se há conflito
             verificarConflito();
           });
         });
       }
+      
+      renderDatepicker();
     }
 
     function updateMainCalendarSelection(year, month, day) {
-      // Atualiza os seletores de mês/ano se necessário
       if (parseInt(yearSelect.value) !== year || parseInt(monthSelect.value) + 1 !== month) {
         yearSelect.value = year;
         monthSelect.value = month - 1;
         renderCalendarBody(year, month - 1);
       }
       
-      // Encontra e seleciona o dia no calendário principal
       const calendarBody = document.getElementById('calendarBody');
       const cells = calendarBody.querySelectorAll('td');
       
       cells.forEach(cell => {
         if (parseInt(cell.textContent) === day) {
-          // Remove seleção anterior
           if (selectedDay) {
             selectedDay.classList.remove('selecionado');
             const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
@@ -1314,7 +1323,6 @@
             }
           }
           
-          // Adiciona nova seleção
           cell.classList.add('selecionado');
           cell.classList.remove('disponivel');
           selectedDay = cell;
@@ -1322,9 +1330,11 @@
       });
     }
 
-    // Funções do calendário principal
     function populateMonthYearSelectors() {
       const currentYear = new Date().getFullYear();
+
+      monthSelect.innerHTML = '';
+      yearSelect.innerHTML = '';
 
       for (let y = currentYear - 1; y <= currentYear + 2; y++) {
         const option = document.createElement('option');
@@ -1350,11 +1360,10 @@
       return agendamentos[key] || [];
     }
 
-    function renderHistorico(agendamentosDoMes) {
+    async function renderHistorico(agendamentosDoMes) {
       const historicoBody = document.getElementById('historico-body');
       historicoBody.innerHTML = '';
       
-      // Adiciona agendamentos atuais
       agendamentosDoMes.forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega, id }) => {
         const row = document.createElement('tr');
         
@@ -1363,19 +1372,16 @@
         const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
         const dataAgendamento = formatarDataParaComparacao(dia, parseInt(monthSelect.value) + 1, yearSelect.value);
         
-        // Adiciona classe de status de entrega
         if (horaEntrega) {
           row.classList.add('entregue');
         } else {
           row.classList.add('nao-entregue');
         }
         
-        // Verifica se o agendamento está dentro do período de 15 dias
         if (estaDentroDoPeriodo(dataAgendamento)) {
           row.classList.add('recente');
         }
         
-        // Verifica se o agendamento está expirado (mais de 15 dias)
         if (!estaDentroDoPeriodo(dataAgendamento)) {
           row.classList.add('expirado');
         }
@@ -1396,7 +1402,6 @@
         historicoBody.appendChild(row);
       });
       
-      // Adiciona agendamentos excluídos (apenas do mês atual)
       const currentMonthKey = `${yearSelect.value}-${String(parseInt(monthSelect.value) + 1).padStart(2, '0')}`;
       historicoExcluidos
         .filter(item => item.mesAno === currentMonthKey)
@@ -1409,12 +1414,10 @@
           const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
           const dataAgendamento = formatarDataParaComparacao(dia, parseInt(monthSelect.value) + 1, yearSelect.value);
           
-          // Verifica se o agendamento está dentro do período de 15 dias
           if (estaDentroDoPeriodo(dataAgendamento)) {
             row.classList.add('recente');
           }
           
-          // Verifica se o agendamento está expirado (mais de 15 dias)
           if (!estaDentroDoPeriodo(dataAgendamento)) {
             row.classList.add('expirado');
           }
@@ -1438,7 +1441,7 @@
       calendarBody.innerHTML = '';
 
       const date = new Date(year, month, 1);
-      const firstDay = date.getDay(); // 0=Domingo, 1=Segunda, ..., 6=Sábado
+      const firstDay = date.getDay();
       const daysInMonth = new Date(year, month + 1, 0).getDate();
       const daysInPrevMonth = new Date(year, month, 0).getDate();
 
@@ -1447,7 +1450,6 @@
       let day = 1;
       let currentRow = document.createElement('tr');
       
-      // Células vazias para os dias do mês anterior
       for (let i = 0; i < firstDay; i++) {
         const emptyCell = document.createElement('td');
         emptyCell.innerHTML = daysInPrevMonth - firstDay + i + 1;
@@ -1455,9 +1457,7 @@
         currentRow.appendChild(emptyCell);
       }
 
-      // Dias do mês atual
       while (day <= daysInMonth) {
-        // Se chegarmos ao domingo (0), criamos uma nova linha
         if (currentRow.children.length === 7) {
           calendarBody.appendChild(currentRow);
           currentRow = document.createElement('tr');
@@ -1475,11 +1475,16 @@
           cell.style.cursor = 'default';
         }
 
+        const today = new Date();
+        if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+          cell.style.border = '2px solid var(--azul-escuro)';
+          cell.style.fontWeight = 'bold';
+        }
+
         currentRow.appendChild(cell);
         day++;
       }
 
-      // Preenche as células restantes na última linha com dias do próximo mês
       while (currentRow.children.length < 7) {
         const nextMonthDay = document.createElement('td');
         nextMonthDay.innerHTML = day - daysInMonth;
@@ -1488,7 +1493,6 @@
         day++;
       }
 
-      // Adiciona a última linha se ela tiver conteúdo
       if (currentRow.children.length > 0) {
         calendarBody.appendChild(currentRow);
       }
@@ -1500,119 +1504,98 @@
       return Date.now().toString(36) + Math.random().toString(36).substr(2);
     }
 
-    async function cadastrarAgendamento() {
+    async function agendarEquipamento() {
       const professor = document.getElementById("professor").value;
       const aparelho = document.getElementById("equipamentoAgendamento").value;
       const turma = document.getElementById("studentClass").value;
-      const numAparelhos = document.getElementById("quantidadeAgendamento").value;
+      const numAparelhos = parseInt(document.getElementById("quantidadeAgendamento").value);
       const aula = document.getElementById("aula").value;
       const sala = document.getElementById("sala").value;
-      const horaRetirada = document.getElementById("hora-retirada").value;
-      const horaEntrega = document.getElementById("hora-entrega").value;
+      const data = document.getElementById("dataAgendamento").value;
       
-      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate || !sala || !horaRetirada) {
+      if (!professor || professor === "Selecione" || !aparelho || !turma || !numAparelhos || !data || !sala || !aula) {
         alert("Preencha todos os campos obrigatórios do formulário antes de agendar!");
         return;
       }
       
-      // Verifica se já existe agendamento para esta turma, data e aula
-      if (verificarConflitoAgendamento(turma, selectedDate, aula)) {
+      if (await verificarConflitoAgendamento(turma, data, aula)) {
         alert("Já existe um agendamento para esta turma nesta data e aula!");
         return;
       }
       
-      const [dia, mes, ano] = selectedDate.split('/');
-      const key = `${ano}-${mes}`;
-      
-      if (!agendamentos[key]) {
-        agendamentos[key] = [];
-      }
-      
-      const id = gerarIdUnico();
+      const [dia, mes, ano] = data.split('/');
+      const mesAno = `${ano}-${mes}`;
       
       const novoAgendamento = { 
-        id,
         dia: parseInt(dia),
+        mesAno,
         aparelho,
         professor,
         turma,
-        numAparelhos: parseInt(numAparelhos),
+        numAparelhos,
         aula,
         sala,
-        horaRetirada,
-        horaEntrega
+        horaEntrega: null
       };
       
-      agendamentos[key].push(novoAgendamento);
+      const sucesso = await salvarAgendamentoFirestore(novoAgendamento);
       
-      // Salva no localStorage
-      salvarAgendamentos();
-      
-      // Atualiza o calendário e o histórico
-      renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
-      
-      // Limpa a seleção
-      if (selectedDay) {
-        selectedDay.classList.remove('selecionado');
-        selectedDay.classList.add('agendado');
-        selectedDay = null;
+      if (sucesso) {
+        if (!agendamentos[mesAno]) {
+          agendamentos[mesAno] = [];
+        }
+        agendamentos[mesAno].push({ id: sucesso, ...novoAgendamento });
+        
+        renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
+        
+        if (selectedDay) {
+          selectedDay.classList.remove('selecionado');
+          selectedDay.classList.add('agendado');
+          selectedDay = null;
+        }
+        selectedDate = null;
+        document.getElementById('dataAgendamento').value = '';
+        
+        alert("Agendamento cadastrado com sucesso!");
+      } else {
+        alert("Erro ao salvar agendamento. Tente novamente.");
       }
-      selectedDate = null;
-      document.getElementById('dataAgendamento').value = '';
-      
-      // Gera documento PDF
-      gerarDocumentoPDF(novoAgendamento);
-      
-      alert("Agendamento cadastrado com sucesso!");
     }
 
-    function excluirAgendamento(id) {
+    async function excluirAgendamento(id) {
       if (!confirm("Tem certeza que deseja excluir este agendamento?")) {
         return;
       }
       
-      // Encontra e remove o agendamento
       for (const key in agendamentos) {
         const index = agendamentos[key].findIndex(ag => ag.id === id);
         if (index !== -1) {
           const [agendamentoExcluido] = agendamentos[key].splice(index, 1);
           
-          // Adiciona ao histórico de excluídos com a data de exclusão
-          const [ano, mes] = key.split('-');
-          historicoExcluidos.push({
-            ...agendamentoExcluido,
-            mesAno: key,
-            dataExclusao: new Date().toISOString()
-          });
-          
-          // Salva no localStorage
-          salvarAgendamentos();
-          
-          // Atualiza a exibição
-          renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
+          const sucesso = await excluirAgendamentoFirestore(id, agendamentoExcluido);
+          if (sucesso) {
+            await carregarDadosIniciais();
+          } else {
+            alert("Erro ao excluir agendamento. Tente novamente.");
+          }
           break;
         }
       }
     }
     
-     // Funções para controle de devolução
     function abrirModalDevolucao(id) {
-      // Encontra o agendamento
       for (const key in agendamentos) {
         const agendamento = agendamentos[key].find(ag => ag.id === id);
         if (agendamento) {
           agendamentoParaDevolver = agendamento;
           
-          // Preenche o modal
           document.getElementById('modalText').textContent = 
             `Confirmar devolução de ${agendamento.numAparelhos} ${agendamento.aparelho}(s) pelo professor ${agendamento.professor}?`;
           
-          // Define a hora atual como padrão
           const now = new Date();
           const horaAtual = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
           document.getElementById('horaEntregaModal').value = horaAtual;
           
-          // Mostra o modal
           document.getElementById('devolucaoModal').style.display = 'block';
           break;
         }
@@ -1624,7 +1607,7 @@
       agendamentoParaDevolver = null;
     }
     
-    function finalizarAgendamento() {
+    async function finalizarAgendamento() {
       if (!agendamentoParaDevolver) return;
       
       const horaEntrega = document.getElementById('horaEntregaModal').value;
@@ -1633,56 +1616,39 @@
         return;
       }
       
-      // Atualiza o agendamento com a hora de entrega
-      const [dia, mes, ano] = [
-        agendamentoParaDevolver.dia,
-        parseInt(monthSelect.value) + 1,
-        yearSelect.value
-      ];
-      const key = `${ano}-${String(mes).padStart(2, '0')}`;
-      
-      const index = agendamentos[key].findIndex(ag => ag.id === agendamentoParaDevolver.id);
-      if (index !== -1) {
-        agendamentos[key][index].horaEntrega = horaEntrega;
+      const sucesso = await atualizarAgendamentoFirestore(agendamentoParaDevolver.id, { horaEntrega });
+      if (sucesso) {
+        agendamentoParaDevolver.horaEntrega = horaEntrega;
         
-        // Salva no localStorage
-        salvarAgendamentos();
-        
-        // Atualiza a exibição
+        const [ano, mes] = agendamentoParaDevolver.mesAno.split('-');
         renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
         
-        // Gera documento PDF
-        gerarDocumentoPDF(agendamentos[key][index]);
+        fecharModal();
+        alert("Devolução registrada com sucesso!");
+      } else {
+        alert("Erro ao registrar devolução. Tente novamente.");
       }
-      
-      fecharModal();
-      alert("Devolução registrada com sucesso!");
     }
 
-    // Função para gerar documento PDF
     function gerarDocumentoPDF(agendamento) {
       const doc = new jsPDF();
       
-      // Cabeçalho
       doc.setFontSize(18);
-      doc.setTextColor(10, 36, 99); // Azul escuro
+      doc.setTextColor(10, 36, 99);
       doc.text("TERMO DE EMPRÉSTIMO DE EQUIPAMENTOS", 105, 20, null, null, 'center');
       
-      // Logo ou informações da escola
       doc.setFontSize(12);
       doc.setTextColor(0, 0, 0);
       doc.text("ESCOLA ESTADUAL - NOME DA ESCOLA", 105, 30, null, null, 'center');
       doc.text("Departamento de Tecnologia", 105, 36, null, null, 'center');
       
-      // Linha divisória
       doc.setDrawColor(10, 36, 99);
       doc.setLineWidth(0.5);
       doc.line(20, 42, 190, 42);
       
-      // Dados do agendamento
       doc.setFontSize(12);
       doc.text("PROFESSOR: " + agendamento.professor, 20, 50);
-      doc.text("EMAIL: " + teacherEmails[agendamento.professor] || "Não informado", 20, 58);
+      doc.text("EMAIL: " + (teacherEmails[agendamento.professor] || "Não informado"), 20, 58);
       
       doc.text("TURMA: " + agendamento.turma, 20, 66);
       doc.text("SALA: " + agendamento.sala, 20, 74);
@@ -1694,42 +1660,33 @@
       doc.text("DATA: " + dataFormatada, 20, 98);
       doc.text("AULA: " + agendamento.aula, 20, 106);
       
-      doc.text("HORA DE RETIRADA: " + agendamento.horaRetirada, 20, 114);
-      doc.text("HORA DE ENTREGA: " + (agendamento.horaEntrega || "Não entregue"), 20, 122);
+      doc.text("HORA DE ENTREGA: " + (agendamento.horaEntrega || "Não entregue"), 20, 114);
       
-      // Linha divisória
-      doc.line(20, 130, 190, 130);
+      doc.line(20, 122, 190, 122);
       
-      // Termos e condições
       doc.setFontSize(10);
-      doc.text("DECLARO QUE RECEBI O(S) EQUIPAMENTO(S) EM PERFEITO ESTADO E ME COMPROMETO A:", 20, 138);
-      doc.text("- Utilizar o(s) equipamento(s) exclusivamente para fins pedagógicos;", 25, 146);
-      doc.text("- Zelar pela conservação e segurança do(s) equipamento(s);", 25, 154);
-      doc.text("- Devolver o(s) equipamento(s) no prazo combinado;", 25, 162);
-      doc.text("- Comunicar imediatamente qualquer problema ou dano ocorrido.", 25, 170);
+      doc.text("DECLARO QUE RECEBI O(S) EQUIPAMENTO(S) EM PERFEITO ESTADO E ME COMPROMETO A:", 20, 130);
+      doc.text("- Utilizar o(s) equipamento(s) exclusivamente para fins pedagógicos;", 25, 138);
+      doc.text("- Zelar pela conservação e segurança do(s) equipamento(s);", 25, 146);
+      doc.text("- Devolver o(s) equipamento(s) no prazo combinado;", 25, 154);
+      doc.text("- Comunicar imediatamente qualquer problema ou dano ocorrido.", 25, 162);
       
-      // Assinaturas
       doc.setFontSize(12);
-      doc.text("__________________________________________", 50, 190);
-      doc.text("Assinatura do Professor", 105, 198, null, null, 'center');
+      doc.text("__________________________________________", 50, 180);
+      doc.text("Assinatura do Professor", 105, 188, null, null, 'center');
       
-      
-      // Data e hora de geração
       const agora = new Date();
       doc.setFontSize(8);
       doc.setTextColor(100, 100, 100);
       doc.text(`Documento gerado em: ${agora.toLocaleString()}`, 105, 285, null, null, 'center');
       
-      // Salva o PDF
       const nomeArquivo = `Termo_${agendamento.professor.replace(/\s+/g, '_')}_${dataFormatada.replace(/\//g, '-')}.pdf`;
       doc.save(nomeArquivo);
     }
     
-    // Função para exportar todos os agendamentos para PDF
     function exportarParaPDF() {
       const doc = new jsPDF();
       
-      // Cabeçalho
       doc.setFontSize(18);
       doc.setTextColor(10, 36, 99);
       doc.text("RELATÓRIO DE AGENDAMENTOS", 105, 20, null, null, 'center');
@@ -1737,14 +1694,12 @@
       doc.setFontSize(12);
       doc.text(`Período: ${monthNames[parseInt(monthSelect.value)]} de ${yearSelect.value}`, 105, 30, null, null, 'center');
       
-      // Tabela de agendamentos
       const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
       
       if (agendamentosDoMes.length === 0) {
         doc.setFontSize(12);
         doc.text("Nenhum agendamento encontrado para este período.", 105, 40, null, null, 'center');
       } else {
-        // Cabeçalhos da tabela
         const headers = [
           "Data", 
           "Turma", 
@@ -1755,7 +1710,6 @@
           "Entrega"
         ];
         
-        // Dados da tabela
         const data = agendamentosDoMes.map(ag => {
           const diaFormatado = ag.dia.toString().padStart(2, '0');
           const mesFormatado = (parseInt(monthSelect.value) + 1).toString().padStart(2, '0');
@@ -1770,7 +1724,6 @@
           ];
         });
         
-        // Adiciona a tabela ao PDF
         doc.autoTable({
           head: [headers],
           body: data,
@@ -1788,18 +1741,15 @@
         });
       }
       
-      // Data e hora de geração
       const agora = new Date();
       doc.setFontSize(8);
       doc.setTextColor(100, 100, 100);
       doc.text(`Relatório gerado em: ${agora.toLocaleString()}`, 105, 285, null, null, 'center');
       
-      // Salva o PDF
       const nomeArquivo = `Relatorio_Agendamentos_${monthNames[parseInt(monthSelect.value)]}_${yearSelect.value}.pdf`;
       doc.save(nomeArquivo);
     }
     
-    // Função para exportar para CSV
     function exportarParaCSV() {
       const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
       
@@ -1808,19 +1758,16 @@
         return;
       }
       
-      // Cabeçalhos
-      let csv = "Data,Turma,Quantidade,Equipamento,Professor,Aula,Hora Retirada,Hora Entrega,Sala\n";
+      let csv = "Data,Turma,Quantidade,Equipamento,Professor,Aula,Hora Entrega,Sala\n";
       
-      // Dados
       agendamentosDoMes.forEach(ag => {
         const diaFormatado = ag.dia.toString().padStart(2, '0');
         const mesFormatado = (parseInt(monthSelect.value) + 1).toString().padStart(2, '0');
         const data = `${diaFormatado}/${mesFormatado}/${yearSelect.value}`;
         
-        csv += `"${data}","${ag.turma}","${ag.numAparelhos}","${ag.aparelho}","${ag.professor}","${ag.aula}","${ag.horaRetirada}","${ag.horaEntrega || ''}","${ag.sala}"\n`;
+        csv += `"${data}","${ag.turma}","${ag.numAparelhos}","${ag.aparelho}","${ag.professor}","${ag.aula}","${ag.horaEntrega || ''}","${ag.sala}"\n`;
       });
       
-      // Cria o arquivo CSV
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -1840,12 +1787,10 @@
       document.getElementById("quantidadeAgendamento").value = "1";
       document.getElementById("studentClass").value = "";
       document.getElementById("sala").value = "";
-      document.getElementById("hora-retirada").value = "";
-      document.getElementById("hora-entrega").value = "";
       document.getElementById("aula").value = "1ª Aula";
+      document.getElementById("aula").disabled = true;
       document.getElementById("conflictMessage").style.display = "none";
       
-      // Limpa a seleção de data
       if (selectedDay) {
         selectedDay.classList.remove('selecionado');
         const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
@@ -1860,24 +1805,28 @@
     }
 
     // Inicialização
-    carregarBancoDados();
-    gerarOpcoesProfessores();
-    populateMonthYearSelectors();
-    renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
-    initDatepicker();
+    async function initApp() {
+      gerarOpcoesProfessores();
+      populateMonthYearSelectors();
+      await carregarDadosIniciais();
+      initDatepicker();
 
-    // Adiciona listeners para verificar conflito quando os campos mudam
-    document.getElementById("studentClass").addEventListener("change", verificarConflito);
-    document.getElementById("aula").addEventListener("change", verificarConflito);
-    document.getElementById("dataAgendamento").addEventListener("change", verificarConflito);
+      document.getElementById("studentClass").addEventListener("change", verificarConflito);
+      document.getElementById("aula").addEventListener("change", verificarConflito);
+      document.getElementById("dataAgendamento").addEventListener("change", verificarConflito);
 
-    monthSelect.addEventListener('change', () => {
-      renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
-    });
+      monthSelect.addEventListener('change', () => {
+        renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
+      });
 
-    yearSelect.addEventListener('change', () => {
-      renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
-    });
+      yearSelect.addEventListener('change', () => {
+        renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
+      });
+    }
+
+    initApp();
   </script>
+  
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
