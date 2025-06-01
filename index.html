@@ -1016,10 +1016,13 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // REFERÊNCIAS ÀS COLEÇÕES (MESMAS DO SISTEMA DE CADASTRO)
+    // UID DO USUÁRIO ESPECÍFICO
+    const USER_ID = "fy2HDkDwfKd44wn0uxhdQ77HzlE3";
+
+// REFERÊNCIAS ÀS COLEÇÕES FILTRADAS POR USUÁRIO
     const agendamentosRef = db.collection("agendamentos");
     const historicoExcluidosRef = db.collection("historico_excluidos");
-
+    
     // Inicializa o jsPDF
     const { jsPDF } = window.jspdf;
     
@@ -1537,7 +1540,8 @@
     async function carregarDadosIniciais() {
       try {
         // Carrega agendamentos
-        const snapshotAgendamentos = await agendamentosRef.get();
+          // Carrega agendamentos DO USUÁRIO ESPECÍFICO
+        const snapshotAgendamentos = await agendamentosRef.where("userId", "==", USER_ID).get();
         agendamentos = {};
         snapshotAgendamentos.forEach(doc => {
           const data = doc.data();
@@ -1548,23 +1552,30 @@
           agendamentos[mesAno].push({ id: doc.id, ...data });
         });
         
-        // Carrega histórico excluído
-        const snapshotHistorico = await historicoExcluidosRef.get();
+        
+       / Carrega histórico excluído DO USUÁRIO ESPECÍFICO
+        const snapshotHistorico = await historicoExcluidosRef.where("userId", "==", USER_ID).get();
         historicoExcluidos = [];
         snapshotHistorico.forEach(doc => {
           historicoExcluidos.push(doc.data());
         });
         
-        // Renderiza o calendário
+       // Renderiza o calendário
         renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
       }
     }
 
-    async function salvarAgendamentoFirestore(agendamento) {
+   async function salvarAgendamentoFirestore(agendamento) {
       try {
-        const docRef = await agendamentosRef.add(agendamento);
+        // Adiciona o USER_ID ao agendamento
+        const agendamentoComUserId = {
+          ...agendamento,
+          userId: USER_ID
+        };
+
+        const docRef = await agendamentosRef.add(agendamentoComUserId);
         return docRef.id;
       } catch (error) {
         console.error("Erro ao salvar agendamento:", error);
@@ -1572,21 +1583,12 @@
       }
     }
 
-    async function atualizarAgendamentoFirestore(id, dados) {
-      try {
-        await agendamentosRef.doc(id).update(dados);
-        return true;
-      } catch (error) {
-        console.error("Erro ao atualizar agendamento:", error);
-        return false;
-      }
-    }
-
     async function excluirAgendamentoFirestore(id, agendamento) {
       try {
-        // Adiciona ao histórico
+        // Adiciona ao histórico COM USER_ID
         await historicoExcluidosRef.add({
           ...agendamento,
+          userId: USER_ID,
           dataExclusao: new Date().toISOString()
         });
         
@@ -1595,6 +1597,26 @@
         return true;
       } catch (error) {
         console.error("Erro ao excluir agendamento:", error);
+        return false;
+      }
+    }
+
+        async function verificarConflitoAgendamento(turma, data, aula) {
+      const [dia, mes, ano] = data.split('/');
+      const mesAno = `${ano}-${mes}`;
+      
+      try {
+        const querySnapshot = await agendamentosRef
+          .where("mesAno", "==", mesAno)
+          .where("dia", "==", parseInt(dia))
+          .where("turma", "==", turma)
+          .where("aula", "==", aula)
+          .where("userId", "==", USER_ID) // FILTRO POR USUÁRIO
+          .get();
+
+                return !querySnapshot.empty;
+      } catch (error) {
+        console.error("Erro ao verificar conflito:", error);
         return false;
       }
     }
@@ -1621,6 +1643,7 @@
           .where("dia", "==", parseInt(dia))
           .where("turma", "==", turma)
           .where("aula", "==", aula)
+          .where("userId", "==", USER_ID) // FILTRO POR USUÁRIO
           .get();
           
         return !querySnapshot.empty;
@@ -2386,7 +2409,7 @@
         renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
       });
 
-      // Carregar as aulas disponíveis ao iniciar
+        // Carregar as aulas disponíveis ao iniciar
       atualizarAulasDisponiveis();
     }
 
