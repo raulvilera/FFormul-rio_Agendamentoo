@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    /* Estilos permanecem os mesmos */
     :root {
       --azul-escuro: #0a2463;
       --azul-medio: #3e92cc;
@@ -849,7 +850,53 @@
           <label>TURMA:</label>
           <select id="studentClass" class="form-control" required onchange="atualizarSalaEAulas()">
             <option value="">Selecione a turma</option>
-            <!-- Opções de turma permanecem iguais -->
+            <option value="6° ANO A MANHA">6° ANO A MANHA</option>
+            <option value="6° ANO B MANHA">6° ANO B MANHA</option>
+            <option value="6° ANO C MANHA">6° ANO C MANHA</option>
+            <option value="6° ANO D MANHA">6° ANO D MANHA</option>
+            <option value="6° ANO E TARDE">6° ANO E TARDE</option>
+            <option value="6° ANO F TARDE">6° ANO F TARDE</option>
+            <option value="7° ANO A TARDE">7° ANO A TARDE</option>
+            <option value="7° ANO B TARDE">7° ANO B TARDE</option>
+            <option value="7° ANO C TARDE">7° ANO C TARDE</option>
+            <option value="7° ANO D TARDE">7° ANO D TARDE</option>
+            <option value="7° ANO E TARDE">7° ANO E TARDE</option>
+            <option value="7° ANO F TARDE">7° ANO F TARDE</option>
+            <option value="8° ANO A TARDE">8° ANO A TARDE</option>
+            <option value="8° ANO B TARDE">8° ANO B TARDE</option>
+            <option value="8° ANO C TARDE">8° ANO C TARDE</option>
+            <option value="8° ANO D TARDE">8° ANO D TARDE</option>
+            <option value="8° ANO E TARDE">8° ANO E TARDE</option>
+            <option value="9° ANO A TARDE">9° ANO A TARDE</option>
+            <option value="9° ANO B TARDE">9° ANO B TARDE</option>
+            <option value="9° ANO C TARDE">9° ANO C TARDE</option>
+            <option value="9° ANO D TARDE">9° ANO D TARDE</option>
+            <option value="1ª SERIE A MANHA">1ª SERIE A MANHA</option>
+            <option value="1ª SERIE B MANHA">1ª SERIE B MANHA</option>
+            <option value="1ª SERIE C MANHA">1ª SERIE C MANHA</option>
+            <option value="1ª SERIE D MANHA">1ª SERIE D MANHA</option>
+            <option value="1ª SERIE E MANHA">1ª SERIE E MANHA</option>
+            <option value="1ª SERIE F MANHA">1ª SERIE F MANHA</option>
+            <option value="1ª SERIE G TARDE">1ª SERIE G TARDE</option>
+            <option value="1ª SERIE H NOITE">1ª SERIE H NOITE</option>
+            <option value="1ª SERIE I NOITE">1ª SERIE I NOITE</option>
+            <option value="2ª SERIE A MANHA">2ª SERIE A MANHA</option>
+            <option value="2ª SERIE B MANHA">2ª SERIE B MANHA</option>
+            <option value="2ª SERIE C MANHA">2ª SERIE C MANHA</option>
+            <option value="2ª SERIE D MANHA">2ª SERIE D MANHA</option>
+            <option value="2ª SERIE E MANHA">2ª SERIE E MANHA</option>
+            <option value="2ª SERIE F NOITE">2ª SERIE F NOITE</option>
+            <option value="2ª SERIE G NOITE">2ª SERIE G NOITE</option>
+            <option value="2ª SERIE H NOITE">2ª SERIE H NOITE</option>
+            <option value="2ª SERIE I NOITE">2ª SERie I NOITE</option>
+            <option value="3ª SERIE A MANHA">3ª SERIE A MANHA</option>
+            <option value="3ª SERIE B MANHA">3ª SERIE B MANHA</option>
+            <option value="3ª SERIE C MANHA">3ª SERIE C MANHA</option>
+            <option value="3ª SERIE D NOITE">3ª SERIE D NOITE</option>
+            <option value="3ª SERIE E NOITE">3ª SERIE E NOITE</option>
+            <option value="3ª SERIE F NOITE">3ª SERIE F NOITE</option>
+            <option value="3ª SERIE G NOITE">3ª SERIE G NOITE</option>
+            <option value="4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA">4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA</option>
           </select>
         </div>
       </div>
@@ -976,8 +1023,8 @@
     // Inicializa o jsPDF
     const { jsPDF } = window.jspdf;
     
-    // Dados dos professores (permanece igual)
-     const teacherEmails = {
+    // Dados dos professores
+    const teacherEmails = {
       "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
       "ALEX LUTH PEREIRA MARANHAO": "luth@prof.educacao.sp.gov.br",
       "ALEXANDRE SILVA LIMA": "alexandresilvalima@prof.educacao.sp.gov.br",
@@ -1067,7 +1114,7 @@
       "WILSON RODRIGUES MOTA": "wmota@prof.educacao.sp.gov.br"
     };
 
-    // Dados dos aparelhos (permanece igual)
+    // Dados dos aparelhos
     const marcas = {
       "TABLET": "POSITIVO",
       "SMARTPHONE": "POSITIVO",
@@ -1075,8 +1122,8 @@
       "NOTEBOOK": "POSITIVO"
     };
 
-    // Dados das salas por turma e período (permanece igual)
-     const salasPorTurmaPeriodo = {
+    // Dados das salas por turma e período
+    const salasPorTurmaPeriodo = {
       "6° ANO A MANHA": "Sala 1",
       "6° ANO B MANHA": "Sala 2",
       "6° ANO C MANHA": "Sala 3",
@@ -1122,12 +1169,12 @@
       "3ª SERIE D NOITE": "Sala 5",
       "3ª SERIE E NOITE": "Sala 6",
       "3ª SERIE F NOITE": "Sala 7",
-      "3ª SERie G NOITE": "Sala 8",
+      "3ª SERIE G NOITE": "Sala 8",
       "4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA": "Laboratório 1"
     };
 
-    // Horários dos professores (dados fornecidos) (permanece igual)
-    const horariosProfessores = {
+    // Horários dos professores
+ const horariosProfessores = {
       "ADEMAR": {
     "MANHA": ["1D", "1E", "1E", "1F", "1F", "1B", "1B", "1A", "1A", "1D", "1C", "1C"],
     "TARDE": ["9C", "9B", "9B", "1G", "1G", "9A", "9A", "9C", "9C", "9D", "9A", "9D"],
@@ -1463,7 +1510,6 @@
   }
 };
 
-
     const monthNames = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
@@ -1487,10 +1533,7 @@
       return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
 
-    // ==============================
-    // FUNÇÕES DO FIREBASE (INTEGRADAS)
-    // ==============================
-    
+    // FUNÇÕES DO FIREBASE
     async function carregarDadosIniciais() {
       try {
         // Carrega agendamentos
@@ -1556,6 +1599,18 @@
       }
     }
 
+    // Funções do sistema
+    function estaDentroDoPeriodo(dataAgendamento) {
+      const hoje = new Date();
+      const dataAgendamentoObj = new Date(dataAgendamento);
+      const diferencaDias = Math.floor((hoje - dataAgendamentoObj) / (1000 * 60 * 60 * 24));
+      return diferencaDias <= 15;
+    }
+
+    function formatarDataParaComparacao(dia, mes, ano) {
+      return `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+    }
+
     async function verificarConflitoAgendamento(turma, data, aula) {
       const [dia, mes, ano] = data.split('/');
       const mesAno = `${ano}-${mes}`;
@@ -1573,21 +1628,6 @@
         console.error("Erro ao verificar conflito:", error);
         return false;
       }
-    }
-
-    // ==============================
-    // FUNÇÕES DO SISTEMA (ATUALIZADAS)
-    // ==============================
-    
-    function estaDentroDoPeriodo(dataAgendamento) {
-      const hoje = new Date();
-      const dataAgendamentoObj = new Date(dataAgendamento);
-      const diferencaDias = Math.floor((hoje - dataAgendamentoObj) / (1000 * 60 * 60 * 24));
-      return diferencaDias <= 15;
-    }
-
-    function formatarDataParaComparacao(dia, mes, ano) {
-      return `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
     }
 
     function atualizarMarca() {
@@ -1654,6 +1694,7 @@
       const periodo = obterPeriodoTurma(turma);
       if (!periodo) return;
       
+      // Corrigido: Remover acentos para compatibilidade
       const nomeSemAcentos = removerAcentos(professor.split(' ')[0]).toUpperCase();
       
       if (!horariosProfessores[nomeSemAcentos]) {
@@ -1667,15 +1708,18 @@
         return;
       }
       
+      // Obter dia da semana (0 = Domingo, 1 = Segunda, ...)
       const [dia, mes, ano] = data.split('/');
       const dataObj = new Date(ano, mes-1, dia);
       const diaSemana = dataObj.getDay();
       
+      // Não exibir aulas para domingo e sábado (0 e 6)
       if (diaSemana === 0 || diaSemana === 6) {
         aulaContainer.innerHTML = '<p>Não há aulas disponíveis para domingos e sábados</p>';
         return;
       }
       
+      // Número de aulas por dia de acordo com o período
       let aulasPorDia = 0;
       if (periodo === "MANHA" || periodo === "TARDE") {
         aulasPorDia = 6;
@@ -1683,8 +1727,10 @@
         aulasPorDia = 5;
       }
       
+      // Índice do primeiro horário do dia
       let indiceInicio = (diaSemana - 1) * aulasPorDia;
       
+      // Prevenção contra índices inválidos
       if (indiceInicio < 0) {
         indiceInicio = 0;
       } else if (indiceInicio >= aulasProfessor.length) {
@@ -1699,7 +1745,9 @@
         return;
       }
       
+      // Criar checkboxes para as aulas
       aulasDoDia.forEach((aula, index) => {
+        // Verificar se a aula não está vazia ou é um horário livre
         if (aula && aula.trim() !== "" && aula.trim() !== "X") {
           const aulaId = `aula-${index}`;
           const checkbox = document.createElement("input");
@@ -2052,13 +2100,14 @@
           horaEntrega: null
         };
         
-        const sucesso = await salvarAgendamentoFirestore(novoAgendamento);
+        const id = await salvarAgendamentoFirestore(novoAgendamento);
         
-        if (sucesso) {
+        if (id) {
           if (!agendamentos[mesAno]) {
             agendamentos[mesAno] = [];
           }
-          agendamentos[mesAno].push({ id: sucesso, ...novoAgendamento });
+          agendamentos[mesAno].push({ id, ...novoAgendamento });
+          alert(`Agendamento para aula ${aula} cadastrado com sucesso!`);
         } else {
           alert("Erro ao salvar agendamento. Tente novamente.");
         }
@@ -2074,8 +2123,6 @@
       }
       selectedDate = null;
       document.getElementById('dataAgendamento').value = '';
-      
-      alert("Agendamentos cadastrados com sucesso!");
     }
 
     async function excluirAgendamento(id) {
@@ -2091,6 +2138,7 @@
           const sucesso = await excluirAgendamentoFirestore(id, agendamentoExcluido);
           if (sucesso) {
             await carregarDadosIniciais();
+            alert("Agendamento excluído com sucesso!");
           } else {
             alert("Erro ao excluir agendamento. Tente novamente.");
           }
@@ -2319,14 +2367,11 @@
       popupSelectedDate = null;
     }
 
-    // ==============================
-    // INICIALIZAÇÃO (ATUALIZADA)
-    // ==============================
-    
+    // INICIALIZAÇÃO
     async function initApp() {
       gerarOpcoesProfessores();
       populateMonthYearSelectors();
-      await carregarDadosIniciais(); // Aguarda carregamento dos dados
+      await carregarDadosIniciais();
       initDatepicker();
 
       document.getElementById("professor").addEventListener("change", atualizarEmailEAulas);
@@ -2341,7 +2386,7 @@
         renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
       });
 
-      // Carregar as aulas disponíveis ao iniciar (se houver dados preenchidos)
+      // Carregar as aulas disponíveis ao iniciar
       atualizarAulasDisponiveis();
     }
 
