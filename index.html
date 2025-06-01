@@ -1001,6 +1001,45 @@
   </div>
 
   <script>
+
+    // Substitua o objeto local 'teacherEmails'
+async function carregarProfessores() {
+  const snapshot = await db.collection("professores").get();
+  const professores = {};
+  snapshot.forEach(doc => {
+    professores[doc.id] = doc.data().email;
+  });
+  return professores;
+}
+
+    // Substitua o objeto local 'marcas'
+async function carregarEquipamentos() {
+  const snapshot = await db.collection("equipamentos").get();
+  const equipamentos = {};
+  snapshot.forEach(doc => {
+    equipamentos[doc.id] = doc.data().marca;
+  });
+  return equipamentos;
+}
+
+    // Modifique a função initApp()
+async function initApp() {
+  teacherEmails = await carregarProfessores(); // Carrega do Firestore
+  marcas = await carregarEquipamentos(); // Carrega do Firestore
+  gerarOpcoesProfessores();
+  // ... restante do código
+}
+
+    // No sistema de CADASTRO
+db.collection("agendamentos").onSnapshot((snapshot) => {
+  snapshot.docChanges().forEach((change) => {
+    if (change.type === "added") {
+      const agendamento = change.doc.data();
+      console.log("Novo agendamento:", agendamento);
+      // Atualize a UI ou processos internos
+    }
+  });
+});
     // CONFIGURAÇÃO DO FIREBASE (MESMA DO SISTEMA DE CADASTRO)
     const firebaseConfig = {
       apiKey: "AIzaSyBOoXyjLQPfgzQM06LVy-TRSPdSM_8CjcE",
