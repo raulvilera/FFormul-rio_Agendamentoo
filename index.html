@@ -1026,7 +1026,7 @@
   </div>
 
   <script>
-    // CONFIGURAÇÃO DO FIREBASE
+    // CONFIGURAÇÃO DO FIREBASE (MESMA USADA NO CADASTRO)
     const firebaseConfig = {
       apiKey: "AIzaSyBOoXyjLQPfgzQM06LVy-TRSPdSM_8CjcE",
       authDomain: "gerenciamentoaparelho.firebaseapp.com",
@@ -1041,7 +1041,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // UID DO USUÁRIO ESPECÍFICO
+    // UID DO USUÁRIO ESPECÍFICO (ATUALIZE COM SEU USER ID)
     const USER_ID = "lfSOKNcVcnZFJdrT7BpZG6H6dm32";
 
     // REFERÊNCIAS ÀS COLEÇÕES FILTRADAS POR USUÁRIO
@@ -1201,9 +1201,9 @@
       "4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA": "Laboratório 1"
     };
 
-    // Horários dos professores
+    // Horários dos professores (ESTRUTURA CORRIGIDA)
     const horariosProfessores = {
-           "ADEMAR": { 
+      "ADEMAR": { 
         "MANHA": ["1D", "1E", "1E", "1F", "1F", "1B", "1B", "1A", "1A", "1D", "1C", "1C"], 
         "TARDE": ["9C", "9B", "9B", "1G", "1G", "9A", "9A", "9C", "9C", "9D", "9A", "9D"], 
         "NOITE": ["2F", "2G", "2G", "2H", "2F", "2H", "1H", "1H", "2F", "2G", "2G", "2H"] 
@@ -1409,7 +1409,7 @@
         "NOITE": [] 
       }, 
       "MARA": { 
-        "MANHA": [], 
+        "MANha": [], 
         "TARDE": ["1G", "9A", "9D", "8A", "8E", "8D", "8C", "9C", "9C", "9D", "8D", "9A", "8C", "9B", "9B", "8A/PV", "8E", "8A", "1G"], 
         "NOITE": [] 
       }, 
@@ -1577,7 +1577,7 @@
         const snapshotHistorico = await historicoExcluidosRef.where("userId", "==", USER_ID).get();
         historicoExcluidos = [];
         snapshotHistorico.forEach(doc => {
-          historicoExcluidos.push(doc.data());
+          historicoExcluidos.push({ id: doc.id, ...doc.data() });
         });
         
         // Renderiza o calendário
@@ -1706,9 +1706,10 @@
     }
 
     function obterAulasProfessor(professor, periodo) {
-      const nomeFormatado = removerAcentos(professor.split(' ')[0]).toUpperCase();
-      if (!horariosProfessores[nomeFormatado]) return [];
-      return horariosProfessores[nomeFormatado][periodo] || [];
+      // Usar apenas o primeiro nome e remover acentos
+      const primeiroNome = removerAcentos(professor.split(' ')[0]).toUpperCase();
+      if (!horariosProfessores[primeiroNome]) return [];
+      return horariosProfessores[primeiroNome][periodo] || [];
     }
 
     function atualizarAulasDisponiveis() {
@@ -1727,15 +1728,7 @@
       const periodo = obterPeriodoTurma(turma);
       if (!periodo) return;
       
-      // Corrigido: Remover acentos para compatibilidade
-      const nomeSemAcentos = removerAcentos(professor.split(' ')[0]).toUpperCase();
-      
-      if (!horariosProfessores[nomeSemAcentos]) {
-        aulaContainer.innerHTML = '<p>Professor sem horários cadastrados</p>';
-        return;
-      }
-      
-      const aulasProfessor = horariosProfessores[nomeSemAcentos][periodo] || [];
+      const aulasProfessor = obterAulasProfessor(professor, periodo);
       if (aulasProfessor.length === 0) {
         aulaContainer.innerHTML = '<p>Não há aulas neste período</p>';
         return;
@@ -1743,7 +1736,13 @@
       
       // Obter dia da semana (0 = Domingo, 1 = Segunda, ...)
       const [dia, mes, ano] = data.split('/');
-      const dataObj = new Date(ano, mes-1, dia);
+      let dataObj;
+      try {
+        dataObj = new Date(ano, mes-1, dia);
+      } catch (e) {
+        console.error("Data inválida:", e);
+        return;
+      }
       const diaSemana = dataObj.getDay();
       
       // Não exibir aulas para domingo e sábado (0 e 6)
@@ -1760,13 +1759,15 @@
         aulasPorDia = 5;
       }
       
-      // Índice do primeiro horário do dia
-      let indiceInicio = (diaSemana - 1) * aulasPorDia;
+      // Índice do primeiro horário do dia (segunda = 0, terça = 1, etc)
+      const indiceDia = diaSemana - 1; 
+      
+      // Índice do primeiro horário do dia na grade semanal
+      let indiceInicio = indiceDia * aulasPorDia;
       
       // Prevenção contra índices inválidos
-      if (indiceInicio < 0) {
-        indiceInicio = 0;
-      } else if (indiceInicio >= aulasProfessor.length) {
+      if (indiceInicio < 0) indiceInicio = 0;
+      if (indiceInicio >= aulasProfessor.length) {
         indiceInicio = aulasProfessor.length - aulasPorDia;
         if (indiceInicio < 0) indiceInicio = 0;
       }
@@ -2134,20 +2135,20 @@
           userId: USER_ID
         };
         
-        const sucesso = await salvarAgendamentoFirestore(novoAgendamento);
+        const id = await salvarAgendamentoFirestore(novoAgendamento);
         
-        if (sucesso) {
+        if (id) {
           if (!agendamentos[mesAno]) {
             agendamentos[mesAno] = [];
           }
-          agendamentos[mesAno].push({ id: sucesso, ...novoAgendamento });
+          agendamentos[mesAno].push({ id, ...novoAgendamento });
         } else {
           alert("Erro ao salvar agendamento. Tente novamente.");
         }
       }
       
-      // Atualizar calendário e histórico
-      renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
+      // Recarregar todos os dados do Firestore
+      await carregarDadosIniciais();
       
       if (selectedDay) {
         selectedDay.classList.remove('selecionado');
@@ -2218,8 +2219,8 @@
       if (sucesso) {
         agendamentoParaDevolver.horaEntrega = horaEntrega;
         
-        const [ano, mes] = agendamentoParaDevolver.mesAno.split('-');
-        renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
+        // Recarregar todos os dados
+        await carregarDadosIniciais();
         
         fecharModal();
         alert("Devolução registrada com sucesso!");
