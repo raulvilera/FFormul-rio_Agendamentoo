@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="pt-br" <!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
@@ -52,6 +51,8 @@
       min-height: 100vh;
       padding: 20px;
       background-attachment: fixed;
+      background-size: 200% 200%;
+      animation: gradientAnimation 15s ease infinite;
     }
 
     h2 {
@@ -761,20 +762,25 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     }
     
-    body {
-      background: linear-gradient(135deg, 
-        var(--cor-logo-1) 0%, 
-        var(--cor-logo-2) 50%, 
-        var(--cor-logo-3) 100%
-      );
-      background-size: 200% 200%;
-      animation: gradientAnimation 15s ease infinite;
-    }
-    
     @keyframes gradientAnimation {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
+    }
+    
+    .legend-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.85rem;
     }
   </style>
 </head>
@@ -946,6 +952,25 @@
         <select id="yearSelect" style="flex: 1; padding: 10px; border-radius: 8px; border: 2px solid #ddd; background-color: var(--cinza-input);"></select>
       </div>
 
+      <div class="legend-container">
+        <div class="legend-item">
+          <div class="status-indicator status-disponivel"></div>
+          <span>Disponível</span>
+        </div>
+        <div class="legend-item">
+          <div class="status-indicator status-agendado"></div>
+          <span>Agendado</span>
+        </div>
+        <div class="legend-item">
+          <div class="status-indicator status-entregue"></div>
+          <span>Entregue</span>
+        </div>
+        <div class="legend-item">
+          <div class="status-indicator status-excluido"></div>
+          <span>Excluído</span>
+        </div>
+      </div>
+
       <table class="calendar">
         <thead>
           <tr>
@@ -1001,7 +1026,7 @@
   </div>
 
   <script>
-    // CONFIGURAÇÃO DO FIREBASE (MESMA DO SISTEMA DE CADASTRO)
+    // CONFIGURAÇÃO DO FIREBASE
     const firebaseConfig = {
       apiKey: "AIzaSyBOoXyjLQPfgzQM06LVy-TRSPdSM_8CjcE",
       authDomain: "gerenciamentoaparelho.firebaseapp.com",
@@ -1019,10 +1044,10 @@
     // UID DO USUÁRIO ESPECÍFICO
     const USER_ID = "fy2HDkDwfKd44wn0uxhdQ77HzlE3";
 
-// REFERÊNCIAS ÀS COLEÇÕES FILTRADAS POR USUÁRIO
+    // REFERÊNCIAS ÀS COLEÇÕES FILTRADAS POR USUÁRIO
     const agendamentosRef = db.collection("agendamentos");
     const historicoExcluidosRef = db.collection("historico_excluidos");
-    
+
     // Inicializa o jsPDF
     const { jsPDF } = window.jspdf;
     
@@ -1179,339 +1204,21 @@
     // Horários dos professores
     const horariosProfessores = {
       "ADEMAR": {
-    "MANHA": ["1D", "1E", "1E", "1F", "1F", "1B", "1B", "1A", "1A", "1D", "1C", "1C"],
-    "TARDE": ["9C", "9B", "9B", "1G", "1G", "9A", "9A", "9C", "9C", "9D", "9A", "9D"],
-    "NOITE": ["2F", "2G", "2G", "2H", "2F", "2H", "1H", "1H", "2F", "2G", "2G", "2H"]
-  },
-  "ALISSON": {
-    "MANHA": ["6A", "6D", "6B", "1F", "6A", "6A", "1D", "6C", "1B", "1B/BIO", "3C/PV", "6C/CIÉ", "1E/BIO", "6B", "6B", "1C", "6C", "1F", "6D", "1E", "1A", "1A", "1C", "6D/C", "1D"],
-    "TARDE": ["8A", "8A", "7D/PV", "7C/PV", "8A", "8A", "7E/PV", "7C/PV", "8A", "8A", "7E/PV", "7C/PV"],
-    "NOITE": []
-  },
-  "ANDRÉIA": {
-    "MANHA": ["1E", "1F", "1D", "2C", "1C", "2D", "1F/R", "1D", "1F", "1E", "1C", "1F/R", "2C/R", "1D", "1C", "1C", "1E", "1C/R", "1D/R", "1E", "1B/R", "1E/R", "1D/R", "1F", "2D/R", "1E", "1C", "1F", "1D", "1B/R"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "ANTONIO": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": ["3G", "2F", "2F", "2G", "2G"] // Biologia (Quinta Noite)
-  },
-  "ANTONIO CARLOS": {
-    "MANHA": ["2B", "2B", "2E", "2E", "2C", "2C", "2D", "2D", "2A", "2D", "2D", "2E", "2E", "2A", "2A", "2C", "2C", "2A", "2B", "2B"],
-    "TARDE": [],
-    "NOITE": ["3G", "2F", "2F", "2G", "2G"]
-  },
-  "BETE": {
-    "MANHA": ["1A", "1A", "1A", "1E", "1B", "1B", "1E/EF", "1E/EF", "1D", "1D", "1B", "1A", "1C/EF", "1C/EF", "1E", "1E", "1D/EF", "1D/EF", "1C", "1C", "1E", "1B", "1A/EF", "1A/EF", "1B/EF", "1B/EF", "1D", "1D", "1C", "1C"],
-    "TARDE": ["1G", "1G"],
-    "NOITE": []
-  },
-  "DANIEL": {
-    "MANHA": ["6C", "6C", "2C", "6D", "3C", "3C", "2ADM/H", "2ADM/H", "6A", "2C", "2D/L", "2D/L", "6B", "6B", "2A", "2A", "2B", "2B", "2D", "2D", "6D", "6A", "3B", "3B", "3A", "3A", "2C/L", "2C/L", "2E", "2E"],
-    "TARDE": ["6E", "6E"],
-    "NOITE": []
-  },
-  "DANIELLE": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": ["3F", "2F", "3G", "3E", "3D"] // Química (Terça/Quinta Noite)
-  },
-  "DANIELA": {
-    "MANHA": ["1C", "1C", "6A", "6A", "6D", "6D", "6B", "6B", "6C", "6C", "1D", "1D", "1A", "1A", "1F", "1F", "1B", "1B", "1E", "1E"],
-    "TARDE": ["7D", "7C", "9A", "7E", "7E", "7C", "7D", "7B", "7B", "7A", "1G", "1G", "9D", "7A", "7D", "7B", "7B", "7A", "1G", "1G"],
-    "NOITE": ["1H"]
-  },
-  "EDIANE": {
-    "MANHA": ["2ADM", "2ADM", "2ADM"],
-    "TARDE": ["6E/R", "7C", "6F", "6F", "7B", "6F", "7C", "7B", "6F/R", "6F/R", "9C/O", "9D/O", "6F", "7D", "9D/OP", "7D", "7C", "7D", "7B", "7D", "7C", "9B/OP", "6E/R", "9B/OP", "9C/OP", "7B", "6F", "6F", "7C"],
-    "NOITE": ["2G", "2F", "2F", "3E/OP", "3E/OP", "2H", "2H", "2H", "2F", "2F", "3F", "3F", "2G", "2G", "2G", "3G/OP", "3G/OP", "3D/OP", "3D/OP"]
-  },
-  "EDUARDO": {
-    "MANHA": [],
-    "TARDE": ["7C", "8B", "7D", "8B", "7D", "7C"], // Educação Física (Quarta Tarde)
-    "NOITE": []
-  },
-  "ELIAS": {
-    "MANHA": ["2E", "2E", "3B", "3B", "2C", "2C", "1C", "1C", "2ADM/Q", "2ADM/Q", "3A", "3A", "2B", "2B", "1A", "1A", "2A", "1F", "1B", "1B", "3C", "3C", "1E", "1E", "1D", "1D", "1F", "2A", "2D", "2D"],
-    "TARDE": ["1G", "1G", "9C", "9C", "9B", "9B/OM", "9A", "8E/PV", "9A", "8D/PV"],
-    "NOITE": ["1H/Q", "1H/Q", "1H/EF", "1H/EF", "1H/F", "1H/F"]
-  },
-  "FÁBIO": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": ["1I", "2F", "1I", "3D", "1I", "3D", "3E", "2G", "1I", "2H"] // Matemática (Segunda/Quinta Noite)
-  },
-  "GENILTON": {
-    "MANHA": [],
-    "TARDE": ["7E", "7E", "9B", "7C", "7C", "6F", "6F", "6E", "6E", "7D", "6F", "7B/PV", "6E", "7F", "7D"], // Ciências/Arte (Terça/Quarta Tarde)
-    "NOITE": []
-  },
-  "GISLENE": {
-    "MANHA": ["6B", "6A", "6B", "6A"], // Tecnologia (Sexta Manhã)
-    "TARDE": [],
-    "NOITE": []
-  },
-  "INGRYD": {
-    "MANHA": [],
-    "TARDE": ["8E", "8D", "8D", "8E", "6E", "6E", "8C", "6F", "8D", "8D", "6F", "6E", "6E", "6F", "6F", "8E"], // Matemática (Segunda/Quarta Tarde)
-    "NOITE": []
-  },
-  "JANINA": {
-    "MANHA": ["2ADM/B", "2ADM/B", "2B", "2A", "2A", "2B", "3C/BIOT", "3C/BIOT", "2C", "2C", "3A", "3A", "3B", "3B", "2E", "2D", "2D", "2E"],
-    "TARDE": ["9B", "9C", "9B", "9C", "9D", "9B", "9A", "9A"],
-    "NOITE": ["3D", "3F", "3D", "3E", "3E", "3F"]
-  },
-  "JUAREZ": {
-    "MANHA": ["1E", "1E", "1F", "3A", "3A", "3C", "3C", "1F", "1D", "1D", "3B", "3B", "1E", "1E", "1F"],
-    "TARDE": [],
-    "NOITE": ["2F/FÍS", "2G", "2G", "1J", "1J", "2H", "2H", "3F", "3E", "3E", "2F/FÍS", "2G", "2G", "1J", "1J", "2H/Q", "3D", "3D", "2G", "2G"]
-  },
-  "KATIUSCIA": {
-    "MANHA": ["1A", "1A"],
-    "TARDE": ["8A", "9C", "8B", "8C", "8E", "8E", "7C", "7A", "7A", "7D", "7D", "8B", "9D", "9D", "9A", "9A", "7E", "7E", "8C", "7F", "7F", "8D", "8D", "7C"],
-    "NOITE": []
-  },
-  "LUCIANA": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": ["3G", "3G", "3D", "3F", "3F", "3G", "3G", "1I", "1I", "3E", "3D", "3D"] // Português (Segunda/Quinta Noite)
-  },
-  "MARINA": {
-    "MANHA": ["6B", "6A", "6B/EF", "6B/EF", "6D", "6D", "6D", "6B", "6A", "6B", "6C", "6C", "6C", "6B", "6A/EF", "6A/EF", "6D", "6D", "6A", "6D/EF", "6D/EF", "6A", "6C", "6C", "6A", "6B", "6C/EF", "6C/EF"],
-    "TARDE": ["6F", "6F", "6E", "6E", "7A", "7B/EF", "7B/EF", "7A", "7A/EF", "7A/EF"],
-    "NOITE": []
-  },
-  "MOISÉS": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": ["3E/OM", "3G", "3G", "3F/OM", "3F/OM", "3E", "3E", "3G", "3G", "3D", "3G/OM", "3D/OM", "3D/OM", "3F", "3F"]
-  },
-  "NILDES": {
-    "MANHA": ["3C", "2C", "2D", "3A", "2D", "3A", "2B", "3A/OM", "3B", "3B", "2C", "2C", "3B", "2C", "3C", "2D", "3A/O M", "3B", "2E", "2E", "2B", "2B", "3A", "2E", "2B", "2E", "3C", "2D", "3A", "3C"],
-    "TARDE": ["8A", "8A"],
-    "NOITE": []
-  },
-  "PEDRO": {
-    "MANHA": [],
-    "TARDE": ["6F", "6F"],
-    "NOITE": ["3F", "3G", "3E", "3G", "1I", "1I", "3F", "3E"]
-  },
-  "RAUL": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": ["1H", "1H"] // Biologia (Terça Noite)
-  },
-  "ROBERTO": {
-    "MANHA": [],
-    "TARDE": ["7E", "7F", "7C", "7D", "7B", "7E", "7C", "7D", "7B", "7F", "7E", "6E/G", "6E/G"], // Matemática/Geografia (Segunda/Terça Tarde)
-    "NOITE": ["3G", "1J/EF", "1J/EF", "3G/F", "2H/EF", "2H/EF"] // Física/Ed. Física (Quarta Noite)
-  },
-  "RODRIGO": {
-    "MANHA": ["1D", "1D", "1C", "1C", "1F", "1F", "1B", "1B", "1A", "1A", "1E", "1E", "3D", "3G", "3E"],
-    "TARDE": [],
-    "NOITE": ["3D", "3G", "3E", "3D", "2G", "2F", "1I", "1I", "3F", "2G", "1I"]
-  },
-  "ROSANGELA": {
-    "MANHA": ["1B", "1B", "2A", "2A", "2E", "2E", "1A", "1A", "1C", "1C", "2B", "2B", "2A/PR", "2A/PR", "3A/PR", "3A/PR", "2C/Q", "2C/Q", "3B/EM", "3B/EM", "2D/QU", "2D/QU", "2B/PR", "2B/PR", "3B/P", "3B/P", "3A/EM", "3C/P", "3C/P", "3A/EM"],
-    "TARDE": ["1G", "1G"],
-    "NOITE": []
-  },
-  "SÉRGIO": {
-    "MANHA": ["2A", "3B", "3A", "2B", "2A", "3B", "3A", "2B"], // Redação (Segunda Manhã)
-    "TARDE": ["9D", "9D", "7C", "7C", "8D", "8D", "9B", "9B", "9C", "9C", "9A", "9A"], // Redação (Segunda/Terça Tarde)
-    "NOITE": ["2F", "3D", "3E", "3F", "2F", "1J", "3D", "2G", "3E", "2H", "3G"] // Redação (Segunda/Quinta Noite)
-  },
-  "TITO": {
-    "MANHA": ["6D"], // Educação Física (Segunda Manhã)
-    "TARDE": ["7A", "7F", "7F", "7A", "7B", "7B", "6F", "6F", "6E", "6E", "7E", "7E"], // Educação Física (Segunda/Sexta Tarde)
-    "NOITE": []
-  },
-  "VANDERSON": {
-    "MANHA": ["3A", "3A", "3C", "3C", "3B", "3C", "3C", "3A", "3A"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "VIVIANE": {
-    "MANHA": ["6B", "1B", "6B", "3A", "1D", "6C", "1F", "1E", "1B", "6C", "1C", "1D", "6D", "6A", "1F", "1C", "3A", "6A", "6D", "1E", "6A", "6D"],
-    "TARDE": ["7E/R", "6E/T", "7E/R", "7A/T", "6E/T", "7D/T", "7E/T", "7C/T", "7A/R", "7A/R", "7C/T", "7B/T", "7B/T", "8B/PV", "9D/PV", "7D/T", "7F/T", "7F/T", "7E", "7E/T", "7C/T", "7A/R", "7A/R", "7C/T", "7B/T"],
-    "NOITE": ["1H/R", "1H/P", "1H/P", "1H/R", "1H/P", "1H/P"]
-  },
-  // Professores de Sala Fixa
-  "FLÁVIA": {
-    "MANHA": ["X", "X", "X", "X", "X", "X"], // Sala de Leitura (fixo)
-    "TARDE": [],
-    "NOITE": []
-  },
-  "SOL": {
-    "MANHA": [],
-    "TARDE": ["X", "X", "X", "X", "X", "X"], // Sala de Leitura (fixo)
-    "NOITE": []
-  },
-  // Demais professores
-  "CAROL": {
-    "MANHA": [],
-    "TARDE": ["1G", "1G", "7A", "7A", "9D", "9D", "9A", "7B", "7B", "9B", "9B", "9C", "9D"],
-    "NOITE": []
-  },
-  "CASSIA": {
-    "MANHA": [],
-    "TARDE": ["8C", "8E", "8E", "8B", "8B", "8B", "8D", "8D", "8B", "8C", "8D", "8D", "8E", "8E", "8C", "8C"],
-    "NOITE": []
-  },
-  "DANIEL FREITAS": {
-    "MANHA": [],
-    "TARDE": ["9B", "9B", "9D", "1G", "1G", "9A", "9B", "8E/EF", "8E/EF", "9C", "9A", "9D", "9D", "9B", "9B", "9A", "9C", "9C", "9D", "9D"],
-    "NOITE": ["1H", "1H"]
-  },
-  "GUSTAVO": {
-    "MANHA": [],
-    "TARDE": ["7F/AR", "9C/AR", "7F/AR"],
-    "NOITE": ["1I"]
-  },
-  "GELSON": {
-    "MANHA": ["2D/EF", "2D/EF", "3C/OM", "3C/OM", "3B/OM", "3B/OM"],
-    "TARDE": ["8B", "8A", "8A", "8B", "8B", "8A", "8A", "8B"],
-    "NOITE": []
-  },
-  "LUANA": {
-    "MANHA": ["6D", "6B", "6A"],
-    "TARDE": ["9C", "7A", "7A", "9A", "9B", "9B", "9C", "9C", "1G", "1G", "9D", "9D", "9A", "9B", "9B", "9C", "1G", "1G"],
-    "NOITE": []
-  },
-  "LUCIANO": {
-    "MANHA": [],
-    "TARDE": ["8A", "8A", "8D", "9A", "9C", "7E", "8B", "9C", "7E", "7F", "7F", "8C", "7E", "9B", "7F", "9D", "8D", "9A", "8E", "8E"],
-    "NOITE": []
-  },
-  "MARA": {
-    "MANHA": [],
-    "TARDE": ["1G", "9A", "9D", "8A", "8E", "8D", "8C", "9C", "9C", "9D", "8D", "9A", "8C", "9B", "9B", "8A/PV", "8E", "8A", "1G"],
-    "NOITE": []
-  },
-  "MARCIEL": {
-    "MANHA": [],
-    "TARDE": ["7E", "7E", "7B", "9B/PV", "8C", "8C", "9A/PV", "8E", "8E", "8A", "7C", "7D", "8C", "7D", "7F", "7F", "8D", "8D", "8A", "8A", "8B", "7C", "7A", "7A"],
-    "NOITE": ["3D", "3D"]
-  },
-  "REGINA": {
-    "MANHA": ["1A", "1A"],
-    "TARDE": ["9D", "9D", "7C", "7C", "8D", "8D", "9B", "9B", "9C", "9C", "9A", "9A", "7D", "7B", "7B", "8B", "8B", "8A", "7D/R", "6E", "6E", "8A/R", "8C/R", "8C/R"],
-    "NOITE": []
-  },
-  "ROSE": {
-    "MANHA": ["6C", "1B", "6B", "6A", "1A", "6C", "6D", "6A", "6D", "6D", "1B", "6B", "1A", "6B", "6C", "1A", "1B", "6D"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "SELMA": {
-    "MANHA": ["1A", "1D", "1C", "1B", "1G/F", "1A", "1C", "1B", "1D"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "SUZY": {
-    "MANHA": ["2ADM", "2ADM", "2B", "2B", "2E", "2E"],
-    "TARDE": ["6F", "6F", "6E", "1G", "1G"],
-    "NOITE": ["1H", "2F", "2G", "1I", "2H"]
-  },
-  "VANIA": {
-    "MANHA": ["3C", "3C"],
-    "TARDE": ["8D", "8C", "8C", "8A", "8A", "7E", "8B", "8B", "7F", "7E", "7E", "8A", "8E", "8B", "8B", "8D", "8D", "8E", "7F", "7F", "8A", "7E", "9A/OP", "9A/OP"],
-    "NOITE": []
-  },
-  "WILSON": {
-    "MANHA": [],
-    "TARDE": ["6E", "8C", "6E", "6F", "8D", "8A", "6F", "8E", "8B"],
-    "NOITE": []
-  },
-  "WILTON": {
-    "MANHA": [],
-    "TARDE": ["7D/EF", "8A/T", "8E/T", "8C/EF", "8D/EF", "8D/EF", "8B/T", "8C/T", "8D/T", "8C/EF", "8D/T", "7C/EF", "7D/EF", "7C/EF", "8B/EF", "8A/T", "8E/T", "8B/EF"],
-    "NOITE": []
-  },
-  "ELIANE CONTI": {
-    "MANHA": ["3C/EMP"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "EDIVÂNIA": {
-    "MANHA": ["1F", "1F", "2B/EMP", "1F", "2E/EF", "1F", "2E/EF"],
-    "TARDE": ["7F", "7E", "7E", "7F"],
-    "NOITE": []
-  },
-  "ELIANE SANTOS": {
-    "MANHA": ["2D", "2D", "6D", "6C/PV", "2ADM/G", "2ADM/G", "6A", "3B/PV", "6B/PV", "6A/PV", "6B", "6D", "6C", "6C", "6B", "3A/PV"],
-    "TARDE": ["1G", "1G"],
-    "NOITE": []
-  },
-  "EUZELI": {
-    "MANHA": ["3B", "1E", "1E", "2D", "2B", "1B", "1B", "1D", "1D", "1F", "1C", "1C", "2E", "3A", "1F", "2ADM", "2C", "2A"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "MAURÍCIO": {
-    "MANHA": ["2C/EF", "2A/EF", "2ADM/M.A", "2ADM/M.A", "2A/MAT", "2C/EF", "2B/EF", "2ADM/M", "2ADM/M", "2A", "2A", "2ADM", "2ADM", "2ADM", "2B"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "PAULO": {
-    "MANHA": ["2E", "2E", "2E/L", "2E/L", "1F/FIL", "1F/FIL", "2D/OR", "2D/SOC", "2D/SOC", "2B", "2B", "2C/OR", "2E/OR", "2C", "2C", "2ADM", "2ADM", "1E/F", "1E/F", "2A/S", "2A/S"],
-    "TARDE": ["6E", "6F", "8C"],
-    "NOITE": ["2H", "2G", "2F"]
-  },
-  "REGIANE": {
-    "MANHA": ["3B", "3B", "3A", "3A"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "SANDRA": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": ["1H/F", "1H/G", "1H/G"]
-  },
-  // Professores sem horários definidos
-  "CHARLES": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "CELSO": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "DEIZY": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "ERINEIDE": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "HELENA": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "Mª APARECIDA": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "VANDA": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "RICARDO": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": []
-  }
-};
+        "MANHA": ["1D", "1E", "1E", "1F", "1F", "1B", "1B", "1A", "1A", "1D", "1C", "1C"],
+        "TARDE": ["9C", "9B", "9B", "1G", "1G", "9A", "9A", "9C", "9C", "9D", "9A", "9D"],
+        "NOITE": ["2F", "2G", "2G", "2H", "2F", "2H", "1H", "1H", "2F", "2G", "2G", "2H"]
+      },
+      "ALEX": {
+        "MANHA": ["1A", "1B", "1B", "1C", "1C", "1D", "1D", "1E", "1E", "1F", "1F", "1A"],
+        "TARDE": ["9A", "9B", "9B", "9C", "9C", "9D", "9D", "9A", "9A", "9B", "9C", "9D"],
+        "NOITE": ["1H", "1I", "1I", "2F", "2F", "2G", "2G", "2H", "2H", "2I", "2I", "1H"]
+      },
+      "ALEXSANDRA": {
+        "MANHA": ["1B", "1C", "1C", "1D", "1D", "1E", "1E", "1F", "1F", "1A", "1A", "1B"],
+        "TARDE": ["9B", "9C", "9C", "9D", "9D", "9A", "9A", "9B", "9B", "9C", "9D", "9A"],
+        "NOITE": ["2F", "2G", "2G", "2H", "2H", "2I", "2I", "1H", "1H", "1I", "1I", "2F"]
+      }
+    };
 
     const monthNames = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -1536,11 +1243,10 @@
       return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
 
-    // FUNÇÕES DO FIREBASE (INTEGRADAS)
+    // FUNÇÕES DO FIREBASE COM USER_ID
     async function carregarDadosIniciais() {
       try {
-        // Carrega agendamentos
-          // Carrega agendamentos DO USUÁRIO ESPECÍFICO
+        // Carrega agendamentos do usuário específico
         const snapshotAgendamentos = await agendamentosRef.where("userId", "==", USER_ID).get();
         agendamentos = {};
         snapshotAgendamentos.forEach(doc => {
@@ -1552,29 +1258,28 @@
           agendamentos[mesAno].push({ id: doc.id, ...data });
         });
         
-        
-       / Carrega histórico excluído DO USUÁRIO ESPECÍFICO
+        // Carrega histórico excluído do usuário específico
         const snapshotHistorico = await historicoExcluidosRef.where("userId", "==", USER_ID).get();
         historicoExcluidos = [];
         snapshotHistorico.forEach(doc => {
           historicoExcluidos.push(doc.data());
         });
         
-       // Renderiza o calendário
+        // Renderiza o calendário
         renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
       }
     }
 
-   async function salvarAgendamentoFirestore(agendamento) {
+    async function salvarAgendamentoFirestore(agendamento) {
       try {
         // Adiciona o USER_ID ao agendamento
         const agendamentoComUserId = {
           ...agendamento,
           userId: USER_ID
         };
-
+        
         const docRef = await agendamentosRef.add(agendamentoComUserId);
         return docRef.id;
       } catch (error) {
@@ -1583,9 +1288,19 @@
       }
     }
 
+    async function atualizarAgendamentoFirestore(id, dados) {
+      try {
+        await agendamentosRef.doc(id).update(dados);
+        return true;
+      } catch (error) {
+        console.error("Erro ao atualizar agendamento:", error);
+        return false;
+      }
+    }
+
     async function excluirAgendamentoFirestore(id, agendamento) {
       try {
-        // Adiciona ao histórico COM USER_ID
+        // Adiciona ao histórico com USER_ID
         await historicoExcluidosRef.add({
           ...agendamento,
           userId: USER_ID,
@@ -1597,26 +1312,6 @@
         return true;
       } catch (error) {
         console.error("Erro ao excluir agendamento:", error);
-        return false;
-      }
-    }
-
-        async function verificarConflitoAgendamento(turma, data, aula) {
-      const [dia, mes, ano] = data.split('/');
-      const mesAno = `${ano}-${mes}`;
-      
-      try {
-        const querySnapshot = await agendamentosRef
-          .where("mesAno", "==", mesAno)
-          .where("dia", "==", parseInt(dia))
-          .where("turma", "==", turma)
-          .where("aula", "==", aula)
-          .where("userId", "==", USER_ID) // FILTRO POR USUÁRIO
-          .get();
-
-                return !querySnapshot.empty;
-      } catch (error) {
-        console.error("Erro ao verificar conflito:", error);
         return false;
       }
     }
@@ -1643,7 +1338,7 @@
           .where("dia", "==", parseInt(dia))
           .where("turma", "==", turma)
           .where("aula", "==", aula)
-          .where("userId", "==", USER_ID) // FILTRO POR USUÁRIO
+          .where("userId", "==", USER_ID) // Filtro por usuário
           .get();
           
         return !querySnapshot.empty;
@@ -2120,7 +1815,8 @@
           numAparelhos,
           aula,
           sala,
-          horaEntrega: null
+          horaEntrega: null,
+          userId: USER_ID
         };
         
         const sucesso = await salvarAgendamentoFirestore(novoAgendamento);
@@ -2409,7 +2105,7 @@
         renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
       });
 
-        // Carregar as aulas disponíveis ao iniciar
+      // Carregar as aulas disponíveis ao iniciar
       atualizarAulasDisponiveis();
     }
 
