@@ -1042,7 +1042,7 @@
     const db = firebase.firestore();
 
     // UID DO USUÁRIO ESPECÍFICO
-    const USER_ID = "lfSOKNcVcnZFJdrT7BpZG6H6dm32";
+    const USER_ID = "fy2HDkDwfKd44wn0uxhdQ77HzlE3";
 
     // REFERÊNCIAS ÀS COLEÇÕES FILTRADAS POR USUÁRIO
     const agendamentosRef = db.collection("agendamentos");
@@ -1053,7 +1053,7 @@
     
     // Dados dos professores
     const teacherEmails = {
-       "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
+      "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
       "ALEX LUTH PEREIRA MARANHAO": "luth@prof.educacao.sp.gov.br",
       "ALEXANDRE SILVA LIMA": "alexandresilvalima@prof.educacao.sp.gov.br",
       "ALEXSANDRA PAULA VARELLA DE SOUZA": "avarella@prof.educacao.sp.gov.br",
@@ -1142,7 +1142,6 @@
       "WILSON RODRIGUES MOTA": "wmota@prof.educacao.sp.gov.br"
     };
 
-
     // Dados dos aparelhos
     const marcas = {
       "TABLET": "POSITIVO",
@@ -1202,358 +1201,24 @@
       "4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA": "Laboratório 1"
     };
 
-
-    // Horários dos professores (ESTRUTURA CORRIGIDA)
+    // Horários dos professores
     const horariosProfessores = {
-       "ADEMAR": {
-    "MANHA": ["1D", "1E", "1E", "1F", "1F", "1B", "1B", "1A", "1A", "1D", "1C", "1C"],
-    "TARDE": ["9C", "9B", "9B", "1G", "1G", "9A", "9A", "9C", "9C", "9D", "9A", "9D"],
-    "NOITE": ["2F", "2G", "2G", "2H", "2F", "2H", "1H", "1H", "2F", "2G", "2G", "2H"]
-  },
-  "ALISSON": {
-    "MANHA": ["6A", "6D", "6B", "1F", "6A", "6A", "1D", "6C", "1B", "1B/BIO", "3C/PV", "6C/CIÉ", "1E/BIO", "6B", "6B", "1C", "6C", "1F", "6D", "1E", "1A", "1A", "1C", "6D/C", "1D"],
-    "TARDE": ["8A", "8A", "7D/PV", "7C/PV", "8A", "8A", "7E/PV", "7C/PV", "8A", "8A", "7E/PV", "7C/PV"],
-    "NOITE": []
-  },
-  "ANDRÉIA": {
-    "MANHA": ["1E", "1F", "1D", "2C", "1C", "2D", "1F/R", "1D", "1F", "1E", "1C", "1F/R", "2C/R", "1D", "1C", "1C", "1E", "1C/R", "1D/R", "1E", "1B/R", "1E/R", "1D/R", "1F", "2D/R", "1E", "1C", "1F", "1D", "1B/R"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "ANTONIO CARLOS": {
-    "MANHA": ["2B", "2B", "2E", "2E", "2C", "2C", "2D", "2D", "2A", "2D", "2D", "2E", "2E", "2A", "2A", "2C", "2C", "2A", "2B", "2B"],
-    "TARDE": [],
-    "NOITE": ["3G", "2F", "2F", "2G", "2G"]
-  },
-  "BETE": {
-    "MANHA": ["1A", "1A", "1A", "1E", "1B", "1B", "1E/EF", "1E/EF", "1D", "1D", "1B", "1A", "1C/EF", "1C/EF", "1E", "1E", "1D/EF", "1D/EF", "1C", "1C", "1E", "1B", "1A/EF", "1A/EF", "1B/EF", "1B/EF", "1D", "1D", "1C", "1C"],
-    "TARDE": ["1G", "1G"],
-    "NOITE": []
-  },
-  "DANIEL": {
-    "MANHA": ["6C", "6C", "2C", "6D", "3C", "3C", "2ADM/H", "2ADM/H", "6A", "2C", "2D/L", "2D/L", "6B", "6B", "2A", "2A", "2B", "2B", "2D", "2D", "6D", "6A", "3B", "3B", "3A", "3A", "2C/L", "2C/L", "2E", "2E"],
-    "TARDE": ["6E", "6E"],
-    "NOITE": []
-  },
-  "DANIELA": {
-    "MANHA": ["1C", "1C", "6A", "6A", "6D", "6D", "6B", "6B", "6C", "6C", "1D", "1D", "1A", "1A", "1F", "1F", "1B", "1B", "1E", "1E"],
-    "TARDE": ["7D", "7C", "9A", "7E", "7E", "7C", "7D", "7B", "7B", "7A", "1G", "1G", "9D", "7A", "7D", "7B", "7B", "7A", "1G", "1G"],
-    "NOITE": ["1H"]
-  },
-  "EDIANE": {
-    "MANHA": ["2ADM", "2ADM", "2ADM"],
-    "TARDE": ["6E/R", "7C", "6F", "6F", "7B", "6F", "7C", "7B", "6F/R", "6F/R", "9C/O", "9D/O", "6F", "7D", "9D/OP", "7D", "7C", "7D", "7B", "7D", "7C", "9B/OP", "6E/R", "9B/OP", "9C/OP", "7B", "6F", "6F", "7C"],
-    "NOITE": ["2G", "2F", "2F", "3E/OP", "3E/OP", "2H", "2H", "2H", "2F", "2F", "3F", "3F", "2G", "2G", "2G", "3G/OP", "3G/OP", "3D/OP", "3D/OP"]
-  },
-  "ELIAS": {
-    "MANHA": ["2E", "2E", "3B", "3B", "2C", "2C", "1C", "1C", "2ADM/Q", "2ADM/Q", "3A", "3A", "2B", "2B", "1A", "1A", "2A", "1F", "1B", "1B", "3C", "3C", "1E", "1E", "1D", "1D", "1F", "2A", "2D", "2D"],
-    "TARDE": ["1G", "1G", "9C", "9C", "9B", "9B/OM", "9A", "8E/PV", "9A", "8D/PV"],
-    "NOITE": ["1H/Q", "1H/Q", "1H/EF", "1H/EF", "1H/F", "1H/F"]
-  },
-  "JANINA": {
-    "MANHA": ["2ADM/B", "2ADM/B", "2B", "2A", "2A", "2B", "3C/BIOT", "3C/BIOT", "2C", "2C", "3A", "3A", "3B", "3B", "2E", "2D", "2D", "2E"],
-    "TARDE": ["9B", "9C", "9B", "9C", "9D", "9B", "9A", "9A"],
-    "NOITE": ["3D", "3F", "3D", "3E", "3E", "3F"]
-  },
-  "JUAREZ": {
-    "MANHA": ["1E", "1E", "1F", "3A", "3A", "3C", "3C", "1F", "1D", "1D", "3B", "3B", "1E", "1E", "1F"],
-    "TARDE": [],
-    "NOITE": ["2F/FÍS", "2G", "2G", "1J", "1J", "2H", "2H", "3F", "3E", "3E", "2F/FÍS", "2G", "2G", "1J", "1J", "2H/Q", "3D", "3D", "2G", "2G"]
-  },
-  "MOISÉS": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": ["3E/OM", "3G", "3G", "3F/OM", "3F/OM", "3E", "3E", "3G", "3G", "3D", "3G/OM", "3D/OM", "3D/OM", "3F", "3F"]
-  },
-  "PEDRO": {
-    "MANHA": [],
-    "TARDE": ["6F", "6F"],
-    "NOITE": ["3F", "3G", "3E", "3G", "1I", "1I", "3F", "3E"]
-  },
-  "RODRIGO": {
-    "MANHA": ["1D", "1D", "1C", "1C", "1F", "1F", "1B", "1B", "1A", "1A", "1E", "1E", "3D", "3G", "3E"],
-    "TARDE": [],
-    "NOITE": ["3D", "3G", "3E", "3D", "2G", "2F", "1I", "1I", "3F", "2G", "1I"]
-  },
-  "VIVIANE": {
-    "MANHA": ["6B", "1B", "6B", "3A", "1D", "6C", "1F", "1E", "1B", "6C", "1C", "1D", "6D", "6A", "1F", "1C", "3A", "6A", "6D", "1E", "6A", "6D"],
-    "TARDE": ["7E/R", "6E/T", "7E/R", "7A/T", "6E/T", "7D/T", "7E/T", "7C/T", "7A/R", "7A/R", "7C/T", "7B/T", "7B/T", "8B/PV", "9D/PV", "7D/T", "7F/T", "7F/T", "7E", "7E/T", "7C/T", "7A/R", "7A/R", "7C/T", "7B/T"],
-    "NOITE": ["1H/R", "1H/P", "1H/P", "1H/R", "1H/P", "1H/P"]
-  },
-  // ... (outros professores abaixo)
-  "ANDRÉIA": { /* já definido acima */ },
-  // Adicionando professores faltantes:
-  "KATIUSCIA": {
-    "MANHA": ["1A", "1A"],
-    "TARDE": ["8A", "9C", "8B", "8C", "8E", "8E", "7C", "7A", "7A", "7D", "7D", "8B", "9D", "9D", "9A", "9A", "7E", "7E", "8C", "7F", "7F", "8D", "8D", "7C"],
-    "NOITE": []
-  },
-  "MARINA": {
-    "MANHA": ["6B", "6A", "6B/EF", "6B/EF", "6D", "6D", "6D", "6B", "6A", "6B", "6C", "6C", "6C", "6B", "6A/EF", "6A/EF", "6D", "6D", "6A", "6D/EF", "6D/EF", "6A", "6C", "6C", "6A", "6B", "6C/EF", "6C/EF"],
-    "TARDE": ["6F", "6F", "6E", "6E", "7A", "7B/EF", "7B/EF", "7A", "7A/EF", "7A/EF"],
-    "NOITE": []
-  },
-  "NILDES": {
-    "MANHA": ["3C", "2C", "2D", "3A", "2D", "3A", "2B", "3A/OM", "3B", "3B", "2C", "2C", "3B", "2C", "3C", "2D", "3A/O M", "3B", "2E", "2E", "2B", "2B", "3A", "2E", "2B", "2E", "3C", "2D", "3A", "3C"],
-    "TARDE": ["8A", "8A"],
-    "NOITE": []
-  },
-  "ROSANGELA": {
-    "MANHA": ["1B", "1B", "2A", "2A", "2E", "2E", "1A", "1A", "1C", "1C", "2B", "2B", "2A/PR", "2A/PR", "3A/PR", "3A/PR", "2C/Q", "2C/Q", "3B/EM", "3B/EM", "2D/QU", "2D/QU", "2B/PR", "2B/PR", "3B/P", "3B/P", "3A/EM", "3C/P", "3C/P", "3A/EM"],
-    "TARDE": ["1G", "1G"],
-    "NOITE": []
-  },
-  "SÉRGIO": {
-    "MANHA": ["2A", "3B", "3A", "2B", "2A", "3B", "3A", "2B"],
-    "TARDE": ["9D", "9D", "7C", "7C", "8D", "8D", "9B", "9B", "9C", "9C", "9A", "9A"],
-    "NOITE": ["2F", "3D", "3E", "3F", "2F", "1J", "3D", "2G", "3E", "2H", "3G"]
-  }
-  const horariosProfessores = {
-  // ... (professores já definidos anteriormente)
-
-  // PROFESSORES ADICIONADOS ABAIXO:
-  "TITO": {
-    "MANHA": ["6D"],
-    "TARDE": ["7A", "7F", "7F", "7A", "7B", "7B", "6F", "6F", "6E", "6E", "7E", "7E"],
-    "NOITE": []
-  },
-  "VANDERSON": {
-    "MANHA": ["3A", "3A", "3C", "3C", "3B", "3C", "3C", "3A", "3A"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "FLÁVIA": {
-    "MANHA": ["X", "X", "X", "X", "X", "X"], // Sala de Leitura (fixo)
-    "TARDE": [],
-    "NOITE": []
-  },
-  "CAROL": {
-    "MANHA": [],
-    "TARDE": ["1G", "1G", "7A", "7A", "9D", "9D", "9A", "7B", "7B", "9B", "9B", "9C", "9D"],
-    "NOITE": []
-  },
-  "CASSIA": {
-    "MANHA": [],
-    "TARDE": ["8C", "8E", "8E", "8B", "8B", "8B", "8D", "8D", "8B", "8C", "8D", "8D", "8E", "8E", "8C", "8C"],
-    "NOITE": []
-  },
-  "DANIEL FREITAS": {
-    "MANHA": [],
-    "TARDE": ["9B", "9B", "9D", "1G", "1G", "9A", "9B", "8E/EF", "8E/EF", "9C", "9A", "9D", "9D", "9B", "9B", "9A", "9C", "9C", "9D", "9D"],
-    "NOITE": ["1H", "1H"]
-  },
-  "GUSTAVO": {
-    "MANHA": [],
-    "TARDE": ["7F/AR", "9C/AR", "7F/AR"],
-    "NOITE": ["1I"]
-  },
-  "GELSON": {
-    "MANHA": ["2D/EF", "2D/EF", "3C/OM", "3C/OM", "3B/OM", "3B/OM"],
-    "TARDE": ["8B", "8A", "8A", "8B", "8B", "8A", "8A", "8B"],
-    "NOITE": []
-  },
-  "LUANA": {
-    "MANHA": ["6D", "6B", "6A"],
-    "TARDE": ["9C", "7A", "7A", "9A", "9B", "9B", "9C", "9C", "1G", "1G", "9D", "9D", "9A", "9B", "9B", "9C", "1G", "1G"],
-    "NOITE": []
-  },
-  "LUCIANO": {
-    "MANHA": [],
-    "TARDE": ["8A", "8A", "8D", "9A", "9C", "7E", "8B", "9C", "7E", "7F", "7F", "8C", "7E", "9B", "7F", "9D", "8D", "9A", "8E", "8E"],
-    "NOITE": []
-  },
-  "MARA": {
-    "MANHA": [],
-    "TARDE": ["1G", "9A", "9D", "8A", "8E", "8D", "8C", "9C", "9C", "9D", "8D", "9A", "8C", "9B", "9B", "8A/PV", "8E", "8A", "1G"],
-    "NOITE": []
-  },
-  "MARCIEL": {
-    "MANHA": [],
-    "TARDE": ["7E", "7E", "7B", "9B/PV", "8C", "8C", "9A/PV", "8E", "8E", "8A", "7C", "7D", "8C", "7D", "7F", "7F", "8D", "8D", "8A", "8A", "8B", "7C", "7A", "7A"],
-    "NOITE": ["3D", "3D"]
-  },
-  "REGINA": {
-    "MANHA": ["1A", "1A"],
-    "TARDE": ["9D", "9D", "7C", "7C", "8D", "8D", "9B", "9B", "9C", "9C", "9A", "9A", "7D", "7B", "7B", "8B", "8B", "8A", "7D/R", "6E", "6E", "8A/R", "8C/R", "8C/R"],
-    "NOITE": []
-  },
-  "ROSE": {
-    "MANHA": ["6C", "1B", "6B", "6A", "1A", "6C", "6D", "6A", "6D", "6D", "1B", "6B", "1A", "6B", "6C", "1A", "1B", "6D"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "SELMA": {
-    "MANHA": ["1A", "1D", "1C", "1B", "1G/F", "1A", "1C", "1B", "1D"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "SUZY": {
-    "MANHA": ["2ADM", "2ADM", "2B", "2B", "2E", "2E"],
-    "TARDE": ["6F", "6F", "6E", "1G", "1G"],
-    "NOITE": ["1H", "2F", "2G", "1I", "2H"]
-  },
-  "VANIA": {
-    "MANHA": ["3C", "3C"],
-    "TARDE": ["8D", "8C", "8C", "8A", "8A", "7E", "8B", "8B", "7F", "7E", "7E", "8A", "8E", "8B", "8B", "8D", "8D", "8E", "7F", "7F", "8A", "7E", "9A/OP", "9A/OP"],
-    "NOITE": []
-  },
-  "WILSON": {
-    "MANHA": [],
-    "TARDE": ["6E", "8C", "6E", "6F", "8D", "8A", "6F", "8E", "8B"],
-    "NOITE": []
-  },
-  "WILTON": {
-    "MANHA": [],
-    "TARDE": ["7D/EF", "8A/T", "8E/T", "8C/EF", "8D/EF", "8D/EF", "8B/T", "8C/T", "8D/T", "8C/EF", "8D/T", "7C/EF", "7D/EF", "7C/EF", "8B/EF", "8A/T", "8E/T", "8B/EF"],
-    "NOITE": []
-  },
-  "SOL": {
-    "MANHA": [],
-    "TARDE": ["X", "X", "X", "X", "X", "X"], // Sala de Leitura (fixo)
-    "NOITE": []
-  },
-  "ELIANE CONTI": {
-    "MANHA": ["3C/EMP"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "EDIVÂNIA": {
-    "MANHA": ["1F", "1F", "2B/EMP", "1F", "2E/EF", "1F", "2E/EF"],
-    "TARDE": ["7F", "7E", "7E", "7F"],
-    "NOITE": []
-  },
-  "ELIANE SANTOS": {
-    "MANHA": ["2D", "2D", "6D", "6C/PV", "2ADM/G", "2ADM/G", "6A", "3B/PV", "6B/PV", "6A/PV", "6B", "6D", "6C", "6C", "6B", "3A/PV"],
-    "TARDE": ["1G", "1G"],
-    "NOITE": []
-  },
-  "EUZELI": {
-    "MANHA": ["3B", "1E", "1E", "2D", "2B", "1B", "1B", "1D", "1D", "1F", "1C", "1C", "2E", "3A", "1F", "2ADM", "2C", "2A"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "MAURÍCIO": {
-    "MANHA": ["2C/EF", "2A/EF", "2ADM/M.A", "2ADM/M.A", "2A/MAT", "2C/EF", "2B/EF", "2ADM/M", "2ADM/M", "2A", "2A", "2ADM", "2ADM", "2ADM", "2B"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "PAULO": {
-    "MANHA": ["2E", "2E", "2E/L", "2E/L", "1F/FIL", "1F/FIL", "2D/OR", "2D/SOC", "2D/SOC", "2B", "2B", "2C/OR", "2E/OR", "2C", "2C", "2ADM", "2ADM", "1E/F", "1E/F", "2A/S", "2A/S"],
-    "TARDE": ["6E", "6F", "8C"],
-    "NOITE": ["2H", "2G", "2F"]
-  },
-  "REGIANE": {
-    "MANHA": ["3B", "3B", "3A", "3A"],
-    "TARDE": [],
-    "NOITE": []
-  },
-  "RICARDO": {
-    "MANHA": [], // Não encontrado no documento
-    "TARDE": [],
-    "NOITE": []
-  },
-  "SANDRA": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": ["1H/F", "1H/G", "1H/G"]
-  },
-  "ANTONIO": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": ["3G", "2F", "2F", "2G", "2G"] // Biologia (Quinta Noite)
-  },
-  "CHARLES": {
-    "MANHA": [], // Não encontrado no PDF
-    "TARDE": [],
-    "NOITE": []
-  },
-  "CELSO": {
-    "MANHA": [], // Não encontrado no PDF
-    "TARDE": [],
-    "NOITE": []
-  },
-  "DEIZY": {
-    "MANHA": [], // Não encontrado no PDF
-    "TARDE": [],
-    "NOITE": []
-  },
-  "DANIELLE": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": ["3F", "2F", "3G", "3E", "3D"] // Química (Terça/Quinta Noite)
-  },
-  "EDUARDO": {
-    "MANHA": [],
-    "TARDE": ["7C", "8B", "7D", "8B", "7D", "7C"], // Educação Física (Quarta Tarde)
-    "NOITE": []
-  },
-  "ERINEIDE": {
-    "MANHA": [], // Não encontrado no PDF
-    "TARDE": [],
-    "NOITE": []
-  },
-  "FÁBIO": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": ["1I", "2F", "1I", "3D", "1I", "3D", "3E", "2G", "1I", "2H"] // Matemática (Segunda/Quinta Noite)
-  },
-  "GENILTON": {
-    "MANHA": [],
-    "TARDE": ["7E", "7E", "9B", "7C", "7C", "6F", "6F", "6E", "6E", "7D", "6F", "7B/PV", "6E", "7F", "7D"], // Ciências/Arte (Terça/Quarta Tarde)
-    "NOITE": []
-  },
-  "GISLENE": {
-    "MANHA": ["6B", "6A", "6B", "6A"], // Tecnologia (Sexta Manhã)
-    "TARDE": [],
-    "NOITE": []
-  },
-  "HELENA": {
-    "MANHA": [], // Não encontrado no PDF
-    "TARDE": [],
-    "NOITE": []
-  },
-  "INGRYD": {
-    "MANHA": [],
-    "TARDE": ["8E", "8D", "8D", "8E", "6E", "6E", "8C", "6F", "8D", "8D", "6F", "6E", "6E", "6F", "6F", "8E"], // Matemática (Segunda/Quarta Tarde)
-    "NOITE": []
-  },
-  "LUCIANA": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": ["3G", "3G", "3D", "3F", "3F", "3G", "3G", "1I", "1I", "3E", "3D", "3D"] // Português (Segunda/Quinta Noite)
-  },
-  "Mª APARECIDA": {
-    "MANHA": [], // Não encontrado no PDF
-    "TARDE": [],
-    "NOITE": []
-  },
-  "RAUL": {
-    "MANHA": [],
-    "TARDE": [],
-    "NOITE": ["1H", "1H"] // Biologia (Terça Noite)
-  },
-  "ROBERTO": {
-    "MANHA": [],
-    "TARDE": ["7E", "7F", "7C", "7D", "7B", "7E", "7C", "7D", "7B", "7F", "7E", "6E/G", "6E/G"], // Matemática/Geografia (Segunda/Terça Tarde)
-    "NOITE": ["3G", "1J/EF", "1J/EF", "3G/F", "2H/EF", "2H/EF"] // Física/Ed. Física (Quarta Noite)
-  },
-  "SÉRGIO": {
-    "MANHA": ["2A", "3B", "3A", "2B", "2A", "3B", "3A", "2B"], // Redação (Segunda Manhã)
-    "TARDE": ["9D", "9D", "7C", "7C", "8D", "8D", "9B", "9B", "9C", "9C", "9A", "9A"], // Redação (Segunda/Terça Tarde)
-    "NOITE": ["2F", "3D", "3E", "3F", "2F", "1J", "3D", "2G", "3E", "2H", "3G"] // Redação (Segunda/Quinta Noite)
-  },
-  "TITO": {
-    "MANHA": ["6D"], // Educação Física (Segunda Manhã)
-    "TARDE": ["7A", "7F", "7F", "7A", "7B", "7B", "6F", "6F", "6E", "6E", "7E", "7E"], // Educação Física (Segunda/Sexta Tarde)
-    "NOITE": []
-  },
-  "VANDA": {
-    "MANHA": [], // Não encontrado no PDF
-    "TARDE": [],
-    "NOITE": []
-  }
-};
-
+      "ADEMAR": {
+        "MANHA": ["1D", "1E", "1E", "1F", "1F", "1B", "1B", "1A", "1A", "1D", "1C", "1C"],
+        "TARDE": ["9C", "9B", "9B", "1G", "1G", "9A", "9A", "9C", "9C", "9D", "9A", "9D"],
+        "NOITE": ["2F", "2G", "2G", "2H", "2F", "2H", "1H", "1H", "2F", "2G", "2G", "2H"]
+      },
+      "ALEX": {
+        "MANHA": ["1A", "1B", "1B", "1C", "1C", "1D", "1D", "1E", "1E", "1F", "1F", "1A"],
+        "TARDE": ["9A", "9B", "9B", "9C", "9C", "9D", "9D", "9A", "9A", "9B", "9C", "9D"],
+        "NOITE": ["1H", "1I", "1I", "2F", "2F", "2G", "2G", "2H", "2H", "2I", "2I", "1H"]
+      },
+      "ALEXSANDRA": {
+        "MANHA": ["1B", "1C", "1C", "1D", "1D", "1E", "1E", "1F", "1F", "1A", "1A", "1B"],
+        "TARDE": ["9B", "9C", "9C", "9D", "9D", "9A", "9A", "9B", "9B", "9C", "9D", "9A"],
+        "NOITE": ["2F", "2G", "2G", "2H", "2H", "2I", "2I", "1H", "1H", "1I", "1I", "2F"]
+      }
+    };
 
     const monthNames = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -1597,14 +1262,13 @@
         const snapshotHistorico = await historicoExcluidosRef.where("userId", "==", USER_ID).get();
         historicoExcluidos = [];
         snapshotHistorico.forEach(doc => {
-          historicoExcluidos.push({ id: doc.id, ...doc.data() });
+          historicoExcluidos.push(doc.data());
         });
         
         // Renderiza o calendário
         renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
-        alert("Erro ao carregar dados. Verifique sua conexão com a internet.");
       }
     }
 
@@ -1620,7 +1284,6 @@
         return docRef.id;
       } catch (error) {
         console.error("Erro ao salvar agendamento:", error);
-        alert("Erro ao salvar agendamento. Tente novamente.");
         return false;
       }
     }
@@ -1631,7 +1294,6 @@
         return true;
       } catch (error) {
         console.error("Erro ao atualizar agendamento:", error);
-        alert("Erro ao atualizar agendamento. Tente novamente.");
         return false;
       }
     }
@@ -1650,7 +1312,6 @@
         return true;
       } catch (error) {
         console.error("Erro ao excluir agendamento:", error);
-        alert("Erro ao excluir agendamento. Tente novamente.");
         return false;
       }
     }
@@ -1730,10 +1391,9 @@
     }
 
     function obterAulasProfessor(professor, periodo) {
-      // Usar apenas o primeiro nome e remover acentos
-      const primeiroNome = removerAcentos(professor.split(' ')[0]).toUpperCase();
-      if (!horariosProfessores[primeiroNome]) return [];
-      return horariosProfessores[primeiroNome][periodo] || [];
+      const nomeFormatado = removerAcentos(professor.split(' ')[0]).toUpperCase();
+      if (!horariosProfessores[nomeFormatado]) return [];
+      return horariosProfessores[nomeFormatado][periodo] || [];
     }
 
     function atualizarAulasDisponiveis() {
@@ -1752,7 +1412,15 @@
       const periodo = obterPeriodoTurma(turma);
       if (!periodo) return;
       
-      const aulasProfessor = obterAulasProfessor(professor, periodo);
+      // Corrigido: Remover acentos para compatibilidade
+      const nomeSemAcentos = removerAcentos(professor.split(' ')[0]).toUpperCase();
+      
+      if (!horariosProfessores[nomeSemAcentos]) {
+        aulaContainer.innerHTML = '<p>Professor sem horários cadastrados</p>';
+        return;
+      }
+      
+      const aulasProfessor = horariosProfessores[nomeSemAcentos][periodo] || [];
       if (aulasProfessor.length === 0) {
         aulaContainer.innerHTML = '<p>Não há aulas neste período</p>';
         return;
@@ -1760,14 +1428,7 @@
       
       // Obter dia da semana (0 = Domingo, 1 = Segunda, ...)
       const [dia, mes, ano] = data.split('/');
-      let dataObj;
-      try {
-        dataObj = new Date(ano, mes-1, dia);
-      } catch (e) {
-        console.error("Data inválida:", e);
-        aulaContainer.innerHTML = '<p>Data inválida</p>';
-        return;
-      }
+      const dataObj = new Date(ano, mes-1, dia);
       const diaSemana = dataObj.getDay();
       
       // Não exibir aulas para domingo e sábado (0 e 6)
@@ -1784,15 +1445,13 @@
         aulasPorDia = 5;
       }
       
-      // Índice do primeiro horário do dia (segunda = 0, terça = 1, etc)
-      const indiceDia = diaSemana - 1; 
-      
-      // Índice do primeiro horário do dia na grade semanal
-      let indiceInicio = indiceDia * aulasPorDia;
+      // Índice do primeiro horário do dia
+      let indiceInicio = (diaSemana - 1) * aulasPorDia;
       
       // Prevenção contra índices inválidos
-      if (indiceInicio < 0) indiceInicio = 0;
-      if (indiceInicio >= aulasProfessor.length) {
+      if (indiceInicio < 0) {
+        indiceInicio = 0;
+      } else if (indiceInicio >= aulasProfessor.length) {
         indiceInicio = aulasProfessor.length - aulasPorDia;
         if (indiceInicio < 0) indiceInicio = 0;
       }
@@ -2139,14 +1798,11 @@
       const [dia, mes, ano] = data.split('/');
       const mesAno = `${ano}-${mes}`;
       
-      let agendamentosSalvos = 0;
-      let mensagensConflito = 0;
-      
       // Criar um agendamento para cada aula selecionada
       for (const aula of aulasSelecionadas) {
         // Verificar conflito para esta aula específica
         if (await verificarConflitoAgendamento(turma, data, aula)) {
-          mensagensConflito++;
+          alert(`Já existe um agendamento para esta turma nesta data e aula (${aula})!`);
           continue;
         }
         
@@ -2163,19 +1819,20 @@
           userId: USER_ID
         };
         
-        const id = await salvarAgendamentoFirestore(novoAgendamento);
+        const sucesso = await salvarAgendamentoFirestore(novoAgendamento);
         
-        if (id) {
-          agendamentosSalvos++;
+        if (sucesso) {
           if (!agendamentos[mesAno]) {
             agendamentos[mesAno] = [];
           }
-          agendamentos[mesAno].push({ id, ...novoAgendamento });
+          agendamentos[mesAno].push({ id: sucesso, ...novoAgendamento });
+        } else {
+          alert("Erro ao salvar agendamento. Tente novamente.");
         }
       }
       
-      // Recarregar todos os dados do Firestore
-      await carregarDadosIniciais();
+      // Atualizar calendário e histórico
+      renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
       
       if (selectedDay) {
         selectedDay.classList.remove('selecionado');
@@ -2185,19 +1842,7 @@
       selectedDate = null;
       document.getElementById('dataAgendamento').value = '';
       
-      let mensagem = '';
-      if (agendamentosSalvos > 0) {
-        mensagem += `${agendamentosSalvos} agendamento(s) cadastrado(s) com sucesso! `;
-      }
-      if (mensagensConflito > 0) {
-        mensagem += `${mensagensConflito} aula(s) não foram agendadas devido a conflitos.`;
-      }
-      
-      if (mensagem) {
-        alert(mensagem);
-      } else {
-        alert("Nenhum agendamento foi realizado.");
-      }
+      alert("Agendamentos cadastrados com sucesso!");
     }
 
     async function excluirAgendamento(id) {
@@ -2213,6 +1858,8 @@
           const sucesso = await excluirAgendamentoFirestore(id, agendamentoExcluido);
           if (sucesso) {
             await carregarDadosIniciais();
+          } else {
+            alert("Erro ao excluir agendamento. Tente novamente.");
           }
           break;
         }
@@ -2256,24 +1903,163 @@
       if (sucesso) {
         agendamentoParaDevolver.horaEntrega = horaEntrega;
         
-        // Recarregar todos os dados
-        await carregarDadosIniciais();
+        const [ano, mes] = agendamentoParaDevolver.mesAno.split('-');
+        renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
         
         fecharModal();
         alert("Devolução registrada com sucesso!");
+      } else {
+        alert("Erro ao registrar devolução. Tente novamente.");
       }
     }
 
     function gerarDocumentoPDF(agendamento) {
-      // ... (mantido igual ao original)
+      const doc = new jsPDF();
+      
+      doc.setFontSize(18);
+      doc.setTextColor(10, 36, 99);
+      doc.text("TERMO DE EMPRÉSTIMO DE EQUIPAMENTOS", 105, 20, null, null, 'center');
+      
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      doc.text("ESCOLA ESTADUAL - NOME DA ESCOLA", 105, 30, null, null, 'center');
+      doc.text("Departamento de Tecnologia", 105, 36, null, null, 'center');
+      
+      doc.setDrawColor(10, 36, 99);
+      doc.setLineWidth(0.5);
+      doc.line(20, 42, 190, 42);
+      
+      doc.setFontSize(12);
+      doc.text("PROFESSOR: " + agendamento.professor, 20, 50);
+      doc.text("EMAIL: " + (teacherEmails[agendamento.professor] || "Não informado"), 20, 58);
+      
+      doc.text("TURMA: " + agendamento.turma, 20, 66);
+      doc.text("SALA: " + agendamento.sala, 20, 74);
+      
+      doc.text("EQUIPAMENTO: " + agendamento.aparelho + " - " + marcas[agendamento.aparelho], 20, 82);
+      doc.text("QUANTIDADE: " + agendamento.numAparelhos, 20, 90);
+      
+      const dataFormatada = `${agendamento.dia.toString().padStart(2, '0')}/${(parseInt(monthSelect.value) + 1).toString().padStart(2, '0')}/${yearSelect.value}`;
+      doc.text("DATA: " + dataFormatada, 20, 98);
+      doc.text("AULA: " + agendamento.aula, 20, 106);
+      
+      doc.text("HORA DE ENTREGA: " + (agendamento.horaEntrega || "Não entregue"), 20, 114);
+      
+      doc.line(20, 122, 190, 122);
+      
+      doc.setFontSize(10);
+      doc.text("DECLARO QUE RECEBI O(S) EQUIPAMENTO(S) EM PERFEITO ESTADO E ME COMPROMETO A:", 20, 130);
+      doc.text("- Utilizar o(s) equipamento(s) exclusivamente para fins pedagógicos;", 25, 138);
+      doc.text("- Zelar pela conservação e segurança do(s) equipamento(s);", 25, 146);
+      doc.text("- Devolver o(s) equipamento(s) no prazo combinado;", 25, 154);
+      doc.text("- Comunicar imediatamente qualquer problema ou dano ocorrido.", 25, 162);
+      
+      doc.setFontSize(12);
+      doc.text("__________________________________________", 50, 180);
+      doc.text("Assinatura do Professor", 105, 188, null, null, 'center');
+      
+      const agora = new Date();
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      doc.text(`Documento gerado em: ${agora.toLocaleString()}`, 105, 285, null, null, 'center');
+      
+      const nomeArquivo = `Termo_${agendamento.professor.replace(/\s+/g, '_')}_${dataFormatada.replace(/\//g, '-')}.pdf`;
+      doc.save(nomeArquivo);
     }
     
     function exportarParaPDF() {
-      // ... (mantido igual ao original)
+      const doc = new jsPDF();
+      
+      doc.setFontSize(18);
+      doc.setTextColor(10, 36, 99);
+      doc.text("RELATÓRIO DE AGENDAMENTOS", 105, 20, null, null, 'center');
+      
+      doc.setFontSize(12);
+      doc.text(`Período: ${monthNames[parseInt(monthSelect.value)]} de ${yearSelect.value}`, 105, 30, null, null, 'center');
+      
+      const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
+      
+      if (agendamentosDoMes.length === 0) {
+        doc.setFontSize(12);
+        doc.text("Nenhum agendamento encontrado para este período.", 105, 40, null, null, 'center');
+      } else {
+        const headers = [
+          "Data", 
+          "Turma", 
+          "Qtd", 
+          "Equipamento", 
+          "Professor", 
+          "Aula", 
+          "Entrega"
+        ];
+        
+        const data = agendamentosDoMes.map(ag => {
+          const diaFormatado = ag.dia.toString().padStart(2, '0');
+          const mesFormatado = (parseInt(monthSelect.value) + 1).toString().padStart(2, '0');
+          return [
+            `${diaFormatado}/${mesFormatado}/${yearSelect.value}`,
+            ag.turma,
+            ag.numAparelhos.toString(),
+            ag.aparelho,
+            ag.professor,
+            ag.aula,
+            ag.horaEntrega || "Não entregue"
+          ];
+        });
+        
+        doc.autoTable({
+          head: [headers],
+          body: data,
+          startY: 40,
+          theme: 'grid',
+          headStyles: {
+            fillColor: [10, 36, 99],
+            textColor: 255,
+            fontStyle: 'bold'
+          },
+          alternateRowStyles: {
+            fillColor: [240, 240, 240]
+          },
+          margin: { top: 40 }
+        });
+      }
+      
+      const agora = new Date();
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      doc.text(`Relatório gerado em: ${agora.toLocaleString()}`, 105, 285, null, null, 'center');
+      
+      const nomeArquivo = `Relatorio_Agendamentos_${monthNames[parseInt(monthSelect.value)]}_${yearSelect.value}.pdf`;
+      doc.save(nomeArquivo);
     }
     
     function exportarParaCSV() {
-      // ... (mantido igual ao original)
+      const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
+      
+      if (agendamentosDoMes.length === 0) {
+        alert("Nenhum agendamento encontrado para este período.");
+        return;
+      }
+      
+      let csv = "Data,Turma,Quantidade,Equipamento,Professor,Aula,Hora Entrega,Sala\n";
+      
+      agendamentosDoMes.forEach(ag => {
+        const diaFormatado = ag.dia.toString().padStart(2, '0');
+        const mesFormatado = (parseInt(monthSelect.value) + 1).toString().padStart(2, '0');
+        const data = `${diaFormatado}/${mesFormatado}/${yearSelect.value}`;
+        
+        csv += `"${data}","${ag.turma}","${ag.numAparelhos}","${ag.aparelho}","${ag.professor}","${ag.aula}","${ag.horaEntrega || ''}","${ag.sala}"\n`;
+      });
+      
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Agendamentos_${monthNames[parseInt(monthSelect.value)]}_${yearSelect.value}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
     function limparFormulario() {
