@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AGENDAMENTO DE APARELHOS</title>
+  <title>SISTEMA INTEGRADO DE AGENDAMENTO</title>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -782,6 +783,30 @@
       gap: 5px;
       font-size: 0.85rem;
     }
+    
+    /* Estilo para mensagem de sincronização */
+    .sync-message {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 20px;
+      background-color: var(--verde);
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .sync-message.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -791,7 +816,7 @@
     <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhoSnpP38GLVz5wmRdVtibKgpATo3EgheWJabR2o3aM9Iw2Cxq_9HzlsPcI6E3v8iYI8LKZGjszgVSKUYWki8UXm4YA4COOr_aVZlbsRKTUyFhNLA69U1u2AKg7rWFK2aHn2CFnI-M6GEr_jPRMY65SvSrCYJpYkLCmPNToU_v9pY4uJ-m9-nEKmcJcwbHw/s204/Design_sem_nome__1_-removebg-preview.png" 
          alt="Logo da Escola" 
          class="logo-profissional">
-    <p>SOLUÇÃO DE GERENCIAMENTO DE EQUIPAMENTOS</p>
+    <p>SISTEMA INTEGRADO DE GERENCIAMENTO DE EQUIPAMENTOS</p>
   </div>
   
   <div class="container">
@@ -801,6 +826,93 @@
           <label>PROFESSOR:</label>
           <select id="professor" onchange="atualizarEmailEAulas()">
             <option>Selecione</option>
+            <option value="ADEMAR RIBEIRO DE SOUZA">ADEMAR RIBEIRO DE SOUZA</option>
+            <option value="ALEX LUTH PEREIRA MARANHAO">ALEX LUTH PEREIRA MARANHAO</option>
+            <option value="ALEXANDRE SILVA LIMA">ALEXANDRE SILVA LIMA</option>
+            <option value="ALEXSANDRA PAULA VARELLA DE SOUZA">ALEXSANDRA PAULA VARELLA DE SOUZA</option>
+            <option value="ALINE CARDOSO">ALINE CARDOSO</option>
+            <option value="ALISON VASCONCELOS BESERRA">ALISON VASCONCELOS BESERRA</option>
+            <option value="AMAURI TEODORO DE OLIVEIRA">AMAURI TEODORO DE OLIVEIRA</option>
+            <option value="ANA PAULA DE OLIVEIRA SOUZA">ANA PAULA DE OLIVEIRA SOUZA</option>
+            <option value="ANA PAULA DOS SANTOS">ANA PAULA DOS SANTOS</option>
+            <option value="ANDRE LUIZ TAVARES">ANDRE LUIZ TAVARES</option>
+            <option value="ANDREIA DOS SANTOS FREITAS">ANDREIA DOS SANTOS FREITAS</option>
+            <option value="ANDREIA MADUREIRA REIS">ANDREIA MADUREIRA REIS</option>
+            <option value="ANTONIO CARLS DE OLIVEIRA">ANTONIO CARLS DE OLIVEIRA</option>
+            <option value="ANTONIO RAMOS DE ARAUJO">ANTONIO RAMOS DE ARAUJO</option>
+            <option value="ANTONIO WILTON WANDERLEY CABRAL">ANTONIO WILTON WANDERLEY CABRAL</option>
+            <option value="AUGUSTO LINO PESSOA NETO">AUGUSTO LINO PESSOA NETO</option>
+            <option value="AUREA MARIA DE JESUS MARQUES">AUREA MARIA DE JESUS MARQUES</option>
+            <option value="CAROLINA PERNOMIAN PARUSSOLO">CAROLINA PERNOMIAN PARUSSOLO</option>
+            <option value="CASSIA OLIVEIRA ANTONIAZI">CASSIA OLIVEIRA ANTONIAZI</option>
+            <option value="CICERO FERREIRA">CICERO FERREIRA</option>
+            <option value="DANIEL DE FREITAS ALMEIDA">DANIEL DE FREITAS ALMEIDA</option>
+            <option value="DANIEL LOPES BARBOSA">DANIEL LOPES BARBOSA</option>
+            <option value="DANIELA FERREIRA LIMA">DANIELA FERREIRA LIMA</option>
+            <option value="EDIANE VIEIRA DA SILVA">EDIANE VIEIRA DA SILVA</option>
+            <option value="EDILEUSA NUNES PEREIRA">EDILEUSA NUNES PEREIRA</option>
+            <option value="EDUARDO HENRIQUE DA FONSECA">EDUARDO HENRIQUE DA FONSECA</option>
+            <option value="ELIANE SANTOS SILVA">ELIANE SANTOS SILVA</option>
+            <option value="ELIAS MONTEIRO DA SILVA">ELIAS MONTEIRO DA SILVA</option>
+            <option value="ELISABETE APARECIDA PIRES">ELISABETE APARECIDA PIRES</option>
+            <option value="ELZA DE FARIA PEREIRA">ELZA DE FARIA PEREIRA</option>
+            <option value="EMERSON GABLER DE ALMEIDA">EMERSON GABLER DE ALMEIDA</option>
+            <option value="ERINEIDE LEITE ARAGAO NERY">ERINEIDE LEITE ARAGAO NERY</option>
+            <option value="EUZELI ARAUJO DE OLIVEIRA">EUZELI ARAUJO DE OLIVEIRA</option>
+            <option value="FABIANO AUGUSTO PIEDADE">FABIANO AUGUSTO PIEDADE</option>
+            <option value="FABIO CAMILO">FABIO CAMILO</option>
+            <option value="FERNANDO JOSE DA SILVA FILHO">FERNANDO JOSE DA SILVA FILHO</option>
+            <option value="FLAVIA CRISTINA APARECIDA BICHLER">FLAVIA CRISTINA APARECIDA BICHLER</option>
+            <option value="FLAVIO CARDOSO FLEURY">FLAVIO CARDOSO FLEURY</option>
+            <option value="GABRIELA SERIGHELLI DE MELO">GABRIELA SERIGHELLI DE MELO</option>
+            <option value="GELSON DE ALMEIDA BATISTA">GELSON DE ALMEIDA BATISTA</option>
+            <option value="GENILTON DE OLIVEIRA SILVA">GENILTON DE OLIVEIRA SILVA</option>
+            <option value="GIANI CRISTINA DO PRADO">GIANI CRISTINA DO PRADO</option>
+            <option value="INGRYD CAROLINA SUGUIMOTO VIEIRA">INGRYD CAROLINA SUGUIMOTO VIEIRA</option>
+            <option value="IVANILDES DOS SANTOS OSHIKAWA">IVANILDES DOS SANTOS OSHIKAWA</option>
+            <option value="JANINA DOS PASSOS BRAGA DE ALMEIDA">JANINA DOS PASSOS BRAGA DE ALMEIDA</option>
+            <option value="JUAREZ GOMES DE MAGALHAES FILHO">JUAREZ GOMES DE MAGALHAES FILHO</option>
+            <option value="JUREMA SOLEDADE FURINI SANTOS">JUREMA SOLEDADE FURINI SANTOS</option>
+            <option value="KATIUSCIA ALVES BOMFIM">KATIUSCIA ALVES BOMFIM</option>
+            <option value="KETHY REGINA DA SILVA DOMINGOS COSTA">KETHY REGINA DA SILVA DOMINGOS COSTA</option>
+            <option value="LUANA CAROLINE ALVES LIMA">LUANA CAROLINE ALVES LIMA</option>
+            <option value="LUANA DE FREITAS SILVA">LUANA DE FREITAS SILVA</option>
+            <option value="LUCIANA NOVAIS CORREIA SANTOS">LUCIANA NOVAIS CORREIA SANTOS</option>
+            <option value="LUCIANO MOREIRA DE AZEVEDO">LUCIANO MOREIRA DE AZEVEDO</option>
+            <option value="MARCELO FERNANDES DA SILVA">MARCELO FERNANDES DA SILVA</option>
+            <option value="MARCIEL DA SILVA">MARCIEL DA SILVA</option>
+            <option value="MARIA HELENA CUNHA MORO">MARIA HELENA CUNHA MORO</option>
+            <option value="MARIA QUITÉRIA FERREIRA DOS SANTOS">MARIA QUITÉRIA FERREIRA DOS SANTOS</option>
+            <option value="MARINA DA CONCEICAO FRANCISCO SILVA">MARINA DA CONCEICAO FRANCISCO SILVA</option>
+            <option value="MAURICIO DE BARROS SANTOS">MAURICIO DE BARROS SANTOS</option>
+            <option value="MICHELE DE PINHO MORAES">MICHELE DE PINHO MORAES</option>
+            <option value="MOISES ANTONIO DE BARROS">MOISES ANTONIO DE BARROS</option>
+            <option value="PATRICIA GOMES ROCHA RIBEIRO">PATRICIA GOMES ROCHA RIBEIRO</option>
+            <option value="PAULO ROBERTO DA SILVA ITO">PAULO ROBERTO DA SILVA ITO</option>
+            <option value="PEDRO ZANOTTI FILHO">PEDRO ZANOTTI FILHO</option>
+            <option value="RAUL PEREIRA VILERA JUNIOR">RAUL PEREIRA VILERA JUNIOR</option>
+            <option value="REGIANE CURTI DE SOUZA OLIVEIRA">REGIANE CURTI DE SOUZA OLIVEIRA</option>
+            <option value="REGINA DA SILVA CASTRO">REGINA DA SILVA CASTRO</option>
+            <option value="RICARDO AMERICO DA SILVA">RICARDO AMERICO DA SILVA</option>
+            <option value="ROBERTO SALGADO">ROBERTO SALGADO</option>
+            <option value="RODRIGO VIEIRA">RODRIGO VIEIRA</option>
+            <option value="ROSANGELA CAFASSO MOREIRA">ROSANGELA CAFASSO MOREIRA</option>
+            <option value="ROSIMERY DE SOUZA PESSOA">ROSIMERY DE SOUZA PESSOA</option>
+            <option value="ROSMARA DA SILVA CARDOSO">ROSMARA DA SILVA CARDOSO</option>
+            <option value="SANDRA CRISTINA MACEDO MORAES">SANDRA CRISTINA MACEDO MORAES</option>
+            <option value="SELMA GOMES DA SILVA">SELMA GOMES DA SILVA</option>
+            <option value="SERGIO AGRIPINO VILLA NOVA">SERGIO AGRIPINO VILLA NOVA</option>
+            <option value="SOLANGE ALMEIDA DA SILVA">SOLANGE ALMEIDA DA SILVA</option>
+            <option value="SUELI SILVE PEREIRA">SUELI SILVE PEREIRA</option>
+            <option value="SUZINEIDE SILVA DE FREITAS">SUZINEIDE SILVA DE FREITAS</option>
+            <option value="THIAGO FABIANO BRITO">THIAGO FABIANO BRITO</option>
+            <option value="TITTO AUGUSTO NASCIMENTO SILVA">TITTO AUGUSTO NASCIMENTO SILVA</option>
+            <option value="VANDERSON HYPPOLITO">VANDERSON HYPPOLITO</option>
+            <option value="VANESSA IVETE GOMES DOS SANTOS">VANESSA IVETE GOMES DOS SANTOS</option>
+            <option value="VANIA PENHA DE BARROS">VANIA PENHA DE BARROS</option>
+            <option value="VIVIANE LEAL CAMERA DE MORAES">VIVIANE LEAL CAMERA DE MORAES</option>
+            <option value="WILSON LUIZ DE SOUZA COSTA">WILSON LUIZ DE SOUZA COSTA</option>
+            <option value="WILSON RODRIGUES MOTA">WILSON RODRIGUES MOTA</option>
           </select>
         </div>
       </div>
@@ -894,7 +1006,7 @@
             <option value="2ª SERIE F NOITE">2ª SERIE F NOITE</option>
             <option value="2ª SERIE G NOITE">2ª SERIE G NOITE</option>
             <option value="2ª SERIE H NOITE">2ª SERIE H NOITE</option>
-            <option value="2ª SERIE I NOITE">2ª SERie I NOITE</option>
+            <option value="2ª SERIE I NOITE">2ª SERIE I NOITE</option>
             <option value="3ª SERIE A MANHA">3ª SERIE A MANHA</option>
             <option value="3ª SERIE B MANHA">3ª SERIE B MANHA</option>
             <option value="3ª SERIE C MANHA">3ª SERIE C MANHA</option>
@@ -1025,13 +1137,18 @@
     </div>
   </div>
 
+  <div class="sync-message" id="syncMessage">
+    <i class="fas fa-sync-alt fa-spin"></i>
+    <span>Sincronizando agendamentos...</span>
+  </div>
+
   <script>
-    // CONFIGURAÇÃO DO FIREBASE
+    // CONFIGURAÇÃO CORRIGIDA DO FIREBASE
     const firebaseConfig = {
-      apiKey: "AIzaSyBOoXyjLQPfgzQM06LVy-TRSPdSM_8CjcE",
-      authDomain: "gerenciamentoaparelho.firebaseapp.com",
-      projectId: "gerenciamentoaparelho",
-      storageBucket: "gerenciamentoaparelho.appspot.com",
+      apiKey: "AIzaSyBOoXyjLQPfgzQM0GLVy-TRSPdSM_8CjcE",
+      authDomain: "gerenciamentcaparelho.firebaseapp.com",
+      projectId: "gerenciamentcaparelho",
+      storageBucket: "gerenciamentcaparelho.appspot.com",
       messagingSenderId: "751628186418",
       appId: "1:751628186418:web:dd68af74d9e3723c179d2b",
       measurementId: "G-K02ZZQ4JBK"
@@ -1040,194 +1157,108 @@
     // INICIALIZA O FIREBASE
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+    const rtdb = firebase.database();  // Realtime Database
 
     // UID DO USUÁRIO ESPECÍFICO
     const USER_ID = "lfSOKNcVcnZFJdrT7BpZG6H6dm32";
 
     // REFERÊNCIAS ÀS COLEÇÕES FILTRADAS POR USUÁRIO
     const agendamentosRef = db.collection("agendamentos");
-    const historicoExcluidosRef = db.collection("historico_excluidos");
+    const reservasRef = rtdb.ref("reservations");  // Referência ao sistema principal
 
     // Inicializa o jsPDF
     const { jsPDF } = window.jspdf;
     
     // Dados dos professores
     const teacherEmails = {
-"ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
-
-"ALEX LUTH PEREIRA MARANHAO": "luth@prof.educacao.sp.gov.br",
-
-"ALEXANDRE SILVA LIMA": "alexandresilvalima@prof.educacao.sp.gov.br",
-
-"ALEXSANDRA PAULA VARELLA DE SOUZA": "avarella@prof.educacao.sp.gov.br",
-
-"ALINE CARDOSO": "aline.cardoso@servidor.educacao.sp.gov.br",
-
-"ALISON VASCONCELOS BESERRA": "alisonv@prof.educacao.sp.gov.br",
-
-"AMAURI TEODORO DE OLIVEIRA": "amaurit@prof.educacao.sp.gov.br",
-
-"ANA PAULA DE OLIVEIRA SOUZA": "ana.souza59@servidor.educacao.sp.gov.br",
-
-"ANA PAULA DOS SANTOS": "paulasantosa@prof.educacao.sp.gov.br",
-
-"ANDRE LUIZ TAVARES": "andreltavares@prof.educacao.sp.gov.br",
-
-"ANDREIA DOS SANTOS FREITAS": "sanfreitas@prof.educacao.sp.gov.br",
-
-"ANDREIA MADUREIRA REIS": "andreiamadureira@prof.educacao.sp.gov.br",
-
-"ANTONIO CARLOS DE OLIVEIRA": "antoniocarloso@prof.educacao.sp.gov.br",
-
-"ANTONIO RAMOS DE ARAUJO": "antonioramosaraujo@prof.educacao.sp.gov.br",
-
-"ANTONIO WILTON WANDERLEY CABRAL": "antoniowilton@prof.educacao.sp.gov.br",
-
-"AUGUSTO LINO PESSOA NETO": "augustolino@prof.educacao.sp.gov.br",
-
-"AUREA MARIA DE JESUS MARQUES": "aureamaria@prof.educacao.sp.gov.br",
-
-"CAROLINA PERNOMIAN PARUSSOLO": "carolinapernomian@prof.educacao.sp.gov.br",
-
-"CASSIA OLIVEIRA ANTONIAZI": "cassiaosilva@prof.educacao.sp.gov.br",
-
-"CICERO FERREIRA": "cicero.ferreira@servidor.educacao.sp.gov.br",
-
-"DANIEL DE FREITAS ALMEIDA": "danielalmeida@prof.educacao.sp.gov.br",
-
-"DANIEL LOPES BARBOSA": "daniellopesbarbosa@prof.educacao.sp.gov.br",
-
-"DANIELA FERREIRA LIMA": "danielaflima@prof.educacao.sp.gov.br",
-
-"EDIANE VIEIRA DA SILVA": "ediane@prof.educacao.sp.gov.br",
-
-"EDILEUSA NUNES PEREIRA": "edileusa@prof.educacao.sp.gov.br",
-
-"EDUARDO HENRIQUE DA FONSECA": "henriquefonseca@prof.educacao.sp.gov.br",
-
-"ELIANE SANTOS SILVA": "essantos@prof.educacao.sp.gov.br",
-
-"ELIAS MONTEIRO DA SILVA": "elias1@prof.educacao.sp.gov.br",
-
-"ELISABETE APARECIDA PIRES": "elisabetepires@prof.educacao.sp.gov.br",
-
-"ELZA DE FARIA PEREIRA": "elzafariapereira@prof.educacao.sp.gov.br",
-
-"EMERSON GABLER DE ALMEIDA": "egabler@prof.educacao.sp.gov.br",
-
-"ERINEIDE LEITE ARAGAO NERY": "erineidearagao@prof.educacao.sp.gov.br",
-
-"EUZELI ARAUJO DE OLIVEIRA": "euzeli@prof.educacao.sp.gov.br",
-
-"FABIANO AUGUSTO PIEDADE": "fabianoaugusto@prof.educacao.sp.gov.br",
-
-"FABIO CAMILO": "camilof@prof.educacao.sp.gov.br",
-
-"FERNANDO JOSE DA SILVA FILHO": "fernandojs@prof.educacao.sp.gov.br",
-
-"FLAVIA CRISTINA APARECIDA BICHLER": "flaviacri@prof.educacao.sp.gov.br",
-
-"FLAVIO CARDOSO FLEURY": "flaviofleury@prof.educacao.sp.gov.br",
-
-"GABRIELA SERIGHELLI DE MELO": "gabrielaserighelli@prof.educacao.sp.gov.br",
-
-"GELSON DE ALMEIDA BATISTA": "gelsonalmeida@prof.educacao.sp.gov.br",
-
-"GENILTON DE OLIVEIRA SILVA": "genilton@prof.educacao.sp.gov.br",
-
-"GIANI CRISTINA DO PRADO": "gianiprado@prof.educacao.sp.gov.br",
-
-"INGRYD CAROLINA SUGUIMOTO VIEIRA": "ingryd@prof.educacao.sp.gov.br",
-
-"IVANILDES DOS SANTOS OSHIKAWA": "oshikawa@prof.educacao.sp.gov.br",
-
-"JANINA DOS PASSOS BRAGA DE ALMEIDA": "janinabraga@prof.educacao.sp.gov.br",
-
-"JUAREZ GOMES DE MAGALHAES FILHO": "juarezgomes@prof.educacao.sp.gov.br",
-
-"JUREMA SOLEDADE FURINI SANTOS": "juremas@prof.educacao.sp.gov.br",
-
-"KATIUSCIA ALVES BOMFIM": "katiusciabomfim@prof.educacao.sp.gov.br",
-
-"KETHY REGINA DA SILVA DOMINGOS COSTA": "kethy@prof.educacao.sp.gov.br",
-
-"LUANA CAROLINE ALVES LIMA": "luanalima01@prof.educacao.sp.gov.br",
-
-"LUANA DE FREITAS SILVA": "luanafreitas@prof.educacao.sp.gov.br",
-
-"LUCIANA NOVAIS CORREIA SANTOS": "novaiscorreia@prof.educacao.sp.gov.br",
-
-"LUCIANO MOREIRA DE AZEVEDO": "lucianomoreira@prof.educacao.sp.gov.br",
-
-"MARCELO FERNANDES DA SILVA": "marcelofs@prof.educacao.sp.gov.br",
-
-"MARCIEL DA SILVA": "marcielsilva@prof.educacao.sp.gov.br",
-
-"MARIA HELENA CUNHA MORO": "marcunha@prof.educacao.sp.gov.br",
-
-"MARIA QUITÉRIA FERREIRA DOS SANTOS": "quiteriasantos@prof.educacao.sp.gov.br",
-
-"MARINA DA CONCEICAO FRANCISCO SILVA": "marinafrancisco@prof.educacao.sp.gov.br",
-
-"MAURICIO DE BARROS SANTOS": "mauriciobsantos@prof.educacao.sp.gov.br",
-
-"MICHELE DE PINHO MORAES": "michelepinho@prof.educacao.sp.gov.br",
-
-"MOISES ANTONIO DE BARROS": "moisesbarros@prof.educacao.sp.gov.br",
-
-"PATRICIA GOMES ROCHA RIBEIRO": "patriciag@prof.educacao.sp.gov.br",
-
-"PAULO ROBERTO DA SILVA ITO": "pauloito@prof.educacao.sp.gov.br",
-
-"PEDRO ZANOTTI FILHO": "pedrozanotti@prof.educacao.sp.gov.br",
-
-"RAUL PEREIRA VILERA JUNIOR": "vilera@prof.educacao.sp.gov.br",
-
-"REGIANE CURTI DE SOUZA OLIVEIRA": "regianecurti@prof.educacao.sp.gov.br",
-
-"REGINA DA SILVA CASTRO": "reginasilvacastro@prof.educacao.sp.gov.br",
-
-"RICARDO AMERICO DA SILVA": "ricardoamerico@prof.educacao.sp.gov.br",
-
-"ROBERTO SALGADO": "robertosalgado@prof.educacao.sp.gov.br",
-
-"RODRIGO VIEIRA": "rodrigovieira1@prof.educacao.sp.gov.br",
-
-"ROSANGELA CAFASSO MOREIRA": "cafasso@prof.educacao.sp.gov.br",
-
-"ROSIMERY DE SOUZA PESSOA": "rosimerypessoa@prof.educacao.sp.gov.br",
-
-"ROSMARA DA SILVA CARDOSO": "rosmaracardoso@prof.educacao.sp.gov.br",
-
-"SANDRA CRISTINA MACEDO MORAES": "sandracristinamacedo@prof.educacao.sp.gov.br",
-
-"SELMA GOMES DA SILVA": "selmagomess@prof.educacao.sp.gov.br",
-
-"SERGIO AGRIPINO VILLA NOVA": "sergioagripino@prof.educacao.sp.gov.br",
-
-"SOLANGE ALMEIDA DA SILVA": "almeidafazio@prof.educacao.sp.gov.br",
-
-"SUELI SILVE PEREIRA": "suelisilve@prof.educacao.sp.gov.br",
-
-"SUZINEIDE SILVA DE FREITAS": "suzineidefreitas@prof.educacao.sp.gov.br",
-
-"THIAGO FABIANO BRITO": "thiagofabiano@prof.educacao.sp.gov.br",
-
-"TITTO AUGUSTO NASCIMENTO SILVA": "titto@prof.educacao.sp.gov.br",
-
-"VANDERSON HYPPOLITO": "vhypolito@prof.educacao.sp.gov.br",
-
-"VANESSA IVETE GOMES DOS SANTOS": "vanessaivete@prof.educacao.sp.gov.br",
-
-"VANIA PENHA DE BARROS": "vaniapenha@prof.educacao.sp.gov.br",
-
-"VIVIANE LEAL CAMERA DE MORAES": "camera@prof.educacao.sp.gov.br",
-
-"WILSON LUIZ DE SOUZA COSTA": "wilsonluizsouza@prof.educacao.sp.gov.br",
-
-"WILSON RODRIGUES MOTA": "wmota@prof.educacao.sp.gov.br"
-
-};
+      "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
+      "ALEX LUTH PEREIRA MARANHAO": "luth@prof.educacao.sp.gov.br",
+      "ALEXANDRE SILVA LIMA": "alexandresilvalima@prof.educacao.sp.gov.br",
+      "ALEXSANDRA PAULA VARELLA DE SOUZA": "avarella@prof.educacao.sp.gov.br",
+      "ALINE CARDOSO": "aline.cardoso@servidor.educacao.sp.gov.br",
+      "ALISON VASCONCELOS BESERRA": "alisonv@prof.educacao.sp.gov.br",
+      "AMAURI TEODORO DE OLIVEIRA": "amaurit@prof.educacao.sp.gov.br",
+      "ANA PAULA DE OLIVEIRA SOUZA": "ana.souza59@servidor.educacao.sp.gov.br",
+      "ANA PAULA DOS SANTOS": "paulasantosa@prof.educacao.sp.gov.br",
+      "ANDRE LUIZ TAVARES": "andreltavares@prof.educacao.sp.gov.br",
+      "ANDREIA DOS SANTOS FREITAS": "sanfreitas@prof.educacao.sp.gov.br",
+      "ANDREIA MADUREIRA REIS": "andreiamadureira@prof.educacao.sp.gov.br",
+      "ANTONIO CARLS DE OLIVEIRA": "antoniocarloso@prof.educacao.sp.gov.br",
+      "ANTONIO RAMOS DE ARAUJO": "antonioramosaraujo@prof.educacao.sp.gov.br",
+      "ANTONIO WILTON WANDERLEY CABRAL": "antoniowilton@prof.educacao.sp.gov.br",
+      "AUGUSTO LINO PESSOA NETO": "augustolino@prof.educacao.sp.gov.br",
+      "AUREA MARIA DE JESUS MARQUES": "aureamaria@prof.educacao.sp.gov.br",
+      "CAROLINA PERNOMIAN PARUSSOLO": "carolinapernomian@prof.educacao.sp.gov.br",
+      "CASSIA OLIVEIRA ANTONIAZI": "cassiaosilva@prof.educacao.sp.gov.br",
+      "CICERO FERREIRA": "cicero.ferreira@servidor.educacao.sp.gov.br",
+      "DANIEL DE FREITAS ALMEIDA": "danielalmeida@prof.educacao.sp.gov.br",
+      "DANIEL LOPES BARBOSA": "daniellopesbarbosa@prof.educacao.sp.gov.br",
+      "DANIELA FERREIRA LIMA": "danielaflima@prof.educacao.sp.gov.br",
+      "EDIANE VIEIRA DA SILVA": "ediane@prof.educacao.sp.gov.br",
+      "EDILEUSA NUNES PEREIRA": "edileusa@prof.educacao.sp.gov.br",
+      "EDUARDO HENRIQUE DA FONSECA": "henriquefonseca@prof.educacao.sp.gov.br",
+      "ELIANE SANTOS SILVA": "essantos@prof.educacao.sp.gov.br",
+      "ELIAS MONTEIRO DA SILVA": "elias1@prof.educacao.sp.gov.br",
+      "ELISABETE APARECIDA PIRES": "elisabetepires@prof.educacao.sp.gov.br",
+      "ELZA DE FARIA PEREIRA": "elzafariapereira@prof.educacao.sp.gov.br",
+      "EMERSON GABLER DE ALMEIDA": "egabler@prof.educacao.sp.gov.br",
+      "ERINEIDE LEITE ARAGAO NERY": "erineidearagao@prof.educacao.sp.gov.br",
+      "EUZELI ARAUJO DE OLIVEIRA": "euzeli@prof.educacao.sp.gov.br",
+      "FABIANO AUGUSTO PIEDADE": "fabianoaugusto@prof.educacao.sp.gov.br",
+      "FABIO CAMILO": "camilof@prof.educacao.sp.gov.br",
+      "FERNANDO JOSE DA SILVA FILHO": "fernandois@prof.educacao.sp.gov.br",
+      "FLAVIA CRISTINA APARECIDA BICHLER": "flaviacri@prof.educacao.sp.gov.br",
+      "FLAVIO CARDOSO FLEURY": "flaviofleury@prof.educacao.sp.gov.br",
+      "GABRIELA SERIGHELLI DE MELO": "gabrielaserighelli@prof.educacao.sp.gov.br",
+      "GELSON DE ALMEIDA BATISTA": "gelsonalmeida@prof.educacao.sp.gov.br",
+      "GENILTON DE OLIVEIRA SILVA": "genilton@prof.educacao.sp.gov.br",
+      "GIANI CRISTINA DO PRADO": "gianiprado@prof.educacao.sp.gov.br",
+      "INGRYD CAROLINA SUGUIMOTO VIEIRA": "ingryd@prof.educacao.sp.gov.br",
+      "IVANILDES DOS SANTOS OSHIKAWA": "oshikawa@prof.educacao.sp.gov.br",
+      "JANINA DOS PASSOS BRAGA DE ALMEIDA": "janinabraga@prof.educacao.sp.gov.br",
+      "JUAREZ GOMES DE MAGALHAES FILHO": "juarezgomes@prof.educacao.sp.gov.br",
+      "JUREMA SOLEDADE FURINI SANTOS": "juremas@prof.educacao.sp.gov.br",
+      "KATIUSCIA ALVES BOMFIM": "katiusciabomfim@prof.educacao.sp.gov.br",
+      "KETHY REGINA DA SILVA DOMINGOS COSTA": "kethy@prof.educacao.sp.gov.br",
+      "LUANA CAROLINE ALVES LIMA": "luanalima01@prof.educacao.sp.gov.br",
+      "LUANA DE FREITAS SILVA": "luanafreitas@prof.educacao.sp.gov.br",
+      "LUCIANA NOVAIS CORREIA SANTOS": "novaiscorreia@prof.educacao.sp.gov.br",
+      "LUCIANO MOREIRA DE AZEVEDO": "lucianomoreira@prof.educacao.sp.gov.br",
+      "MARCELO FERNANDES DA SILVA": "marcelofs@prof.educacao.sp.gov.br",
+      "MARCIEL DA SILVA": "marcielsilva@prof.educacao.sp.gov.br",
+      "MARIA HELENA CUNHA MORO": "marcunha@prof.educacao.sp.gov.br",
+      "MARIA QUITÉRIA FERREIRA DOS SANTOS": "quiteriasantos@prof.educacao.sp.gov.br",
+      "MARINA DA CONCEICAO FRANCISCO SILVA": "marinafrancisco@prof.educacao.sp.gov.br",
+      "MAURICIO DE BARROS SANTOS": "mauriciobsantos@prof.educacao.sp.gov.br",
+      "MICHELE DE PINHO MORAES": "michelepinho@prof.educacao.sp.gov.br",
+      "MOISES ANTONIO DE BARROS": "moisesbarros@prof.educacao.sp.gov.br",
+      "PATRICIA GOMES ROCHA RIBEIRO": "patriciag@prof.educacao.sp.gov.br",
+      "PAULO ROBERTO DA SILVA ITO": "pauloito@prof.educacao.sp.gov.br",
+      "PEDRO ZANOTTI FILHO": "pedrozanotti@prof.educacao.sp.gov.br",
+      "RAUL PEREIRA VILERA JUNIOR": "vilera@prof.educacao.sp.gov.br",
+      "REGIANE CURTI DE SOUZA OLIVEIRA": "regianecurti@prof.educacao.sp.gov.br",
+      "REGINA DA SILVA CASTRO": "reginasilvacastro@prof.educacao.sp.gov.br",
+      "RICARDO AMERICO DA SILVA": "ricardoamerico@prof.educacao.sp.gov.br",
+      "ROBERTO SALGADO": "robertosalgado@prof.educacao.sp.gov.br",
+      "RODRIGO VIEIRA": "rodrigovieira1@prof.educacao.sp.gov.br",
+      "ROSANGELA CAFASSO MOREIRA": "cafasso@prof.educacao.sp.gov.br",
+      "ROSIMERY DE SOUZA PESSOA": "rosimerypessoa@prof.educacao.sp.gov.br",
+      "ROSMARA DA SILVA CARDOSO": "rosmaracardoso@prof.educacao.sp.gov.br",
+      "SANDRA CRISTINA MACEDO MORAES": "sandracristinamacedo@prof.educacao.sp.gov.br",
+      "SELMA GOMES DA SILVA": "selmagomes8@prof.educacao.sp.gov.br",
+      "SERGIO AGRIPINO VILLA NOVA": "sergioagripino@prof.educacao.sp.gov.br",
+      "SOLANGE ALMEIDA DA SILVA": "almeidafazio@prof.educacao.sp.gov.br",
+      "SUELI SILVE PEREIRA": "suelisilve@prof.educacao.sp.gov.br",
+      "SUZINEIDE SILVA DE FREITAS": "suzineidefreitas@prof.educacao.sp.gov.br",
+      "THIAGO FABIANO BRITO": "thiagofabiano@prof.educacao.sp.gov.br",
+      "TITTO AUGUSTO NASCIMENTO SILVA": "titto@prof.educacao.sp.gov.br",
+      "VANDERSON HYPPOLITO": "vhypolito@prof.educacao.sp.gov.br",
+      "VANESSA IVETE GOMES DOS SANTOS": "vanessaivete@prof.educacao.sp.gov.br",
+      "VANIA PENHA DE BARROS": "vaniapenha@prof.educacao.sp.gov.br",
+      "VIVIANE LEAL CAMERA DE MORAES": "camera@prof.educacao.sp.gov.br",
+      "WILSON LUIZ DE SOUZA COSTA": "wilsonluizsouza@prof.educacao.sp.gov.br",
+      "WILSON RODRIGUES MOTA": "wmota@prof.educacao.sp.gov.br"
+    };
 
     // Dados dos aparelhos
     const marcas = {
@@ -1239,763 +1270,53 @@
 
     // Dados das salas por turma e período
     const salasPorTurmaPeriodo = {
-     "6° ANO A MANHA": "Sala 1",
-
-"6° ANO B MANHA": "Sala 2",
-
-"6° ANO C MANHA": "Sala 3",
-
-"6° ANO D MANHA": "Sala 4",
-
-"6° ANO E TARDE": "Sala 1",
-
-"6° ANO F TARDE": "Sala 2",
-
-"7° ANO A TARDE": "Sala 3",
-
-"7° ANO B TARDE": "Sala 4",
-
-"7° ANO C TARDE": "Sala 5",
-
-"7° ANO D TARDE": "Sala 6",
-
-"7° ANO E TARDE": "Sala 7",
-
-"7° ANO F TARDE": "Sala 8",
-
-"8° ANO A TARDE": "Sala 10",
-
-"8° ANO B TARDE": "Sala 11",
-
-"8° ANO C TARDE": "Sala 12",
-
-"8° ANO D TARDE": "Sala 13",
-
-"8° ANO E TARDE": "Sala 14",
-
-"9° ANO A TARDE": "Sala 15",
-
-"9° ANO B TARDE": "Sala 16",
-
-"9° ANO C TARDE": "Sala 17",
-
-"9° ANO D TARDE": "Sala 18",
-
-"1ª SERIE A MANHA": "Sala 10",
-
-"1ª SERIE B MANHA": "Sala 11",
-
-"1ª SERIE C MANHA": "Sala 12",
-
-"1ª SERIE D MANHA": "Sala 13",
-
-"1ª SERIE E MANHA": "Sala 14",
-
-"1ª SERIE F MANHA": "Sala 15",
-
-"1ª SERIE G TARDE": "Sala 9",
-
-"1ª SERIE H NOITE": "Sala 9",
-
-"1ª SERIE I NOITE": "Sala 602",
-
-"2ª SERIE A MANHA": "Sala 5",
-
-"2ª SERIE B MANHA": "Sala 6",
-
-"2ª SERIE C MANHA": "Sala 7",
-
-"2ª SERIE D MANHA": "Sala 8",
-
-"2ª SERie E MANHA": "Sala 9",
-
-"2ª SERIE F NOITE": "Sala 1",
-
-"2ª SERIE G NOITE": "Sala 2",
-
-"2ª SERIE H NOITE": "Sala 3",
-
-"2ª SERIE I NOITE": "Sala 4",
-
-"3ª SERIE A MANHA": "Sala 16",
-
-"3ª SERIE B MANHA": "Sala 17",
-
-"3ª SERIE C MANHA": "Sala 18",
-
-"3ª SERIE D NOITE": "Sala 5",
-
-"3ª SERIE E NOITE": "Sala 6",
-
-"3ª SERIE F NOITE": "Sala 7",
-
-"3ª SERie G NOITE": "Sala 8",
-
-"4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA": "Laboratório 1"
-
-};
-
-    // Horários dos professores (ESTRUTURA CORRIGIDA)
-    const horariosProfessores = {
-     "ADEMAR": {
-
-"MANHA": ["1D", "1E", "1E", "1F", "1F", "1B", "1B", "1A", "1A", "1D", "1C", "1C"],
-
-"TARDE": ["9C", "9B", "9B", "1G", "1G", "9A", "9A", "9C", "9C", "9D", "9A", "9D"],
-
-"NOITE": ["2F", "2G", "2G", "2H", "2F", "2H", "1H", "1H", "2F", "2G", "2G", "2H"]
-
-},
-
-"ALISSON": {
-
-"MANHA": ["6A", "6D", "6B", "1F", "6A", "6A", "1D", "6C", "1B", "1B/BIO", "3C/PV", "6C/CIÉ", "1E/BIO", "6B", "6B", "1C", "6C", "1F", "6D", "1E", "1A", "1A", "1C", "6D/C", "1D"],
-
-"TARDE": ["8A", "8A", "7D/PV", "7C/PV", "8A", "8A", "7E/PV", "7C/PV", "8A", "8A", "7E/PV", "7C/PV"],
-
-"NOITE": []
-
-},
-
-"ANDRÉIA": {
-
-"MANHA": ["1E", "1F", "1D", "2C", "1C", "2D", "1F/R", "1D", "1F", "1E", "1C", "1F/R", "2C/R", "1D", "1C", "1C", "1E", "1C/R", "1D/R", "1E", "1B/R", "1E/R", "1D/R", "1F", "2D/R", "1E", "1C", "1F", "1D", "1B/R"],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"ANTONIO": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": ["3G", "2F", "2F", "2G", "2G"]
-
-},
-
-"ANTONIO CARLOS": {
-
-"MANHA": ["2B", "2B", "2E", "2E", "2C", "2C", "2D", "2D", "2A", "2D", "2D", "2E", "2E", "2A", "2A", "2C", "2C", "2A", "2B", "2B"],
-
-"TARDE": [],
-
-"NOITE": ["3G", "2F", "2F", "2G", "2G"]
-
-},
-
-"BETE": {
-
-"MANHA": ["1A", "1A", "1A", "1E", "1B", "1B", "1E/EF", "1E/EF", "1D", "1D", "1B", "1A", "1C/EF", "1C/EF", "1E", "1E", "1D/EF", "1D/EF", "1C", "1C", "1E", "1B", "1A/EF", "1A/EF", "1B/EF", "1B/EF", "1D", "1D", "1C", "1C"],
-
-"TARDE": ["1G", "1G"],
-
-"NOITE": []
-
-},
-
-"DANIEL": {
-
-"MANHA": ["6C", "6C", "2C", "6D", "3C", "3C", "2ADM/H", "2ADM/H", "6A", "2C", "2D/L", "2D/L", "6B", "6B", "2A", "2A", "2B", "2B", "2D", "2D", "6D", "6A", "3B", "3B", "3A", "3A", "2C/L", "2C/L", "2E", "2E"],
-
-"TARDE": ["6E", "6E"],
-
-"NOITE": []
-
-},
-
-"DANIELLE": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": ["3F", "2F", "3G", "3E", "3D"]
-
-},
-
-"DANIELA": {
-
-"MANHA": ["1C", "1C", "6A", "6A", "6D", "6D", "6B", "6B", "6C", "6C", "1D", "1D", "1A", "1A", "1F", "1F", "1B", "1B", "1E", "1E"],
-
-"TARDE": ["7D", "7C", "9A", "7E", "7E", "7C", "7D", "7B", "7B", "7A", "1G", "1G", "9D", "7A", "7D", "7B", "7B", "7A", "1G", "1G"],
-
-"NOITE": ["1H"]
-
-},
-
-"EDIANE": {
-
-"MANHA": ["2ADM", "2ADM", "2ADM"],
-
-"TARDE": ["6E/R", "7C", "6F", "6F", "7B", "6F", "7C", "7B", "6F/R", "6F/R", "9C/O", "9D/O", "6F", "7D", "9D/OP", "7D", "7C", "7D", "7B", "7D", "7C", "9B/OP", "6E/R", "9B/OP", "9C/OP", "7B", "6F", "6F", "7C"],
-
-"NOITE": ["2G", "2F", "2F", "3E/OP", "3E/OP", "2H", "2H", "2H", "2F", "2F", "3F", "3F", "2G", "2G", "2G", "3G/OP", "3G/OP", "3D/OP", "3D/OP"]
-
-},
-
-"EDUARDO": {
-
-"MANHA": [],
-
-"TARDE": ["7C", "8B", "7D", "8B", "7D", "7C"],
-
-"NOITE": []
-
-},
-
-"ELIAS": {
-
-"MANHA": ["2E", "2E", "3B", "3B", "2C", "2C", "1C", "1C", "2ADM/Q", "2ADM/Q", "3A", "3A", "2B", "2B", "1A", "1A", "2A", "1F", "1B", "1B", "3C", "3C", "1E", "1E", "1D", "1D", "1F", "2A", "2D", "2D"],
-
-"TARDE": ["1G", "1G", "9C", "9C", "9B", "9B/OM", "9A", "8E/PV", "9A", "8D/PV"],
-
-"NOITE": ["1H/Q", "1H/Q", "1H/EF", "1H/EF", "1H/F", "1H/F"]
-
-},
-
-"FÁBIO": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": ["1I", "2F", "1I", "3D", "1I", "3D", "3E", "2G", "1I", "2H"]
-
-},
-
-"GENILTON": {
-
-"MANHA": [],
-
-"TARDE": ["7E", "7E", "9B", "7C", "7C", "6F", "6F", "6E", "6E", "7D", "6F", "7B/PV", "6E", "7F", "7D"],
-
-"NOITE": []
-
-},
-
-"GISLENE": {
-
-"MANHA": ["6B", "6A", "6B", "6A"],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"INGRYD": {
-
-"MANHA": [],
-
-"TARDE": ["8E", "8D", "8D", "8E", "6E", "6E", "8C", "6F", "8D", "8D", "6F", "6E", "6E", "6F", "6F", "8E"],
-
-"NOITE": []
-
-},
-
-"JANINA": {
-
-"MANHA": ["2ADM/B", "2ADM/B", "2B", "2A", "2A", "2B", "3C/BIOT", "3C/BIOT", "2C", "2C", "3A", "3A", "3B", "3B", "2E", "2D", "2D", "2E"],
-
-"TARDE": ["9B", "9C", "9B", "9C", "9D", "9B", "9A", "9A"],
-
-"NOITE": ["3D", "3F", "3D", "3E", "3E", "3F"]
-
-},
-
-"JUAREZ": {
-
-"MANHA": ["1E", "1E", "1F", "3A", "3A", "3C", "3C", "1F", "1D", "1D", "3B", "3B", "1E", "1E", "1F"],
-
-"TARDE": [],
-
-"NOITE": ["2F/FÍS", "2G", "2G", "1J", "1J", "2H", "2H", "3F", "3E", "3E", "2F/FÍS", "2G", "2G", "1J", "1J", "2H/Q", "3D", "3D", "2G", "2G"]
-
-},
-
-"KATIUSCIA": {
-
-"MANHA": ["1A", "1A"],
-
-"TARDE": ["8A", "9C", "8B", "8C", "8E", "8E", "7C", "7A", "7A", "7D", "7D", "8B", "9D", "9D", "9A", "9A", "7E", "7E", "8C", "7F", "7F", "8D", "8D", "7C"],
-
-"NOITE": []
-
-},
-
-"LUCIANA": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": ["3G", "3G", "3D", "3F", "3F", "3G", "3G", "1I", "1I", "3E", "3D", "3D"]
-
-},
-
-"MARINA": {
-
-"MANHA": ["6B", "6A", "6B/EF", "6B/EF", "6D", "6D", "6D", "6B", "6A", "6B", "6C", "6C", "6C", "6B", "6A/EF", "6A/EF", "6D", "6D", "6A", "6D/EF", "6D/EF", "6A", "6C", "6C", "6A", "6B", "6C/EF", "6C/EF"],
-
-"TARDE": ["6F", "6F", "6E", "6E", "7A", "7B/EF", "7B/EF", "7A", "7A/EF", "7A/EF"],
-
-"NOITE": []
-
-},
-
-"MOISÉS": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": ["3E/OM", "3G", "3G", "3F/OM", "3F/OM", "3E", "3E", "3G", "3G", "3D", "3G/OM", "3D/OM", "3D/OM", "3F", "3F"]
-
-},
-
-"NILDES": {
-
-"MANHA": ["3C", "2C", "2D", "3A", "2D", "3A", "2B", "3A/OM", "3B", "3B", "2C", "2C", "3B", "2C", "3C", "2D", "3A/O M", "3B", "2E", "2E", "2B", "2B", "3A", "2E", "2B", "2E", "3C", "2D", "3A", "3C"],
-
-"TARDE": ["8A", "8A"],
-
-"NOITE": []
-
-},
-
-"PEDRO": {
-
-"MANHA": [],
-
-"TARDE": ["6F", "6F"],
-
-"NOITE": ["3F", "3G", "3E", "3G", "1I", "1I", "3F", "3E"]
-
-},
-
-"RAUL": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": ["1H", "1H"]
-
-},
-
-"ROBERTO": {
-
-"MANHA": [],
-
-"TARDE": ["7E", "7F", "7C", "7D", "7B", "7E", "7C", "7D", "7B", "7F", "7E", "6E/G", "6E/G"],
-
-"NOITE": ["3G", "1J/EF", "1J/EF", "3G/F", "2H/EF", "2H/EF"]
-
-},
-
-"RODRIGO": {
-
-"MANHA": ["1D", "1D", "1C", "1C", "1F", "1F", "1B", "1B", "1A", "1A", "1E", "1E", "3D", "3G", "3E"],
-
-"TARDE": [],
-
-"NOITE": ["3D", "3G", "3E", "3D", "2G", "2F", "1I", "1I", "3F", "2G", "1I"]
-
-},
-
-"ROSANGELA": {
-
-"MANHA": ["1B", "1B", "2A", "2A", "2E", "2E", "1A", "1A", "1C", "1C", "2B", "2B", "2A/PR", "2A/PR", "3A/PR", "3A/PR", "2C/Q", "2C/Q", "3B/EM", "3B/EM", "2D/QU", "2D/QU", "2B/PR", "2B/PR", "3B/P", "3B/P", "3A/EM", "3C/P", "3C/P", "3A/EM"],
-
-"TARDE": ["1G", "1G"],
-
-"NOITE": []
-
-},
-
-"SÉRGIO": {
-
-"MANHA": ["2A", "3B", "3A", "2B", "2A", "3B", "3A", "2B"],
-
-"TARDE": ["9D", "9D", "7C", "7C", "8D", "8D", "9B", "9B", "9C", "9C", "9A", "9A"],
-
-"NOITE": ["2F", "3D", "3E", "3F", "2F", "1J", "3D", "2G", "3E", "2H", "3G"]
-
-},
-
-"TITO": {
-
-"MANHA": ["6D"],
-
-"TARDE": ["7A", "7F", "7F", "7A", "7B", "7B", "6F", "6F", "6E", "6E", "7E", "7E"],
-
-"NOITE": []
-
-},
-
-"VANDERSON": {
-
-"MANHA": ["3A", "3A", "3C", "3C", "3B", "3C", "3C", "3A", "3A"],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"VIVIANE": {
-
-"MANHA": ["6B", "1B", "6B", "3A", "1D", "6C", "1F", "1E", "1B", "6C", "1C", "1D", "6D", "6A", "1F", "1C", "3A", "6A", "6D", "1E", "6A", "6D"],
-
-"TARDE": ["7E/R", "6E/T", "7E/R", "7A/T", "6E/T", "7D/T", "7E/T", "7C/T", "7A/R", "7A/R", "7C/T", "7B/T", "7B/T", "8B/PV", "9D/PV", "7D/T", "7F/T", "7F/T", "7E", "7E/T", "7C/T", "7A/R", "7A/R", "7C/T", "7B/T"],
-
-"NOITE": ["1H/R", "1H/P", "1H/P", "1H/R", "1H/P", "1H/P"]
-
-},
-
-"FLÁVIA": {
-
-"MANHA": ["X", "X", "X", "X", "X", "X"],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"SOL": {
-
-"MANHA": [],
-
-"TARDE": ["X", "X", "X", "X", "X", "X"],
-
-"NOITE": []
-
-},
-
-"CAROL": {
-
-"MANHA": [],
-
-"TARDE": ["1G", "1G", "7A", "7A", "9D", "9D", "9A", "7B", "7B", "9B", "9B", "9C", "9D"],
-
-"NOITE": []
-
-},
-
-"CASSIA": {
-
-"MANHA": [],
-
-"TARDE": ["8C", "8E", "8E", "8B", "8B", "8B", "8D", "8D", "8B", "8C", "8D", "8D", "8E", "8E", "8C", "8C"],
-
-"NOITE": []
-
-},
-
-"DANIEL FREITAS": {
-
-"MANHA": [],
-
-"TARDE": ["9B", "9B", "9D", "1G", "1G", "9A", "9B", "8E/EF", "8E/EF", "9C", "9A", "9D", "9D", "9B", "9B", "9A", "9C", "9C", "9D", "9D"],
-
-"NOITE": ["1H", "1H"]
-
-},
-
-"GUSTAVO": {
-
-"MANHA": [],
-
-"TARDE": ["7F/AR", "9C/AR", "7F/AR"],
-
-"NOITE": ["1I"]
-
-},
-
-"GELSON": {
-
-"MANHA": ["2D/EF", "2D/EF", "3C/OM", "3C/OM", "3B/OM", "3B/OM"],
-
-"TARDE": ["8B", "8A", "8A", "8B", "8B", "8A", "8A", "8B"],
-
-"NOITE": []
-
-},
-
-"LUANA": {
-
-"MANHA": ["6D", "6B", "6A"],
-
-"TARDE": ["9C", "7A", "7A", "9A", "9B", "9B", "9C", "9C", "1G", "1G", "9D", "9D", "9A", "9B", "9B", "9C", "1G", "1G"],
-
-"NOITE": []
-
-},
-
-"LUCIANO": {
-
-"MANHA": [],
-
-"TARDE": ["8A", "8A", "8D", "9A", "9C", "7E", "8B", "9C", "7E", "7F", "7F", "8C", "7E", "9B", "7F", "9D", "8D", "9A", "8E", "8E"],
-
-"NOITE": []
-
-},
-
-"MARA": {
-
-"MANha": [],
-
-"TARDE": ["1G", "9A", "9D", "8A", "8E", "8D", "8C", "9C", "9C", "9D", "8D", "9A", "8C", "9B", "9B", "8A/PV", "8E", "8A", "1G"],
-
-"NOITE": []
-
-},
-
-"MARCIEL": {
-
-"MANHA": [],
-
-"TARDE": ["7E", "7E", "7B", "9B/PV", "8C", "8C", "9A/PV", "8E", "8E", "8A", "7C", "7D", "8C", "7D", "7F", "7F", "8D", "8D", "8A", "8A", "8B", "7C", "7A", "7A"],
-
-"NOITE": ["3D", "3D"]
-
-},
-
-"REGINA": {
-
-"MANHA": ["1A", "1A"],
-
-"TARDE": ["9D", "9D", "7C", "7C", "8D", "8D", "9B", "9B", "9C", "9C", "9A", "9A", "7D", "7B", "7B", "8B", "8B", "8A", "7D/R", "6E", "6E", "8A/R", "8C/R", "8C/R"],
-
-"NOITE": []
-
-},
-
-"ROSE": {
-
-"MANHA": ["6C", "1B", "6B", "6A", "1A", "6C", "6D", "6A", "6D", "6D", "1B", "6B", "1A", "6B", "6C", "1A", "1B", "6D"],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"SELMA": {
-
-"MANHA": ["1A", "1D", "1C", "1B", "1G/F", "1A", "1C", "1B", "1D"],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"SUZY": {
-
-"MANHA": ["2ADM", "2ADM", "2B", "2B", "2E", "2E"],
-
-"TARDE": ["6F", "6F", "6E", "1G", "1G"],
-
-"NOITE": ["1H", "2F", "2G", "1I", "2H"]
-
-},
-
-"VANIA": {
-
-"MANHA": ["3C", "3C"],
-
-"TARDE": ["8D", "8C", "8C", "8A", "8A", "7E", "8B", "8B", "7F", "7E", "7E", "8A", "8E", "8B", "8B", "8D", "8D", "8E", "7F", "7F", "8A", "7E", "9A/OP", "9A/OP"],
-
-"NOITE": []
-
-},
-
-"WILSON": {
-
-"MANHA": [],
-
-"TARDE": ["6E", "8C", "6E", "6F", "8D", "8A", "6F", "8E", "8B"],
-
-"NOITE": []
-
-},
-
-"WILTON": {
-
-"MANHA": [],
-
-"TARDE": ["7D/EF", "8A/T", "8E/T", "8C/EF", "8D/EF", "8D/EF", "8B/T", "8C/T", "8D/T", "8C/EF", "8D/T", "7C/EF", "7D/EF", "7C/EF", "8B/EF", "8A/T", "8E/T", "8B/EF"],
-
-"NOITE": []
-
-},
-
-"ELIANE CONTI": {
-
-"MANHA": ["3C/EMP"],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"EDIVÂNIA": {
-
-"MANHA": ["1F", "1F", "2B/EMP", "1F", "2E/EF", "1F", "2E/EF"],
-
-"TARDE": ["7F", "7E", "7E", "7F"],
-
-"NOITE": []
-
-},
-
-"ELIANE SANTOS": {
-
-"MANHA": ["2D", "2D", "6D", "6C/PV", "2ADM/G", "2ADM/G", "6A", "3B/PV", "6B/PV", "6A/PV", "6B", "6D", "6C", "6C", "6B", "3A/PV"],
-
-"TARDE": ["1G", "1G"],
-
-"NOITE": []
-
-},
-
-"EUZELI": {
-
-"MANHA": ["3B", "1E", "1E", "2D", "2B", "1B", "1B", "1D", "1D", "1F", "1C", "1C", "2E", "3A", "1F", "2ADM", "2C", "2A"],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"MAURÍCIO": {
-
-"MANHA": ["2C/EF", "2A/EF", "2ADM/M.A", "2ADM/M.A", "2A/MAT", "2C/EF", "2B/EF", "2ADM/M", "2ADM/M", "2A", "2A", "2ADM", "2ADM", "2ADM", "2B"],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"PAULO": {
-
-"MANHA": ["2E", "2E", "2E/L", "2E/L", "1F/FIL", "1F/FIL", "2D/OR", "2D/SOC", "2D/SOC", "2B", "2B", "2C/OR", "2E/OR", "2C", "2C", "2ADM", "2ADM", "1E/F", "1E/F", "2A/S", "2A/S"],
-
-"TARDE": ["6E", "6F", "8C"],
-
-"NOITE": ["2H", "2G", "2F"]
-
-},
-
-"REGIANE": {
-
-"MANHA": ["3B", "3B", "3A", "3A"],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"SANDRA": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": ["1H/F", "1H/G", "1H/G"]
-
-},
-
-"CHARLES": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"CELSO": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"DEIZY": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"ERINEIDE": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"HELENA": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"Mª APARECIDA": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"VANDA": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": []
-
-},
-
-"RICARDO": {
-
-"MANHA": [],
-
-"TARDE": [],
-
-"NOITE": []
-
-}
+      "6° ANO A MANHA": "Sala 1",
+      "6° ANO B MANHA": "Sala 2",
+      "6° ANO C MANHA": "Sala 3",
+      "6° ANO D MANHA": "Sala 4",
+      "6° ANO E TARDE": "Sala 1",
+      "6° ANO F TARDE": "Sala 2",
+      "7° ANO A TARDE": "Sala 3",
+      "7° ANO B TARDE": "Sala 4",
+      "7° ANO C TARDE": "Sala 5",
+      "7° ANO D TARDE": "Sala 6",
+      "7° ANO E TARDE": "Sala 7",
+      "7° ANO F TARDE": "Sala 8",
+      "8° ANO A TARDE": "Sala 10",
+      "8° ANO B TARDE": "Sala 11",
+      "8° ANO C TARDE": "Sala 12",
+      "8° ANO D TARDE": "Sala 13",
+      "8° ANO E TARDE": "Sala 14",
+      "9° ANO A TARDE": "Sala 15",
+      "9° ANO B TARDE": "Sala 16",
+      "9° ANO C TARDE": "Sala 17",
+      "9° ANO D TARDE": "Sala 18",
+      "1ª SERIE A MANHA": "Sala 10",
+      "1ª SERIE B MANHA": "Sala 11",
+      "1ª SERIE C MANHA": "Sala 12",
+      "1ª SERIE D MANHA": "Sala 13",
+      "1ª SERIE E MANHA": "Sala 14",
+      "1ª SERIE F MANHA": "Sala 15",
+      "1ª SERIE G TARDE": "Sala 9",
+      "1ª SERIE H NOITE": "Sala 9",
+      "1ª SERIE I NOITE": "Sala 602",
+      "2ª SERIE A MANHA": "Sala 5",
+      "2ª SERIE B MANHA": "Sala 6",
+      "2ª SERIE C MANHA": "Sala 7",
+      "2ª SERIE D MANHA": "Sala 8",
+      "2ª SERIE E MANHA": "Sala 9",
+      "2ª SERIE F NOITE": "Sala 1",
+      "2ª SERIE G NOITE": "Sala 2",
+      "2ª SERIE H NOITE": "Sala 3",
+      "2ª SERIE I NOITE": "Sala 4",
+      "3ª SERIE A MANHA": "Sala 16",
+      "3ª SERIE B MANHA": "Sala 17",
+      "3ª SERIE C MANHA": "Sala 18",
+      "3ª SERIE D NOITE": "Sala 5",
+      "3ª SERIE E NOITE": "Sala 6",
+      "3ª SERIE F NOITE": "Sala 7",
+      "3ª SERIE G NOITE": "Sala 8",
+      "4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA": "Laboratório 1"
     };
 
     const monthNames = [
@@ -2015,10 +1336,40 @@
     let agendamentos = {};
     let historicoExcluidos = [];
     let aulasDisponiveis = [];
+    let reservasSistemaPrincipal = [];
 
     // Função para remover acentos
     function removerAcentos(str) {
       return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    // FUNÇÃO PARA SINCRONIZAR AGENDAMENTOS DO SISTEMA PRINCIPAL
+    function sincronizarAgendamentosSistemaPrincipal() {
+      // Mostrar mensagem de sincronização
+      const syncMessage = document.getElementById('syncMessage');
+      syncMessage.classList.add('show');
+      
+      reservasRef.on('value', (snapshot) => {
+        const reservas = snapshot.val();
+        if (reservas) {
+          reservasSistemaPrincipal = Object.values(reservas);
+          syncMessage.innerHTML = `<i class="fas fa-check-circle"></i> ${reservasSistemaPrincipal.length} agendamentos sincronizados`;
+          
+          // Atualizar calendário com os novos dados
+          renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
+          
+          // Remover mensagem após 3 segundos
+          setTimeout(() => {
+            syncMessage.classList.remove('show');
+          }, 3000);
+        }
+      }, (error) => {
+        console.error("Erro ao sincronizar agendamentos:", error);
+        syncMessage.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Erro na sincronização`;
+        setTimeout(() => {
+          syncMessage.classList.remove('show');
+        }, 3000);
+      });
     }
 
     // FUNÇÕES DO FIREBASE COM USER_ID
@@ -2035,14 +1386,14 @@
           }
           agendamentos[mesAno].push({ id: doc.id, ...data });
         });
-        
+
         // Carrega histórico excluído do usuário específico
         const snapshotHistorico = await historicoExcluidosRef.where("userId", "==", USER_ID).get();
         historicoExcluidos = [];
         snapshotHistorico.forEach(doc => {
           historicoExcluidos.push({ id: doc.id, ...doc.data() });
         });
-        
+
         // Renderiza o calendário
         renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
       } catch (error) {
@@ -2058,7 +1409,7 @@
           ...agendamento,
           userId: USER_ID
         };
-        
+
         const docRef = await agendamentosRef.add(agendamentoComUserId);
         return docRef.id;
       } catch (error) {
@@ -2087,7 +1438,7 @@
           userId: USER_ID,
           dataExclusao: new Date().toISOString()
         });
-        
+
         // Exclui o agendamento
         await agendamentosRef.doc(id).delete();
         return true;
@@ -2120,7 +1471,7 @@
           .where("dia", "==", parseInt(dia))
           .where("turma", "==", turma)
           .where("aula", "==", aula)
-          .where("userId", "==", USER_ID) // Filtro por usuário
+          .where("userId", "==", USER_ID)
           .get();
           
         return !querySnapshot.empty;
@@ -2184,23 +1535,21 @@
       const turma = document.getElementById("studentClass").value;
       const data = document.getElementById("dataAgendamento").value;
       const aulaContainer = document.getElementById("aula-container");
-      
-      aulaContainer.innerHTML = '';
+      aulaContainer.innerHTML = "";
       aulasDisponiveis = [];
-      
+
       if (!professor || professor === "Selecione" || !turma || !data) {
         return;
       }
-      
+
       const periodo = obterPeriodoTurma(turma);
-      if (!periodo) return;
-      
       const aulasProfessor = obterAulasProfessor(professor, periodo);
+
       if (aulasProfessor.length === 0) {
         aulaContainer.innerHTML = '<p>Não há aulas neste período</p>';
         return;
       }
-      
+
       // Obter dia da semana (0 = Domingo, 1 = Segunda, ...)
       const [dia, mes, ano] = data.split('/');
       let dataObj;
@@ -2211,14 +1560,15 @@
         aulaContainer.innerHTML = '<p>Data inválida</p>';
         return;
       }
+
       const diaSemana = dataObj.getDay();
-      
+
       // Não exibir aulas para domingo e sábado (0 e 6)
       if (diaSemana === 0 || diaSemana === 6) {
         aulaContainer.innerHTML = '<p>Não há aulas disponíveis para domingos e sábados</p>';
         return;
       }
-      
+
       // Número de aulas por dia de acordo com o período
       let aulasPorDia = 0;
       if (periodo === "MANHA" || periodo === "TARDE") {
@@ -2226,43 +1576,43 @@
       } else if (periodo === "NOITE") {
         aulasPorDia = 5;
       }
-      
+
       // Índice do primeiro horário do dia (segunda = 0, terça = 1, etc)
-      const indiceDia = diaSemana - 1; 
-      
+      const indiceDia = diaSemana - 1;
+
       // Índice do primeiro horário do dia na grade semanal
       let indiceInicio = indiceDia * aulasPorDia;
-      
+
       // Prevenção contra índices inválidos
       if (indiceInicio < 0) indiceInicio = 0;
       if (indiceInicio >= aulasProfessor.length) {
         indiceInicio = aulasProfessor.length - aulasPorDia;
         if (indiceInicio < 0) indiceInicio = 0;
       }
-      
+
       const aulasDoDia = aulasProfessor.slice(indiceInicio, indiceInicio + aulasPorDia);
-      
+
       if (aulasDoDia.length === 0) {
         aulaContainer.innerHTML = '<p>Não há aulas disponíveis neste dia</p>';
         return;
       }
-      
+
       // Criar checkboxes para as aulas
       aulasDoDia.forEach((aula, index) => {
         // Verificar se a aula não está vazia ou é um horário livre
         if (aula && aula.trim() !== "" && aula.trim() !== "X") {
-          const aulaId = `aula-${index}`;
+          const aulald = `aula-${index}`;
           const checkbox = document.createElement("input");
           checkbox.type = "checkbox";
-          checkbox.id = aulaId;
+          checkbox.id = aulald;
           checkbox.className = "aula-checkbox";
           checkbox.value = aula;
-          
+
           const label = document.createElement("label");
-          label.htmlFor = aulaId;
+          label.htmlFor = aulald;
           label.className = "aula-label aula-professor";
           label.textContent = `${aula} (${index+1}ª Aula)`;
-          
+
           aulaContainer.appendChild(checkbox);
           aulaContainer.appendChild(label);
           aulasDisponiveis.push(aula);
@@ -2281,7 +1631,7 @@
 
       datepickerWeekdays.innerHTML = weekdays.map(day => 
         `<div class="datepicker-weekday">${day}</div>`
-      ).join('');
+      ).join("");
 
       datepickerInput.addEventListener('click', () => {
         datepickerPopup.classList.toggle('active');
@@ -2307,59 +1657,56 @@
       function renderDatepicker() {
         const year = currentPopupDate.getFullYear();
         const month = currentPopupDate.getMonth();
-        
         datepickerMonthYear.textContent = `${monthNames[month]} ${year}`;
-        
+
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const daysInPrevMonth = new Date(year, month, 0).getDate();
-        
-        let daysHtml = '';
+
+        let daysHtml = "";
         const today = new Date();
-        
+
         for (let i = 0; i < firstDay; i++) {
           daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${daysInPrevMonth - firstDay + i + 1}</div>`;
         }
-        
+
         for (let i = 1; i <= daysInMonth; i++) {
           const date = new Date(year, month, i);
           const isToday = date.toDateString() === today.toDateString();
           const isSelected = popupSelectedDate && date.toDateString() === popupSelectedDate.toDateString();
           const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-          
+
           let dayClass = 'datepicker-day';
           if (isToday) dayClass += ' today';
           if (isSelected) dayClass += ' selected';
           if (isPast) dayClass += ' disabled';
-          
+
           daysHtml += `<div class="${dayClass}" data-day="${i}">${i}</div>`;
         }
-        
+
         const totalCells = 42;
         const remainingCells = totalCells - (firstDay + daysInMonth);
         for (let i = 1; i <= remainingCells; i++) {
           daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${i}</div>`;
         }
-        
+
         datepickerDays.innerHTML = daysHtml;
-        
+
         document.querySelectorAll('.datepicker-day:not(.disabled)').forEach(day => {
           day.addEventListener('click', () => {
             const dayNum = parseInt(day.getAttribute('data-day'));
             popupSelectedDate = new Date(year, month, dayNum);
-            
             const formattedDay = String(dayNum).padStart(2, '0');
             const formattedMonth = String(month + 1).padStart(2, '0');
             selectedDate = `${formattedDay}/${formattedMonth}/${year}`;
             datepickerInput.value = selectedDate;
-            
             datepickerPopup.classList.remove('active');
             updateMainCalendarSelection(year, month + 1, dayNum);
             atualizarAulasDisponiveis();
           });
         });
       }
-      
+
       renderDatepicker();
     }
 
@@ -2369,20 +1716,19 @@
         monthSelect.value = month - 1;
         renderCalendarBody(year, month - 1);
       }
-      
+
       const calendarBody = document.getElementById('calendarBody');
       const cells = calendarBody.querySelectorAll('td');
-      
+
       cells.forEach(cell => {
         if (parseInt(cell.textContent) === day) {
           if (selectedDay) {
             selectedDay.classList.remove('selecionado');
             const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
-            if (!agendamentosDoMes.find(d => d.dia === parseInt(selectedDay.textContent))) {
+            if (agendamentosDoMes.find(d => d.dia === parseInt(selectedDay.textContent))) {
               selectedDay.classList.add('disponivel');
             }
           }
-          
           cell.classList.add('selecionado');
           cell.classList.remove('disponivel');
           selectedDay = cell;
@@ -2392,7 +1738,6 @@
 
     function populateMonthYearSelectors() {
       const currentYear = new Date().getFullYear();
-
       monthSelect.innerHTML = '';
       yearSelect.innerHTML = '';
 
@@ -2422,30 +1767,28 @@
 
     async function renderHistorico(agendamentosDoMes) {
       const historicoBody = document.getElementById('historico-body');
-      historicoBody.innerHTML = '';
+      historicoBody.innerHTML = "";
       
+      // Adicionar agendamentos ativos
       agendamentosDoMes.forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega, id }) => {
         const row = document.createElement('tr');
-        
         const formattedDay = String(dia).padStart(2, '0');
         const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0');
         const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
         const dataAgendamento = formatarDataParaComparacao(dia, parseInt(monthSelect.value) + 1, yearSelect.value);
-        
+
         if (horaEntrega) {
           row.classList.add('entregue');
         } else {
           row.classList.add('nao-entregue');
         }
-        
+
         if (estaDentroDoPeriodo(dataAgendamento)) {
           row.classList.add('recente');
-        }
-        
-        if (!estaDentroDoPeriodo(dataAgendamento)) {
+        } else {
           row.classList.add('expirado');
         }
-        
+
         row.innerHTML = `
           <td>${formattedDate}</td>
           <td>${turma}</td>
@@ -2459,29 +1802,28 @@
             <button class="btn btn-excluir" onclick="excluirAgendamento('${id}')" ${!estaDentroDoPeriodo(dataAgendamento) ? 'disabled' : ''}>EXCLUIR</button>
           </td>
         `;
+
         historicoBody.appendChild(row);
       });
-      
+
+      // Adicionar histórico de excluídos
       const currentMonthKey = `${yearSelect.value}-${String(parseInt(monthSelect.value) + 1).padStart(2, '0')}`;
       historicoExcluidos
         .filter(item => item.mesAno === currentMonthKey)
-        .forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega, dataExclusao }) => {
+        .forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega }) => {
           const row = document.createElement('tr');
           row.classList.add('excluido');
-          
           const formattedDay = String(dia).padStart(2, '0');
           const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0');
           const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
           const dataAgendamento = formatarDataParaComparacao(dia, parseInt(monthSelect.value) + 1, yearSelect.value);
-          
+
           if (estaDentroDoPeriodo(dataAgendamento)) {
             row.classList.add('recente');
-          }
-          
-          if (!estaDentroDoPeriodo(dataAgendamento)) {
+          } else {
             row.classList.add('expirado');
           }
-          
+
           row.innerHTML = `
             <td>${formattedDate}</td>
             <td>${turma}</td>
@@ -2492,6 +1834,7 @@
             <td>${horaEntrega || 'Não entregue'}</td>
             <td>EXCLUÍDO</td>
           `;
+
           historicoBody.appendChild(row);
         });
     }
@@ -2506,10 +1849,9 @@
       const daysInPrevMonth = new Date(year, month, 0).getDate();
 
       const agendamentosDoMes = getAgendamentos(year, month);
-
       let day = 1;
       let currentRow = document.createElement('tr');
-      
+
       for (let i = 0; i < firstDay; i++) {
         const emptyCell = document.createElement('td');
         emptyCell.innerHTML = daysInPrevMonth - firstDay + i + 1;
@@ -2567,24 +1909,23 @@
       const numAparelhos = parseInt(document.getElementById("quantidadeAgendamento").value);
       const sala = document.getElementById("sala").value;
       const data = document.getElementById("dataAgendamento").value;
-      
+
       // Obter aulas selecionadas
       const aulasSelecionadas = [];
       document.querySelectorAll('.aula-checkbox:checked').forEach(checkbox => {
         aulasSelecionadas.push(checkbox.value);
       });
-      
+
       if (!professor || professor === "Selecione" || !aparelho || !turma || !numAparelhos || !data || !sala || aulasSelecionadas.length === 0) {
         alert("Preencha todos os campos obrigatórios do formulário antes de agendar!");
         return;
       }
-      
+
       const [dia, mes, ano] = data.split('/');
       const mesAno = `${ano}-${mes}`;
-      
       let agendamentosSalvos = 0;
       let mensagensConflito = 0;
-      
+
       // Criar um agendamento para cada aula selecionada
       for (const aula of aulasSelecionadas) {
         // Verificar conflito para esta aula específica
@@ -2592,8 +1933,8 @@
           mensagensConflito++;
           continue;
         }
-        
-        const novoAgendamento = { 
+
+        const novoAgendamento = {
           dia: parseInt(dia),
           mesAno,
           aparelho,
@@ -2605,9 +1946,8 @@
           horaEntrega: null,
           userId: USER_ID
         };
-        
+
         const id = await salvarAgendamentoFirestore(novoAgendamento);
-        
         if (id) {
           agendamentosSalvos++;
           if (!agendamentos[mesAno]) {
@@ -2616,26 +1956,28 @@
           agendamentos[mesAno].push({ id, ...novoAgendamento });
         }
       }
-      
+
       // Recarregar todos os dados do Firestore
       await carregarDadosIniciais();
-      
+
       if (selectedDay) {
         selectedDay.classList.remove('selecionado');
         selectedDay.classList.add('agendado');
         selectedDay = null;
       }
+
       selectedDate = null;
-      document.getElementById('dataAgendamento').value = '';
-      
-      let mensagem = '';
+      document.getElementById('dataAgendamento').value = "";
+
+      let mensagem = "";
       if (agendamentosSalvos > 0) {
         mensagem += `${agendamentosSalvos} agendamento(s) cadastrado(s) com sucesso! `;
       }
+
       if (mensagensConflito > 0) {
         mensagem += `${mensagensConflito} aula(s) não foram agendadas devido a conflitos.`;
       }
-      
+
       if (mensagem) {
         alert(mensagem);
       } else {
@@ -2647,12 +1989,11 @@
       if (!confirm("Tem certeza que deseja excluir este agendamento?")) {
         return;
       }
-      
+
       for (const key in agendamentos) {
         const index = agendamentos[key].findIndex(ag => ag.id === id);
         if (index !== -1) {
           const [agendamentoExcluido] = agendamentos[key].splice(index, 1);
-          
           const sucesso = await excluirAgendamentoFirestore(id, agendamentoExcluido);
           if (sucesso) {
             await carregarDadosIniciais();
@@ -2661,13 +2002,12 @@
         }
       }
     }
-    
+
     function abrirModalDevolucao(id) {
       for (const key in agendamentos) {
         const agendamento = agendamentos[key].find(ag => ag.id === id);
         if (agendamento) {
           agendamentoParaDevolver = agendamento;
-          
           document.getElementById('modalText').textContent = 
             `Confirmar devolução de ${agendamento.numAparelhos} ${agendamento.aparelho}(s) pelo professor ${agendamento.professor}?`;
           
@@ -2680,12 +2020,12 @@
         }
       }
     }
-    
+
     function fecharModal() {
       document.getElementById('devolucaoModal').style.display = 'none';
       agendamentoParaDevolver = null;
     }
-    
+
     async function finalizarAgendamento() {
       if (!agendamentoParaDevolver) return;
       
@@ -2694,29 +2034,68 @@
         alert("Informe a hora da entrega!");
         return;
       }
-      
+
       const sucesso = await atualizarAgendamentoFirestore(agendamentoParaDevolver.id, { horaEntrega });
       if (sucesso) {
         agendamentoParaDevolver.horaEntrega = horaEntrega;
-        
         // Recarregar todos os dados
         await carregarDadosIniciais();
-        
         fecharModal();
         alert("Devolução registrada com sucesso!");
       }
     }
 
-    function gerarDocumentoPDF(agendamento) {
-      // ... (mantido igual ao original)
-    }
-    
     function exportarParaPDF() {
-      // ... (mantido igual ao original)
+      const doc = new jsPDF();
+      const title = "Histórico de Agendamentos";
+      const headers = [["Data", "Turma", "N° Aparelhos", "Aparelho", "Professor", "Aula", "Entrega"]];
+      
+      const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
+      const data = agendamentosDoMes.map(ag => [
+        `${String(ag.dia).padStart(2, '0')}/${String(parseInt(monthSelect.value)+1).padStart(2, '0')}/${yearSelect.value}`,
+        ag.turma,
+        ag.numAparelhos,
+        ag.aparelho,
+        ag.professor,
+        ag.aula,
+        ag.horaEntrega || 'Não entregue'
+      ]);
+      
+      doc.text(title, 14, 15);
+      doc.autoTable({
+        head: headers,
+        body: data,
+        startY: 20,
+        theme: 'grid',
+        headStyles: { fillColor: [10, 36, 99] }
+      });
+      
+      doc.save(`agendamentos_${monthSelect.value}_${yearSelect.value}.pdf`);
     }
-    
+
     function exportarParaCSV() {
-      // ... (mantido igual ao original)
+      const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
+      let csvContent = "Data;Turma;N° Aparelhos;Aparelho;Professor;Aula;Entrega\n";
+      
+      agendamentosDoMes.forEach(ag => {
+        csvContent += `${String(ag.dia).padStart(2, '0')}/${String(parseInt(monthSelect.value)+1).padStart(2, '0')}/${yearSelect.value};`;
+        csvContent += `${ag.turma};`;
+        csvContent += `${ag.numAparelhos};`;
+        csvContent += `${ag.aparelho};`;
+        csvContent += `${ag.professor};`;
+        csvContent += `${ag.aula};`;
+        csvContent += `${ag.horaEntrega || 'Não entregue'}\n`;
+      });
+      
+      const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `agendamentos_${monthSelect.value}_${yearSelect.value}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
     function limparFormulario() {
@@ -2724,12 +2103,12 @@
       document.getElementById("email-professor").value = "";
       document.getElementById("equipamentoAgendamento").value = "";
       document.getElementById("marca").value = "";
-      document.getElementById("quantidadeAgendamento").value = "1";
+      document.getElementById("quantidadeAgendamento").value = "";
       document.getElementById("studentClass").value = "";
       document.getElementById("sala").value = "";
-      document.getElementById("aula-container").innerHTML = '';
+      document.getElementById("aula-container").innerHTML = "";
       document.getElementById("conflictMessage").style.display = "none";
-      
+
       if (selectedDay) {
         selectedDay.classList.remove('selecionado');
         const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
@@ -2738,8 +2117,9 @@
         }
         selectedDay = null;
       }
+
       selectedDate = null;
-      document.getElementById('dataAgendamento').value = '';
+      document.getElementById('dataAgendamento').value = "";
       popupSelectedDate = null;
     }
 
@@ -2749,6 +2129,7 @@
       populateMonthYearSelectors();
       await carregarDadosIniciais();
       initDatepicker();
+      sincronizarAgendamentosSistemaPrincipal(); // Iniciar sincronização
 
       document.getElementById("professor").addEventListener("change", atualizarEmailEAulas);
       document.getElementById("studentClass").addEventListener("change", atualizarSalaEAulas);
