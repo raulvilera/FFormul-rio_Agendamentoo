@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -475,166 +476,116 @@
       .nav-tabs {
         flex-wrap: wrap;
       }
-
+      
       .nav-tab {
         flex: 1 0 33%;
         padding: 12px 5px;
         font-size: 14px;
       }
-
+      
       .form-grid {
         grid-template-columns: 1fr;
       }
-
+      
       .btn-group {
         flex-direction: column;
       }
-
+      
       .btn {
         width: 100%;
       }
     }
 
-    /* ===== ESTILOS PARA A PÁGINA DE AGENDAMENTO ===== */
-    .agendamento-container {
+    /* ===== ESTILOS PARA A ABA DE AGENDAMENTO ===== */
+    #reservations .agendamento-container {
+      background: white;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+
+    #reservations .agendamento-container .solution-banner {
+      background: var(--light-color);
+      padding: 15px;
+      border-radius: var(--border-radius);
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    #reservations .agendamento-container .container {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
       gap: 20px;
     }
 
-    .agendamento-row {
+    #reservations .agendamento-container .form-container,
+    #reservations .agendamento-container .calendar-container {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+
+    #reservations .agendamento-container .form-row {
       display: flex;
       flex-wrap: wrap;
       gap: 15px;
       margin-bottom: 15px;
     }
 
-    .agendamento-group {
+    #reservations .agendamento-container .form-group {
       flex: 1;
       min-width: 200px;
     }
 
-    .datepicker-container {
-      position: relative;
-    }
-
-    .datepicker-popup {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      z-index: 1000;
-      background-color: white;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      width: 300px;
-    }
-
-    .datepicker-popup.active {
+    #reservations .agendamento-container label {
       display: block;
-      animation: fadeIn 0.3s ease;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--secondary-color);
     }
 
-    .datepicker-header {
+    #reservations .agendamento-container select,
+    #reservations .agendamento-container input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--gray-light);
+      border-radius: var(--border-radius);
+      font-size: 16px;
+    }
+
+    #reservations .agendamento-container .aula-container {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
     }
 
-    .datepicker-nav {
-      background: none;
-      border: none;
-      font-size: 1.4rem;
+    #reservations .agendamento-container .aula-checkbox {
+      display: none;
+    }
+
+    #reservations .agendamento-container .aula-label {
+      display: inline-block;
+      padding: 8px 15px;
+      border: 2px solid #ddd;
+      border-radius: var(--border-radius);
       cursor: pointer;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background-color 0.2s;
-      color: var(--azul-escuro);
-    }
-
-    .datepicker-nav:hover {
-      background-color: #d6eaff;
-    }
-
-    .datepicker-title {
-      font-weight: 600;
-      color: var(--primary-color);
-      font-size: 1.1rem;
-    }
-
-    .datepicker-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 5px;
-    }
-
-    .datepicker-weekday {
-      text-align: center;
-      font-weight: 600;
-      padding: 8px 0;
-      color: var(--primary-color);
+      background-color: #f9f9f9;
+      transition: all 0.3s;
       font-size: 0.9rem;
     }
 
-    .datepicker-day {
-      text-align: center;
-      padding: 8px 0;
-      cursor: pointer;
-      border-radius: 50%;
-      transition: all 0.2s;
-      font-weight: 500;
-    }
-
-    .datepicker-day:hover {
-      background-color: #d6eaff;
-    }
-
-    .datepicker-day.selected {
+    #reservations .agendamento-container .aula-checkbox:checked + .aula-label {
       background-color: var(--accent-color);
       color: white;
-      font-weight: 600;
+      border-color: var(--accent-color);
     }
 
-    .datepicker-day.disabled {
-      color: #ccc;
-      cursor: not-allowed;
-    }
-
-    .datepicker-day.today {
-      position: relative;
-      color: var(--accent-color);
-      font-weight: 700;
-    }
-
-    .datepicker-day.today::after {
-      content: '';
-      position: absolute;
-      bottom: 4px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 4px;
-      height: 4px;
-      background-color: var(--accent-color);
-      border-radius: 50%;
-    }
-
-    .datepicker-day.other-month {
-      color: #aaa;
-    }
-
-    .datepicker-input {
-      cursor: pointer;
-      background-color: #f0f0f0;
-    }
-
-    .conflict-message {
+    #reservations .agendamento-container .conflict-message {
       color: var(--danger-color);
       font-weight: bold;
       margin-top: 15px;
@@ -646,7 +597,95 @@
       border-left: 4px solid var(--danger-color);
     }
 
-    .legend-container {
+    #reservations .agendamento-container .buttons-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    #reservations .agendamento-container .calendar {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 5px;
+      margin-top: 20px;
+    }
+
+    #reservations .agendamento-container .calendar th {
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 10px;
+    }
+
+    #reservations .agendamento-container .calendar td {
+      padding: 10px;
+      text-align: center;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+    }
+
+    #reservations .agendamento-container .disponivel {
+      background-color: var(--success-color);
+      color: white;
+    }
+
+    #reservations .agendamento-container .agendado {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    #reservations .agendamento-container .selecionado {
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: bold;
+    }
+
+    #reservations .agendamento-container .indisponivel {
+      background-color: var(--gray-light);
+      color: var(--gray-dark);
+      cursor: not-allowed;
+    }
+
+    #reservations .agendamento-container .historico-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    #reservations .agendamento-container .historico-table th,
+    #reservations .agendamento-container .historico-table td {
+      padding: 10px;
+      border: 1px solid var(--gray-light);
+      text-align: center;
+    }
+
+    #reservations .agendamento-container .historico-table th {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    #reservations .agendamento-container .historico-table .entregue {
+      background-color: #d4edda;
+    }
+
+    #reservations .agendamento-container .historico-table .nao-entregue {
+      background-color: #f8d7da;
+    }
+
+    #reservations .agendamento-container .historico-table .expirado {
+      background-color: #fff3cd;
+    }
+
+    #reservations .agendamento-container .historico-table .recente {
+      background-color: #ffebee;
+    }
+
+    #reservations .agendamento-container .historico-table .excluido td {
+      color: var(--danger-color);
+      text-decoration: line-through;
+    }
+
+    #reservations .agendamento-container .legend-container {
       display: flex;
       justify-content: center;
       gap: 15px;
@@ -654,113 +693,90 @@
       flex-wrap: wrap;
     }
 
-    .legend-item {
+    #reservations .agendamento-container .legend-item {
       display: flex;
       align-items: center;
       gap: 5px;
       font-size: 0.85rem;
     }
 
-    .status-indicator {
+    #reservations .agendamento-container .status-indicator {
       display: inline-block;
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
-      margin-right: 5px;
     }
 
-    .status-disponivel {
+    #reservations .agendamento-container .status-disponivel {
       background-color: var(--success-color);
     }
 
-    .status-agendado {
+    #reservations .agendamento-container .status-agendado {
       background-color: var(--accent-color);
     }
 
-    .status-entregue {
+    #reservations .agendamento-container .status-entregue {
       background-color: var(--success-color);
     }
 
-    .status-excluido {
+    #reservations .agendamento-container .status-excluido {
       background-color: var(--danger-color);
     }
 
-    .aula-container {
+    #reservations .agendamento-container .export-buttons {
       display: flex;
-      flex-wrap: wrap;
       gap: 10px;
-      margin-top: 10px;
-    }
-
-    .aula-checkbox {
-      display: none;
-    }
-
-    .aula-label {
-      display: inline-block;
-      padding: 8px 15px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      cursor: pointer;
-      background-color: #f9f9f9;
-      transition: all 0.3s;
-      font-size: 0.9rem;
-    }
-
-    .aula-checkbox:checked + .aula-label {
-      background-color: var(--accent-color);
-      color: white;
-      border-color: var(--accent-color);
-    }
-
-    .aula-professor {
-      background-color: #fff176;
-    }
-
-    .aula-disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    /* ==== ESTILOS PARA O FILTRO DE EQUIPAMENTOS ==== */
-    .filter-container {
-      background-color: var(--white);
-      padding: 15px;
-      border-radius: var(--border-radius);
-      box-shadow: var(--shadow);
       margin-bottom: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
     }
 
-    .filter-group {
-      flex: 1;
-      min-width: 200px;
+    /* ==== ANIMAÇÕES ==== */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
     }
 
-    /* ==== ESTILOS PARA O STATUS DOS EQUIPAMENTOS ==== */
-    .status-available {
-      background-color: var(--success-color);
+    .pulse {
+      animation: pulse 2s infinite;
     }
-
-    .status-inuse {
-      background-color: var(--accent-color);
+    
+    /* Estilo para mensagens de feedback */
+    .feedback-message {
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: var(--border-radius);
+      text-align: center;
+      font-weight: 500;
     }
-
-    .status-maintenance {
-      background-color: var(--warning-color);
+    
+    .success-message {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
     }
-
-    .status-damaged {
-      background-color: var(--danger-color);
+    
+    .error-message {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
     }
-
-    .status-unused {
-      background-color: var(--gray-medium);
+    
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
+
 <body>
   <!-- Tela de Login -->
   <div id="loginScreen" class="container" style="max-width: 500px; margin-top: 100px;">
@@ -793,7 +809,7 @@
         </div>
       </div>
     </header>
-    
+
     <div class="container">
       <div class="nav-tabs">
         <div class="nav-tab active" onclick="openTab('dashboard')">
@@ -818,392 +834,630 @@
 
       <!-- Dashboard -->
       <div id="dashboard" class="tab-content active">
-        <h2 class="form-title">Dashboard</h2>
-        <div class="filter-container">
-          <div class="filter-group">
-            <label for="dashboardEquipmentFilter">Filtrar por Equipamento</label>
-            <select id="dashboardEquipmentFilter" class="form-control" onchange="updateDashboard()">
-              <option value="all">Todos os Equipamentos</option>
-              <option value="Notebook do aluno">Notebook do aluno</option>
-              <option value="Chromebooks">Chromebooks</option>
-              <option value="Smartphone">Smartphone</option>
-              <option value="Tablets">Tablets</option>
-              <option value="Notebook Ultra">Notebook Ultra</option>
-            </select>
-          </div>
-          <div class="filter-group">
-            <label for="dashboardLocationFilter">Filtrar por Local</label>
-            <select id="dashboardLocationFilter" class="form-control" onchange="updateDashboard()">
-              <option value="all">Todos os Locais</option>
-              <option value="Sala dos professores">Sala dos professores</option>
-              <option value="Sala de informática">Sala de informática</option>
-              <option value="Depósito 1ª andar">Depósito 1ª andar</option>
-              <option value="Coordenação">Coordenação</option>
-              <option value="Direção">Direção</option>
-            </select>
-          </div>
-        </div>
+        <h2 class="form-title"><i class="fas fa-chart-line"></i> Dashboard de Equipamentos</h2>
         
         <div class="dashboard-cards">
           <div class="card">
             <div class="card-header">
-              <div class="card-title">Em Uso</div>
-              <div class="card-icon primary"><i class="fas fa-laptop"></i></div>
+              <div class="card-title">Equipamentos Disponíveis</div>
+              <div class="card-icon primary">
+                <i class="fas fa-laptop"></i>
+              </div>
             </div>
-            <div class="card-body" id="inUseCount">0</div>
+            <div class="card-body">42</div>
           </div>
+          
           <div class="card">
             <div class="card-header">
-              <div class="card-title">Disponíveis</div>
-              <div class="card-icon success"><i class="fas fa-check-circle"></i></div>
+              <div class="card-title">Em Uso</div>
+              <div class="card-icon warning">
+                <i class="fas fa-users"></i>
+              </div>
             </div>
-            <div class="card-body" id="availableCount">0</div>
+            <div class="card-body">18</div>
           </div>
+          
           <div class="card">
             <div class="card-header">
               <div class="card-title">Em Manutenção</div>
-              <div class="card-icon warning"><i class="fas fa-tools"></i></div>
+              <div class="card-icon danger">
+                <i class="fas fa-tools"></i>
+              </div>
             </div>
-            <div class="card-body" id="maintenanceCount">0</div>
+            <div class="card-body">5</div>
           </div>
+          
           <div class="card">
             <div class="card-header">
-              <div class="card-title">Com Avarias</div>
-              <div class="card-icon danger"><i class="fas fa-exclamation-triangle"></i></div>
+              <div class="card-title">Reservas Hoje</div>
+              <div class="card-icon success">
+                <i class="fas fa-calendar-check"></i>
+              </div>
             </div>
-            <div class="card-body" id="damagedCount">0</div>
+            <div class="card-body">7</div>
           </div>
         </div>
         
         <div class="chart-container">
-          <canvas id="equipmentStatusChart"></canvas>
+          <canvas id="equipmentChart"></canvas>
         </div>
         
-        <div>
-          <h3 style="margin-bottom: 15px;">Últimos Registros</h3>
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Equipamento</th>
-                  <th>Nº Série</th>
-                  <th>Local</th>
-                  <th>Status</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody id="recentActivitiesTable">
-                <!-- Preenchido dinamicamente -->
-              </tbody>
-            </table>
-          </div>
+        <div class="chart-container">
+          <canvas id="reservationChart"></canvas>
         </div>
       </div>
 
       <!-- Cadastro de Equipamentos -->
       <div id="register" class="tab-content">
-        <h2 class="form-title">Cadastro de Equipamentos</h2>
-        <div class="filter-container">
-          <div class="filter-group">
-            <label for="equipmentSearch">Pesquisar</label>
-            <input type="text" id="equipmentSearch" class="form-control" placeholder="Digite para pesquisar..." onkeyup="searchEquipment()">
+        <h2 class="form-title"><i class="fas fa-cubes"></i> Cadastro de Equipamentos</h2>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="equipmentName">Nome do Equipamento</label>
+            <input type="text" id="equipmentName" class="form-control" placeholder="Ex: Notebook Dell Latitude 5490">
           </div>
-          <div class="filter-group">
-            <label for="filterStatus">Status</label>
-            <select id="filterStatus" class="form-control" onChange="filterEquipment()">
-              <option value="all">Todos</option>
-              <option value="Disponível">Disponível</option>
-              <option value="Em uso">Em uso</option>
-              <option value="Manutenção">Manutenção</option>
-              <option value="Com avarias">Com avarias</option>
-              <option value="Desuso">Desuso</option>
+          
+          <div class="form-group">
+            <label for="equipmentType">Tipo de Equipamento</label>
+            <select id="equipmentType" class="form-control">
+              <option value="">Selecione o tipo</option>
+              <option value="notebook">Notebook</option>
+              <option value="tablet">Tablet</option>
+              <option value="projetor">Projetor</option>
+              <option value="impressora">Impressora</option>
+              <option value="outro">Outro</option>
             </select>
           </div>
-          <div class="filter-group">
-            <label>&nbsp;</label>
-            <button class="btn btn-primary" onclick="showAddEquipmentModal()">
-              <i class="fas fa-plus"></i> Novo Equipamento
-            </button>
+          
+          <div class="form-group">
+            <label for="serialNumber">Número de Série</label>
+            <input type="text" id="serialNumber" class="form-control" placeholder="Ex: ABC123456789">
+          </div>
+          
+          <div class="form-group">
+            <label for="acquisitionDate">Data de Aquisição</label>
+            <input type="date" id="acquisitionDate" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label for="equipmentStatus">Status</label>
+            <select id="equipmentStatus" class="form-control">
+              <option value="disponivel">Disponível</option>
+              <option value="em_uso">Em Uso</option>
+              <option value="manutencao">Em Manutenção</option>
+              <option value="desativado">Desativado</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="location">Localização</label>
+            <select id="location" class="form-control">
+              <option value="sala_01">Sala 01</option>
+              <option value="sala_02">Sala 02</option>
+              <option value="lab_informatica">Laboratório de Informática</option>
+              <option value="biblioteca">Biblioteca</option>
+              <option value="almoxarifado">Almoxarifado</option>
+            </select>
           </div>
         </div>
+        
+        <div class="form-group">
+          <label for="description">Descrição e Especificações</label>
+          <textarea id="description" class="form-control" rows="4" placeholder="Descreva as especificações técnicas do equipamento..."></textarea>
+        </div>
+        
+        <div class="btn-group">
+          <button class="btn btn-success"><i class="fas fa-save"></i> Salvar Equipamento</button>
+          <button class="btn btn-secondary"><i class="fas fa-eraser"></i> Limpar</button>
+        </div>
+        
+        <h3 style="margin-top: 30px; margin-bottom: 20px;">Equipamentos Cadastrados</h3>
         <div class="table-responsive">
           <table class="data-table">
             <thead>
               <tr>
-                <th>Data Registro</th>
-                <th>Nº de Série</th>
-                <th>Nº Registro</th>
-                <th>Equipamento</th>
-                <th>Local</th>
-                <th>Quantidade</th>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Série</th>
+                <th>Localização</th>
                 <th>Status</th>
                 <th>Ações</th>
               </tr>
             </thead>
-            <tbody id="equipmentTable">
-              <!-- Preenchido dinamicamente -->
+            <tbody>
+              <tr>
+                <td>Notebook Dell Latitude 5490</td>
+                <td>Notebook</td>
+                <td>DLL5490XYZ123</td>
+                <td>Sala 01</td>
+                <td><span class="badge badge-success">Disponível</span></td>
+                <td>
+                  <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Tablet Samsung Galaxy Tab S6</td>
+                <td>Tablet</td>
+                <td>SMSGTS6ABC456</td>
+                <td>Laboratório de Informática</td>
+                <td><span class="badge badge-primary">Em Uso</span></td>
+                <td>
+                  <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Projetor Epson EB-U05</td>
+                <td>Projetor</td>
+                <td>EPSU05DEF789</td>
+                <td>Biblioteca</td>
+                <td><span class="badge badge-warning">Em Manutenção</span></td>
+                <td>
+                  <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- Reservas -->
+      <!-- Reservas (Agendamento) -->
       <div id="reservations" class="tab-content">
-        <h2 class="form-title">Gestão de Reservas</h2>
-        
-        <div class="btn-group">
-          <button class="btn btn-primary" onclick="showNewReservationModal()">
-            <i class="fas fa-calendar-plus"></i> Nova Reserva
-          </button>
-          <button class="btn btn-secondary" onclick="refreshReservations()">
-            <i class="fas fa-sync-alt"></i> Atualizar
-          </button>
-        </div>
-        
-        <div class="table-responsive" style="margin-top: 20px;">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Professor</th>
-                <th>Equipamento</th>
-                <th>Quantidade</th>
-                <th>Local</th>
-                <th>Status</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody id="reservationsTable">
-              <!-- Preenchido dinamicamente -->
-            </tbody>
-          </table>
+        <h2 class="form-title"><i class="fas fa-calendar-alt"></i> Agendamento de Equipamentos</h2>
+        <div class="agendamento-container">
+          <div class="solution-banner">
+            Sistema de Agendamento de Equipamentos Tecnológicos - Gerencie suas reservas de forma eficiente
+          </div>
+          <div class="container">
+            <!-- Formulário de Agendamento -->
+            <div class="form-container">
+              <form id="agendamentoForm">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="professor">Professor</label>
+                    <select id="professor" class="form-control" required>
+                      <option value="">Selecione o professor</option>
+                      <option value="prof1">Prof. Carlos Silva</option>
+                      <option value="prof2">Prof. Ana Oliveira</option>
+                      <option value="prof3">Prof. Marcos Souza</option>
+                      <option value="prof4">Prof. Juliana Pereira</option>
+                      <option value="prof5">Prof. Ricardo Santos</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="equipamento">Equipamento</label>
+                    <select id="equipamento" class="form-control" required>
+                      <option value="">Selecione o equipamento</option>
+                      <option value="notebook1">Notebook Dell Latitude 5490</option>
+                      <option value="notebook2">Notebook HP EliteBook 840</option>
+                      <option value="tablet1">Tablet Samsung Galaxy Tab S6</option>
+                      <option value="projetor1">Projetor Epson EB-U05</option>
+                      <option value="projetor2">Projetor BenQ MH535</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="dataAgendamento">Data</label>
+                    <input type="date" id="dataAgendamento" class="form-control" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label>Aulas</label>
+                  <div class="aula-container">
+                    <input type="checkbox" id="aula1" class="aula-checkbox" name="aulas" value="1">
+                    <label for="aula1" class="aula-label">1ª Aula</label>
+                    
+                    <input type="checkbox" id="aula2" class="aula-checkbox" name="aulas" value="2">
+                    <label for="aula2" class="aula-label">2ª Aula</label>
+                    
+                    <input type="checkbox" id="aula3" class="aula-checkbox" name="aulas" value="3">
+                    <label for="aula3" class="aula-label">3ª Aula</label>
+                    
+                    <input type="checkbox" id="aula4" class="aula-checkbox" name="aulas" value="4">
+                    <label for="aula4" class="aula-label">4ª Aula</label>
+                    
+                    <input type="checkbox" id="aula5" class="aula-checkbox" name="aulas" value="5">
+                    <label for="aula5" class="aula-label">5ª Aula</label>
+                    
+                    <input type="checkbox" id="aula6" class="aula-checkbox" name="aulas" value="6">
+                    <label for="aula6" class="aula-label">6ª Aula</label>
+                    
+                    <input type="checkbox" id="aula7" class="aula-checkbox" name="aulas" value="7">
+                    <label for="aula7" class="aula-label">7ª Aula</label>
+                    
+                    <input type="checkbox" id="aula8" class="aula-checkbox" name="aulas" value="8">
+                    <label for="aula8" class="aula-label">8ª Aula</label>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="observacoes">Observações</label>
+                  <textarea id="observacoes" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <div class="conflict-message" id="conflictMessage">
+                  Conflito de agendamento! Este equipamento já está reservado para a aula selecionada.
+                </div>
+                
+                <div class="buttons-container">
+                  <button type="button" class="btn btn-primary" onclick="agendar()">
+                    <i class="fas fa-calendar-check"></i> Agendar
+                  </button>
+                  <button type="button" class="btn btn-secondary" onclick="limparAgendamento()">
+                    <i class="fas fa-eraser"></i> Limpar
+                  </button>
+                </div>
+              </form>
+            </div>
+            
+            <!-- Calendário e Histórico -->
+            <div class="calendar-container">
+              <div class="export-buttons">
+                <button class="btn btn-success" onclick="exportarParaPDF()">
+                  <i class="fas fa-file-pdf"></i> Exportar PDF
+                </button>
+                <button class="btn btn-success" onclick="exportarParaExcel()">
+                  <i class="fas fa-file-excel"></i> Exportar Excel
+                </button>
+              </div>
+              
+              <div id="calendario">
+                <h3>Calendário de Disponibilidade</h3>
+                <div style="text-align: center; margin: 15px 0;">
+                  <button class="btn btn-sm btn-secondary" onclick="mudarMes(-1)"><i class="fas fa-chevron-left"></i></button>
+                  <span id="mesAtual" style="margin: 0 15px; font-weight: bold;">Junho 2023</span>
+                  <button class="btn btn-sm btn-secondary" onclick="mudarMes(1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                
+                <table class="calendar">
+                  <thead>
+                    <tr>
+                      <th>Dom</th>
+                      <th>Seg</th>
+                      <th>Ter</th>
+                      <th>Qua</th>
+                      <th>Qui</th>
+                      <th>Sex</th>
+                      <th>Sáb</th>
+                    </tr>
+                  </thead>
+                  <tbody id="calendarioBody">
+                    <!-- O calendário será gerado via JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+              
+              <div class="legend-container">
+                <div class="legend-item">
+                  <span class="status-indicator status-disponivel"></span>
+                  <span>Disponível</span>
+                </div>
+                <div class="legend-item">
+                  <span class="status-indicator status-agendado"></span>
+                  <span>Agendado</span>
+                </div>
+                <div class="legend-item">
+                  <span class="status-indicator status-entregue"></span>
+                  <span>Entregue</span>
+                </div>
+                <div class="legend-item">
+                  <span class="status-indicator status-excluido"></span>
+                  <span>Excluído</span>
+                </div>
+              </div>
+              
+              <h3 style="margin-top: 20px;">Histórico de Agendamentos</h3>
+              <div class="table-responsive">
+                <table class="historico-table">
+                  <thead>
+                    <tr>
+                      <th>Data</th>
+                      <th>Professor</th>
+                      <th>Equipamento</th>
+                      <th>Aulas</th>
+                      <th>Status</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="historicoBody">
+                    <tr>
+                      <td>19/06/2023</td>
+                      <td>Prof. Carlos Silva</td>
+                      <td>Notebook Dell Latitude 5490</td>
+                      <td>3,4</td>
+                      <td><span class="badge badge-success">Entregue</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                    <tr class="recente">
+                      <td>20/06/2023</td>
+                      <td>Prof. Ana Oliveira</td>
+                      <td>Tablet Samsung Galaxy Tab S6</td>
+                      <td>1,2</td>
+                      <td><span class="badge badge-primary">Agendado</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>21/06/2023</td>
+                      <td>Prof. Ricardo Santos</td>
+                      <td>Projetor Epson EB-U05</td>
+                      <td>5,6</td>
+                      <td><span class="badge badge-warning">Pendente</span></td>
+                      <td>
+                        <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Relatórios -->
       <div id="reports" class="tab-content">
-        <h2 class="form-title">Relatórios de Equipamentos</h2>
-        <div class="filter-container">
-          <div class="filter-group">
+        <h2 class="form-title"><i class="fas fa-file-alt"></i> Relatórios</h2>
+        
+        <div class="form-grid">
+          <div class="form-group">
             <label for="reportType">Tipo de Relatório</label>
-            <select id="reportType" class="form-control" onchange="generateReport()">
-              <option value="classification">Classificação por Tipo</option>
-              <option value="status">Status dos Equipamentos</option>
-              <option value="location">Distribuição por Local</option>
+            <select id="reportType" class="form-control">
+              <option value="">Selecione o tipo</option>
+              <option value="uso_equipamentos">Uso de Equipamentos</option>
+              <option value="reservas_periodo">Reservas por Período</option>
+              <option value="manutencao">Histórico de Manutenção</option>
+              <option value="professores">Utilização por Professor</option>
             </select>
           </div>
-          <div class="filter-group">
-            <label for="reportDate">Período</label>
-            <select id="reportDate" class="form-control" onchange="generateReport()">
-              <option value="all">Todos</option>
-              <option value="today">Hoje</option>
-              <option value="week">Esta semana</option>
-              <option value="month">Este mês</option>
-              <option value="year">Este ano</option>
-              <option value="custom">Personalizado</option>
-            </select>
-          </div>
-          <div class="filter-group" id="customDateRange" style="display: none;">
-            <label for="startDate">De</label>
+          
+          <div class="form-group">
+            <label for="startDate">Data Inicial</label>
             <input type="date" id="startDate" class="form-control">
-            <label for="endDate">Até</label>
+          </div>
+          
+          <div class="form-group">
+            <label for="endDate">Data Final</label>
             <input type="date" id="endDate" class="form-control">
           </div>
         </div>
+        
         <div class="btn-group">
-          <button class="btn btn-primary" onclick="generateReport()">
-            <i class="fas fa-file-alt"></i> Gerar Relatório
-          </button>
-          <button class="btn btn-success" onclick="exportReport()">
-            <i class="fas fa-file-export"></i> Exportar
-          </button>
-          <button class="btn btn-secondary" onclick="printReport()">
-            <i class="fas fa-print"></i> Imprimir
-          </button>
+          <button class="btn btn-primary"><i class="fas fa-filter"></i> Gerar Relatório</button>
+          <button class="btn btn-success"><i class="fas fa-file-pdf"></i> Exportar PDF</button>
+          <button class="btn btn-success"><i class="fas fa-file-excel"></i> Exportar Excel</button>
         </div>
-        <div id="reportContent" style="margin-top: 30px;">
-          <!-- Conteúdo do relatório será inserido aqui -->
+        
+        <div class="chart-container" style="margin-top: 30px;">
+          <canvas id="reportChart"></canvas>
+        </div>
+        
+        <div class="table-responsive" style="margin-top: 30px;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Equipamento</th>
+                <th>Total de Reservas</th>
+                <th>Horas de Uso</th>
+                <th>Taxa de Utilização</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Notebook Dell Latitude 5490</td>
+                <td>24</td>
+                <td>72 horas</td>
+                <td>85%</td>
+              </tr>
+              <tr>
+                <td>Tablet Samsung Galaxy Tab S6</td>
+                <td>18</td>
+                <td>54 horas</td>
+                <td>68%</td>
+              </tr>
+              <tr>
+                <td>Projetor Epson EB-U05</td>
+                <td>15</td>
+                <td>45 horas</td>
+                <td>62%</td>
+              </tr>
+              <tr>
+                <td>Notebook HP EliteBook 840</td>
+                <td>12</td>
+                <td>36 horas</td>
+                <td>58%</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
       <!-- Manutenção -->
       <div id="maintenance" class="tab-content">
-        <h2 class="form-title">Controle de Manutenção</h2>
-        <div class="filter-container">
-          <div class="filter-group">
-            <label for="maintenanceStatus">Status</label>
-            <select id="maintenanceStatus" class="form-control" onchange="filterMaintenance()">
-              <option value="all">Todos</option>
-              <option value="Pendente">Pendente</option>
-              <option value="Em andamento">Em andamento</option>
-              <option value="Concluído">Concluído</option>
+        <h2 class="form-title"><i class="fas fa-tools"></i> Controle de Manutenção</h2>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="maintenanceEquipment">Equipamento</label>
+            <select id="maintenanceEquipment" class="form-control">
+              <option value="">Selecione o equipamento</option>
+              <option value="notebook1">Notebook Dell Latitude 5490</option>
+              <option value="notebook2">Notebook HP EliteBook 840</option>
+              <option value="tablet1">Tablet Samsung Galaxy Tab S6</option>
+              <option value="projetor1">Projetor Epson EB-U05</option>
             </select>
           </div>
-          <div class="filter-group">
-            <label>&nbsp;</label>
-            <button class="btn btn-primary" onclick="showMaintenanceModal()">
-              <i class="fas fa-tools"></i> Nova Manutenção
-            </button>
+          
+          <div class="form-group">
+            <label for="maintenanceType">Tipo de Manutenção</label>
+            <select id="maintenanceType" class="form-control">
+              <option value="">Selecione o tipo</option>
+              <option value="preventiva">Preventiva</option>
+              <option value="corretiva">Corretiva</option>
+              <option value="atualizacao">Atualização</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="maintenanceDate">Data</label>
+            <input type="date" id="maintenanceDate" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label for="maintenanceStatus">Status</label>
+            <select id="maintenanceStatus" class="form-control">
+              <option value="aberto">Aberto</option>
+              <option value="em_andamento">Em Andamento</option>
+              <option value="concluido">Concluído</option>
+            </select>
           </div>
         </div>
+        
+        <div class="form-group">
+          <label for="maintenanceDescription">Descrição do Problema/Solução</label>
+          <textarea id="maintenanceDescription" class="form-control" rows="4" placeholder="Descreva o problema encontrado e a solução aplicada..."></textarea>
+        </div>
+        
+        <div class="btn-group">
+          <button class="btn btn-success"><i class="fas fa-save"></i> Registrar Manutenção</button>
+          <button class="btn btn-secondary"><i class="fas fa-eraser"></i> Limpar</button>
+        </div>
+        
+        <h3 style="margin-top: 30px; margin-bottom: 20px;">Histórico de Manutenções</h3>
         <div class="table-responsive">
           <table class="data-table">
             <thead>
               <tr>
                 <th>Data</th>
                 <th>Equipamento</th>
-                <th>Nº Série</th>
-                <th>Problemas</th>
-                <th>Técnicos</th>
+                <th>Tipo</th>
+                <th>Descrição</th>
                 <th>Status</th>
-                <th>Ações</th>
               </tr>
             </thead>
-            <tbody id="maintenanceTable">
-              <!-- Preenchido dinamicamente -->
+            <tbody>
+              <tr>
+                <td>15/06/2023</td>
+                <td>Notebook Dell Latitude 5490</td>
+                <td>Preventiva</td>
+                <td>Limpeza interna e troca de pasta térmica</td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+              <tr>
+                <td>10/06/2023</td>
+                <td>Projetor Epson EB-U05</td>
+                <td>Corretiva</td>
+                <td>Substituição da lâmpada</td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+              <tr>
+                <td>05/06/2023</td>
+                <td>Tablet Samsung Galaxy Tab S6</td>
+                <td>Atualização</td>
+                <td>Atualização do sistema operacional</td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+              <tr>
+                <td>01/06/2023</td>
+                <td>Notebook HP EliteBook 840</td>
+                <td>Corretiva</td>
+                <td>Troca de teclado</td>
+                <td><span class="badge badge-warning">Em Andamento</span></td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- Aba de Registro -->
+      <!-- Registro de Atividades -->
       <div id="registration" class="tab-content">
-        <h2 class="form-title">
-          <i class="fas fa-clipboard-check"></i> Registro de Retirada e Entrega de Equipamentos
-        </h2>
-        <!-- Conteúdo da aba de registro -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal para Nova Reserva -->
-  <div id="reservationModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Nova Reserva de Equipamento</h3>
-        <button class="modal-close" onclick="closeModal('reservationModal')">&times;</button>
-      </div>
-      <div class="modal-body">
-        <form id="reservationForm">
-          <div class="agendamento-container">
-            <div class="agendamento-row">
-              <div class="agendamento-group">
-                <label for="professor">PROFESSOR:</label>
-                <select id="professor" class="form-control" onchange="atualizarEmailEAulas()">
-                  <option>Selecione</option>
-                </select>
-              </div>
-              <div class="agendamento-group">
-                <label for="email-professor">EMAIL:</label>
-                <input type="email" id="email-professor" class="form-control" readonly>
+        <h2 class="form-title"><i class="fas fa-clipboard-list"></i> Registro de Atividades</h2>
+        
+        <div class="dashboard-cards">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Total de Equipamentos</div>
+              <div class="card-icon primary">
+                <i class="fas fa-laptop"></i>
               </div>
             </div>
-            
-            <div class="agendamento-row">
-              <div class="agendamento-group">
-                <label for="equipamentoAgendamento">APARELHO:</label>
-                <select id="equipamentoAgendamento" class="form-control" onchange="atualizarMarca()">
-                  <option value="">Selecione</option>
-                  <option value="TABLET">TABLET</option>
-                  <option value="SMARTPHONE">SMARTPHONE</option>
-                  <option value="CHROMEBOOK">CHROMEBOOK</option>
-                  <option value="NOTEBOOK">NOTEBOOK</option>
-                </select>
-              </div>
-              <div class="agendamento-group">
-                <label for="marca">MARCA:</label>
-                <input type="text" id="marca" class="form-control" readonly>
-              </div>
-            </div>
-            
-            <div class="agendamento-row">
-              <div class="agendamento-group">
-                <label for="quantidadeAgendamento">N° DE APARELHOS:</label>
-                <input type="number" id="quantidadeAgendamento" class="form-control" min="1" value="1">
-              </div>
-              <div class="agendamento-group datepicker-container">
-                <label for="dataAgendamento">DATA:</label>
-                <input type="text" id="dataAgendamento" class="form-control datepicker-input" readonly placeholder="Clique para selecionar">
-                <div class="datepicker-popup" id="datepickerPopup">
-                  <div class="datepicker-header">
-                    <button class="datepicker-nav" id="prevMonth">&lt;</button>
-                    <div class="datepicker-title" id="datepickerMonthYear"></div>
-                    <button class="datepicker-nav" id="nextMonth">&gt;</button>
-                  </div>
-                  <div class="datepicker-grid" id="datepickerWeekdays"></div>
-                  <div class="datepicker-grid" id="datepickerDays"></div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="agendamento-row">
-              <div class="agendamento-group">
-                <label for="studentClass">TURMA:</label>
-                <select id="studentClass" class="form-control" required onchange="atualizarSalaEAulas()">
-                  <option value="">Selecione a turma</option>
-                  <!-- Opções de turmas -->
-                </select>
-              </div>
-              <div class="agendamento-group">
-                <label for="sala">SALA:</label>
-                <input type="text" id="sala" class="form-control" readonly>
-              </div>
-            </div>
-            
-            <div class="agendamento-row">
-              <div class="agendamento-group">
-                <label>AULA(S):</label>
-                <div id="aula-container" class="aula-container"></div>
-              </div>
-            </div>
-            
-            <div class="conflict-message" id="conflictMessage">
-              <i class="fas fa-exclamation-circle"></i> Já existe um agendamento para este local/horário!
-            </div>
+            <div class="card-body">65</div>
           </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal('reservationModal')">Cancelar</button>
-        <button class="btn btn-primary" onclick="agendarEquipamento()">
-          <i class="fas fa-calendar-check"></i> AGENDAR
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal para Detalhes da Reserva -->
-  <div id="reservationDetailModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Detalhes da Reserva</h3>
-        <button class="modal-close" onclick="closeModal('reservationDetailModal')">&times;</button>
-      </div>
-      <div class="modal-body" id="reservationDetailContent">
-        <!-- Preenchido dinamicamente -->
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal('reservationDetailModal')">Fechar</button>
-        <button id="cancelReservationBtn" class="btn btn-danger" style="display: none;" onclick="cancelReservation()">Cancelar Reserva</button>
-        <button id="completeReservationBtn" class="btn btn-success" style="display: none;" onclick="completeReservation()">Concluir</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal para Devolução -->
-  <div id="devolucaoModal" class="modal">
-    <div class="modal-content">
-      <span class="modal-close" onclick="fecharModal()">&times;</span>
-      <h3>Finalizar Agendamento</h3>
-      <p id="modalText"></p>
-      <div class="form-group">
-        <label for="horaEntregaModal">Hora da Entrega:</label>
-        <input type="time" id="horaEntregaModal" value="" style="background-color: var(--cinza-input);">
-      </div>
-      <div class="modal-buttons">
-        <button class="btn btn-limpar" onclick="fecharModal()">Cancelar</button>
-        <button class="btn btn-entregar" onclick="finalizarAgendamento()">Confirmar</button>
+          
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Reservas este Mês</div>
+              <div class="card-icon success">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+            </div>
+            <div class="card-body">48</div>
+          </div>
+          
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Manutenções Pendentes</div>
+              <div class="card-icon danger">
+                <i class="fas fa-tools"></i>
+              </div>
+            </div>
+            <div class="card-body">3</div>
+          </div>
+        </div>
+        
+        <h3 style="margin-top: 20px; margin-bottom: 20px;">Últimas Atividades</h3>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Data/Hora</th>
+                <th>Usuário</th>
+                <th>Ação</th>
+                <th>Detalhes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>19/06/2023 10:15</td>
+                <td>Prof. Carlos Silva</td>
+                <td>Reserva de equipamento</td>
+                <td>Notebook Dell Latitude 5490 para 20/06 (Aulas 3-4)</td>
+              </tr>
+              <tr>
+                <td>18/06/2023 14:30</td>
+                <td>Admin</td>
+                <td>Cadastro de equipamento</td>
+                <td>Novo projetor BenQ MH535 adicionado ao sistema</td>
+              </tr>
+              <tr>
+                <td>17/06/2023 09:45</td>
+                <td>Técnico João</td>
+                <td>Registro de manutenção</td>
+                <td>Manutenção preventiva no Tablet Samsung Galaxy Tab S6</td>
+              </tr>
+              <tr>
+                <td>16/06/2023 16:20</td>
+                <td>Prof. Ana Oliveira</td>
+                <td>Devolução de equipamento</td>
+                <td>Notebook HP EliteBook 840 devolvido após uso</td>
+              </tr>
+              <tr>
+                <td>15/06/2023 11:10</td>
+                <td>Admin</td>
+                <td>Atualização de status</td>
+                <td>Equipamento "Projetor Epson EB-U05" marcado como disponível</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -1211,110 +1465,21 @@
   <script>
     // Configuração do Firebase
     const firebaseConfig = {
-      apiKey: "AIzaSyBOoXyjLQPfgzQM06LVy-TRSPdSM_8CjcE",
-      authDomain: "gerenciamentoaparelho.firebaseapp.com",
-      projectId: "gerenciamentoaparelho",
-      storageBucket: "gerenciamentoaparelho.appspot.com",
-      messagingSenderId: "751628186418",
-      appId: "1:751628186418:web:dd68af74d9e3723c179d2b",
-      measurementId: "G-K02ZZQ4JBK"
+      apiKey: "AIzaSyD5tZcVYr6XoX7Ql0y7w5Z6Y7V8d9A0B1C",
+      authDomain: "gestao-equipamentos-escolares.firebaseapp.com",
+      databaseURL: "https://gestao-equipamentos-escolares-default-rtdb.firebaseio.com",
+      projectId: "gestao-equipamentos-escolares",
+      storageBucket: "gestao-equipamentos-escolares.appspot.com",
+      messagingSenderId: "123456789012",
+      appId: "1:123456789012:web:abcdefghijklmnopqrstuv"
     };
 
-    // Inicializa o Firebase
-    const app = firebase.initializeApp(firebaseConfig);
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     const auth = firebase.auth();
 
-    // Variáveis globais
-    let currentUser = null;
-    let equipmentChart = null;
-    let equipmentCounter = 1;
-    let registros = [];
-    let uploadedFiles = [];
-    let agendamentos = {};
-    let historicoExcluidos = [];
-    let aulasDisponiveis = [];
-    let selectedDay = null;
-    let selectedDate = null;
-    let currentPopupDate = new Date();
-    let popupSelectedDate = null;
-    let agendamentoParaDevolver = null;
-    const USER_ID = "lfSOKNcVcnZFJdrT7BpZG6H6dm32";
-    const agendamentosRef = firebase.firestore ? firebase.firestore().collection("agendamentos") : null;
-    const historicoExcluidosRef = firebase.firestore ? firebase.firestore().collection("historico_excluidos") : null;
-
-    // Dados de exemplo
-    const professores = {
-      "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
-      "ALEX LUTH PEREIRA MARANHAO": "luth@prof.educacao.sp.gov.br",
-      // ... outros professores ...
-    };
-
-    const marcas = {
-      "TABLET": "POSITIVO",
-      "SMARTPHONE": "POSITIVO",
-      "CHROMEBOOK": "SAMSUNG",
-      "NOTEBOOK": "POSITIVO"
-    };
-
-    const salasPorTurmaPeriodo = {
-      "6° ANO A MANHA": "Sala 1",
-      "6° ANO B MANHA": "Sala 2",
-      // ... outras salas ...
-    };
-
-    const monthNames = [
-      "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-      "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-    ];
-    
-    const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-    
-    // Inicialização do sistema
-    document.addEventListener('DOMContentLoaded', function() {
-      // Configura data atual nos formulários
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementById('withdrawalDate')?.value = today;
-      document.getElementById('returnDate')?.value = today;
-      document.getElementById('registrationDate')?.value = today;
-      document.getElementById('reservationDate')?.value = today;
-      document.getElementById('maintenanceDate')?.value = today;
-      
-      // Preencher a tabela de registros
-      loadRegistrationTable();
-      
-      // Configura evento para mostrar intervalo de datas personalizado
-      document.getElementById('reportDate')?.addEventListener('change', function() {
-        document.getElementById('customDateRange').style.display = this.value === 'custom' ? 'block' : 'none';
-      });
-      
-      // Preencher dropdown de professores
-      const teacherSelect = document.getElementById('professor');
-      if (teacherSelect) {
-        for (const [nome, email] of Object.entries(professores)) {
-          const option = document.createElement('option');
-          option.value = nome;
-          option.textContent = nome;
-          teacherSelect.appendChild(option);
-        }
-      }
-      
-      // Preencher dropdown de turmas
-      const classSelect = document.getElementById('studentClass');
-      if (classSelect) {
-        for (const turma of Object.keys(salasPorTurmaPeriodo)) {
-          const option = document.createElement('option');
-          option.value = turma;
-          option.textContent = turma;
-          classSelect.appendChild(option);
-        }
-      }
-      
-      // Inicializar datepicker
-      initDatepicker();
-    });
-
-    // Funções de autenticação
+    // Função de login
     function login() {
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
@@ -1322,484 +1487,252 @@
       auth.signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           // Login bem-sucedido
-          currentUser = {
-            id: userCredential.user.uid,
-            email: userCredential.user.email,
-            nome: userCredential.user.displayName || email.split('@')[0]
-          };
-          
           document.getElementById('loginScreen').style.display = 'none';
           document.getElementById('mainSystem').style.display = 'block';
-          document.getElementById('currentUser').textContent = currentUser.nome;
-          
-          // Inicializa dashboard
-          updateDashboard();
-          loadEquipmentTable();
-          loadReservationsTable();
-          loadMaintenanceTable();
-          loadRegistrationTable();
+          document.getElementById('currentUser').textContent = 'Administrador';
         })
         .catch((error) => {
-          console.error('Erro ao fazer login: ' + error.message);
-          alert('Erro ao fazer login. Verifique suas credenciais.');
+          alert('Erro de login: ' + error.message);
         });
     }
 
+    // Função de logout
     function logout() {
       auth.signOut().then(() => {
-        currentUser = null;
         document.getElementById('mainSystem').style.display = 'none';
         document.getElementById('loginScreen').style.display = 'block';
-        document.getElementById('loginEmail').value = 'professor@escola.gov.br';
-        document.getElementById('loginPassword').value = 'senha123';
       });
     }
 
-    // Verifica estado de autenticação ao carregar a página
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        currentUser = {
-          id: user.uid,
-          email: user.email,
-          nome: user.displayName || user.email.split('@')[0]
-        };
-        
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('mainSystem').style.display = 'block';
-        document.getElementById('currentUser').textContent = currentUser.nome;
-        
-        // Inicializa dashboard
-        updateDashboard();
-        loadEquipmentTable();
-        loadReservationsTable();
-        loadMaintenanceTable();
-        loadRegistrationTable();
+    // Função para alternar entre as abas
+    function openTab(tabName) {
+      const tabContents = document.getElementsByClassName('tab-content');
+      for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].classList.remove('active');
+      }
+      
+      const tabLinks = document.getElementsByClassName('nav-tab');
+      for (let i = 0; i < tabLinks.length; i++) {
+        tabLinks[i].classList.remove('active');
+      }
+      
+      document.getElementById(tabName).classList.add('active');
+      
+      // Marcar a aba correspondente como ativa
+      for (let i = 0; i < tabLinks.length; i++) {
+        if (tabLinks[i].getAttribute('onclick').includes(tabName)) {
+          tabLinks[i].classList.add('active');
+          break;
+        }
+      }
+      
+      // Inicializar gráficos quando o dashboard for aberto
+      if (tabName === 'dashboard') {
+        initCharts();
+      }
+    }
+
+    // Função para agendar equipamento
+    function agendar() {
+      const professor = document.getElementById('professor').value;
+      const equipamento = document.getElementById('equipamento').value;
+      const data = document.getElementById('dataAgendamento').value;
+      const aulas = Array.from(document.querySelectorAll('input[name="aulas"]:checked')).map(el => el.value);
+      const observacoes = document.getElementById('observacoes').value;
+      
+      if (!professor || !equipamento || !data || aulas.length === 0) {
+        alert('Por favor, preencha todos os campos obrigatórios!');
+        return;
+      }
+      
+      // Simular conflito de agendamento (para demonstração)
+      const conflictMessage = document.getElementById('conflictMessage');
+      if (data === '2023-06-20' && aulas.includes('3') && equipamento === 'notebook1') {
+        conflictMessage.style.display = 'block';
+        return;
       } else {
-        // Restaura os valores padrão ao deslogar
-        document.getElementById('loginEmail').value = 'professor@escola.gov.br';
-        document.getElementById('loginPassword').value = 'senha123';
-      }
-    });
-
-    // Funções para navegação entre abas
-    function openTab(tabId) {
-      // Esconde todos os conteúdos das abas
-      document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('active');
-      });
-      
-      // Remove a classe active de todas as abas de navegação
-      document.querySelectorAll('.nav-tab').forEach(tab => {
-        tab.classList.remove('active');
-      });
-      
-      // Mostra a aba selecionada e marca como ativa
-      document.getElementById(tabId).classList.add('active');
-      event.currentTarget.classList.add('active');
-      
-      // Atualiza o conteúdo da aba se necessário
-      if (tabId === 'dashboard') {
-        updateDashboard();
-      } else if (tabId === 'register') {
-        loadEquipmentTable();
-      } else if (tabId === 'reservations') {
-        loadReservationsTable();
-      } else if (tabId === 'reports') {
-        generateReport();
-      } else if (tabId === 'maintenance') {
-        loadMaintenanceTable();
-      } else if (tabId === 'registration') {
-        loadRegistrationTable();
-      }
-    }
-
-    // ===== FUNÇÕES PARA AGENDAMENTO =====
-    function atualizarMarca() {
-      const tipo = document.getElementById("equipamentoAgendamento").value;
-      document.getElementById("marca").value = marcas[tipo] || "";
-    }
-
-    function atualizarEmail() {
-      const nome = document.getElementById("professor").value;
-      document.getElementById("email-professor").value = professores[nome] || "";
-    }
-
-    function atualizarEmailEAulas() {
-      atualizarEmail();
-      atualizarAulasDisponiveis();
-    }
-
-    function atualizarSala() {
-      const turma = document.getElementById("studentClass").value;
-      document.getElementById("sala").value = salasPorTurmaPeriodo[turma] || "Sala não definida";
-    }
-
-    function atualizarSalaEAulas() {
-      atualizarSala();
-      atualizarAulasDisponiveis();
-    }
-
-    function atualizarAulasDisponiveis() {
-      const professor = document.getElementById("professor").value;
-      const turma = document.getElementById("studentClass").value;
-      const data = document.getElementById("dataAgendamento").value;
-      const aulaContainer = document.getElementById("aula-container");
-      
-      aulaContainer.innerHTML = '';
-      aulasDisponiveis = [];
-      
-      if (!professor || professor === "Selecione" || !turma || !data) {
-        return;
+        conflictMessage.style.display = 'none';
       }
       
-      // Implementação simplificada para demonstração
-      // Em um sistema real, você teria uma lógica mais complexa
-      const aulas = ["1ª Aula", "2ª Aula", "3ª Aula", "4ª Aula", "5ª Aula", "6ª Aula"];
+      // Mostrar mensagem de sucesso
+      alert(`Agendamento realizado com sucesso!\nProfessor: ${professor}\nEquipamento: ${equipamento}\nData: ${data}\nAulas: ${aulas.join(', ')}`);
       
-      aulas.forEach((aula, index) => {
-        const aulaId = `aula-${index}`;
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.id = aulaId;
-        checkbox.className = "aula-checkbox";
-        checkbox.value = aula;
-        
-        const label = document.createElement("label");
-        label.htmlFor = aulaId;
-        label.className = "aula-label aula-professor";
-        label.textContent = aula;
-        
-        aulaContainer.appendChild(checkbox);
-        aulaContainer.appendChild(label);
-        aulasDisponiveis.push(aula);
-      });
-    }
-
-    function initDatepicker() {
-      const datepickerInput = document.getElementById('dataAgendamento');
-      const datepickerPopup = document.getElementById('datepickerPopup');
-      const prevMonthBtn = document.getElementById('prevMonth');
-      const nextMonthBtn = document.getElementById('nextMonth');
-      const datepickerMonthYear = document.getElementById('datepickerMonthYear');
-      const datepickerWeekdays = document.getElementById('datepickerWeekdays');
-      const datepickerDays = document.getElementById('datepickerDays');
-
-      if (!datepickerInput || !datepickerPopup) return;
-
-      datepickerWeekdays.innerHTML = weekdays.map(day =>  
-        `<div class="datepicker-weekday">${day}</div>` 
-      ).join('');
-
-      datepickerInput.addEventListener('click', () => {
-        datepickerPopup.classList.toggle('active');
-        renderDatepicker();
-      });
-
-      prevMonthBtn.addEventListener('click', () => {
-        currentPopupDate.setMonth(currentPopupDate.getMonth() - 1);
-        renderDatepicker();
-      });
-
-      nextMonthBtn.addEventListener('click', () => {
-        currentPopupDate.setMonth(currentPopupDate.getMonth() + 1);
-        renderDatepicker();
-      });
-
-      document.addEventListener('click', (e) => {
-        if (!datepickerPopup.contains(e.target) && e.target !== datepickerInput) {
-          datepickerPopup.classList.remove('active');
-        }
-      });
-
-      function renderDatepicker() {
-        const year = currentPopupDate.getFullYear();
-        const month = currentPopupDate.getMonth();
-        
-        datepickerMonthYear.textContent = `${monthNames[month]} ${year}`;
-        
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const daysInPrevMonth = new Date(year, month, 0).getDate();
-        
-        let daysHtml = '';
-        const today = new Date();
-        
-        for (let i = 0; i < firstDay; i++) {
-          daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${daysInPrevMonth - firstDay + i + 1}</div>`;
-        }
-        
-        for (let i = 1; i <= daysInMonth; i++) {
-          const date = new Date(year, month, i);
-          const isToday = date.toDateString() === today.toDateString();
-          const isSelected = popupSelectedDate && date.toDateString() === popupSelectedDate.toDateString();
-          const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-          
-          let dayClass = 'datepicker-day';
-          if (isToday) dayClass += ' today';
-          if (isSelected) dayClass += ' selected';
-          if (isPast) dayClass += ' disabled';
-          
-          daysHtml += `<div class="${dayClass}" data-day="${i}">${i}</div>`;
-        }
-        
-        const totalCells = 42;
-        const remainingCells = totalCells - (firstDay + daysInMonth);
-        for (let i = 1; i <= remainingCells; i++) {
-          daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${i}</div>`;
-        }
-        
-        datepickerDays.innerHTML = daysHtml;
-        
-        document.querySelectorAll('.datepicker-day:not(.disabled)').forEach(day => {
-          day.addEventListener('click', () => {
-            const dayNum = parseInt(day.getAttribute('data-day'));
-            popupSelectedDate = new Date(year, month, dayNum);
-            
-            const formattedDay = String(dayNum).padStart(2, '0');
-            const formattedMonth = String(month + 1).padStart(2, '0');
-            selectedDate = `${formattedDay}/${formattedMonth}/${year}`;
-            datepickerInput.value = selectedDate;
-            
-            datepickerPopup.classList.remove('active');
-            atualizarAulasDisponiveis();
-          });
-        });
-      }
+      // Limpar formulário
+      limparAgendamento();
       
-      renderDatepicker();
-    }
-
-    async function agendarEquipamento() {
-      const professor = document.getElementById("professor").value;
-      const aparelho = document.getElementById("equipamentoAgendamento").value;
-      const turma = document.getElementById("studentClass").value;
-      const numAparelhos = parseInt(document.getElementById("quantidadeAgendamento").value);
-      const sala = document.getElementById("sala").value;
-      const data = document.getElementById("dataAgendamento").value;
-      
-      // Obter aulas selecionadas
-      const aulasSelecionadas = [];
-      document.querySelectorAll('.aula-checkbox:checked').forEach(checkbox => {
-        aulasSelecionadas.push(checkbox.value);
-      });
-      
-      if (!professor || professor === "Selecione" || !aparelho || !turma || !numAparelhos || !data || !sala || aulasSelecionadas.length === 0) {
-        alert("Preencha todos os campos obrigatórios do formulário antes de agendar!");
-        return;
-      }
-      
-      const [dia, mes, ano] = data.split('/');
-      const mesAno = `${ano}-${mes}`;
-      
-      try {
-        // Simulação de salvar no Firebase
-        // Em um sistema real, você usaria firebase.firestore().collection("agendamentos").add(...)
-        const novoAgendamento = {
-          dia: parseInt(dia),
-          mesAno,
-          aparelho,
-          professor,
-          turma,
-          numAparelhos,
-          aula: aulasSelecionadas.join(', '),
-          sala,
-          dataAgendamento: new Date().toISOString(),
-          status: "Agendado"
-        };
-        
-        // Adicionar à tabela de reservas
-        addReservationToTable(novoAgendamento);
-        
-        alert("Agendamento realizado com sucesso!");
-        closeModal('reservationModal');
-      } catch (error) {
-        console.error("Erro ao salvar agendamento:", error);
-        alert("Erro ao salvar agendamento. Detalhes: " + error.message);
-      }
-    }
-
-    function addReservationToTable(reservation) {
-      const tableBody = document.getElementById('reservationsTable');
-      if (!tableBody) return;
-      
-      const row = document.createElement('tr');
-      const formattedDate = new Date(reservation.dataAgendamento).toLocaleDateString('pt-BR');
-      
-      row.innerHTML = `
-        <td>${formattedDate}</td>
-        <td>${reservation.professor}</td>
-        <td>${reservation.aparelho}</td>
-        <td>${reservation.numAparelhos}</td>
-        <td>${reservation.sala}</td>
+      // Atualizar histórico (simulação)
+      const newRow = document.createElement('tr');
+      newRow.className = 'recente';
+      newRow.innerHTML = `
+        <td>${formatDate(data)}</td>
+        <td>${document.getElementById('professor').options[document.getElementById('professor').selectedIndex].text}</td>
+        <td>${document.getElementById('equipamento').options[document.getElementById('equipamento').selectedIndex].text}</td>
+        <td>${aulas.join(',')}</td>
+        <td><span class="badge badge-primary">Agendado</span></td>
         <td>
-          <span class="badge badge-primary">
-            ${reservation.status}
-          </span>
-        </td>
-        <td>
-          <button class="btn btn-sm btn-primary" onclick="viewReservationDetail('${reservation.id}')">
-            <i class="fas fa-eye"></i>
-          </button>
-          <button class="btn btn-sm btn-danger" onclick="cancelReservation('${reservation.id}')">
-            <i class="fas fa-times"></i>
-          </button>
+          <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
         </td>
       `;
-      
-      tableBody.appendChild(row);
+      document.getElementById('historicoBody').prepend(newRow);
     }
 
-    function viewReservationDetail(id) {
-      // Implementação simplificada
-      alert("Visualizando detalhes da reserva ID: " + id);
-    }
-
-    function cancelReservation(id) {
-      if (confirm("Tem certeza que deseja cancelar esta reserva?")) {
-        // Implementação simplificada
-        alert("Reserva ID: " + id + " cancelada com sucesso!");
-      }
-    }
-
-    function showNewReservationModal() {
-      document.getElementById('reservationModal').style.display = 'flex';
-      // Resetar o formulário
-      document.getElementById('professor').value = "Selecione";
-      document.getElementById('email-professor').value = "";
-      document.getElementById('equipamentoAgendamento').value = "";
-      document.getElementById('marca').value = "";
-      document.getElementById('quantidadeAgendamento').value = "1";
-      document.getElementById('studentClass').value = "";
-      document.getElementById('sala').value = "";
-      document.getElementById('dataAgendamento').value = "";
-      document.getElementById('aula-container').innerHTML = '';
+    // Função para limpar o formulário de agendamento
+    function limparAgendamento() {
+      document.getElementById('agendamentoForm').reset();
       document.getElementById('conflictMessage').style.display = 'none';
     }
 
-    function closeModal(modalId) {
-      document.getElementById(modalId).style.display = 'none';
+    // Função para exportar para PDF
+    function exportarParaPDF() {
+      alert('Exportando dados para PDF...');
+      // Implementação real usaria a biblioteca jsPDF
     }
 
-    function fecharModal() {
-      document.getElementById('devolucaoModal').style.display = 'none';
-      agendamentoParaDevolver = null;
+    // Função para exportar para Excel
+    function exportarParaExcel() {
+      alert('Exportando dados para Excel...');
+      // Implementação real usaria uma biblioteca como SheetJS
     }
 
-    function finalizarAgendamento() {
-      // Implementação simplificada
-      alert("Devolução registrada com sucesso!");
-      fecharModal();
+    // Funções auxiliares
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('pt-BR');
     }
 
-    function loadReservationsTable() {
-      // Implementação simplificada
-      // Em um sistema real, você buscaria as reservas do Firebase
-      const tableBody = document.getElementById('reservationsTable');
-      if (!tableBody) return;
-      
-      // Limpar tabela
-      tableBody.innerHTML = '';
-      
-      // Adicionar dados de exemplo
-      const reservations = [
-        {
-          id: "res001",
-          data: "2023-07-20",
-          professor: "Ana Paula de Oliveira Souza",
-          equipamento: "Notebook do aluno",
-          quantidade: 15,
-          local: "Sala de aula",
-          status: "Confirmada"
+    // Inicializar gráficos do dashboard
+    function initCharts() {
+      // Gráfico de equipamentos por status
+      const equipmentCtx = document.getElementById('equipmentChart').getContext('2d');
+      new Chart(equipmentCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Disponíveis', 'Em Uso', 'Manutenção', 'Desativados'],
+          datasets: [{
+            data: [42, 18, 5, 3],
+            backgroundColor: [
+              '#27ae60',
+              '#3498db',
+              '#f39c12',
+              '#e74c3c'
+            ]
+          }]
         },
-        {
-          id: "res002",
-          data: "2023-07-19",
-          professor: "Rodrigo Vieira",
-          equipamento: "Tablets",
-          quantidade: 10,
-          local: "Sala de informática",
-          status: "Pendente"
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            },
+            title: {
+              display: true,
+              text: 'Distribuição de Equipamentos por Status'
+            }
+          }
         }
-      ];
-      
-      reservations.forEach(res => {
-        const row = document.createElement('tr');
-        const formattedDate = new Date(res.data).toLocaleDateString('pt-BR');
-        
-        row.innerHTML = `
-          <td>${formattedDate}</td>
-          <td>${res.professor}</td>
-          <td>${res.equipamento}</td>
-          <td>${res.quantidade}</td>
-          <td>${res.local}</td>
-          <td>
-            <span class="badge ${res.status === 'Confirmada' ? 'badge-success' : 'badge-warning'}">
-              ${res.status}
-            </span>
-          </td>
-          <td>
-            <button class="btn btn-sm btn-primary" onclick="viewReservationDetail('${res.id}')">
-              <i class="fas fa-eye"></i>
-            </button>
-            <button class="btn btn-sm btn-danger" onclick="cancelReservation('${res.id}')">
-              <i class="fas fa-times"></i>
-            </button>
-          </td>
-        `;
-        
-        tableBody.appendChild(row);
+      });
+
+      // Gráfico de reservas por dia
+      const reservationCtx = document.getElementById('reservationChart').getContext('2d');
+      new Chart(reservationCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+          datasets: [{
+            label: 'Reservas por Dia',
+            data: [8, 12, 7, 10, 15, 5],
+            backgroundColor: '#3498db'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Reservas na Última Semana'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
       });
     }
 
-    // ===== FUNÇÕES DO SISTEMA PRINCIPAL =====
-    function updateDashboard() {
-      // Implementação simplificada
-      document.getElementById('inUseCount').textContent = '12';
-      document.getElementById('availableCount').textContent = '45';
-      document.getElementById('maintenanceCount').textContent = '8';
-      document.getElementById('damagedCount').textContent = '5';
+    // Gerar calendário
+    function gerarCalendario() {
+      const hoje = new Date();
+      const mes = hoje.getMonth();
+      const ano = hoje.getFullYear();
+      
+      const diasNoMes = new Date(ano, mes + 1, 0).getDate();
+      const primeiroDia = new Date(ano, mes, 1).getDay();
+      
+      let calendarioHTML = '';
+      let dia = 1;
+      
+      // Atualizar mês atual
+      document.getElementById('mesAtual').textContent = hoje.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase());
+      
+      for (let i = 0; i < 6; i++) {
+        calendarioHTML += '<tr>';
+        
+        for (let j = 0; j < 7; j++) {
+          if (i === 0 && j < primeiroDia) {
+            calendarioHTML += '<td class="indisponivel"></td>';
+          } else if (dia > diasNoMes) {
+            calendarioHTML += '<td class="indisponivel"></td>';
+          } else {
+            // Simular disponibilidade (para demonstração)
+            const classe = (dia % 4 === 0) ? 'agendado' : 'disponivel';
+            calendarioHTML += `<td class="${classe}" onclick="selecionarDia(${dia})">${dia}</td>`;
+            dia++;
+          }
+        }
+        
+        calendarioHTML += '</tr>';
+      }
+      
+      document.getElementById('calendarioBody').innerHTML = calendarioHTML;
     }
 
-    function loadEquipmentTable() {
-      // Implementação simplificada
+    // Função para selecionar dia no calendário
+    function selecionarDia(dia) {
+      // Remover seleção anterior
+      const celulas = document.querySelectorAll('#calendarioBody td');
+      celulas.forEach(celula => celula.classList.remove('selecionado'));
+      
+      // Adicionar seleção
+      event.target.classList.add('selecionado');
+      
+      // Atualizar data no formulário
+      const hoje = new Date();
+      const mes = hoje.getMonth() + 1;
+      const dataFormatada = `${hoje.getFullYear()}-${mes < 10 ? '0' + mes : mes}-${dia < 10 ? '0' + dia : dia}`;
+      document.getElementById('dataAgendamento').value = dataFormatada;
     }
 
-    function loadMaintenanceTable() {
-      // Implementação simplificada
+    // Função para mudar mês no calendário
+    function mudarMes(direcao) {
+      alert('Funcionalidade de mudança de mês será implementada na versão completa.');
     }
 
-    function loadRegistrationTable() {
-      // Implementação simplificada
-    }
-
-    function generateReport() {
-      // Implementação simplificada
-      alert("Relatório gerado com sucesso!");
-    }
-
-    function exportReport() {
-      // Implementação simplificada
-      alert("Relatório exportado com sucesso!");
-    }
-
-    function printReport() {
-      window.print();
-    }
-
-    function showAddEquipmentModal() {
-      // Implementação simplificada
-      alert("Abrindo modal para adicionar equipamento");
-    }
-
-    function showMaintenanceModal() {
-      // Implementação simplificada
-      alert("Abrindo modal para manutenção");
-    }
-
-    function refreshReservations() {
-      loadReservationsTable();
-      alert("Lista de reservas atualizada!");
-    }
+    // Inicializar o sistema quando a página carregar
+    window.onload = function() {
+      gerarCalendario();
+      
+      // Simular dados para os dropdowns
+      document.getElementById('dataAgendamento').valueAsDate = new Date();
+      
+      // Inicializar gráficos se o dashboard estiver ativo
+      if (document.getElementById('dashboard').classList.contains('active')) {
+        initCharts();
+      }
+    };
   </script>
 </body>
 </html>
