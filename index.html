@@ -1198,336 +1198,426 @@
     // Horários dos professores (ESTRUTURA CORRIGIDA)
     const horariosProfessores = {
       "ADEMAR": {
-        "MANHA": ["1D", "1E", "1E", "1F", "1F", "1B", "1B", "1A", "1A", "1D", "1C", "1C"],
-        "TARDE": ["9C", "9B", "9B", "1G", "1G", "9A", "9A", "9C", "9C", "9D", "9A", "9D"],
-        "NOITE": ["2F", "2G", "2G", "2H", "2F", "2H", "1H", "1H", "2F", "2G", "2G", "2H"]
+        "MANHA": ["HISTÓRIA", "1F", "1B", "1A", "1D", "1C"],
+        "TARDE": ["HISTÓRIA", "9A", "9C", "9D", "9B", "1G"],
+        "NOITE": ["HISTÓRIA", "2F", "2H", "1H", "2G"],
+      },
+      "ADRIANA": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": [],
       },
       "ALISSON": {
-        "MANHA": ["6A", "6D", "6B", "1F", "6A", "6A", "1D", "6C", "1B", "1B/BIO", "3C/PV", "6C/CIÉ", "1E/BIO", "6B", "6B", "1C", "6C", "1F", "6D", "1E", "1A", "1A", "1C", "6D/C", "1D"],
-        "TARDE": ["8A", "8A", "7D/PV", "7C/PV", "8A", "8A", "7E/PV", "7C/PV", "8A", "8A", "7E/PV", "7C/PV"],
-        "NOITE": []
+        "MANHA": ["BIO/CIÊNCIAS", "1D", "6C", "1B", "BIO/PV/CIÊ", "1B/BIO", "3C/PV", "6C/CIÊ", "1E/BIO", "CIÊNCIAS/BIO", "6B", "1C", "1F", "6D", "1E", "1A", "6D/C"],
+        "TARDE": ["CIÊNCIAS/PV", "8A", "7E/PV", "7C/PV", "7D/PV"],
+        "NOITE": [],
+      },
+      "ANDRÉ": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": ["SALA LEITURA", "X"],
       },
       "ANDRÉIA": {
-        "MANHA": ["1E", "1F", "1D", "2C", "1C", "2D", "1F/R", "1D", "1F", "1E", "1C", "1F/R", "2C/R", "1D", "1C", "1C", "1E", "1C/R", "1D/R", "1E", "1B/R", "1E/R", "1D/R", "1F", "2D/R", "1E", "1C", "1F", "1D", "1B/R"],
+        "MANHA": ["RED/PORT", "1F/R", "1D", "1F", "1E", "1C", "2C/R", "1C/R", "REDAÇÃO/PORT", "1D/R", "1B/R", "1E/R", "2D/R"],
         "TARDE": [],
-        "NOITE": []
+        "NOITE": [],
       },
       "ANTONIO": {
         "MANHA": [],
         "TARDE": [],
-        "NOITE": ["3G", "2F", "2F", "2G", "2G"]
+        "NOITE": ["BIOLOGIA", "3G", "2F", "2G", "2H", "1I"],
       },
       "ANTONIO CARLOS": {
-        "MANHA": ["2B", "2B", "2E", "2E", "2C", "2C", "2D", "2D", "2A", "2D", "2D", "2E", "2E", "2A", "2A", "2C", "2C", "2A", "2B", "2B"],
+        "MANHA": ["PORTUGUÊS", "2C", "2D", "2A", "2E", "2B"],
         "TARDE": [],
-        "NOITE": ["3G", "2F", "2F", "2G", "2G"]
+        "NOITE": [],
+      },
+      "AUGUSTO": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": [],
       },
       "BETE": {
-        "MANHA": ["1A", "1A", "1A", "1E", "1B", "1B", "1E/EF", "1E/EF", "1D", "1D", "1B", "1A", "1C/EF", "1C/EF", "1E", "1E", "1D/EF", "1D/EF", "1C", "1C", "1E", "1B", "1A/EF", "1A/EF", "1B/EF", "1B/EF", "1D", "1D", "1C", "1C"],
-        "TARDE": ["1G", "1G"],
-        "NOITE": []
+        "MANHA": ["ED FIN/MAT", "1E/EF", "1D", "1B", "1A", "1C/EF", "1E", "1D/EF", "MAT/ED FIN", "1C", "1A/EF", "1B/EF"],
+        "TARDE": ["ED FIN", "1G"],
+        "NOITE": [],
       },
-      "DANIEL": {
-        "MANHA": ["6C", "6C", "2C", "6D", "3C", "3C", "2ADM/H", "2ADM/H", "6A", "2C", "2D/L", "2D/L", "6B", "6B", "2A", "2A", "2B", "2B", "2D", "2D", "6D", "6A", "3B", "3B", "3A", "3A", "2C/L", "2C/L", "2E", "2E"],
-        "TARDE": ["6E", "6E"],
-        "NOITE": []
-      },
-      "DANIELLE": {
+      "CAROL": {
         "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["3F", "2F", "3G", "3E", "3D"]
-      },
-      "DANIELA": {
-        "MANHA": ["1C", "1C", "6A", "6A", "6D", "6D", "6B", "6B", "6C", "6C", "1D", "1D", "1A", "1A", "1F", "1F", "1B", "1B", "1E", "1E"],
-        "TARDE": ["7D", "7C", "9A", "7E", "7E", "7C", "7D", "7B", "7B", "7A", "1G", "1G", "9D", "7A", "7D", "7B", "7B", "7A", "1G", "1G"],
-        "NOITE": ["1H"]
-      },
-      "EDIANE": {
-        "MANHA": ["2ADM", "2ADM", "2ADM"],
-        "TARDE": ["6E/R", "7C", "6F", "6F", "7B", "6F", "7C", "7B", "6F/R", "6F/R", "9C/O", "9D/O", "6F", "7D", "9D/OP", "7D", "7C", "7D", "7B", "7D", "7C", "9B/OP", "6E/R", "9B/OP", "9C/OP", "7B", "6F", "6F", "7C"],
-        "NOITE": ["2G", "2F", "2F", "3E/OP", "3E/OP", "2H", "2H", "2H", "2F", "2F", "3F", "3F", "2G", "2G", "2G", "3G/OP", "3G/OP", "3D/OP", "3D/OP"]
-      },
-      "EDUARDO": {
-        "MANHA": [],
-        "TARDE": ["7C", "8B", "7D", "8B", "7D", "7C"],
-        "NOITE": []
-      },
-      "ELIAS": {
-        "MANHA": ["2E", "2E", "3B", "3B", "2C", "2C", "1C", "1C", "2ADM/Q", "2ADM/Q", "3A", "3A", "2B", "2B", "1A", "1A", "2A", "1F", "1B", "1B", "3C", "3C", "1E", "1E", "1D", "1D", "1F", "2A", "2D", "2D"],
-        "TARDE": ["1G", "1G", "9C", "9C", "9B", "9B/OM", "9A", "8E/PV", "9A", "8D/PV"],
-        "NOITE": ["1H/Q", "1H/Q", "1H/EF", "1H/EF", "1H/F", "1H/F"]
-      },
-      "FÁBIO": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["1I", "2F", "1I", "3D", "1I", "3D", "3E", "2G", "1I", "2H"]
-      },
-      "GENILTON": {
-        "MANHA": [],
-        "TARDE": ["7E", "7E", "9B", "7C", "7C", "6F", "6F", "6E", "6E", "7D", "6F", "7B/PV", "6E", "7F", "7D"],
-        "NOITE": []
-      },
-      "GISLENE": {
-        "MANHA": ["6B", "6A", "6B", "6A"],
-        "TARDE": [],
-        "NOITE": []
-      },
-      "INGRYD": {
-        "MANHA": [],
-        "TARDE": ["8E", "8D", "8D", "8E", "6E", "6E", "8C", "6F", "8D", "8D", "6F", "6E", "6E", "6F", "6F", "8E"],
-        "NOITE": []
-      },
-      "JANINA": {
-        "MANHA": ["2ADM/B", "2ADM/B", "2B", "2A", "2A", "2B", "3C/BIOT", "3C/BIOT", "2C", "2C", "3A", "3A", "3B", "3B", "2E", "2D", "2D", "2E"],
-        "TARDE": ["9B", "9C", "9B", "9C", "9D", "9B", "9A", "9A"],
-        "NOITE": ["3D", "3F", "3D", "3E", "3E", "3F"]
-      },
-      "JUAREZ": {
-        "MANHA": ["1E", "1E", "1F", "3A", "3A", "3C", "3C", "1F", "1D", "1D", "3B", "3B", "1E", "1E", "1F"],
-        "TARDE": [],
-        "NOITE": ["2F/FÍS", "2G", "2G", "1J", "1J", "2H", "2H", "3F", "3E", "3E", "2F/FÍS", "2G", "2G", "1J", "1J", "2H/Q", "3D", "3D", "2G", "2G"]
-      },
-      "KATIUSCIA": {
-        "MANHA": ["1A", "1A"],
-        "TARDE": ["8A", "9C", "8B", "8C", "8E", "8E", "7C", "7A", "7A", "7D", "7D", "8B", "9D", "9D", "9A", "9A", "7E", "7E", "8C", "7F", "7F", "8D", "8D", "7C"],
-        "NOITE": []
-      },
-      "LUCIANA": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["3G", "3G", "3D", "3F", "3F", "3G", "3G", "1I", "1I", "3E", "3D", "3D"]
-      },
-      "MARINA": {
-        "MANHA": ["6B", "6A", "6B/EF", "6B/EF", "6D", "6D", "6D", "6B", "6A", "6B", "6C", "6C", "6C", "6B", "6A/EF", "6A/EF", "6D", "6D", "6A", "6D/EF", "6D/EF", "6A", "6C", "6C", "6A", "6B", "6C/EF", "6C/EF"],
-        "TARDE": ["6F", "6F", "6E", "6E", "7A", "7B/EF", "7B/EF", "7A", "7A/EF", "7A/EF"],
-        "NOITE": []
-      },
-      "MOISÉS": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["3E/OM", "3G", "3G", "3F/OM", "3F/OM", "3E", "3E", "3G", "3G", "3D", "3G/OM", "3D/OM", "3D/OM", "3F", "3F"]
-      },
-      "NILDES": {
-        "MANHA": ["3C", "2C", "2D", "3A", "2D", "3A", "2B", "3A/OM", "3B", "3B", "2C", "2C", "3B", "2C", "3C", "2D", "3A/O M", "3B", "2E", "2E", "2B", "2B", "3A", "2E", "2B", "2E", "3C", "2D", "3A", "3C"],
-        "TARDE": ["8A", "8A"],
-        "NOITE": []
-      },
-      "PEDRO": {
-        "MANHA": [],
-        "TARDE": ["6F", "6F"],
-        "NOITE": ["3F", "3G", "3E", "3G", "1I", "1I", "3F", "3E"]
-      },
-      "RAUL": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["1H", "1H"]
-      },
-      "ROBERTO": {
-        "MANHA": [],
-        "TARDE": ["7E", "7F", "7C", "7D", "7B", "7E", "7C", "7D", "7B", "7F", "7E", "6E/G", "6E/G"],
-        "NOITE": ["3G", "1J/EF", "1J/EF", "3G/F", "2H/EF", "2H/EF"]
-      },
-      "RODRIGO": {
-        "MANHA": ["1D", "1D", "1C", "1C", "1F", "1F", "1B", "1B", "1A", "1A", "1E", "1E", "3D", "3G", "3E"],
-        "TARDE": [],
-        "NOITE": ["3D", "3G", "3E", "3D", "2G", "2F", "1I", "1I", "3F", "2G", "1I"]
-      },
-      "ROSANGELA": {
-        "MANHA": ["1B", "1B", "2A", "2A", "2E", "2E", "1A", "1A", "1C", "1C", "2B", "2B", "2A/PR", "2A/PR", "3A/PR", "3A/PR", "2C/Q", "2C/Q", "3B/EM", "3B/EM", "2D/QU", "2D/QU", "2B/PR", "2B/PR", "3B/P", "3B/P", "3A/EM", "3C/P", "3C/P", "3A/EM"],
-        "TARDE": ["1G", "1G"],
-        "NOITE": []
-      },
-      "SÉRGIO": {
-        "MANHA": ["2A", "3B", "3A", "2B", "2A", "3B", "3A", "2B"],
-        "TARDE": ["9D", "9D", "7C", "7C", "8D", "8D", "9B", "9B", "9C", "9C", "9A", "9A"],
-        "NOITE": ["2F", "3D", "3E", "3F", "2F", "1J", "3D", "2G", "3E", "2H", "3G"]
-      },
-      "TITO": {
-        "MANHA": ["6D"],
-        "TARDE": ["7A", "7F", "7F", "7A", "7B", "7B", "6F", "6F", "6E", "6E", "7E", "7E"],
-        "NOITE": []
-      },
-      "VANDERSON": {
-        "MANHA": ["3A", "3A", "3C", "3C", "3B", "3C", "3C", "3A", "3A"],
-        "TARDE": [],
-        "NOITE": []
-      },
-      "VIVIANE": {
-        "MANHA": ["6B", "1B", "6B", "3A", "1D", "6C", "1F", "1E", "1B", "6C", "1C", "1D", "6D", "6A", "1F", "1C", "3A", "6A", "6D", "1E", "6A", "6D"],
-        "TARDE": ["7E/R", "6E/T", "7E/R", "7A/T", "6E/T", "7D/T", "7E/T", "7C/T", "7A/R", "7A/R", "7C/T", "7B/T", "7B/T", "8B/PV", "9D/PV", "7D/T", "7F/T", "7F/T", "7E", "7E/T", "7C/T", "7A/R", "7A/R", "7C/T", "7B/T"],
-        "NOITE": ["1H/R", "1H/P", "1H/P", "1H/R", "1H/P", "1H/P"]
-      },
-      "FLÁVIA": {
-        "MANHA": ["X", "X", "X", "X", "X", "X"],
-        "TARDE": [],
-        "NOITE": []
-      },
-      "SOL": {
-        "MANHA": [],
-        "TARDE": ["X", "X", "X", "X", "X", "X"],
-        "NOITE": []
-      },
-      "CAROLINA": {
-        "MANHA": [],
-        "TARDE": ["1G", "1G", "7A", "7A", "9D", "9D", "9A", "7B", "7B", "9B", "9B", "9C", "9D"],
-        "NOITE": []
+        "TARDE": ["CIÊNCIS/BIO", "1G", "7A", "CIÊNCIAS", "9D", "9A", "7B", "9C", "9B"],
+        "NOITE": [],
       },
       "CASSIA": {
         "MANHA": [],
-        "TARDE": ["8C", "8E", "8E", "8B", "8B", "8B", "8D", "8D", "8B", "8C", "8D", "8D", "8E", "8E", "8C", "8C"],
-        "NOITE": []
-      },
-      "DANIEL FREITAS": {
-        "MANHA": [],
-        "TARDE": ["9B", "9B", "9D", "1G", "1G", "9A", "9B", "8E/EF", "8E/EF", "9C", "9A", "9D", "9D", "9B", "9B", "9A", "9C", "9C", "9D", "9D"],
-        "NOITE": ["1H", "1H"]
-      },
-      "GUSTAVO": {
-        "MANHA": [],
-        "TARDE": ["7F/AR", "9C/AR", "7F/AR"],
-        "NOITE": ["1I"]
-      },
-      "GELSON": {
-        "MANHA": ["2D/EF", "2D/EF", "3C/OM", "3C/OM", "3B/OM", "3B/OM"],
-        "TARDE": ["8B", "8A", "8A", "8B", "8B", "8A", "8A", "8B"],
-        "NOITE": []
-      },
-      "LUANA": {
-        "MANHA": ["6D", "6B", "6A"],
-        "TARDE": ["9C", "7A", "7A", "9A", "9B", "9B", "9C", "9C", "1G", "1G", "9D", "9D", "9A", "9B", "9B", "9C", "1G", "1G"],
-        "NOITE": []
-      },
-      "LUCIANO": {
-        "MANHA": [],
-        "TARDE": ["8A", "8A", "8D", "9A", "9C", "7E", "8B", "9C", "7E", "7F", "7F", "8C", "7E", "9B", "7F", "9D", "8D", "9A", "8E", "8E"],
-        "NOITE": []
-      },
-      "MARA": {
-        "MANha": [],
-        "TARDE": ["1G", "9A", "9D", "8A", "8E", "8D", "8C", "9C", "9C", "9D", "8D", "9A", "8C", "9B", "9B", "8A/PV", "8E", "8A", "1G"],
-        "NOITE": []
-      },
-      "MARCIEL": {
-        "MANHA": [],
-        "TARDE": ["7E", "7E", "7B", "9B/PV", "8C", "8C", "9A/PV", "8E", "8E", "8A", "7C", "7D", "8C", "7D", "7F", "7F", "8D", "8D", "8A", "8A", "8B", "7C", "7A", "7A"],
-        "NOITE": ["3D", "3D"]
-      },
-      "REGINA": {
-        "MANHA": ["1A", "1A"],
-        "TARDE": ["9D", "9D", "7C", "7C", "8D", "8D", "9B", "9B", "9C", "9C", "9A", "9A", "7D", "7B", "7B", "8B", "8B", "8A", "7D/R", "6E", "6E", "8A/R", "8C/R", "8C/R"],
-        "NOITE": []
-      },
-      "ROSE": {
-        "MANHA": ["6C", "1B", "6B", "6A", "1A", "6C", "6D", "6A", "6D", "6D", "1B", "6B", "1A", "6B", "6C", "1A", "1B", "6D"],
-        "TARDE": [],
-        "NOITE": []
-      },
-      "SELMA": {
-        "MANHA": ["1A", "1D", "1C", "1B", "1G/F", "1A", "1C", "1B", "1D"],
-        "TARDE": [],
-        "NOITE": []
-      },
-      "SUZY": {
-        "MANHA": ["2ADM", "2ADM", "2B", "2B", "2E", "2E"],
-        "TARDE": ["6F", "6F", "6E", "1G", "1G"],
-        "NOITE": ["1H", "2F", "2G", "1I", "2H"]
-      },
-      "VANIA": {
-        "MANHA": ["3C", "3C"],
-        "TARDE": ["8D", "8C", "8C", "8A", "8A", "7E", "8B", "8B", "7F", "7F", "7E", "8A", "8E", "8B", "8B", "8D", "8D", "8E", "7F", "7F", "8A", "7E", "9A/OP", "9A/OP"],
-        "NOITE": []
-      },
-      "WILSON": {
-        "MANHA": [],
-        "TARDE": ["6E", "8C", "6E", "6F", "8D", "8A", "6F", "8E", "8B"],
-        "NOITE": []
-      },
-      "WILTON": {
-        "MANHA": [],
-        "TARDE": ["7D/EF", "8A/T", "8E/T", "8C/EF", "8D/EF", "8D/EF", "8B/T", "8C/T", "8D/T", "8C/EF", "8D/T", "7C/EF", "7D/EF", "7C/EF", "8B/EF", "8A/T", "8E/T", "8B/EF"],
-        "NOITE": []
-      },
-      "ELIANE CONTI": {
-        "MANHA": ["3C/EMP"],
-        "TARDE": [],
-        "NOITE": []
-      },
-      "EDIVÂNIA": {
-        "MANHA": ["1F", "1F", "2B/EMP", "1F", "2E/EF", "1F", "2E/EF"],
-        "TARDE": ["7F", "7E", "7E", "7F"],
-        "NOITE": []
-      },
-      "ELIANE SANTOS": {
-        "MANHA": ["2D", "2D", "6D", "6C/PV", "2ADM/G", "2ADM/G", "6A", "3B/PV", "6B/PV", "6A/PV", "6B", "6D", "6C", "6C", "6B", "3A/PV"],
-        "TARDE": ["1G", "1G"],
-        "NOITE": []
-      },
-      "EUZELI": {
-        "MANHA": ["3B", "1E", "1E", "2D", "2B", "1B", "1B", "1D", "1D", "1F", "1C", "1C", "2E", "3A", "1F", "2ADM", "2C", "2A"],
-        "TARDE": [],
-        "NOITE": []
-      },
-      "MAURÍCIO": {
-        "MANHA": ["2C/EF", "2A/EF", "2ADM/M.A", "2ADM/M.A", "2A/MAT", "2C/EF", "2B/EF", "2ADM/M", "2ADM/M", "2A", "2A", "2ADM", "2ADM", "2ADM", "2B"],
-        "TARDE": [],
-        "NOITE": []
-      },
-      "PAULO": {
-        "MANHA": ["2E", "2E", "2E/L", "2E/L", "1F/FIL", "1F/FIL", "2D/OR", "2D/SOC", "2D/SOC", "2B", "2B", "2C/OR", "2E/OR", "2C", "2C", "2ADM", "2ADM", "1E/F", "1E/F", "2A/S", "2A/S"],
-        "TARDE": ["6E", "6F", "8C"],
-        "NOITE": ["2H", "2G", "2F"]
-      },
-      "REGIANE": {
-        "MANHA": ["3B", "3B", "3A", "3A"],
-        "TARDE": [],
-        "NOITE": []
-      },
-      "SANDRA": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["1H/F", "1H/G", "1H/G"]
-      },
-      "CHARLES": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": []
+        "TARDE": ["CIÊNCIAS", "8C", "8E", "8B", "8D"],
+        "NOITE": [],
       },
       "CELSO": {
         "MANHA": [],
         "TARDE": [],
-        "NOITE": []
+        "NOITE": [],
+      },
+      "CHARLES": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "DANIEL": {
+        "MANHA": ["HIST/LID", "2ADM/H", "6A", "2C", "2D/L", "HISTÓRIA", "2D", "6D", "3B", "HISTÓRIA/LID", "3A", "2C/L", "2E"],
+        "TARDE": ["HISTÓRIA", "6E"],
+        "NOITE": [],
+      },
+      "DANIEL FR": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": ["MATEMÁTICA", "1H"],
+      },
+      "DANIEL FREITAS": {
+        "MANHA": [],
+        "TARDE": ["MATEMÁTICA", "9B", "9D", "1G", "MAT/ED FIN", "9A", "8E/EF", "9C"],
+        "NOITE": ["MATEMÁTICA", "1H"],
+      },
+      "DANIEL LOPES": {
+        "MANHA": ["HISTÓRIA", "6B", "2A", "2B"],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "DANIELA": {
+        "MANHA": ["ARTE", "6B", "6C", "1D", "1A", "1F", "1B", "1E"],
+        "TARDE": ["ARTE", "7D", "7C", "9A", "7E", "7B", "7A", "1G", "9D"],
+        "NOITE": ["ARTE", "1H"],
+      },
+      "DANIELLE": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": ["QUÍMICA", "3F", "2F", "3G", "3E", "3D"],
       },
       "DEIZY": {
         "MANHA": [],
         "TARDE": [],
-        "NOITE": []
+        "NOITE": [],
+      },
+      "EDIANE": {
+        "MANHA": ["PORTUGUÊS", "2ADM"],
+        "TARDE": ["OP/R/PORT", "7C", "7B", "6F/R", "9C/O", "9D/O", "PORT/OP/RED", "7D", "9B/OP", "6E/R", "OP/PORT", "9C/OP", "O PORT/PORT", "6F", "9D/OP", "REDAÇÃO/PORT"],
+        "NOITE": ["PORTUGUÊS", "3F", "2G", "2H", "PORT/OR PORT", "2F", "3E/OP", "PORT/ OR PORT", "3G/OP", "3D/OP"],
+      },
+      "EDIVANIA": {
+        "MANHA": [],
+        "TARDE": ["OR MAT/PV", "9D", "OR MAT"],
+        "NOITE": [],
+      },
+      "EDIVÂNIA": {
+        "MANHA": ["MAT/ED FIN", "1F", "2E/EF"],
+        "TARDE": ["ED FIN", "7F", "7E"],
+        "NOITE": [],
+      },
+      "EDUARDO": {
+        "MANHA": [],
+        "TARDE": ["ED FÍSICA", "7C", "8B", "7D"],
+        "NOITE": [],
+      },
+      "ELIANE": {
+        "MANHA": ["GEOGRAFIA", "6A", "2A", "2E", "GEO/PV", "3B/PV", "6B/PV", "6A/PV", "6B", "6D", "GEOGRAFIA/PV", "6C", "3A/PV", "2B", "6D/PV", "2C"],
+        "TARDE": ["GEOGRAFIA", "1G"],
+        "NOITE": [],
+      },
+      "ELIANE CONTI": {
+        "MANHA": ["EMP", "3C/EMP"],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "ELIAS": {
+        "MANHA": ["FÍS/QUIM", "1C", "2ADM/Q", "3A", "FÍSICA", "2B", "1A", "2A", "1F", "1B", "3C", "1E", "1D", "2D"],
+        "TARDE": ["OR MAT", "9B", "9B/OM", "OR MAT/PV", "9A", "8E/PV", "8D/PV", "FÍSICA", "1G", "9C"],
+        "NOITE": ["QUIM/ED FIN", "1H/Q", "1H/EF", "FÍSICA", "1H/F"],
+      },
+      "EMERSON": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": [],
       },
       "ERINEIDE": {
         "MANHA": [],
         "TARDE": [],
-        "NOITE": []
+        "NOITE": [],
+      },
+      "EUZELI": {
+        "MANHA": ["ED FÍSICA", "1B", "1D", "1F", "1A", "2ADM", "2C", "2A", "1C", "2E", "3A"],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "EVENTUAL": {
+        "MANHA": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª"],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "EVENTUAL:": {
+        "MANHA": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª"],
+        "TARDE": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª"],
+        "NOITE": ["1ª", "2ª", "3ª", "4ª", "5ª"],
+      },
+      "FERNANDO": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "FLÁVIA": {
+        "MANHA": ["SALA LEITURA", "X"],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "FÁBIO": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": ["MATEÁTICA", "1I", "2F", "3D", "MATEMÁTICA", "3E", "2H", "2G"],
+      },
+      "GELSON": {
+        "MANHA": ["OR MAT/E.FIN", "2D/EF", "3C/OM", "3B/OM", "ED FIN", "1F", "ED FIN/MAT"],
+        "TARDE": ["MATEMÁTICA", "8B", "8A"],
+        "NOITE": [],
+      },
+      "GENILTON": {
+        "MANHA": [],
+        "TARDE": ["CIÊNCIAS", "7E", "CIÊNCIAS/PV", "7D", "6F", "7B/PV", "6E", "7F", "7C", "7A/PV"],
+        "NOITE": [],
+      },
+      "GISLENE": {
+        "MANHA": ["TECNOLOGIA", "6B", "6A"],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "GUSTAVO": {
+        "MANHA": [],
+        "TARDE": ["ARTE", "7F/AR", "9C/AR"],
+        "NOITE": ["ARTE", "1I"],
       },
       "HELENA": {
         "MANHA": [],
         "TARDE": [],
-        "NOITE": []
+        "NOITE": [],
       },
-      "Mª APARECIDA": {
+      "INGRYD": {
+        "MANHA": [],
+        "TARDE": ["MATEMÁTICA", "8E", "8D", "6E", "8C", "6F"],
+        "NOITE": [],
+      },
+      "JANINA": {
+        "MANHA": ["BIOLOGIA", "2A", "2B", "BIOTEC/BIO", "3C/BIOT", "2C", "BIOTECNOLOGIA", "3A", "3B", "2E", "2D"],
+        "TARDE": [],
+        "NOITE": ["BIOLOGIA", "3D", "3F", "3E"],
+      },
+      "JUAREZ": {
+        "MANHA": ["QUIM APL", "3A", "3C", "QUÍMICA", "1E", "1F", "1D", "3B"],
+        "TARDE": [],
+        "NOITE": ["FÍSICA", "2H", "3F", "3E", "QUIM/FÍSICA", "2H/Q", "3D", "2G", "FÍSICA/QUIM", "2F/FÍS", "1I", "2F"],
+      },
+      "KATIUSCIA": {
+        "MANHA": [],
+        "TARDE": ["INGLÊS", "8A", "9C", "8B", "8C", "8E", "7C", "7A", "7D", "9D", "9A", "7E", "7B", "9B", "7F", "8D"],
+        "NOITE": [],
+      },
+      "LUANA": {
+        "MANHA": ["REDAÇÃO", "6D", "6B", "6A", "6C"],
+        "TARDE": ["PORTUGUÊS", "9C", "7A", "9A", "9B", "1G", "9D"],
+        "NOITE": [],
+      },
+      "LUANA ADM": {
+        "MANHA": ["MER TRA/LEG PES", "2ADM", "LEG PES"],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "LUCIANA": {
         "MANHA": [],
         "TARDE": [],
-        "NOITE": []
+        "NOITE": ["PORTUGUÊS", "3G", "3D", "3F", "1I", "3E"],
       },
-      "VANDA": {
+      "LUCIANO": {
+        "MANHA": [],
+        "TARDE": ["GEOGRAFIA", "8A", "8D", "9A", "9C", "7E", "8B", "8C", "9B", "9D", "7F", "8E"],
+        "NOITE": [],
+      },
+      "LUCIENE": {
         "MANHA": [],
         "TARDE": [],
-        "NOITE": []
+        "NOITE": [],
+      },
+      "MARA": {
+        "MANHA": [],
+        "TARDE": ["ED FÍSICA", "1G", "9A", "9D", "8A", "8E", "8D", "8C", "9C", "PV/ED FÍSICA", "8A/PV", "9B"],
+        "NOITE": [],
+      },
+      "MARCIEL": {
+        "MANHA": [],
+        "TARDE": ["HISTÓRIA", "7E", "7B", "9B/PV", "8C", "PV/HISTÓRIA", "9A/PV", "8E", "8A", "7C", "7D", "7F", "8D", "9C/PV", "8B", "7A"],
+        "NOITE": ["HISTÓRIA", "3D"],
+      },
+      "MARINA": {
+        "MANHA": ["MTEMÁTICA", "6D", "6B", "6A", "MAT/ED FIN", "6C", "6A/EF", "6D/EF", "6C/EF"],
+        "TARDE": ["MATEMÁTICA", "7A", "ED FIN/MAT", "7B/EF", "7A/EF"],
+        "NOITE": [],
+      },
+      "MARINA ESP": {
+        "MANHA": [],
+        "TARDE": ["ED FIN", "6F", "6E"],
+        "NOITE": [],
+      },
+      "MAURÍCIO": {
+        "MANHA": ["ED FIN/MAT", "2C/EF", "2B/EF", "2ADM/M", "ED FIN", "2A", "MATEMÁTICA", "MAT/ED FIN", "2ADM", "2B"],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "MOISÉS": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": ["OR MAT.", "3E", "3G", "3D", "OM/MAT", "3E/OM", "3F/OM", "OR MAT/MAT", "3G/OM", "3D/OM", "3F", "ED FIN/OR MAT", "2G/EF", "2F/EF", "MATEMÁTICA"],
+      },
+      "MURÍCIO": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "MªAPARECIDA": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "NILDES": {
+        "MANHA": ["MAT/O MAT", "2B", "3A/OM", "3B", "2C", "MAT/OR MAT", "3C", "2D", "3A/O M", "MATEMÁTICA", "2E", "3A"],
+        "TARDE": ["ED FIN", "8A"],
+        "NOITE": [],
+      },
+      "PAULO": {
+        "MANHA": ["SOC/LID", "2E", "2E/L", "FIL/OR/SOC", "1F/FIL", "2D/OR", "2D/SOC", "", "SOC/ORATÓRIA", "2B", "2C/OR", "2E/OR", "2C", "SOC/FIL", "2ADM", "1E/F", "2A/S"],
+        "TARDE": ["PROJ VIDA", "6E", "6F", "8C"],
+        "NOITE": ["FILOSOFIA", "2G", "1I", "2H", "2F", "SOCIOLOGIA"],
+      },
+      "PEDRO": {
+        "MANHA": [],
+        "TARDE": ["HISTÓRIA", "6F"],
+        "NOITE": ["HISTÓRIA", "3F", "3G", "3E", "1I"],
+      },
+      "PROFESSOR": {
+        "MANHA": ["1º", "2º", "3º", "4º", "5º", "6º", "PROFESSOR"],
+        "TARDE": [],
+        "NOITE": ["", "1ª", "2ª", "3ª", "4ª", "5ª", "6ª"],
+      },
+      "PROFESSOR READAPTADO": {
+        "MANHA": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "2º", "7ª"],
+        "TARDE": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "7ª", "2º"],
+        "NOITE": ["1ª", "2ª", "3ª", "4ª", "5ª", "2º", "6ª"],
+      },
+      "PROFESSOR:": {
+        "MANHA": [],
+        "TARDE": ["", "1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "7ª", "PROFESSOR:"],
+        "NOITE": [],
+      },
+      "RAUL": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": ["BIOLOGIA", "1H"],
+      },
+      "REGIANE": {
+        "MANHA": ["OR PORT", "3B", "3A"],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "REGINA": {
+        "MANHA": ["REDAÇÃO", "1A"],
+        "TARDE": ["REDAÇÃO", "9D", "7C", "8D", "9B", "9C", "9A", "RED/PORT", "8E/R", "1G/R", "6E", "REDAÇÃO/PORT", "7D/R", "8A/R", "8C/R", "7D", "7B", "8B", "8A"],
+        "NOITE": [],
       },
       "RICARDO": {
         "MANHA": [],
         "TARDE": [],
-        "NOITE": []
-      }
-    };
+        "NOITE": [],
+      },
+      "ROBERTO": {
+        "MANHA": [],
+        "TARDE": ["MATEMÁTICA", "7E", "7F", "7C", "7D", "7B"],
+        "NOITE": ["FÍSICA", "3G", "ED FIN/FÍS", "1I/EF", "3G/F", "2H/EF"],
+      },
+      "RODRIGO": {
+        "MANHA": ["GEOGRAFIA", "1B", "1A", "1E"],
+        "TARDE": [],
+        "NOITE": ["GEOGRAFIA", "3D", "2G", "2F", "2H", "3G", "3F", "1I", "3E"],
+      },
+      "ROSANGELA": {
+        "MANHA": ["QUÍMICA", "1A", "1C", "2B", "PROGR/QUÍM", "2A/PR", "3A/PR", "2C/Q", "EMP/QU/PR", "3B/EM", "2D/QU", "2B/PR", "PROG/EMP", "3B/P", "3A/EM", "3C/P"],
+        "TARDE": ["QUÍMICA", "1G"],
+        "NOITE": [],
+      },
+      "ROSE": {
+        "MANHA": ["PORTUGUÊS", "6B", "6A", "1A", "6C", "6D", "1B"],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "SANDRA": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": ["GEOGRAFIA", "1H/F", "1H/G"],
+      },
+      "SELMA": {
+        "MANHA": ["FILOSOFIA", "1B", "1A", "1C", "1D"],
+        "TARDE": ["FILOSOFIA", "1G/F"],
+        "NOITE": [],
+      },
+      "SOL": {
+        "MANHA": [],
+        "TARDE": ["SALA LEITURA", "X", "SALA LEITRA"],
+        "NOITE": [],
+      },
+      "SOLL": {
+        "MANHA": [],
+        "TARDE": ["SALA LEITURA", "X"],
+        "NOITE": [],
+      },
+      "SUZY": {
+        "MANHA": ["INGLÊS", "2ADM", "2B", "2E", "2C", "2A", "2D"],
+        "TARDE": ["INGLÊS", "6F", "6E", "1G"],
+        "NOITE": ["INGLÊS", "1H", "2F", "2G", "1I", "2H"],
+      },
+      "SÉRGIO": {
+        "MANHA": ["REDAÇÃO", "3A", "2B"],
+        "TARDE": [],
+        "NOITE": ["REDAÇÃO", "2F", "3D", "3E", "3F", "2G", "3G", "1I", "2H"],
+      },
+      "TITO": {
+        "MANHA": ["ED FÍSICA", "3C", "6C", "6B", "6A", "6D"],
+        "TARDE": ["ED FIS", "7A", "7F", "7B", "ED FÍSICA", "6F", "6E", "7E", ""],
+        "NOITE": [],
+      },
+      "VANDA": {
+        "MANHA": [],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "VANDERSON": {
+        "MANHA": ["REDAÇÃO", "3C", "REDAÇÃO/PORT", "2E/R", "3B", "INGLÊS/PORT", "3A", "PORT/INGLÊS", "3B/IN"],
+        "TARDE": [],
+        "NOITE": [],
+      },
+      "VANIA": {
+        "MANHA": ["OR PORT", "3C"],
+        "TARDE": ["PORTUGUÊS", "8D", "8C", "8A", "7E", "8B", "7F", "PORT/OP", "9A/OP", "8E"],
+        "NOITE": [],
+      },
+      "VIVIANE": {
+        "MANHA": ["INGLÊS", "6C", "1F", "1E", "1B", "1C", "1D", "6D", "6A", "3A"],
+        "TARDE": ["TEC/PV", "7B/T", "8B/PV", "9D/PV", "7D/T", "7F/T", "TEC/RED/PV", "6F/T", "7F/R", "7F/PV", "7A/T", "TEC/REDAÇÃO", "7E/T", "7C/T", "7A/R", "TECNOLOGIA", "7E", "REDAÇÃO/TEC", "7E/R", "6E/T"],
+        "NOITE": ["REDAÇÃO/PORT", "1H/R", "1H/P", "PORT/REDAÇÃO"],
+      },
+      "WILSON": {
+        "MANHA": [],
+        "TARDE": ["ARTE", "6E", "8C", "6F", "8D", "8A", "8E", "8B"],
+        "NOITE": [],
+      },
+      "WILTON": {
+        "MANHA": [],
+        "TARDE": ["ED FIN/TEC", "7D/EF", "8A/T", "8E/T", "8C/EF", "8D/EF", "8B/T", "8C/T", "8B/EF", "ED FIN/ TEC", "8D/T", "7C/EF"],
+        "NOITE": [],
+      },
+};
     const monthNames = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
@@ -2294,5 +2384,3 @@
   </script>
 </body>
 </html>
-
-
