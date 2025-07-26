@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -661,6 +662,90 @@
       margin-bottom: 8px;
       color: var(--azul-escuro);
     }
+
+    /* Estilos para a seção de agendamentos na parte inferior do calendário */
+    .agendamentos-section {
+      margin-top: 30px;
+      background-color: var(--branco);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .agendamentos-section h3 {
+      color: var(--azul-escuro);
+      margin-bottom: 15px;
+      text-align: center;
+      background-color: var(--azul-claro);
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .agendamento-item {
+      background-color: #f8f9fa;
+      border-left: 4px solid var(--azul-medio);
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .agendamento-item:hover {
+      background-color: #e9ecef;
+      transform: translateX(5px);
+    }
+
+    .agendamento-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .agendamento-data {
+      font-weight: bold;
+      color: var(--azul-escuro);
+      font-size: 1.1rem;
+    }
+
+    .agendamento-status {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .status-agendado {
+      background-color: var(--azul-agendado);
+      color: white;
+    }
+
+    .status-entregue {
+      background-color: var(--verde);
+      color: white;
+    }
+
+    .agendamento-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .detail-label {
+      font-weight: bold;
+      color: var(--azul-escuro);
+    }
+
+    .detail-value {
+      color: var(--cinza-escuro);
+    }
   </style>
 </head>
 <body>
@@ -706,7 +791,7 @@
         
         <div class="form-group datepicker-container">
           <label>DATA:</label>
-          <input type="text" id="data-selecionada" class="datepicker-input" readonly placeholder="Clique para selecionar">
+          <input type="text" id="data-selecionada" class="datepicker-input" readonly placeholder="Clique para selecionar" onchange="atualizarAulasDisponiveis()">
           <div class="datepicker-popup" id="datepickerPopup">
             <div class="datepicker-header">
               <button class="datepicker-nav" id="prevMonth">&lt;</button>
@@ -828,6 +913,10 @@
         </div>
       </div>
 
+      <div class="conflict-message" id="conflictMessage">
+        ⚠️ CONFLITO: Já existe um agendamento para esta turma, data e aula!
+      </div>
+
       <div class="buttons-container">
         <button class="btn btn-cadastrar" onclick="cadastrarAgendamento()">CADASTRAR</button>
         <button class="btn btn-limpar" onclick="limparFormulario()">LIMPAR</button>
@@ -856,6 +945,14 @@
           <!-- Dias serão inseridos via JavaScript -->
         </tbody>
       </table>
+
+      <!-- Seção de agendamentos na parte inferior do calendário -->
+      <div class="agendamentos-section" id="agendamentosSection">
+        <h3><i class="fas fa-calendar-check"></i> AGENDAMENTOS DO MÊS</h3>
+        <div id="agendamentos-lista">
+          <!-- Agendamentos serão inseridos dinamicamente aqui -->
+        </div>
+      </div>
 
       <h3>HISTÓRICO DE AGENDAMENTOS</h3>
       <table class="historico-table">
@@ -930,54 +1027,31 @@
       "KATIUSCIA ALVES BOMFIM": "katiusciabomfim@prof.educacao.sp.gov.br",
       "KETHY REGINA DA SILVA DOMINGOS COSTA": "kethy@prof.educacao.sp.gov.br",
       "LUANA CAROLINE ALVES LIMA": "luanalima01@prof.educacao.sp.gov.br",
-      "LUANA DE FREITAS SILVA": "luanafreitas@prof.educacao.sp.gov.br",
-      "LUCIANA NOVAIS CORREIA SANTOS": "novaiscorreia@prof.educacao.sp.gov.br",
-      "LUCIANO MOREIRA DE AZEVEDO": "lucianomoreira@prof.educacao.sp.gov.br",
-      "MARCELO FERNANDES DA SILVA": "marcelofs@prof.educacao.sp.gov.br",
+      "LUANA DE OLIVEIRA SILVA": "luanaoliveira@prof.educacao.sp.gov.br",
+      "LUCIANO MOREIRA DE AZEVEDO": "lucianoazevedo@prof.educacao.sp.gov.br",
       "MARCIEL DA SILVA": "marcielsilva@prof.educacao.sp.gov.br",
-      "MARIA HELENA CUNHA MORO": "marcunha@prof.educacao.sp.gov.br",
-      "MARIA QUITÉRIA FERREIRA DOS SANTOS": "quiteriasantos@prof.educacao.sp.gov.br",
       "MARINA DA CONCEICAO FRANCISCO SILVA": "marinafrancisco@prof.educacao.sp.gov.br",
-      "MAURICIO DE BARROS SANTOS": "mauriciobsantos@prof.educacao.sp.gov.br",
-      "MICHELE DE PINHO MORAES": "michelepinho@prof.educacao.sp.gov.br",
+      "MAURICIO DE BARROS SANTOS": "mauriciobarros@prof.educacao.sp.gov.br",
       "MOISES ANTONIO DE BARROS": "moisesbarros@prof.educacao.sp.gov.br",
-      "PATRICIA GOMES ROCHA RIBEIRO": "patriciag@prof.educacao.sp.gov.br",
       "PAULO ROBERTO DA SILVA ITO": "pauloito@prof.educacao.sp.gov.br",
-      "PEDRO ZANOTTI FILHO": "pedrozanotti@prof.educacao.sp.gov.br",
-      "RAUL PEREIRA VILERA JUNIOR": "vilera@prof.educacao.sp.gov.br",
-      "REGIANE CURTI DE SOUZA OLIVEIRA": "regianecurti@prof.educacao.sp.gov.br",
-      "REGINA DA SILVA CASTRO": "reginasilvacastro@prof.educacao.sp.gov.br",
-      "RICARDO AMERICO DA SILVA": "ricardoamerico@prof.educacao.sp.gov.br",
-      "ROBERTO SALGADO": "robertosalgado@prof.educacao.sp.gov.br",
-      "RODRIGO VIEIRA": "rodrigovieira1@prof.educacao.sp.gov.br",
-      "ROSANGELA CAFASSO MOREIRA": "cafasso@prof.educacao.sp.gov.br",
-      "ROSIMERY DE SOUZA PESSOA": "rosimerypessoa@prof.educacao.sp.gov.br",
-      "ROSMARA DA SILVA CARDOSO": "rosmaracardoso@prof.educacao.sp.gov.br",
-      "SANDRA CRISTINA MACEDO MORAES": "sandracristinamacedo@prof.educacao.sp.gov.br",
-      "SELMA GOMES DA SILVA": "selmagomess@prof.educacao.sp.gov.br",
-      "SERGIO AGRIPINO VILLA NOVA": "sergioagripino@prof.educacao.sp.gov.br",
-      "SOLANGE ALMEIDA DA SILVA": "almeidafazio@prof.educacao.sp.gov.br",
-      "SUELI SILVE PEREIRA": "suelisilve@prof.educacao.sp.gov.br",
+      "RODRIGO VIEIRA": "rodrigovieira@prof.educacao.sp.gov.br",
+      "ROSANGELA CAFASSO MOREIRA": "rosangelacafasso@prof.educacao.sp.gov.br",
       "SUZINEIDE SILVA DE FREITAS": "suzineidefreitas@prof.educacao.sp.gov.br",
-      "THIAGO FABIANO BRITO": "thiagofabiano@prof.educacao.sp.gov.br",
-      "TITTO AUGUSTO NASCIMENTO SILVA": "titto@prof.educacao.sp.gov.br",
-      "VANDERSON HYPPOLITO": "vhypolito@prof.educacao.sp.gov.br",
-      "VANESSA IVETE GOMES DOS SANTOS": "vanessaivete@prof.educacao.sp.gov.br",
+      "TITTO AUGUSTO NASCIMENTO SILVA": "tittoaugusto@prof.educacao.sp.gov.br",
+      "VANDERSON HYPPOLITO": "vandersonhyppolito@prof.educacao.sp.gov.br",
       "VANIA PENHA DE BARROS": "vaniapenha@prof.educacao.sp.gov.br",
-      "VIVIANE LEAL CAMERA DE MORAES": "camera@prof.educacao.sp.gov.br",
-      "WILSON LUIZ DE SOUZA COSTA": "wilsonluizsouza@prof.educacao.sp.gov.br",
-      "WILSON RODRIGUES MOTA": "wmota@prof.educacao.sp.gov.br"
+      "VIVIANE LEAL CAMERA DE MORAES": "vivianeleal@prof.educacao.sp.gov.br"
     };
 
-    // Dados dos aparelhos
+    // Marcas dos aparelhos
     const marcas = {
-      "TABLET": "POSITIVO",
-      "SMARTPHONE": "POSITIVO",
-      "CHROMEBOOK": "SAMSUNG",
+      "TABLET": "SAMSUNG",
+      "SMARTPHONE": "SAMSUNG",
+      "CHROMEBOOK": "ACER",
       "NOTEBOOK": "POSITIVO"
     };
 
-    // Dados das salas por turma e período
+    // Salas por turma e período
     const salasPorTurmaPeriodo = {
       // 6° ANO
       "6° ANO A MANHA": "Sala 1",
@@ -996,8 +1070,8 @@
       "7° ANO F TARDE": "Sala 8",
       
       // 8° ANO
-      "8° ANO A TARDE": "Sala 10",
-      "8° ANO B TARDE": "Sala 11",
+      "8° ANO A TARDE": "Sala 9",
+      "8° ANO B TARDE": "Sala 10",
       "8° ANO C TARDE": "Sala 12",
       "8° ANO D TARDE": "Sala 13",
       "8° ANO E TARDE": "Sala 14",
@@ -1043,228 +1117,410 @@
       "4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA": "Laboratório 1"
     };
 
-    // Horários dos professores (organizados por dias da semana)
-    const horariosProfessores = {
-      "ADEMAR RIBEIRO DE SOUZA": {
-        "SEG": ["1D", "1E", "1E", "9A", "9A", "9C", "9C", "9D", "9A"],
-        "TER": ["1F", "1F", "1B", "9D", "2F", "2H", "1H", "1H"],
-        "QUA": ["1B", "1A", "1A"],
-        "QUI": ["1D", "1C", "1C", "9B", "9D"],
-        "SEX": ["9C", "9B", "9B", "1G", "1G", "2F", "2G", "2G", "2H"],
-      },
-      "ALISON VASCONCELOS BESERRA": {
-        "SEG": ["6A", "6D", "6B", "1F", "6A", "6A"],
-        "TER": ["1D", "6C", "1B"],
-        "QUA": ["1B/BIO", "3C/PV", "6C/CIÊ", "1E/BIO", "8A", "8A", "7E/PV", "7C/PV"],
-        "QUI": ["6B", "6B", "1C", "6C", "1F", "6D", "8A", "8A", "7D/PV"],
-        "SEX": ["1E", "1A", "1A", "1C", "6D/C", "1D"],
-      },
-      "ANDREIA DOS SANTOS FREITAS": {
-        "SEG": ["1E", "1F", "1D", "2C", "1C", "2D"],
-        "TER": ["1F/R", "1D", "1F", "1E", "1C", "1F/R"],
-        "QUA": ["2C/R", "1D", "1C", "1C", "1E", "1C/R"],
-        "QUI": ["1D/R", "1E", "1B/R", "1E/R", "1D/R", "1F"],
-        "SEX": ["2D/R", "1E", "1C", "1F", "1D", "1B/R"],
-      },
-      "ANTONIO RAMOS DE ARAUJO": {
-        "QUI": ["3G", "2F", "2F", "2G", "2G"],
-        "SEX": ["3G", "2H", "2H", "1I", "1I"],
-      },
-      "ANTONIO CARLS DE OLIVEIRA": {
-        "SEG": ["2B", "2B", "2E", "2E"],
-        "TER": ["2C", "2C", "2D", "2D", "2A"],
-        "QUA": ["2D", "2D", "2E", "2E"],
-        "QUI": ["2A", "2A"],
-        "SEX": ["2C", "2C", "2A", "2B", "2B"],
-      },
-      "ELIANE SANTOS SILVA": {
-        "SEG": ["1A", "1A", "1A", "1E", "1B", "1B"],
-        "TER": ["1E/EF", "1E/EF", "1D", "1D", "1B", "1A"],
-        "QUA": ["1C/EF", "1C/EF", "1E", "1E", "1D/EF", "1D/EF"],
-        "QUI": ["1C", "1C", "1E", "1B", "1A/EF", "1A/EF"],
-        "SEX": ["1B/EF", "1B/EF", "1D", "1D", "1C", "1C", "1G", "1G"],
-      },
-      "CAROLINA PERNOMIAN PARUSSOLO": {
-        "SEG": ["1G", "1G", "7A", "7A"],
-        "TER": ["9D", "9D", "9A", "7B", "7B"],
-        "QUA": ["9C", "9C", "7B", "7A"],
-        "QUI": ["9A", "9B", "9B", "9C", "9D"],
-        "SEX": ["9B", "9C", "9D", "9B", "9A", "9A"],
-      },
-      "DANIEL DE FREITAS ALMEIDA": {
-        "SEG": ["6C", "6C", "2C", "6D", "3C", "3C", "6E", "6E"],
-        "TER": ["2ADM/H", "2ADM/H", "6A", "2C", "2D/L", "2D/L"],
-        "QUI": ["2D", "2D", "6D", "6A", "3B", "3B"],
-        "SEX": ["3A", "3A", "2C/L", "2C/L", "2E", "2E"],
-      },
-      "DANIEL LOPES BARBOSA": {
-        "QUA": ["6B", "6B", "2A", "2A", "2B", "2B"],
-      },
-      "DANIELA FERREIRA LIMA": {
-        "SEG": ["1C", "1C", "6A", "6A", "6D", "6D", "", "7D", "7C", "9A", "7E", "7E", "7C"],
-        "TER": ["6B", "6B", "6C", "6C", "1D", "1D", "7D", "7B", "7B", "7A", "1G", "1G", "1H"],
-        "QUA": ["1A", "1A", "9D", "7A"],
-        "SEX": ["1F", "1F", "1B", "1B", "1E", "1E"],
-      },
-      "EDIANE VIEIRA DA SILVA": {
-        "SEG": ["7C", "7B", "6F/R", "6F/R", "9C/O", "9D/O", "3F", "3F", "2G", "2G", "2H"],
-        "TER": ["7B", "7D", "7C", "9B/OP", "6E/R", "9B/OP", "2G", "2F", "2F", "3E/OP", "3E/OP"],
-        "QUA": ["9C/OP", "7B", "2H", "2H", "2H", "2F", "2F"],
-        "QUI": ["2ADM", "2ADM", "2ADM", "6F", "7D", "9D/OP", "7D", "7C", "7D"],
-        "SEX": ["6E/R", "7C", "6F", "6F", "7B", "6F", "2G", "3G/OP", "3G/OP", "3D/OP", "3D/OP"],
-      },
-      "ELIAS MONTEIRO DA SILVA": {
-        "SEG": ["2E", "2E", "3B", "3B", "2C", "2C", "9B", "1H/Q", "1H/Q", "1H/EF", "1H/EF"],
-        "TER": ["1C", "1C", "2ADM/Q", "2ADM/Q", "3A", "3A"],
-        "QUA": ["2B", "2B", "1A", "1A", "2A", "1F", "9B/OM"],
-        "QUI": ["1B", "1B", "3C", "3C", "1E", "1E", "9A", "8E/PV", "9A", "8D/PV"],
-        "SEX": ["1D", "1D", "1F", "2A", "2D", "2D", "1G", "1G", "9C", "9C", "1H/F", "1H/F"],
-      },
-      "EUZELI ARAUJO DE OLIVEIRA": {
-        "SEG": ["3B", "1E", "1E", "2D", "2B"],
-        "QUA": ["1B", "1B", "1D", "1D", "1F"],
-        "QUI": ["1A", "1A", "2ADM", "2C", "2A"],
-        "SEX": ["1C", "1C", "2E", "3A", "1F"],
-      },
-      "FABIO CAMILO": {
-        "SEG": ["1I", "2F", "1I", "3D", "1I"],
-        "TER": ["3D", "3E", "2H", "2H", "2F"],
-        "QUA": ["2G", "3E", "2F", "2G", "3E"],
-        "QUI": ["2H", "3D", "2G", "1I", "2H"],
-        "SEX": ["3E", "3D", "2F", "2G"],
-      },
-      "GENILTON DE OLIVEIRA SILVA": {
-        "TER": ["7E", "7E"],
-        "QUA": ["7D", "6F", "7B/PV", "6E", "7F", "7D"],
-        "QUI": ["7C", "7C", "6F", "6F", "6E", "6E"],
-        "SEX": ["7C", "7E", "7A/PV", "7D", "7F", "7F"],
-      },
-      "INGRYD CAROLINA SUGUIMOTO VIEIRA": {
-        "SEG": ["8E", "8D", "8D", "8E", "6E", "6E"],
-        "TER": ["8C", "6F", "8D", "8D"],
-        "QUA": ["6F", "6E", "6E", "6F", "6F", "8E"],
-        "QUI": ["8C", "8C", "6E"],
-        "SEX": ["8E", "8C", "8C", "8E", "6F", "8D"],
-      },
-      "JANINA DOS PASSOS BRAGA DE ALMEIDA": {
-        "SEG": ["2ADM/B", "2ADM/B", "2B"],
-        "TER": ["2A", "2A", "2B"],
-        "QUA": ["3C/BIOT", "3C/BIOT", "2C", "2C"],
-        "QUI": ["3A", "3A", "3B", "3B", "3D", "3F", "3D"],
-        "SEX": ["2E", "2D", "2D", "2E", "3E", "3E", "3F"],
-      },
-      "JUAREZ GOMES DE MAGALHAES FILHO": {
-        "SEG": ["2H", "2H", "3F", "3E", "3E"],
-        "TER": ["3A", "3A", "3C", "3C", "2H/Q", "3D", "3D", "2G", "2G"],
-        "QUA": ["1E", "1E", "1F", "2F/FÍS", "2G", "2G", "1I", "1I"],
-        "QUI": ["1F", "1D", "1D"],
-        "SEX": ["3B", "3B", "1I", "1I", "3F", "2H/Q", "2F"],
-      },
-      "KATIUSCIA ALVES BOMFIM": {
-        "SEG": ["1A", "1A", "8A", "9C", "8B", "8C", "8E", "8E"],
-        "TER": ["7C", "7A", "7A", "7D", "7D", "8B"],
-        "QUA": ["9D", "9D", "9A", "9A", "7E", "7E"],
-        "QUI": ["7B", "9B", "9C", "7B", "9B", "8A"],
-        "SEX": ["8C", "7F", "7F", "8D", "8D", "7C"],
-      },
-      "LUANA CAROLINE ALVES LIMA": {
-        "SEG": ["9C", "7A", "7A", "9A", "9B", "9B"],
-        "TER": ["6D", "6B", "6A", "9C", "9C", "1G", "1G", "9D", "9D"],
-        "QUA": ["6C", "6D", "6C", "9A", "9B", "9B", "9C", "1G", "1G"],
-        "QUI": ["6A", "6B", "9D", "7A", "7A", "9D", "9A", "9A"],
-      },
-      "LUCIANO MOREIRA DE AZEVEDO": {
-        "SEG": ["8A", "8A", "8D", "9A", "9C"],
-        "TER": ["7E", "8B", "9C", "7E"],
-        "QUA": ["8C", "9B", "8B", "9D"],
-        "QUI": ["7F", "7F", "8C", "7E", "9B"],
-        "SEX": ["7F", "9D", "8D", "9A", "8E", "8E"],
-      },
-      "MARCIEL DA SILVA": {
-        "SEG": ["7E", "7E", "7B", "9B/PV", "8C", "8C"],
-        "TER": ["9A/PV", "8E", "8E", "8A", "7C", "7D"],
-        "QUA": ["8C", "7D", "7F", "7F", "8D", "8D"],
-        "QUI": ["9C/PV", "8D", "8E", "8B", "8B", "7B"],
-        "SEX": ["8A", "8A", "8B", "7C", "7A", "7A", "3D", "3D"],
-      },
-      "MARINA DA CONCEICAO FRANCISCO SILVA": {
-        "SEG": ["6B", "6A", "6B/EF", "6B/EF"],
-        "TER": ["6D", "6D", "6D", "6B", "6A", "6B", "7A"],
-        "QUA": ["6C", "6C", "6C", "6B", "6A/EF", "6A/EF", "7A", "7A"],
-        "QUI": ["6D", "6D", "6A", "6D/EF", "6D/EF", "6A", "7A", "7B/EF", "7B/EF", "7A", "7A/EF", "7A/EF"],
-        "SEX": ["6C", "6C", "6A", "6B", "6C/EF", "6C/EF"],
-      },
-      "MAURICIO DE BARROS SANTOS": {
-        "SEG": ["2C/EF", "2A/EF", "2ADM/M.A", "2ADM/M.A", "2A/MAT"],
-        "TER": ["2C/EF", "2B/EF", "2ADM/M", "2ADM/M"],
-        "QUA": ["2A"],
-        "QUI": ["2A"],
-        "SEX": ["2A", "2A", "2ADM", "2ADM", "2ADM", "2B"],
-      },
-      "MOISES ANTONIO DE BARROS": {
-        "SEG": ["3E", "3E", "3G", "3G", "3D"],
-        "TER": ["3E/OM", "3G", "3G", "3F/OM", "3F/OM"],
-        "QUA": ["3G/OM", "3D/OM", "3D/OM", "3F", "3F"],
-        "QUI": ["2G/EF", "2G/EF", "3F/OM", "2F/EF", "2F/EF"],
-        "SEX": ["3F", "3F", "3G", "3G"],
-      },
-      "PAULO ROBERTO DA SILVA ITO": {
-        "SEG": ["2G", "1I", "2H", "2F"],
-        "TER": ["2E", "2E", "2E/L", "2E/L", "6E", "6F", "8C"],
-        "QUA": ["1F/FIL", "1F/FIL", "2D/OR", "2D/SOC", "2D/SOC", ""],
-        "QUI": ["2B", "2B", "2C/OR", "2E/OR", "2C", "2C"],
-        "SEX": ["2ADM", "2ADM", "1E/F", "1E/F", "2A/S", "2A/S", "2H", "2G", "2F"],
-      },
-      "RODRIGO VIEIRA": {
-        "SEG": ["1D", "1D", "1C", "1C", "1F", "1F", "", "3D", "2G", "2F", "2H", "3G"],
-        "TER": ["1B", "1B", "1A", "1A", "1E", "1E", "3F", "2G", "1I"],
-        "QUA": ["3D", "3G", "3E"],
-        "QUI": ["1I", "3F", "2H"],
-        "SEX": ["3E", "2F"],
-      },
-      "ROSANGELA CAFASSO MOREIRA": {
-        "SEG": ["1B", "1B", "2A", "2A", "2E", "2E"],
-        "TER": ["1A", "1A", "1C", "1C", "2B", "2B"],
-        "QUA": ["2A/PR", "2A/PR", "3A/PR", "3A/PR", "2C/Q", "2C/Q", "1G", "1G"],
-        "QUI": ["3B/EM", "3B/EM", "2D/QU", "2D/QU", "2B/PR", "2B/PR"],
-        "SEX": ["3B/P", "3B/P", "3A/EM", "3C/P", "3C/P", "3A/EM"],
-      },
-      "SUZINEIDE SILVA DE FREITAS": {
-        "SEG": ["1H", "2F", "2G"],
-        "TER": ["6F", "6F", "1I", "2H"],
-        "QUA": ["2ADM", "2ADM", "2B", "2B", "2E", "2E", "6E"],
-        "QUI": ["2C", "2C", "2A", "2A", "2D", "2D", "6E", "1G", "1G"],
-      },
-      "TITTO AUGUSTO NASCIMENTO SILVA": {
-        "SEG": ["6D", "7A", "7F", "7F", "7A", "7B", "7B"],
-        "QUI": ["3C", "6C"],
-        "SEX": ["6B", "6A", "6D", "6C", "6A", "6B", "6F", "6F", "6E", "6E", "7E", "7E", ""],
-      },
-      "VANDERSON HYPPOLITO": {
-        "SEG": ["3A", "3A", "3C", "3C", "3B"],
-        "TER": ["3C", "3C"],
-        "QUA": ["2E/R", "2E/R", "3B", "3B", "3B"],
-        "QUI": ["3C", "3C", "3A", "3A"],
-        "SEX": ["3C", "3C", "3B/IN", "3B/IN"],
-      },
-      "VANIA PENHA DE BARROS": {
-        "SEG": ["8D", "8C", "8C", "8A", "8A", "7E"],
-        "TER": ["8B", "8B", "7F", "7E", "7E", "8A"],
-        "QUA": ["3C", "3C", "7F", "7F", "8A", "7E", "9A/OP", "9A/OP"],
-        "QUI": ["8E", "8B", "8B", "8D", "8D", "8E"],
-        "SEX": ["8D", "8E", "8E", "7F", "8C", "8C"],
-      },
-      "VIVIANE LEAL CAMERA DE MORAES": {
-        "SEG": ["6B", "1B", "6B", "3A", "1D", "7B/T", "8B/PV", "9D/PV", "7D/T", "7F/T", "7F/T"],
-        "TER": ["6C", "1F", "1E", "1B", "6C", "1C", "6F/T", "7F/R", "6F/T", "7F/PV", "7A/T", "7F/R"],
-        "QUA": ["1D", "6D", "6A", "1F", "1C", "3A", "7E/T", "7C/T", "7A/R", "7A/R", "7C/T", "7B/T", "1H/R", "1H/P", "1H/P"],
-        "QUI": ["1E", "7E"],
-        "SEX": ["6A", "6D", "7E/R", "6E/T", "7E/R", "7A/T", "6E/T", "7D/T", "1H/P", "1H/P", "1H/R"],
-      },
-    };
+   // Horários dos professores (organizados por dias da semana)
+const horariosProfessores = {
+  ".": {
+    "SEG": [],
+    "TER": [],
+    "QUA": [],
+  },
+  "ADEMAR": {
+    "SEG": ["1D", "1E", "1E", "9A", "9A", "9C", "9C", "9D", "9A"],
+    "TER": ["1F", "1F", "1B", "9D", "2F", "2H", "1H", "1H"],
+    "QUA": ["1B", "1A", "1A"],
+    "QUI": ["1D", "1C", "1C", "9B", "9D"],
+    "SEX": ["9C", "9B", "9B", "1G", "1G", "2F", "2G", "2G", "2H"],
+  },
+  "ALISSON": {
+    "SEG": ["6A", "6D", "6B", "1F", "6A", "6A"],
+    "TER": ["1D", "6C", "1B"],
+    "QUA": ["1B/BIO", "3C/PV", "6C/CIÊ", "1E/BIO", "8A", "8A", "7E/PV", "7C/PV"],
+    "QUI": ["6B", "6B", "1C", "6C", "1F", "6D", "8A", "8A", "7D/PV"],
+    "SEX": ["1E", "1A", "1A", "1C", "6D/C", "1D"],
+  },
+  "ANDRÉ": {
+    "SEG": ["X", "X", "X", "X", "X"],
+    "TER": ["X", "X", "X", "X", "X"],
+    "QUA": ["X", "X", "X", "X", "X"],
+    "QUI": ["X", "X", "X", "X", "X"],
+    "SEX": ["X", "X", "X", "X", "X"],
+  },
+  "ANDRÉIA": {
+    "SEG": ["1E", "1F", "1D", "2C", "1C", "2D"],
+    "TER": ["1F/R", "1D", "1F", "1E", "1C", "1F/R"],
+    "QUA": ["2C/R", "1D", "1C", "1C", "1E", "1C/R"],
+    "QUI": ["1D/R", "1E", "1B/R", "1E/R", "1D/R", "1F"],
+    "SEX": ["2D/R", "1E", "1C", "1F", "1D", "1B/R"],
+  },
+  "ANTONIO": {
+    "QUI": ["3G", "2F", "2F", "2G", "2G"],
+    "SEX": ["3G", "2H", "2H", "1I", "1I"],
+  },
+  "ANTONIO CARLOS": {
+    "SEG": ["2B", "2B", "2E", "2E"],
+    "TER": ["2C", "2C", "2D", "2D", "2A"],
+    "QUA": ["2D", "2D", "2E", "2E"],
+    "QUI": ["2A", "2A"],
+    "SEX": ["2C", "2C", "2A", "2B", "2B"],
+  },
+  "BETE": {
+    "SEG": ["1A", "1A", "1A", "1E", "1B", "1B"],
+    "TER": ["1E/EF", "1E/EF", "1D", "1D", "1B", "1A"],
+    "QUA": ["1C/EF", "1C/EF", "1E", "1E", "1D/EF", "1D/EF"],
+    "QUI": ["1C", "1C", "1E", "1B", "1A/EF", "1A/EF"],
+    "SEX": ["1B/EF", "1B/EF", "1D", "1D", "1C", "1C", "1G", "1G"],
+  },
+  "CAROL": {
+    "SEG": ["1G", "1G", "7A", "7A"],
+    "TER": ["9D", "9D", "9A", "7B", "7B"],
+    "QUA": ["9C", "9C", "7B", "7A"],
+    "QUI": ["9A", "9B", "9B", "9C", "9D"],
+    "SEX": ["9B", "9C", "9D", "9B", "9A", "9A"],
+  },
+  "CASSIA": {
+    "SEG": ["8C", "8E", "8E", "8B", "8B", "8B"],
+    "TER": ["8D", "8D", "8B", "8C"],
+    "QUA": ["8D", "8D", "8E", "8E", "8C", "8C"],
+  },
+  "DANIEL": {
+    "SEG": ["6C", "6C", "2C", "6D", "3C", "3C", "6E", "6E"],
+    "TER": ["2ADM/H", "2ADM/H", "6A", "2C", "2D/L", "2D/L"],
+    "QUI": ["2D", "2D", "6D", "6A", "3B", "3B"],
+    "SEX": ["3A", "3A", "2C/L", "2C/L", "2E", "2E"],
+  },
+  "DANIEL FR": {
+    "QUA": ["1H", "1H"],
+  },
+  "DANIEL FREITAS": {
+    "SEG": ["9B", "9B", "9D", "1G", "1G"],
+    "TER": ["9A", "9B", "8E/EF", "8E/EF", "9C"],
+    "QUA": ["9A", "9D", "9D", "9B", "9B"],
+    "QUI": ["9C", "9A", "1G", "1G", "9C", "1H", "1H"],
+    "SEX": ["9A", "9A", "9C", "9C", "9D", "9D"],
+  },
+  "DANIEL LOPES": {
+    "QUA": ["6B", "6B", "2A", "2A", "2B", "2B"],
+  },
+  "DANIELA": {
+    "SEG": ["1C", "1C", "6A", "6A", "6D", "6D", "", "7D", "7C", "9A", "7E", "7E", "7C"],
+    "TER": ["6B", "6B", "6C", "6C", "1D", "1D", "7D", "7B", "7B", "7A", "1G", "1G", "1H"],
+    "QUA": ["1A", "1A", "9D", "7A"],
+    "SEX": ["1F", "1F", "1B", "1B", "1E", "1E"],
+  },
+  "DANIELLE": {
+    "TER": ["3F", "2F", "3G"],
+    "QUA": ["3E", "3D"],
+    "QUI": ["2F", "3E", "3G", "3D", "3F"],
+  },
+  "EDIANE": {
+    "SEG": ["7C", "7B", "6F/R", "6F/R", "9C/O", "9D/O", "3F", "3F", "2G", "2G", "2H"],
+    "TER": ["7B", "7D", "7C", "9B/OP", "6E/R", "9B/OP", "2G", "2F", "2F", "3E/OP", "3E/OP"],
+    "QUA": ["9C/OP", "7B", "2H", "2H", "2H", "2F", "2F"],
+    "QUI": ["2ADM", "2ADM", "2ADM", "6F", "7D", "9D/OP", "7D", "7C", "7D"],
+    "SEX": ["6E/R", "7C", "6F", "6F", "7B", "6F", "2G", "3G/OP", "3G/OP", "3D/OP", "3D/OP"],
+  },
+  "EDIVANIA": {
+    "QUI": ["9D"],
+    "SEX": ["9D"],
+  },
+  "EDIVÂNIA": {
+    "SEG": ["1F", "1F", "2B/EMP"],
+    "QUI": ["1F", "2E/EF", "1F", "2E/EF", "7F", "7E", "7E", "7F"],
+  },
+  "EDUARDO": {
+    "QUA": ["7C", "8B", "7D", "8B", "7D", "7C"],
+  },
+  "ELIANE": {
+    "SEG": ["1G", "1G"],
+    "TER": ["6A", "6A", "2A", "2A", "2E", "2E"],
+    "QUA": ["6A", "3B/PV", "6B/PV", "6A/PV", "6B", "6D"],
+    "QUI": ["6C", "6C", "6C", "6B", "6B", "3A/PV"],
+    "SEX": ["6D", "2B", "2B", "6D/PV", "2C", "2C"],
+  },
+  "ELIANE CONTI": {
+    "SEG": ["3C/EMP"],
+    "QUI": ["3C/EMP"],
+  },
+  "ELIANE SANTOS": {
+    "SEG": ["2D", "2D", "6D", "6C/PV", "2ADM/G", "2ADM/G", ""],
+  },
+  "ELIAS": {
+    "SEG": ["2E", "2E", "3B", "3B", "2C", "2C", "9B", "1H/Q", "1H/Q", "1H/EF", "1H/EF"],
+    "TER": ["1C", "1C", "2ADM/Q", "2ADM/Q", "3A", "3A"],
+    "QUA": ["2B", "2B", "1A", "1A", "2A", "1F", "9B/OM"],
+    "QUI": ["1B", "1B", "3C", "3C", "1E", "1E", "9A", "8E/PV", "9A", "8D/PV"],
+    "SEX": ["1D", "1D", "1F", "2A", "2D", "2D", "1G", "1G", "9C", "9C", "1H/F", "1H/F"],
+  },
+  "EUZELI": {
+    "SEG": ["3B", "1E", "1E", "2D", "2B"],
+    "QUA": ["1B", "1B", "1D", "1D", "1F"],
+    "QUI": ["1A", "1A", "2ADM", "2C", "2A"],
+    "SEX": ["1C", "1C", "2E", "3A", "1F"],
+  },
+  "EVENTUAL": {
+    "QUI": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª"],
+  },
+  "EVENTUAL:": {
+    "SEG": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
+    "TER": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
+    "QUA": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
+    "QUI": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
+    "SEX": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
+  },
+  "FLÁVIA": {
+    "SEG": ["X", "X", "X", "X", "X", "X"],
+    "TER": ["X", "X", "X", "X", "X", "X"],
+    "QUA": ["X", "X", "X", "X", "X", "X"],
+    "QUI": ["X", "X", "X", "X", "X", "X"],
+    "SEX": ["X", "X", "X", "X", "X", "X"],
+  },
+  "FÁBIO": {
+    "SEG": ["1I", "2F", "1I", "3D", "1I"],
+    "TER": ["3D", "3E", "2H", "2H", "2F"],
+    "QUA": ["2G", "3E", "2F", "2G", "3E"],
+    "QUI": ["2H", "3D", "2G", "1I", "2H"],
+    "SEX": ["3E", "3D", "2F", "2G"],
+  },
+  "GELSON": {
+    "SEG": ["8B"],
+    "TER": ["2D/EF", "2D/EF", "3C/OM", "3C/OM", "3B/OM", "3B/OM", "8A"],
+    "QUA": ["8A"],
+    "QUI": ["1F", "8B"],
+    "SEX": ["1F", "8B", "8B", "8A", "8A", "8A", "8B"],
+  },
+  "GENILTON": {
+    "TER": ["7E", "7E"],
+    "QUA": ["7D", "6F", "7B/PV", "6E", "7F", "7D"],
+    "QUI": ["7C", "7C", "6F", "6F", "6E", "6E"],
+    "SEX": ["7C", "7E", "7A/PV", "7D", "7F", "7F"],
+  },
+  "GISLENE": {
+    "SEX": ["6B", "6A", "6B", "6A"],
+  },
+  "GUSTAVO": {
+    "SEG": ["7F/AR", "1I"],
+    "QUI": ["9C/AR", "7F/AR"],
+  },
+  "INGRYD": {
+    "SEG": ["8E", "8D", "8D", "8E", "6E", "6E"],
+    "TER": ["8C", "6F", "8D", "8D"],
+    "QUA": ["6F", "6E", "6E", "6F", "6F", "8E"],
+    "QUI": ["8C", "8C", "6E"],
+    "SEX": ["8E", "8C", "8C", "8E", "6F", "8D"],
+  },
+  "JANINA": {
+    "SEG": ["2ADM/B", "2ADM/B", "2B"],
+    "TER": ["2A", "2A", "2B"],
+    "QUA": ["3C/BIOT", "3C/BIOT", "2C", "2C"],
+    "QUI": ["3A", "3A", "3B", "3B", "3D", "3F", "3D"],
+    "SEX": ["2E", "2D", "2D", "2E", "3E", "3E", "3F"],
+  },
+  "JUAREZ": {
+    "SEG": ["2H", "2H", "3F", "3E", "3E"],
+    "TER": ["3A", "3A", "3C", "3C", "2H/Q", "3D", "3D", "2G", "2G"],
+    "QUA": ["1E", "1E", "1F", "2F/FÍS", "2G", "2G", "1I", "1I"],
+    "QUI": ["1F", "1D", "1D"],
+    "SEX": ["3B", "3B", "1I", "1I", "3F", "2H/Q", "2F"],
+  },
+  "KATIUSCIA": {
+    "SEG": ["1A", "1A", "8A", "9C", "8B", "8C", "8E", "8E"],
+    "TER": ["7C", "7A", "7A", "7D", "7D", "8B"],
+    "QUA": ["9D", "9D", "9A", "9A", "7E", "7E"],
+    "QUI": ["7B", "9B", "9C", "7B", "9B", "8A"],
+    "SEX": ["8C", "7F", "7F", "8D", "8D", "7C"],
+  },
+  "LUANA": {
+    "SEG": ["9C", "7A", "7A", "9A", "9B", "9B"],
+    "TER": ["6D", "6B", "6A", "9C", "9C", "1G", "1G", "9D", "9D"],
+    "QUA": ["6C", "6D", "6C", "9A", "9B", "9B", "9C", "1G", "1G"],
+    "QUI": ["6A", "6B", "9D", "7A", "7A", "9D", "9A", "9A"],
+  },
+  "LUANA ADM": {
+    "QUA": ["2ADM", "2ADM", "2ADM", "2ADM"],
+    "QUI": ["2ADM", "2ADM"],
+    "SEX": ["2ADM"],
+  },
+  "LUCIANA": {
+    "SEG": ["3G", "3G", "3D", "3F", "3F"],
+    "TER": ["1I", "1I", "3E", "3D", "3D"],
+    "QUA": ["3E", "3F", "3F", "3G", "3G"],
+    "QUI": ["3D", "1I", "1I", "3E", "3E"],
+  },
+  "LUCIANO": {
+    "SEG": ["8A", "8A", "8D", "9A", "9C"],
+    "TER": ["7E", "8B", "9C", "7E"],
+    "QUA": ["8C", "9B", "8B", "9D"],
+    "QUI": ["7F", "7F", "8C", "7E", "9B"],
+    "SEX": ["7F", "9D", "8D", "9A", "8E", "8E"],
+  },
+  "MARA": {
+    "TER": ["1G", "9A", "9D", "8A", "8E"],
+    "QUA": ["8D", "8C", "9C", "9C"],
+    "QUI": ["8A/PV", "8E", "8A", "1G"],
+    "SEX": ["9D", "8D", "9A", "8C", "9B", "9B"],
+  },
+  "MARCIEL": {
+    "SEG": ["7E", "7E", "7B", "9B/PV", "8C", "8C"],
+    "TER": ["9A/PV", "8E", "8E", "8A", "7C", "7D"],
+    "QUA": ["8C", "7D", "7F", "7F", "8D", "8D"],
+    "QUI": ["9C/PV", "8D", "8E", "8B", "8B", "7B"],
+    "SEX": ["8A", "8A", "8B", "7C", "7A", "7A", "3D", "3D"],
+  },
+  "MARINA": {
+    "SEG": ["6B", "6A", "6B/EF", "6B/EF"],
+    "TER": ["6D", "6D", "6D", "6B", "6A", "6B", "7A"],
+    "QUA": ["6C", "6C", "6C", "6B", "6A/EF", "6A/EF", "7A", "7A"],
+    "QUI": ["6D", "6D", "6A", "6D/EF", "6D/EF", "6A", "7A", "7B/EF", "7B/EF", "7A", "7A/EF", "7A/EF"],
+    "SEX": ["6C", "6C", "6A", "6B", "6C/EF", "6C/EF"],
+  },
+  "MARINA ESP": {
+    "SEG": ["6F", "6F", "6E", "6E"],
+  },
+  "MAURÍCIO": {
+    "SEG": ["2C/EF", "2A/EF", "2ADM/M.A", "2ADM/M.A", "2A/MAT"],
+    "TER": ["2C/EF", "2B/EF", "2ADM/M", "2ADM/M"],
+    "QUA": ["2A"],
+    "QUI": ["2A"],
+    "SEX": ["2A", "2A", "2ADM", "2ADM", "2ADM", "2B"],
+  },
+  "MOISÉS": {
+    "SEG": ["3E", "3E", "3G", "3G", "3D"],
+    "TER": ["3E/OM", "3G", "3G", "3F/OM", "3F/OM"],
+    "QUA": ["3G/OM", "3D/OM", "3D/OM", "3F", "3F"],
+    "QUI": ["2G/EF", "2G/EF", "3F/OM", "2F/EF", "2F/EF"],
+    "SEX": ["3F", "3F", "3G", "3G"],
+  },
+  "NILDES": {
+    "SEG": ["3C", "2C", "2D", "3A", "2D", "3A"],
+    "TER": ["2B", "3A/OM", "3B", "3B", "2C", "2C", "8A", "8A"],
+    "QUA": ["3B", "2C", "3C", "2D", "3A/O M", "3B"],
+    "QUI": ["2E", "2E", "2B", "2B", "3A", "2E"],
+    "SEX": ["2B", "2E", "3C", "2D", "3A", "3C"],
+  },
+  "PAULO": {
+    "SEG": ["2G", "1I", "2H", "2F"],
+    "TER": ["2E", "2E", "2E/L", "2E/L", "6E", "6F", "8C"],
+    "QUA": ["1F/FIL", "1F/FIL", "2D/OR", "2D/SOC", "2D/SOC", ""],
+    "QUI": ["2B", "2B", "2C/OR", "2E/OR", "2C", "2C"],
+    "SEX": ["2ADM", "2ADM", "1E/F", "1E/F", "2A/S", "2A/S", "2H", "2G", "2F"],
+  },
+  "PEDRO": {
+    "QUI": ["6F", "6F", "3F", "3G", "3E", "3G", "1I"],
+    "SEX": ["1I", "3F", "3E"],
+  },
+  "RAUL": {
+    "TER": ["1H", "1H"],
+  },
+  "REGIANE": {
+    "TER": ["3B", "3B"],
+    "QUA": ["3A", "3A"],
+  },
+  "REGINA": {
+    "SEG": ["9D", "9D", "7C", "7C", "8D", "8D"],
+    "TER": ["9B", "9B", "9C", "9C", "9A", "9A"],
+    "QUA": ["8E/R", "8E/R", "1G/R", "1G/R", "6E", "6E"],
+    "QUI": ["7D/R", "6E", "6E", "8A/R", "8C/R", "8C/R"],
+    "SEX": ["1A", "1A", "7D", "7B", "7B", "8B", "8B", "8A"],
+  },
+  "ROBERTO": {
+    "SEG": ["7E", "7F", "7C", "7D"],
+    "TER": ["7F", "7C", "7D", "7B", "7F", "7C", "3G"],
+    "QUA": ["7B", "7E", "7C", "7D", "7B", "7F", "1I/EF", "1I/EF", "3G/F", "2H/EF", "2H/EF"],
+    "QUI": ["7E", "7F", "7E"],
+    "SEX": ["7B", "7D", "7C", "7E", "7D", "7B"],
+  },
+  "RODRIGO": {
+    "SEG": ["1D", "1D", "1C", "1C", "1F", "1F", "", "3D", "2G", "2F", "2H", "3G"],
+    "TER": ["1B", "1B", "1A", "1A", "1E", "1E", "3F", "2G", "1I"],
+    "QUA": ["3D", "3G", "3E"],
+    "QUI": ["1I", "3F", "2H"],
+    "SEX": ["3E", "2F"],
+  },
+  "ROSANGELA": {
+    "SEG": ["1B", "1B", "2A", "2A", "2E", "2E"],
+    "TER": ["1A", "1A", "1C", "1C", "2B", "2B"],
+    "QUA": ["2A/PR", "2A/PR", "3A/PR", "3A/PR", "2C/Q", "2C/Q", "1G", "1G"],
+    "QUI": ["3B/EM", "3B/EM", "2D/QU", "2D/QU", "2B/PR", "2B/PR"],
+    "SEX": ["3B/P", "3B/P", "3A/EM", "3C/P", "3C/P", "3A/EM"],
+  },
+  "ROSE": {
+    "SEG": ["6C", "1B"],
+    "TER": ["6B", "6A", "1A", "6C"],
+    "QUA": ["6D", "6A", "6D", "6D", "1B", "6B"],
+    "QUI": ["6A", "6A", "6B", "1A", "6C", "1B"],
+    "SEX": ["1A", "6B", "6C", "1A", "1B", "6D"],
+  },
+  "SANDRA": {
+    "QUI": ["1H/F", "1H/G", "1H/G"],
+  },
+  "SELMA": {
+    "SEG": ["1A", "1D", "1C"],
+    "TER": ["1G/F"],
+    "QUA": ["1B"],
+    "QUI": ["1A", "1C", "1B", "1D", "1G/F"],
+  },
+  "SOL": {
+    "SEG": ["X", "X", "X", "X", "X", "X"],
+    "QUA": ["X", "X", "X", "X", "X", "X"],
+    "QUI": ["X", "X", "X", "X", "X", "X"],
+    "SEX": ["X", "X", "X", "X", "X", "X"],
+  },
+  "SOLL": {
+    "TER": ["X", "X", "X", "X", "X", "X"],
+  },
+  "SUZY": {
+    "SEG": ["1H", "2F", "2G"],
+    "TER": ["6F", "6F", "1I", "2H"],
+    "QUA": ["2ADM", "2ADM", "2B", "2B", "2E", "2E", "6E"],
+    "QUI": ["2C", "2C", "2A", "2A", "2D", "2D", "6E", "1G", "1G"],
+  },
+  "SÉRGIO": {
+    "SEG": ["2A", "3B", "3A", "2B", "2A", "3B", "2F", "3D", "3E"],
+    "TER": ["3A", "2B", "3F", "2G", "3G", "1I"],
+    "QUA": ["3F", "2F", "1I", "3D", "2G"],
+    "QUI": ["3E", "2H", "2H", "3G"],
+  },
+  "TITO": {
+    "SEG": ["6D", "7A", "7F", "7F", "7A", "7B", "7B"],
+    "QUI": ["3C", "6C"],
+    "SEX": ["6B", "6A", "6D", "6C", "6A", "6B", "6F", "6F", "6E", "6E", "7E", "7E", ""],
+  },
+  "VANDERSON": {
+    "SEG": ["3A", "3A", "3C", "3C", "3B"],
+    "TER": ["3C", "3C"],
+    "QUA": ["2E/R", "2E/R", "3B", "3B", "3B"],
+    "QUI": ["3C", "3C", "3A", "3A"],
+    "SEX": ["3C", "3C", "3B/IN", "3B/IN"],
+  },
+  "VANIA": {
+    "SEG": ["8D", "8C", "8C", "8A", "8A", "7E"],
+    "TER": ["8B", "8B", "7F", "7E", "7E", "8A"],
+    "QUA": ["3C", "3C", "7F", "7F", "8A", "7E", "9A/OP", "9A/OP"],
+    "QUI": ["8E", "8B", "8B", "8D", "8D", "8E"],
+    "SEX": ["8D", "8E", "8E", "7F", "8C", "8C"],
+  },
+  "VIVIANE": {
+    "SEG": ["6B", "1B", "6B", "3A", "1D", "7B/T", "8B/PV", "9D/PV", "7D/T", "7F/T", "7F/T"],
+    "TER": ["6C", "1F", "1E", "1B", "6C", "1C", "6F/T", "7F/R", "6F/T", "7F/PV", "7A/T", "7F/R"],
+    "QUA": ["1D", "6D", "6A", "1F", "1C", "3A", "7E/T", "7C/T", "7A/R", "7A/R", "7C/T", "7B/T", "1H/R", "1H/P", "1H/P"],
+    "QUI": ["1E", "7E"],
+    "SEX": ["6A", "6D", "7E/R", "6E/T", "7E/R", "7A/T", "6E/T", "7D/T", "1H/P", "1H/P", "1H/R"],
+  },
+  "WILSON": {
+    "TER": ["6E", "8C", "6E"],
+    "QUA": ["6F", "8D", "8A", "6F"],
+    "QUI": ["8E", "8B"],
+  },
+  "WILTON": {
+    "SEG": ["7D/EF", "8A/T"],
+    "TER": ["8E/T", "8C/EF", "8D/EF", "8D/EF", "8B/T", "8C/T"],
+    "QUA": ["8B/T", "8C/T", "8B/EF", "8A/T", "8E/T", "8B/EF"],
+    "QUI": ["8D/T", "8C/EF", "8D/T", "7C/EF", "7D/EF", "7C/EF"],
+  },
+};
 
-    // Dias da semana
-    const diasSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
+// Dias da semana
+const diasSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
 
     // Agendamentos e histórico (incluindo agendamentos excluídos)
     const agendamentos = {};
@@ -1420,98 +1676,514 @@
         scheduleContainer.style.display = "none";
       }
     }
-    
-    // Função para atualizar as aulas disponíveis baseadas no professor e data selecionados
+
+    // Nova função para atualizar aulas disponíveis baseada na data selecionada
     function atualizarAulasDisponiveis() {
       const professor = document.getElementById("professor").value;
       const dataSelecionada = document.getElementById("data-selecionada").value;
-      const aulasContainer = document.getElementById("aulas-container");
       const aulaInfo = document.getElementById("aula-info");
+      const aulasContainer = document.getElementById("aulas-container");
       
-      // Limpar o container de aulas
-      aulasContainer.innerHTML = '';
+      // Limpar seleção anterior
       aulaSelecionada = null;
+      aulasContainer.innerHTML = "";
       
-      // Verificar se professor e data estão selecionados
       if (!professor || professor === "Selecione" || !dataSelecionada) {
         aulaInfo.innerHTML = '<span class="aula-indisponivel">Selecione um professor e uma data para ver as aulas disponíveis</span>';
         return;
       }
       
-      // Obter o dia da semana da data selecionada
+      // Converter data para objeto Date e obter dia da semana
       const [dia, mes, ano] = dataSelecionada.split('/');
-      const dataObj = new Date(ano, mes - 1, dia);
-      const diaSemanaIndex = dataObj.getDay();
-      const diaSemana = diasSemana[diaSemanaIndex];
+      const dataObj = new Date(parseInt(ano), parseInt(mes) - 1, parseInt(dia));
+      const diaSemana = dataObj.getDay(); // 0 = Domingo, 1 = Segunda, etc.
+      const diasSemanaAbrev = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
+      const diaSemanaStr = diasSemanaAbrev[diaSemana];
       
-      // Exibir o dia da semana
-      const diasSemanaExtenso = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
-      const diaSemanaExtenso = diasSemanaExtenso[diaSemanaIndex];
-      aulaInfo.innerHTML = `<span class="day-of-week">${diaSemanaExtenso}</span>`;
-      
-      // Obter aulas do professor para esse dia da semana
-      const aulasDoDia = horariosProfessores[professor] && horariosProfessores[professor][diaSemana];
-      
-      if (aulasDoDia && aulasDoDia.length > 0) {
-        // Adicionar título
-        const title = document.createElement('div');
-        title.className = 'aulas-title';
-        title.textContent = 'Clique em uma aula para selecionar:';
-        aulasContainer.appendChild(title);
-        
-        // Adicionar botões para cada aula
-        aulasDoDia.forEach(aula => {
-          const button = document.createElement('button');
-          button.className = 'aula-disponivel';
-          button.textContent = aula;
-          button.onclick = () => selecionarAula(button, aula);
-          aulasContainer.appendChild(button);
-        });
-      } else {
-        aulaInfo.innerHTML += `<span class="aula-indisponivel">Nenhuma aula neste dia</span>`;
+      // Verificar se o professor tem aulas neste dia da semana
+      if (!horariosProfessores[professor] || !horariosProfessores[professor][diaSemanaStr]) {
+        aulaInfo.innerHTML = `<span class="aula-indisponivel">Professor não possui aulas na ${diaSemanaStr}</span>`;
+        return;
       }
+      
+      const aulasDisponiveis = horariosProfessores[professor][diaSemanaStr];
+      
+      if (aulasDisponiveis.length === 0) {
+        aulaInfo.innerHTML = `<span class="aula-indisponivel">Professor não possui aulas na ${diaSemanaStr}</span>`;
+        return;
+      }
+      
+      // Mostrar informações do dia da semana
+      aulaInfo.innerHTML = `
+        <div class="day-of-week">${diaSemanaStr} - ${dataSelecionada}</div>
+        <div class="aulas-title">Clique em uma aula para selecioná-la:</div>
+      `;
+      
+      // Criar botões para cada aula disponível
+      aulasDisponiveis.forEach((aula, index) => {
+        if (aula && aula.trim() !== "") {
+          const aulaBtn = document.createElement("div");
+          aulaBtn.className = "aula-disponivel";
+          aulaBtn.textContent = aula;
+          aulaBtn.onclick = () => selecionarAula(aula, aulaBtn);
+          aulasContainer.appendChild(aulaBtn);
+        }
+      });
     }
-    
+
     // Função para selecionar uma aula
-    function selecionarAula(elemento, aula) {
+    function selecionarAula(aula, elemento) {
       // Remover seleção anterior
-      const botoes = document.querySelectorAll('#aulas-container button');
-      botoes.forEach(btn => {
-        btn.classList.remove('aula-selecionada');
-        btn.classList.add('aula-disponivel');
+      const aulasAnteriores = document.querySelectorAll('.aula-selecionada');
+      aulasAnteriores.forEach(aulaAnterior => {
+        aulaAnterior.classList.remove('aula-selecionada');
+        aulaAnterior.classList.add('aula-disponivel');
       });
       
-      // Marcar a aula selecionada
+      // Selecionar nova aula
       elemento.classList.remove('aula-disponivel');
       elemento.classList.add('aula-selecionada');
       aulaSelecionada = aula;
       
-      // Verificar se há conflito
+      // Verificar conflito
       verificarConflito();
     }
 
-    // Funções do calendário pop-up
+    // Função para obter agendamentos do mês
+    function getAgendamentos(year, month) {
+      const key = `${year}-${month + 1}`;
+      return agendamentos[key] || [];
+    }
+
+    // Função para popular os seletores de mês e ano
+    function populateMonthYearSelectors() {
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear();
+      const currentMonth = currentDate.getMonth();
+
+      // Popular selector de mês
+      monthNames.forEach((month, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = month;
+        if (index === currentMonth) option.selected = true;
+        monthSelect.appendChild(option);
+      });
+
+      // Popular selector de ano
+      for (let year = currentYear - 2; year <= currentYear + 2; year++) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        if (year === currentYear) option.selected = true;
+        yearSelect.appendChild(option);
+      }
+    }
+
+    // Função para renderizar o corpo do calendário
+    function renderCalendarBody(year, month) {
+      const calendarBody = document.getElementById('calendarBody');
+      calendarBody.innerHTML = '';
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const today = new Date();
+      const agendamentosDoMes = getAgendamentos(year, month);
+
+      let date = 1;
+      for (let i = 0; i < 6; i++) {
+        const row = document.createElement('tr');
+        
+        for (let j = 0; j < 7; j++) {
+          const cell = document.createElement('td');
+          
+          if (i === 0 && j < firstDay) {
+            cell.textContent = '';
+            cell.classList.add('indisponivel');
+          } else if (date > daysInMonth) {
+            cell.textContent = '';
+            cell.classList.add('indisponivel');
+          } else {
+            cell.textContent = date;
+            
+            const cellDate = new Date(year, month, date);
+            const isToday = cellDate.toDateString() === today.toDateString();
+            const hasAgendamento = agendamentosDoMes.some(a => a.dia === date);
+            
+            if (isToday) {
+              cell.classList.add('hoje');
+            }
+            
+            if (hasAgendamento) {
+              cell.classList.add('agendado');
+            } else if (cellDate >= today) {
+              cell.classList.add('disponivel');
+            } else {
+              cell.classList.add('indisponivel');
+            }
+            
+            cell.addEventListener('click', () => selectDate(cell, date, month, year));
+            date++;
+          }
+          
+          row.appendChild(cell);
+        }
+        
+        calendarBody.appendChild(row);
+        if (date > daysInMonth) break;
+      }
+
+      // Atualizar seção de agendamentos
+      atualizarSecaoAgendamentos(year, month);
+    }
+
+    // Função para atualizar a seção de agendamentos na parte inferior do calendário
+    function atualizarSecaoAgendamentos(year, month) {
+      const agendamentosLista = document.getElementById('agendamentos-lista');
+      const agendamentosDoMes = getAgendamentos(year, month);
+      
+      if (agendamentosDoMes.length === 0) {
+        agendamentosLista.innerHTML = '<p style="text-align: center; color: #666; font-style: italic;">Nenhum agendamento neste mês</p>';
+        return;
+      }
+      
+      // Ordenar agendamentos por data
+      const agendamentosOrdenados = agendamentosDoMes.sort((a, b) => a.dia - b.dia);
+      
+      agendamentosLista.innerHTML = '';
+      
+      agendamentosOrdenados.forEach(agendamento => {
+        const agendamentoDiv = document.createElement('div');
+        agendamentoDiv.className = 'agendamento-item';
+        
+        const dataFormatada = `${agendamento.dia.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}/${year}`;
+        const status = agendamento.horaEntrega ? 'entregue' : 'agendado';
+        const statusText = agendamento.horaEntrega ? 'Entregue' : 'Agendado';
+        
+        agendamentoDiv.innerHTML = `
+          <div class="agendamento-header">
+            <div class="agendamento-data">${dataFormatada}</div>
+            <div class="agendamento-status status-${status}">${statusText}</div>
+          </div>
+          <div class="agendamento-details">
+            <div class="detail-item">
+              <span class="detail-label">Professor:</span>
+              <span class="detail-value">${agendamento.professor}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Turma:</span>
+              <span class="detail-value">${agendamento.turma}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Aparelho:</span>
+              <span class="detail-value">${agendamento.aparelho} (${agendamento.numAparelhos}x)</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Aula:</span>
+              <span class="detail-value">${agendamento.aula}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Horário:</span>
+              <span class="detail-value">${agendamento.horaRetirada} - ${agendamento.horaEntrega || 'Não entregue'}</span>
+            </div>
+          </div>
+        `;
+        
+        agendamentosLista.appendChild(agendamentoDiv);
+      });
+    }
+
+    // Função para selecionar data
+    function selectDate(cell, day, month, year) {
+      if (cell.classList.contains('indisponivel')) return;
+      
+      if (selectedDay) {
+        selectedDay.classList.remove('selecionado');
+        const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
+        if (!agendamentosDoMes.find(d => d.dia === parseInt(selectedDay.textContent))) {
+          selectedDay.classList.add('disponivel');
+        }
+      }
+      
+      selectedDay = cell;
+      selectedDate = new Date(year, month, day);
+      cell.classList.remove('disponivel', 'agendado');
+      cell.classList.add('selecionado');
+      
+      // Atualizar campo de data
+      const dataFormatada = `${day.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}/${year}`;
+      document.getElementById('data-selecionada').value = dataFormatada;
+      
+      // Atualizar aulas disponíveis
+      atualizarAulasDisponiveis();
+    }
+
+    // Função para cadastrar agendamento
+    function cadastrarAgendamento() {
+      const professor = document.getElementById("professor").value;
+      const aparelho = document.getElementById("aparelho").value;
+      const numAparelhos = document.getElementById("numero-aparelhos").value;
+      const turma = document.getElementById("studentClass").value;
+      const horaRetirada = document.getElementById("hora-retirada").value;
+      const horaEntrega = document.getElementById("hora-entrega").value;
+      const data = document.getElementById("data-selecionada").value;
+      
+      if (!professor || professor === "Selecione" || !aparelho || !turma || !horaRetirada || !data || !aulaSelecionada) {
+        alert("Por favor, preencha todos os campos obrigatórios e selecione uma aula.");
+        return;
+      }
+      
+      // Verificar conflito
+      if (verificarConflitoAgendamento(turma, data, aulaSelecionada)) {
+        alert("CONFLITO: Já existe um agendamento para esta turma, data e aula!");
+        return;
+      }
+      
+      const [dia, mes, ano] = data.split('/');
+      const key = `${ano}-${mes}`;
+      
+      if (!agendamentos[key]) {
+        agendamentos[key] = [];
+      }
+      
+      const novoAgendamento = {
+        dia: parseInt(dia),
+        professor,
+        aparelho,
+        numAparelhos: parseInt(numAparelhos),
+        turma,
+        horaRetirada,
+        horaEntrega,
+        aula: aulaSelecionada
+      };
+      
+      agendamentos[key].push(novoAgendamento);
+      
+      // Atualizar calendário
+      renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
+      
+      // Atualizar histórico
+      atualizarHistorico();
+      
+      alert("Agendamento cadastrado com sucesso!");
+      limparFormulario();
+    }
+
+    // Função para atualizar histórico
+    function atualizarHistorico() {
+      const historicoBody = document.getElementById("historico-body");
+      historicoBody.innerHTML = "";
+      
+      // Combinar todos os agendamentos
+      const todosAgendamentos = [];
+      Object.keys(agendamentos).forEach(key => {
+        const [ano, mes] = key.split('-');
+        agendamentos[key].forEach(agendamento => {
+          todosAgendamentos.push({
+            ...agendamento,
+            data: `${agendamento.dia.toString().padStart(2, '0')}/${mes.padStart(2, '0')}/${ano}`,
+            mesAno: key
+          });
+        });
+      });
+      
+      // Adicionar agendamentos excluídos
+      historicoExcluidos.forEach(agendamento => {
+        todosAgendamentos.push(agendamento);
+      });
+      
+      // Ordenar por data (mais recente primeiro)
+      todosAgendamentos.sort((a, b) => {
+        const [diaA, mesA, anoA] = a.data.split('/');
+        const [diaB, mesB, anoB] = b.data.split('/');
+        const dataA = new Date(parseInt(anoA), parseInt(mesA) - 1, parseInt(diaA));
+        const dataB = new Date(parseInt(anoB), parseInt(mesB) - 1, parseInt(diaB));
+        return dataB - dataA;
+      });
+      
+      todosAgendamentos.forEach((agendamento, index) => {
+        const row = document.createElement("tr");
+        
+        if (agendamento.excluido) {
+          row.classList.add("excluido");
+        } else if (agendamento.horaEntrega) {
+          row.classList.add("entregue");
+        } else {
+          row.classList.add("nao-entregue");
+        }
+        
+        const statusEntrega = agendamento.horaEntrega ? "Entregue" : "Não entregue";
+        
+        row.innerHTML = `
+          <td>${agendamento.data}</td>
+          <td>${agendamento.turma}</td>
+          <td>${agendamento.numAparelhos}</td>
+          <td>${agendamento.aparelho}</td>
+          <td>${agendamento.professor}</td>
+          <td>${agendamento.aula}</td>
+          <td>${statusEntrega}</td>
+          <td>
+            ${!agendamento.excluido ? `<button class="btn-excluir" onclick="excluirAgendamento('${agendamento.mesAno}', ${agendamento.dia}, '${agendamento.turma}', '${agendamento.aula}')">🗑️</button>` : 'Excluído'}
+          </td>
+        `;
+        
+        historicoBody.appendChild(row);
+      });
+    }
+
+    // Função para excluir agendamento
+    function excluirAgendamento(mesAno, dia, turma, aula) {
+      if (!confirm("Tem certeza que deseja excluir este agendamento?")) {
+        return;
+      }
+      
+      const [ano, mes] = mesAno.split('-');
+      
+      if (agendamentos[mesAno]) {
+        const index = agendamentos[mesAno].findIndex(agendamento => 
+          agendamento.dia === dia && 
+          agendamento.turma === turma && 
+          agendamento.aula === aula
+        );
+        
+        if (index !== -1) {
+          const agendamentoExcluido = agendamentos[mesAno][index];
+          agendamentoExcluido.excluido = true;
+          agendamentoExcluido.data = `${dia.toString().padStart(2, '0')}/${mes.padStart(2, '0')}/${ano}`;
+          
+          // Remove do array de agendamentos ativos
+          agendamentos[mesAno].splice(index, 1);
+          
+          // Adiciona ao histórico de excluídos
+          historicoExcluidos.push({
+            ...agendamentoExcluido,
+            mesAno: mesAno
+          });
+          
+          // Atualiza a exibição
+          renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
+          atualizarHistorico();
+        }
+      }
+    }
+
+    // Função para inicializar o datepicker
     function initDatepicker() {
       const datepickerInput = document.getElementById('data-selecionada');
       const datepickerPopup = document.getElementById('datepickerPopup');
       const prevMonthBtn = document.getElementById('prevMonth');
       const nextMonthBtn = document.getElementById('nextMonth');
-      const datepickerMonthYear = document.getElementById('datepickerMonthYear');
-      const datepickerWeekdays = document.getElementById('datepickerWeekdays');
-      const datepickerDays = document.getElementById('datepickerDays');
+      const monthYearTitle = document.getElementById('datepickerMonthYear');
+      const weekdaysGrid = document.getElementById('datepickerWeekdays');
+      const daysGrid = document.getElementById('datepickerDays');
 
-      // Preenche os dias da semana
-      datepickerWeekdays.innerHTML = weekdays.map(day => 
-        `<div class="datepicker-weekday">${day}</div>`
-      ).join('');
+      // Criar cabeçalho dos dias da semana
+      weekdays.forEach(day => {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'datepicker-weekday';
+        dayElement.textContent = day;
+        weekdaysGrid.appendChild(dayElement);
+      });
 
-      // Mostra/oculta o popup
+      function renderDatepicker() {
+        const year = currentPopupDate.getFullYear();
+        const month = currentPopupDate.getMonth();
+        
+        monthYearTitle.textContent = `${monthNames[month]} ${year}`;
+        
+        // Limpar dias
+        daysGrid.innerHTML = '';
+        
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const today = new Date();
+        
+        // Dias do mês anterior
+        const prevMonth = new Date(year, month, 0);
+        const daysInPrevMonth = prevMonth.getDate();
+        
+        for (let i = firstDay - 1; i >= 0; i--) {
+          const dayElement = document.createElement('div');
+          dayElement.className = 'datepicker-day datepicker-other-month';
+          dayElement.textContent = daysInPrevMonth - i;
+          daysGrid.appendChild(dayElement);
+        }
+        
+        // Dias do mês atual
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dayElement = document.createElement('div');
+          dayElement.className = 'datepicker-day';
+          dayElement.textContent = day;
+          
+          const cellDate = new Date(year, month, day);
+          
+          if (cellDate.toDateString() === today.toDateString()) {
+            dayElement.classList.add('datepicker-today');
+          }
+          
+          if (cellDate < today) {
+            dayElement.classList.add('disabled');
+          }
+          
+          if (popupSelectedDate && 
+              cellDate.toDateString() === popupSelectedDate.toDateString()) {
+            dayElement.classList.add('selected');
+          }
+          
+          dayElement.addEventListener('click', () => {
+            if (!dayElement.classList.contains('disabled')) {
+              // Remover seleção anterior
+              document.querySelectorAll('.datepicker-day.selected').forEach(el => {
+                el.classList.remove('selected');
+              });
+              
+              // Selecionar novo dia
+              dayElement.classList.add('selected');
+              popupSelectedDate = new Date(year, month, day);
+              
+              // Atualizar input
+              const dataFormatada = `${day.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}/${year}`;
+              datepickerInput.value = dataFormatada;
+              
+              // Fechar popup
+              datepickerPopup.classList.remove('active');
+              
+              // Atualizar calendário principal se necessário
+              if (parseInt(monthSelect.value) !== month || parseInt(yearSelect.value) !== year) {
+                monthSelect.value = month;
+                yearSelect.value = year;
+                renderCalendarBody(year, month);
+              }
+              
+              // Selecionar no calendário principal
+              selectDate(document.querySelector(`#calendarBody td:nth-child(${(firstDay + day - 1) % 7 + 1})`), day, month, year);
+              
+              // Atualizar aulas disponíveis
+              atualizarAulasDisponiveis();
+            }
+          });
+          
+          daysGrid.appendChild(dayElement);
+        }
+        
+        // Dias do próximo mês
+        const totalCells = daysGrid.children.length;
+        const remainingCells = 42 - totalCells; // 6 semanas * 7 dias
+        
+        for (let day = 1; day <= remainingCells; day++) {
+          const dayElement = document.createElement('div');
+          dayElement.className = 'datepicker-day datepicker-other-month';
+          dayElement.textContent = day;
+          daysGrid.appendChild(dayElement);
+        }
+      }
+
+      // Event listeners
       datepickerInput.addEventListener('click', () => {
         datepickerPopup.classList.toggle('active');
         renderDatepicker();
       });
 
-      // Navegação do calendário
       prevMonthBtn.addEventListener('click', () => {
         currentPopupDate.setMonth(currentPopupDate.getMonth() - 1);
         renderDatepicker();
@@ -1522,388 +2194,12 @@
         renderDatepicker();
       });
 
-      // Fecha o popup quando clicar fora
+      // Fechar popup ao clicar fora
       document.addEventListener('click', (e) => {
-        if (!datepickerPopup.contains(e.target) && e.target !== datepickerInput) {
+        if (!datepickerInput.contains(e.target) && !datepickerPopup.contains(e.target)) {
           datepickerPopup.classList.remove('active');
         }
       });
-
-      function renderDatepicker() {
-        const year = currentPopupDate.getFullYear();
-        const month = currentPopupDate.getMonth();
-        
-        datepickerMonthYear.textContent = `${monthNames[month]} ${year}`;
-        
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const daysInPrevMonth = new Date(year, month, 0).getDate();
-        
-        let daysHtml = '';
-        const today = new Date();
-        
-        // Dias do mês anterior (se necessário)
-        for (let i = 0; i < firstDay; i++) {
-          daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${daysInPrevMonth - firstDay + i + 1}</div>`;
-        }
-        
-        // Dias do mês atual
-        for (let i = 1; i <= daysInMonth; i++) {
-          const date = new Date(year, month, i);
-          const isToday = date.toDateString() === today.toDateString();
-          const isSelected = popupSelectedDate && date.toDateString() === popupSelectedDate.toDateString();
-          const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-          
-          let dayClass = 'datepicker-day';
-          if (isToday) dayClass += ' datepicker-today';
-          if (isSelected) dayClass += ' selected';
-          if (isPast) dayClass += ' disabled';
-          
-          daysHtml += `<div class="${dayClass}" data-day="${i}">${i}</div>`;
-        }
-        
-        // Dias do próximo mês (se necessário)
-        const totalCells = 42; // 6 semanas * 7 dias
-        const remainingCells = totalCells - (firstDay + daysInMonth);
-        for (let i = 1; i <= remainingCells; i++) {
-          daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${i}</div>`;
-        }
-        
-        datepickerDays.innerHTML = daysHtml;
-        
-        // Adiciona eventos aos dias
-        document.querySelectorAll('.datepicker-day:not(.disabled)').forEach(day => {
-          day.addEventListener('click', () => {
-            const dayNum = parseInt(day.getAttribute('data-day'));
-            popupSelectedDate = new Date(year, month, dayNum);
-            
-            // Atualiza o campo de data
-            const formattedDay = String(dayNum).padStart(2, '0');
-            const formattedMonth = String(month + 1).padStart(2, '0');
-            selectedDate = `${formattedDay}/${formattedMonth}/${year}`;
-            datepickerInput.value = selectedDate;
-            
-            // Fecha o popup
-            datepickerPopup.classList.remove('active');
-            
-            // Atualiza o calendário principal
-            updateMainCalendarSelection(year, month + 1, dayNum);
-            
-            // Atualiza as aulas disponíveis
-            atualizarAulasDisponiveis();
-          });
-        });
-      }
-    }
-
-    function updateMainCalendarSelection(year, month, day) {
-      // Atualiza os seletores de mês/ano se necessário
-      if (parseInt(yearSelect.value) !== year || parseInt(monthSelect.value) + 1 !== month) {
-        yearSelect.value = year;
-        monthSelect.value = month - 1;
-        renderCalendarBody(year, month - 1);
-      }
-      
-      // Encontra e seleciona o dia no calendário principal
-      const calendarBody = document.getElementById('calendarBody');
-      const cells = calendarBody.querySelectorAll('td');
-      
-      cells.forEach(cell => {
-        if (parseInt(cell.textContent) === day) {
-          // Remove seleção anterior
-          if (selectedDay) {
-            selectedDay.classList.remove('selecionado');
-            const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
-            if (!agendamentosDoMes.find(d => d.dia === parseInt(selectedDay.textContent))) {
-              selectedDay.classList.add('disponivel');
-            }
-          }
-          
-          // Adiciona nova seleção
-          cell.classList.add('selecionado');
-          cell.classList.remove('disponivel');
-          selectedDay = cell;
-        }
-      });
-    }
-
-    // Funções do calendário principal
-    function populateMonthYearSelectors() {
-      const currentYear = new Date().getFullYear();
-
-      for (let y = currentYear - 1; y <= currentYear + 2; y++) {
-        const option = document.createElement('option');
-        option.value = y;
-        option.textContent = y;
-        yearSelect.appendChild(option);
-      }
-
-      monthNames.forEach((name, index) => {
-        const option = document.createElement('option');
-        option.value = index;
-        option.textContent = name;
-        monthSelect.appendChild(option);
-      });
-
-      const now = new Date();
-      monthSelect.value = now.getMonth();
-      yearSelect.value = now.getFullYear();
-    }
-
-    function getAgendamentos(year, month) {
-      const key = `${year}-${String(month + 1).padStart(2, '0')}`;
-      return agendamentos[key] || [];
-    }
-
-    function renderHistorico(agendamentosDoMes) {
-      const historicoBody = document.getElementById('historico-body');
-      historicoBody.innerHTML = '';
-      
-      // Adiciona agendamentos atuais
-      agendamentosDoMes.forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega, id }) => {
-        const row = document.createElement('tr');
-        
-        const formattedDay = String(dia).padStart(2, '0');
-        const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0');
-        const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
-        
-        // Adiciona classe de status de entrega
-        if (horaEntrega) {
-          row.classList.add('entregue');
-        } else {
-          row.classList.add('nao-entregue');
-        }
-        
-        row.innerHTML = `
-          <td>${formattedDate}</td>
-          <td>${turma}</td>
-          <td>${numAparelhos}</td>
-          <td>${aparelho}</td>
-          <td>${professor}</td>
-          <td>${aula}</td>
-          <td>${horaEntrega || 'Não entregue'}</td>
-          <td><button class="btn-excluir" onclick="excluirAgendamento('${id}')"><i class="fas fa-trash-alt"></i></button></td>
-        `;
-        historicoBody.appendChild(row);
-      });
-      
-      // Adiciona agendamentos excluídos (apenas do mês atual)
-      const currentMonthKey = `${yearSelect.value}-${String(parseInt(monthSelect.value) + 1).padStart(2, '0')}`;
-      historicoExcluidos
-        .filter(item => item.mesAno === currentMonthKey)
-        .forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega }) => {
-          const row = document.createElement('tr');
-          row.classList.add('excluido');
-          
-          const formattedDay = String(dia).padStart(2, '0');
-          const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0');
-          const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
-          
-          row.innerHTML = `
-            <td>${formattedDate}</td>
-            <td>${turma}</td>
-            <td>${numAparelhos}</td>
-            <td>${aparelho}</td>
-            <td>${professor}</td>
-            <td>${aula}</td>
-            <td>${horaEntrega || 'Não entregue'}</td>
-            <td>EXCLUÍDO</td>
-          `;
-          historicoBody.appendChild(row);
-        });
-    }
-
-    function renderCalendarBody(year, month) {
-      const calendarBody = document.getElementById('calendarBody');
-      calendarBody.innerHTML = '';
-
-      const date = new Date(year, month, 1);
-      const firstDay = date.getDay(); // 0=Domingo, 1=Segunda, ..., 6=Sábado
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const daysInPrevMonth = new Date(year, month, 0).getDate();
-
-      const agendamentosDoMes = getAgendamentos(year, month);
-
-      let day = 1;
-      let currentRow = document.createElement('tr');
-      
-      // Células vazias para os dias do mês anterior
-      for (let i = 0; i < firstDay; i++) {
-        const emptyCell = document.createElement('td');
-        emptyCell.innerHTML = daysInPrevMonth - firstDay + i + 1;
-        emptyCell.classList.add('indisponivel');
-        currentRow.appendChild(emptyCell);
-      }
-
-      // Dias do mês atual
-      while (day <= daysInMonth) {
-        // Se chegarmos ao domingo (0), criamos uma nova linha
-        if (currentRow.children.length === 7) {
-          calendarBody.appendChild(currentRow);
-          currentRow = document.createElement('tr');
-        }
-
-        const cell = document.createElement('td');
-        cell.textContent = day;
-
-        const agendado = agendamentosDoMes.find(d => d.dia === day);
-        if (agendado) {
-          cell.classList.add('agendado');
-          cell.title = `${agendado.aparelho} - ${agendado.professor}`;
-        } else {
-          cell.classList.add('disponivel');
-          cell.style.cursor = 'default';
-        }
-
-        currentRow.appendChild(cell);
-        day++;
-      }
-
-      // Preenche as células restantes na última linha com dias do próximo mês
-      while (currentRow.children.length < 7) {
-        const nextMonthDay = document.createElement('td');
-        nextMonthDay.innerHTML = day - daysInMonth;
-        nextMonthDay.classList.add('indisponivel');
-        currentRow.appendChild(nextMonthDay);
-        day++;
-      }
-
-      // Adiciona a última linha se ela tiver conteúdo
-      if (currentRow.children.length > 0) {
-        calendarBody.appendChild(currentRow);
-      }
-
-      renderHistorico(agendamentosDoMes);
-    }
-
-    function gerarIdUnico() {
-      return Date.now().toString(36) + Math.random().toString(36).substr(2);
-    }
-
-    async function cadastrarAgendamento() {
-      const professor = document.getElementById("professor").value;
-      const aparelho = document.getElementById("aparelho").value;
-      const turma = document.getElementById("studentClass").value;
-      const numAparelhos = document.getElementById("numero-aparelhos").value;
-      const aula = aulaSelecionada;
-      const sala = document.getElementById("sala").value;
-      const horaRetirada = document.getElementById("hora-retirada").value;
-      const horaEntrega = document.getElementById("hora-entrega").value;
-      
-      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate || !sala || !horaRetirada || !aula) {
-        alert("Preencha todos os campos obrigatórios do formulário antes de agendar!");
-        return;
-      }
-      
-      // Verifica se já existe agendamento para esta turma, data e aula
-      if (verificarConflitoAgendamento(turma, selectedDate, aula)) {
-        alert("Já existe um agendamento para esta turma nesta data e aula!");
-        return;
-      }
-      
-      const [dia, mes, ano] = selectedDate.split('/');
-      const key = `${ano}-${mes}`;
-      
-      if (!agendamentos[key]) {
-        agendamentos[key] = [];
-      }
-      
-      const id = gerarIdUnico();
-      
-      const novoAgendamento = { 
-        id,
-        dia: parseInt(dia),
-        aparelho,
-        professor,
-        turma,
-        numAparelhos: parseInt(numAparelhos),
-        aula,
-        sala,
-        horaRetirada,
-        horaEntrega
-      };
-      
-      agendamentos[key].push(novoAgendamento);
-      
-      // Atualiza o calendário e o histórico
-      renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
-      
-      // Limpa a seleção
-      if (selectedDay) {
-        selectedDay.classList.remove('selecionado');
-        selectedDay.classList.add('agendado');
-        selectedDay = null;
-      }
-      selectedDate = null;
-      document.getElementById('data-selecionada').value = '';
-      
-      // Gera documento
-      await gerarDocumento(novoAgendamento);
-      
-      alert("Agendamento cadastrado com sucesso!");
-    }
-
-    function excluirAgendamento(id) {
-      if (!confirm("Tem certeza que deseja excluir este agendamento?")) {
-        return;
-      }
-      
-      // Encontra e remove o agendamento
-      for (const key in agendamentos) {
-        const index = agendamentos[key].findIndex(ag => ag.id === id);
-        if (index !== -1) {
-          const [agendamentoExcluido] = agendamentos[key].splice(index, 1);
-          
-          // Adiciona ao histórico de excluídos
-          const [ano, mes] = key.split('-');
-          historicoExcluidos.push({
-            ...agendamentoExcluido,
-            mesAno: key
-          });
-          
-          // Atualiza a exibição
-          renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
-          break;
-        }
-      }
-    }
-
-    async function gerarDocumento(agendamento) {
-      try {
-        // Esta função seria implementada para integrar com o Google Docs usando o Google Apps Script
-        // Aqui está apenas um esboço da implementação que seria chamada pelo Google Apps Script
-        
-        const response = await fetch('https://script.google.com/macros/s/AKfycbw3I3K5zveoPB398z2EyTfrd91nFmFQr3sspk2E01G8YWS2itYWJ6q7tPicsr-J4U0D/exec', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            action: 'gerarDocumento',
-            dados: {
-              professor: agendamento.professor,
-              quantidade: agendamento.numAparelhos,
-              data: agendamento.dia + '/' + (parseInt(monthSelect.value) + 1) + '/' + yearSelect.value,
-              tipoAparelho: agendamento.aparelho,
-              turma: agendamento.turma,
-              aula: agendamento.aula,
-              horaRetirada: agendamento.horaRetirada,
-              horaEntrega: agendamento.horaEntrega,
-              statusEntrega: agendamento.horaEntrega ? 'Entregue' : 'Não entregue'
-            }
-          })
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-          console.log("Documento gerado com sucesso:", result.url);
-        } else {
-          console.error("Erro ao gerar documento:", result.message);
-        }
-      } catch (error) {
-        console.error("Erro ao chamar o Google Apps Script:", error);
-      }
     }
 
     function limparFormulario() {
@@ -1955,3 +2251,6 @@
   </script>
 </body>
 </html>
+
+
+		
