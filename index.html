@@ -114,7 +114,7 @@
     }
 
     .form-group input,
-    .form-group select:not(#aula) {
+    .form-group select {
       width: 100%;
       padding: 12px 15px;
       border: 2px solid #ddd;
@@ -127,24 +127,6 @@
 
     .form-group select {
       cursor: pointer;
-    }
-
-    /* Estilo específico para o campo "Aula" */
-    .form-group select#aula {
-      width: 120px;
-      padding: 8px 10px;
-    }
-
-    .form-group input[type="time"] {
-      width: 120px;
-      padding: 8px 10px;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus {
-      border-color: var(--azul-medio);
-      box-shadow: 0 0 0 3px rgba(62, 146, 204, 0.2);
-      outline: none;
     }
 
     /* Estilo para dropdown com cores alternadas */
@@ -609,13 +591,23 @@
     }
     
     .aula-disponivel {
-      background-color: var(--verde-disponivel);
+      background-color: var(--azul-medio);
       color: white;
-      padding: 3px 8px;
+      padding: 8px 12px;
       border-radius: 4px;
       font-size: 0.9rem;
       display: inline-block;
-      margin-top: 5px;
+      margin: 5px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+    
+    .aula-selecionada {
+      background-color: var(--vermelho);
+      color: white;
+      transform: scale(1.05);
+      border: 2px solid var(--azul-escuro);
     }
     
     .aula-indisponivel {
@@ -633,6 +625,8 @@
       color: var(--roxo);
       font-weight: bold;
       margin-top: 5px;
+      text-align: center;
+      display: block;
     }
     
     .info-box {
@@ -651,6 +645,21 @@
     .info-content {
       font-size: 0.9rem;
       line-height: 1.5;
+    }
+    
+    .aulas-container {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      justify-content: center;
+    }
+    
+    .aulas-title {
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: var(--azul-escuro);
     }
   </style>
 </head>
@@ -753,7 +762,7 @@
             <option value="2ª SERIE F NOITE">2ª SERIE F NOITE</option>
             <option value="2ª SERIE G NOITE">2ª SERIE G NOITE</option>
             <option value="2ª SERIE H NOITE">2ª SERIE H NOITE</option>
-            <option value="2ª SERIE I NOITE">2ª SERIE I NOITE</option>
+            <option value="2ª SERIE I NOITE">2ª SERie I NOITE</option>
             <option value="3ª SERIE A MANHA">3ª SERIE A MANHA</option>
             <option value="3ª SERIE B MANHA">3ª SERIE B MANHA</option>
             <option value="3ª SERIE C MANHA">3ª SERIE C MANHA</option>
@@ -783,15 +792,13 @@
       </div>
 
       <div class="form-group">
-        <label for="aula">AULA:</label>
-        <select id="aula">
-          <option value="">Selecione uma data primeiro</option>
-        </select>
-        <div id="aula-info" class="aula-indisponivel">Selecione um professor e uma data para ver as aulas disponíveis</div>
-      </div>
-
-      <div class="conflict-message" id="conflictMessage">
-        Já existe um agendamento para esta turma nesta data e aula!
+        <label for="aula">AULAS DISPONÍVEIS:</label>
+        <div id="aula-info">
+          <span class="aula-indisponivel">Selecione um professor e uma data para ver as aulas disponíveis</span>
+        </div>
+        <div class="aulas-container" id="aulas-container">
+          <!-- Botões de aula serão gerados dinamicamente aqui -->
+        </div>
       </div>
 
       <div class="teacher-schedule" id="teacherSchedule">
@@ -817,7 +824,7 @@
         <div class="info-content">
           <p><i class="fas fa-info-circle"></i> Selecione um professor e uma data para ver as aulas disponíveis.</p>
           <p><i class="fas fa-check-circle"></i> As aulas mostradas correspondem ao dia da semana selecionado.</p>
-          <p><i class="fas fa-exclamation-triangle"></i> Verifique os conflitos antes de agendar.</p>
+          <p><i class="fas fa-exclamation-triangle"></i> Clique em uma aula para selecioná-la para agendamento.</p>
         </div>
       </div>
 
@@ -1036,411 +1043,228 @@
       "4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA": "Laboratório 1"
     };
 
-   // Horários dos professores (organizados por dias da semana)
-const horariosProfessores = {
-  ".": {
-    "SEG": [],
-    "TER": [],
-    "QUA": [],
-  },
-  "ADEMAR": {
-    "SEG": ["1D", "1E", "1E", "9A", "9A", "9C", "9C", "9D", "9A"],
-    "TER": ["1F", "1F", "1B", "9D", "2F", "2H", "1H", "1H"],
-    "QUA": ["1B", "1A", "1A"],
-    "QUI": ["1D", "1C", "1C", "9B", "9D"],
-    "SEX": ["9C", "9B", "9B", "1G", "1G", "2F", "2G", "2G", "2H"],
-  },
-  "ALISSON": {
-    "SEG": ["6A", "6D", "6B", "1F", "6A", "6A"],
-    "TER": ["1D", "6C", "1B"],
-    "QUA": ["1B/BIO", "3C/PV", "6C/CIÊ", "1E/BIO", "8A", "8A", "7E/PV", "7C/PV"],
-    "QUI": ["6B", "6B", "1C", "6C", "1F", "6D", "8A", "8A", "7D/PV"],
-    "SEX": ["1E", "1A", "1A", "1C", "6D/C", "1D"],
-  },
-  "ANDRÉ": {
-    "SEG": ["X", "X", "X", "X", "X"],
-    "TER": ["X", "X", "X", "X", "X"],
-    "QUA": ["X", "X", "X", "X", "X"],
-    "QUI": ["X", "X", "X", "X", "X"],
-    "SEX": ["X", "X", "X", "X", "X"],
-  },
-  "ANDRÉIA": {
-    "SEG": ["1E", "1F", "1D", "2C", "1C", "2D"],
-    "TER": ["1F/R", "1D", "1F", "1E", "1C", "1F/R"],
-    "QUA": ["2C/R", "1D", "1C", "1C", "1E", "1C/R"],
-    "QUI": ["1D/R", "1E", "1B/R", "1E/R", "1D/R", "1F"],
-    "SEX": ["2D/R", "1E", "1C", "1F", "1D", "1B/R"],
-  },
-  "ANTONIO": {
-    "QUI": ["3G", "2F", "2F", "2G", "2G"],
-    "SEX": ["3G", "2H", "2H", "1I", "1I"],
-  },
-  "ANTONIO CARLOS": {
-    "SEG": ["2B", "2B", "2E", "2E"],
-    "TER": ["2C", "2C", "2D", "2D", "2A"],
-    "QUA": ["2D", "2D", "2E", "2E"],
-    "QUI": ["2A", "2A"],
-    "SEX": ["2C", "2C", "2A", "2B", "2B"],
-  },
-  "BETE": {
-    "SEG": ["1A", "1A", "1A", "1E", "1B", "1B"],
-    "TER": ["1E/EF", "1E/EF", "1D", "1D", "1B", "1A"],
-    "QUA": ["1C/EF", "1C/EF", "1E", "1E", "1D/EF", "1D/EF"],
-    "QUI": ["1C", "1C", "1E", "1B", "1A/EF", "1A/EF"],
-    "SEX": ["1B/EF", "1B/EF", "1D", "1D", "1C", "1C", "1G", "1G"],
-  },
-  "CAROL": {
-    "SEG": ["1G", "1G", "7A", "7A"],
-    "TER": ["9D", "9D", "9A", "7B", "7B"],
-    "QUA": ["9C", "9C", "7B", "7A"],
-    "QUI": ["9A", "9B", "9B", "9C", "9D"],
-    "SEX": ["9B", "9C", "9D", "9B", "9A", "9A"],
-  },
-  "CASSIA": {
-    "SEG": ["8C", "8E", "8E", "8B", "8B", "8B"],
-    "TER": ["8D", "8D", "8B", "8C"],
-    "QUA": ["8D", "8D", "8E", "8E", "8C", "8C"],
-  },
-  "DANIEL": {
-    "SEG": ["6C", "6C", "2C", "6D", "3C", "3C", "6E", "6E"],
-    "TER": ["2ADM/H", "2ADM/H", "6A", "2C", "2D/L", "2D/L"],
-    "QUI": ["2D", "2D", "6D", "6A", "3B", "3B"],
-    "SEX": ["3A", "3A", "2C/L", "2C/L", "2E", "2E"],
-  },
-  "DANIEL FR": {
-    "QUA": ["1H", "1H"],
-  },
-  "DANIEL FREITAS": {
-    "SEG": ["9B", "9B", "9D", "1G", "1G"],
-    "TER": ["9A", "9B", "8E/EF", "8E/EF", "9C"],
-    "QUA": ["9A", "9D", "9D", "9B", "9B"],
-    "QUI": ["9C", "9A", "1G", "1G", "9C", "1H", "1H"],
-    "SEX": ["9A", "9A", "9C", "9C", "9D", "9D"],
-  },
-  "DANIEL LOPES": {
-    "QUA": ["6B", "6B", "2A", "2A", "2B", "2B"],
-  },
-  "DANIELA": {
-    "SEG": ["1C", "1C", "6A", "6A", "6D", "6D", "", "7D", "7C", "9A", "7E", "7E", "7C"],
-    "TER": ["6B", "6B", "6C", "6C", "1D", "1D", "7D", "7B", "7B", "7A", "1G", "1G", "1H"],
-    "QUA": ["1A", "1A", "9D", "7A"],
-    "SEX": ["1F", "1F", "1B", "1B", "1E", "1E"],
-  },
-  "DANIELLE": {
-    "TER": ["3F", "2F", "3G"],
-    "QUA": ["3E", "3D"],
-    "QUI": ["2F", "3E", "3G", "3D", "3F"],
-  },
-  "EDIANE": {
-    "SEG": ["7C", "7B", "6F/R", "6F/R", "9C/O", "9D/O", "3F", "3F", "2G", "2G", "2H"],
-    "TER": ["7B", "7D", "7C", "9B/OP", "6E/R", "9B/OP", "2G", "2F", "2F", "3E/OP", "3E/OP"],
-    "QUA": ["9C/OP", "7B", "2H", "2H", "2H", "2F", "2F"],
-    "QUI": ["2ADM", "2ADM", "2ADM", "6F", "7D", "9D/OP", "7D", "7C", "7D"],
-    "SEX": ["6E/R", "7C", "6F", "6F", "7B", "6F", "2G", "3G/OP", "3G/OP", "3D/OP", "3D/OP"],
-  },
-  "EDIVANIA": {
-    "QUI": ["9D"],
-    "SEX": ["9D"],
-  },
-  "EDIVÂNIA": {
-    "SEG": ["1F", "1F", "2B/EMP"],
-    "QUI": ["1F", "2E/EF", "1F", "2E/EF", "7F", "7E", "7E", "7F"],
-  },
-  "EDUARDO": {
-    "QUA": ["7C", "8B", "7D", "8B", "7D", "7C"],
-  },
-  "ELIANE": {
-    "SEG": ["1G", "1G"],
-    "TER": ["6A", "6A", "2A", "2A", "2E", "2E"],
-    "QUA": ["6A", "3B/PV", "6B/PV", "6A/PV", "6B", "6D"],
-    "QUI": ["6C", "6C", "6C", "6B", "6B", "3A/PV"],
-    "SEX": ["6D", "2B", "2B", "6D/PV", "2C", "2C"],
-  },
-  "ELIANE CONTI": {
-    "SEG": ["3C/EMP"],
-    "QUI": ["3C/EMP"],
-  },
-  "ELIANE SANTOS": {
-    "SEG": ["2D", "2D", "6D", "6C/PV", "2ADM/G", "2ADM/G", ""],
-  },
-  "ELIAS": {
-    "SEG": ["2E", "2E", "3B", "3B", "2C", "2C", "9B", "1H/Q", "1H/Q", "1H/EF", "1H/EF"],
-    "TER": ["1C", "1C", "2ADM/Q", "2ADM/Q", "3A", "3A"],
-    "QUA": ["2B", "2B", "1A", "1A", "2A", "1F", "9B/OM"],
-    "QUI": ["1B", "1B", "3C", "3C", "1E", "1E", "9A", "8E/PV", "9A", "8D/PV"],
-    "SEX": ["1D", "1D", "1F", "2A", "2D", "2D", "1G", "1G", "9C", "9C", "1H/F", "1H/F"],
-  },
-  "EUZELI": {
-    "SEG": ["3B", "1E", "1E", "2D", "2B"],
-    "QUA": ["1B", "1B", "1D", "1D", "1F"],
-    "QUI": ["1A", "1A", "2ADM", "2C", "2A"],
-    "SEX": ["1C", "1C", "2E", "3A", "1F"],
-  },
-  "EVENTUAL": {
-    "QUI": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª"],
-  },
-  "EVENTUAL:": {
-    "SEG": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
-    "TER": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
-    "QUA": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
-    "QUI": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
-    "SEX": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
-  },
-  "FLÁVIA": {
-    "SEG": ["X", "X", "X", "X", "X", "X"],
-    "TER": ["X", "X", "X", "X", "X", "X"],
-    "QUA": ["X", "X", "X", "X", "X", "X"],
-    "QUI": ["X", "X", "X", "X", "X", "X"],
-    "SEX": ["X", "X", "X", "X", "X", "X"],
-  },
-  "FÁBIO": {
-    "SEG": ["1I", "2F", "1I", "3D", "1I"],
-    "TER": ["3D", "3E", "2H", "2H", "2F"],
-    "QUA": ["2G", "3E", "2F", "2G", "3E"],
-    "QUI": ["2H", "3D", "2G", "1I", "2H"],
-    "SEX": ["3E", "3D", "2F", "2G"],
-  },
-  "GELSON": {
-    "SEG": ["8B"],
-    "TER": ["2D/EF", "2D/EF", "3C/OM", "3C/OM", "3B/OM", "3B/OM", "8A"],
-    "QUA": ["8A"],
-    "QUI": ["1F", "8B"],
-    "SEX": ["1F", "8B", "8B", "8A", "8A", "8A", "8B"],
-  },
-  "GENILTON": {
-    "TER": ["7E", "7E"],
-    "QUA": ["7D", "6F", "7B/PV", "6E", "7F", "7D"],
-    "QUI": ["7C", "7C", "6F", "6F", "6E", "6E"],
-    "SEX": ["7C", "7E", "7A/PV", "7D", "7F", "7F"],
-  },
-  "GISLENE": {
-    "SEX": ["6B", "6A", "6B", "6A"],
-  },
-  "GUSTAVO": {
-    "SEG": ["7F/AR", "1I"],
-    "QUI": ["9C/AR", "7F/AR"],
-  },
-  "INGRYD": {
-    "SEG": ["8E", "8D", "8D", "8E", "6E", "6E"],
-    "TER": ["8C", "6F", "8D", "8D"],
-    "QUA": ["6F", "6E", "6E", "6F", "6F", "8E"],
-    "QUI": ["8C", "8C", "6E"],
-    "SEX": ["8E", "8C", "8C", "8E", "6F", "8D"],
-  },
-  "JANINA": {
-    "SEG": ["2ADM/B", "2ADM/B", "2B"],
-    "TER": ["2A", "2A", "2B"],
-    "QUA": ["3C/BIOT", "3C/BIOT", "2C", "2C"],
-    "QUI": ["3A", "3A", "3B", "3B", "3D", "3F", "3D"],
-    "SEX": ["2E", "2D", "2D", "2E", "3E", "3E", "3F"],
-  },
-  "JUAREZ": {
-    "SEG": ["2H", "2H", "3F", "3E", "3E"],
-    "TER": ["3A", "3A", "3C", "3C", "2H/Q", "3D", "3D", "2G", "2G"],
-    "QUA": ["1E", "1E", "1F", "2F/FÍS", "2G", "2G", "1I", "1I"],
-    "QUI": ["1F", "1D", "1D"],
-    "SEX": ["3B", "3B", "1I", "1I", "3F", "2H/Q", "2F"],
-  },
-  "KATIUSCIA": {
-    "SEG": ["1A", "1A", "8A", "9C", "8B", "8C", "8E", "8E"],
-    "TER": ["7C", "7A", "7A", "7D", "7D", "8B"],
-    "QUA": ["9D", "9D", "9A", "9A", "7E", "7E"],
-    "QUI": ["7B", "9B", "9C", "7B", "9B", "8A"],
-    "SEX": ["8C", "7F", "7F", "8D", "8D", "7C"],
-  },
-  "LUANA": {
-    "SEG": ["9C", "7A", "7A", "9A", "9B", "9B"],
-    "TER": ["6D", "6B", "6A", "9C", "9C", "1G", "1G", "9D", "9D"],
-    "QUA": ["6C", "6D", "6C", "9A", "9B", "9B", "9C", "1G", "1G"],
-    "QUI": ["6A", "6B", "9D", "7A", "7A", "9D", "9A", "9A"],
-  },
-  "LUANA ADM": {
-    "QUA": ["2ADM", "2ADM", "2ADM", "2ADM"],
-    "QUI": ["2ADM", "2ADM"],
-    "SEX": ["2ADM"],
-  },
-  "LUCIANA": {
-    "SEG": ["3G", "3G", "3D", "3F", "3F"],
-    "TER": ["1I", "1I", "3E", "3D", "3D"],
-    "QUA": ["3E", "3F", "3F", "3G", "3G"],
-    "QUI": ["3D", "1I", "1I", "3E", "3E"],
-  },
-  "LUCIANO": {
-    "SEG": ["8A", "8A", "8D", "9A", "9C"],
-    "TER": ["7E", "8B", "9C", "7E"],
-    "QUA": ["8C", "9B", "8B", "9D"],
-    "QUI": ["7F", "7F", "8C", "7E", "9B"],
-    "SEX": ["7F", "9D", "8D", "9A", "8E", "8E"],
-  },
-  "MARA": {
-    "TER": ["1G", "9A", "9D", "8A", "8E"],
-    "QUA": ["8D", "8C", "9C", "9C"],
-    "QUI": ["8A/PV", "8E", "8A", "1G"],
-    "SEX": ["9D", "8D", "9A", "8C", "9B", "9B"],
-  },
-  "MARCIEL": {
-    "SEG": ["7E", "7E", "7B", "9B/PV", "8C", "8C"],
-    "TER": ["9A/PV", "8E", "8E", "8A", "7C", "7D"],
-    "QUA": ["8C", "7D", "7F", "7F", "8D", "8D"],
-    "QUI": ["9C/PV", "8D", "8E", "8B", "8B", "7B"],
-    "SEX": ["8A", "8A", "8B", "7C", "7A", "7A", "3D", "3D"],
-  },
-  "MARINA": {
-    "SEG": ["6B", "6A", "6B/EF", "6B/EF"],
-    "TER": ["6D", "6D", "6D", "6B", "6A", "6B", "7A"],
-    "QUA": ["6C", "6C", "6C", "6B", "6A/EF", "6A/EF", "7A", "7A"],
-    "QUI": ["6D", "6D", "6A", "6D/EF", "6D/EF", "6A", "7A", "7B/EF", "7B/EF", "7A", "7A/EF", "7A/EF"],
-    "SEX": ["6C", "6C", "6A", "6B", "6C/EF", "6C/EF"],
-  },
-  "MARINA ESP": {
-    "SEG": ["6F", "6F", "6E", "6E"],
-  },
-  "MAURÍCIO": {
-    "SEG": ["2C/EF", "2A/EF", "2ADM/M.A", "2ADM/M.A", "2A/MAT"],
-    "TER": ["2C/EF", "2B/EF", "2ADM/M", "2ADM/M"],
-    "QUA": ["2A"],
-    "QUI": ["2A"],
-    "SEX": ["2A", "2A", "2ADM", "2ADM", "2ADM", "2B"],
-  },
-  "MOISÉS": {
-    "SEG": ["3E", "3E", "3G", "3G", "3D"],
-    "TER": ["3E/OM", "3G", "3G", "3F/OM", "3F/OM"],
-    "QUA": ["3G/OM", "3D/OM", "3D/OM", "3F", "3F"],
-    "QUI": ["2G/EF", "2G/EF", "3F/OM", "2F/EF", "2F/EF"],
-    "SEX": ["3F", "3F", "3G", "3G"],
-  },
-  "NILDES": {
-    "SEG": ["3C", "2C", "2D", "3A", "2D", "3A"],
-    "TER": ["2B", "3A/OM", "3B", "3B", "2C", "2C", "8A", "8A"],
-    "QUA": ["3B", "2C", "3C", "2D", "3A/O M", "3B"],
-    "QUI": ["2E", "2E", "2B", "2B", "3A", "2E"],
-    "SEX": ["2B", "2E", "3C", "2D", "3A", "3C"],
-  },
-  "PAULO": {
-    "SEG": ["2G", "1I", "2H", "2F"],
-    "TER": ["2E", "2E", "2E/L", "2E/L", "6E", "6F", "8C"],
-    "QUA": ["1F/FIL", "1F/FIL", "2D/OR", "2D/SOC", "2D/SOC", ""],
-    "QUI": ["2B", "2B", "2C/OR", "2E/OR", "2C", "2C"],
-    "SEX": ["2ADM", "2ADM", "1E/F", "1E/F", "2A/S", "2A/S", "2H", "2G", "2F"],
-  },
-  "PEDRO": {
-    "QUI": ["6F", "6F", "3F", "3G", "3E", "3G", "1I"],
-    "SEX": ["1I", "3F", "3E"],
-  },
-  "RAUL": {
-    "TER": ["1H", "1H"],
-  },
-  "REGIANE": {
-    "TER": ["3B", "3B"],
-    "QUA": ["3A", "3A"],
-  },
-  "REGINA": {
-    "SEG": ["9D", "9D", "7C", "7C", "8D", "8D"],
-    "TER": ["9B", "9B", "9C", "9C", "9A", "9A"],
-    "QUA": ["8E/R", "8E/R", "1G/R", "1G/R", "6E", "6E"],
-    "QUI": ["7D/R", "6E", "6E", "8A/R", "8C/R", "8C/R"],
-    "SEX": ["1A", "1A", "7D", "7B", "7B", "8B", "8B", "8A"],
-  },
-  "ROBERTO": {
-    "SEG": ["7E", "7F", "7C", "7D"],
-    "TER": ["7F", "7C", "7D", "7B", "7F", "7C", "3G"],
-    "QUA": ["7B", "7E", "7C", "7D", "7B", "7F", "1I/EF", "1I/EF", "3G/F", "2H/EF", "2H/EF"],
-    "QUI": ["7E", "7F", "7E"],
-    "SEX": ["7B", "7D", "7C", "7E", "7D", "7B"],
-  },
-  "RODRIGO": {
-    "SEG": ["1D", "1D", "1C", "1C", "1F", "1F", "", "3D", "2G", "2F", "2H", "3G"],
-    "TER": ["1B", "1B", "1A", "1A", "1E", "1E", "3F", "2G", "1I"],
-    "QUA": ["3D", "3G", "3E"],
-    "QUI": ["1I", "3F", "2H"],
-    "SEX": ["3E", "2F"],
-  },
-  "ROSANGELA": {
-    "SEG": ["1B", "1B", "2A", "2A", "2E", "2E"],
-    "TER": ["1A", "1A", "1C", "1C", "2B", "2B"],
-    "QUA": ["2A/PR", "2A/PR", "3A/PR", "3A/PR", "2C/Q", "2C/Q", "1G", "1G"],
-    "QUI": ["3B/EM", "3B/EM", "2D/QU", "2D/QU", "2B/PR", "2B/PR"],
-    "SEX": ["3B/P", "3B/P", "3A/EM", "3C/P", "3C/P", "3A/EM"],
-  },
-  "ROSE": {
-    "SEG": ["6C", "1B"],
-    "TER": ["6B", "6A", "1A", "6C"],
-    "QUA": ["6D", "6A", "6D", "6D", "1B", "6B"],
-    "QUI": ["6A", "6A", "6B", "1A", "6C", "1B"],
-    "SEX": ["1A", "6B", "6C", "1A", "1B", "6D"],
-  },
-  "SANDRA": {
-    "QUI": ["1H/F", "1H/G", "1H/G"],
-  },
-  "SELMA": {
-    "SEG": ["1A", "1D", "1C"],
-    "TER": ["1G/F"],
-    "QUA": ["1B"],
-    "QUI": ["1A", "1C", "1B", "1D", "1G/F"],
-  },
-  "SOL": {
-    "SEG": ["X", "X", "X", "X", "X", "X"],
-    "QUA": ["X", "X", "X", "X", "X", "X"],
-    "QUI": ["X", "X", "X", "X", "X", "X"],
-    "SEX": ["X", "X", "X", "X", "X", "X"],
-  },
-  "SOLL": {
-    "TER": ["X", "X", "X", "X", "X", "X"],
-  },
-  "SUZY": {
-    "SEG": ["1H", "2F", "2G"],
-    "TER": ["6F", "6F", "1I", "2H"],
-    "QUA": ["2ADM", "2ADM", "2B", "2B", "2E", "2E", "6E"],
-    "QUI": ["2C", "2C", "2A", "2A", "2D", "2D", "6E", "1G", "1G"],
-  },
-  "SÉRGIO": {
-    "SEG": ["2A", "3B", "3A", "2B", "2A", "3B", "2F", "3D", "3E"],
-    "TER": ["3A", "2B", "3F", "2G", "3G", "1I"],
-    "QUA": ["3F", "2F", "1I", "3D", "2G"],
-    "QUI": ["3E", "2H", "2H", "3G"],
-  },
-  "TITO": {
-    "SEG": ["6D", "7A", "7F", "7F", "7A", "7B", "7B"],
-    "QUI": ["3C", "6C"],
-    "SEX": ["6B", "6A", "6D", "6C", "6A", "6B", "6F", "6F", "6E", "6E", "7E", "7E", ""],
-  },
-  "VANDERSON": {
-    "SEG": ["3A", "3A", "3C", "3C", "3B"],
-    "TER": ["3C", "3C"],
-    "QUA": ["2E/R", "2E/R", "3B", "3B", "3B"],
-    "QUI": ["3C", "3C", "3A", "3A"],
-    "SEX": ["3C", "3C", "3B/IN", "3B/IN"],
-  },
-  "VANIA": {
-    "SEG": ["8D", "8C", "8C", "8A", "8A", "7E"],
-    "TER": ["8B", "8B", "7F", "7E", "7E", "8A"],
-    "QUA": ["3C", "3C", "7F", "7F", "8A", "7E", "9A/OP", "9A/OP"],
-    "QUI": ["8E", "8B", "8B", "8D", "8D", "8E"],
-    "SEX": ["8D", "8E", "8E", "7F", "8C", "8C"],
-  },
-  "VIVIANE": {
-    "SEG": ["6B", "1B", "6B", "3A", "1D", "7B/T", "8B/PV", "9D/PV", "7D/T", "7F/T", "7F/T"],
-    "TER": ["6C", "1F", "1E", "1B", "6C", "1C", "6F/T", "7F/R", "6F/T", "7F/PV", "7A/T", "7F/R"],
-    "QUA": ["1D", "6D", "6A", "1F", "1C", "3A", "7E/T", "7C/T", "7A/R", "7A/R", "7C/T", "7B/T", "1H/R", "1H/P", "1H/P"],
-    "QUI": ["1E", "7E"],
-    "SEX": ["6A", "6D", "7E/R", "6E/T", "7E/R", "7A/T", "6E/T", "7D/T", "1H/P", "1H/P", "1H/R"],
-  },
-  "WILSON": {
-    "TER": ["6E", "8C", "6E"],
-    "QUA": ["6F", "8D", "8A", "6F"],
-    "QUI": ["8E", "8B"],
-  },
-  "WILTON": {
-    "SEG": ["7D/EF", "8A/T"],
-    "TER": ["8E/T", "8C/EF", "8D/EF", "8D/EF", "8B/T", "8C/T"],
-    "QUA": ["8B/T", "8C/T", "8B/EF", "8A/T", "8E/T", "8B/EF"],
-    "QUI": ["8D/T", "8C/EF", "8D/T", "7C/EF", "7D/EF", "7C/EF"],
-  },
-};
+    // Horários dos professores (organizados por dias da semana)
+    const horariosProfessores = {
+      "ADEMAR RIBEIRO DE SOUZA": {
+        "SEG": ["1D", "1E", "1E", "9A", "9A", "9C", "9C", "9D", "9A"],
+        "TER": ["1F", "1F", "1B", "9D", "2F", "2H", "1H", "1H"],
+        "QUA": ["1B", "1A", "1A"],
+        "QUI": ["1D", "1C", "1C", "9B", "9D"],
+        "SEX": ["9C", "9B", "9B", "1G", "1G", "2F", "2G", "2G", "2H"],
+      },
+      "ALISON VASCONCELOS BESERRA": {
+        "SEG": ["6A", "6D", "6B", "1F", "6A", "6A"],
+        "TER": ["1D", "6C", "1B"],
+        "QUA": ["1B/BIO", "3C/PV", "6C/CIÊ", "1E/BIO", "8A", "8A", "7E/PV", "7C/PV"],
+        "QUI": ["6B", "6B", "1C", "6C", "1F", "6D", "8A", "8A", "7D/PV"],
+        "SEX": ["1E", "1A", "1A", "1C", "6D/C", "1D"],
+      },
+      "ANDREIA DOS SANTOS FREITAS": {
+        "SEG": ["1E", "1F", "1D", "2C", "1C", "2D"],
+        "TER": ["1F/R", "1D", "1F", "1E", "1C", "1F/R"],
+        "QUA": ["2C/R", "1D", "1C", "1C", "1E", "1C/R"],
+        "QUI": ["1D/R", "1E", "1B/R", "1E/R", "1D/R", "1F"],
+        "SEX": ["2D/R", "1E", "1C", "1F", "1D", "1B/R"],
+      },
+      "ANTONIO RAMOS DE ARAUJO": {
+        "QUI": ["3G", "2F", "2F", "2G", "2G"],
+        "SEX": ["3G", "2H", "2H", "1I", "1I"],
+      },
+      "ANTONIO CARLS DE OLIVEIRA": {
+        "SEG": ["2B", "2B", "2E", "2E"],
+        "TER": ["2C", "2C", "2D", "2D", "2A"],
+        "QUA": ["2D", "2D", "2E", "2E"],
+        "QUI": ["2A", "2A"],
+        "SEX": ["2C", "2C", "2A", "2B", "2B"],
+      },
+      "ELIANE SANTOS SILVA": {
+        "SEG": ["1A", "1A", "1A", "1E", "1B", "1B"],
+        "TER": ["1E/EF", "1E/EF", "1D", "1D", "1B", "1A"],
+        "QUA": ["1C/EF", "1C/EF", "1E", "1E", "1D/EF", "1D/EF"],
+        "QUI": ["1C", "1C", "1E", "1B", "1A/EF", "1A/EF"],
+        "SEX": ["1B/EF", "1B/EF", "1D", "1D", "1C", "1C", "1G", "1G"],
+      },
+      "CAROLINA PERNOMIAN PARUSSOLO": {
+        "SEG": ["1G", "1G", "7A", "7A"],
+        "TER": ["9D", "9D", "9A", "7B", "7B"],
+        "QUA": ["9C", "9C", "7B", "7A"],
+        "QUI": ["9A", "9B", "9B", "9C", "9D"],
+        "SEX": ["9B", "9C", "9D", "9B", "9A", "9A"],
+      },
+      "DANIEL DE FREITAS ALMEIDA": {
+        "SEG": ["6C", "6C", "2C", "6D", "3C", "3C", "6E", "6E"],
+        "TER": ["2ADM/H", "2ADM/H", "6A", "2C", "2D/L", "2D/L"],
+        "QUI": ["2D", "2D", "6D", "6A", "3B", "3B"],
+        "SEX": ["3A", "3A", "2C/L", "2C/L", "2E", "2E"],
+      },
+      "DANIEL LOPES BARBOSA": {
+        "QUA": ["6B", "6B", "2A", "2A", "2B", "2B"],
+      },
+      "DANIELA FERREIRA LIMA": {
+        "SEG": ["1C", "1C", "6A", "6A", "6D", "6D", "", "7D", "7C", "9A", "7E", "7E", "7C"],
+        "TER": ["6B", "6B", "6C", "6C", "1D", "1D", "7D", "7B", "7B", "7A", "1G", "1G", "1H"],
+        "QUA": ["1A", "1A", "9D", "7A"],
+        "SEX": ["1F", "1F", "1B", "1B", "1E", "1E"],
+      },
+      "EDIANE VIEIRA DA SILVA": {
+        "SEG": ["7C", "7B", "6F/R", "6F/R", "9C/O", "9D/O", "3F", "3F", "2G", "2G", "2H"],
+        "TER": ["7B", "7D", "7C", "9B/OP", "6E/R", "9B/OP", "2G", "2F", "2F", "3E/OP", "3E/OP"],
+        "QUA": ["9C/OP", "7B", "2H", "2H", "2H", "2F", "2F"],
+        "QUI": ["2ADM", "2ADM", "2ADM", "6F", "7D", "9D/OP", "7D", "7C", "7D"],
+        "SEX": ["6E/R", "7C", "6F", "6F", "7B", "6F", "2G", "3G/OP", "3G/OP", "3D/OP", "3D/OP"],
+      },
+      "ELIAS MONTEIRO DA SILVA": {
+        "SEG": ["2E", "2E", "3B", "3B", "2C", "2C", "9B", "1H/Q", "1H/Q", "1H/EF", "1H/EF"],
+        "TER": ["1C", "1C", "2ADM/Q", "2ADM/Q", "3A", "3A"],
+        "QUA": ["2B", "2B", "1A", "1A", "2A", "1F", "9B/OM"],
+        "QUI": ["1B", "1B", "3C", "3C", "1E", "1E", "9A", "8E/PV", "9A", "8D/PV"],
+        "SEX": ["1D", "1D", "1F", "2A", "2D", "2D", "1G", "1G", "9C", "9C", "1H/F", "1H/F"],
+      },
+      "EUZELI ARAUJO DE OLIVEIRA": {
+        "SEG": ["3B", "1E", "1E", "2D", "2B"],
+        "QUA": ["1B", "1B", "1D", "1D", "1F"],
+        "QUI": ["1A", "1A", "2ADM", "2C", "2A"],
+        "SEX": ["1C", "1C", "2E", "3A", "1F"],
+      },
+      "FABIO CAMILO": {
+        "SEG": ["1I", "2F", "1I", "3D", "1I"],
+        "TER": ["3D", "3E", "2H", "2H", "2F"],
+        "QUA": ["2G", "3E", "2F", "2G", "3E"],
+        "QUI": ["2H", "3D", "2G", "1I", "2H"],
+        "SEX": ["3E", "3D", "2F", "2G"],
+      },
+      "GENILTON DE OLIVEIRA SILVA": {
+        "TER": ["7E", "7E"],
+        "QUA": ["7D", "6F", "7B/PV", "6E", "7F", "7D"],
+        "QUI": ["7C", "7C", "6F", "6F", "6E", "6E"],
+        "SEX": ["7C", "7E", "7A/PV", "7D", "7F", "7F"],
+      },
+      "INGRYD CAROLINA SUGUIMOTO VIEIRA": {
+        "SEG": ["8E", "8D", "8D", "8E", "6E", "6E"],
+        "TER": ["8C", "6F", "8D", "8D"],
+        "QUA": ["6F", "6E", "6E", "6F", "6F", "8E"],
+        "QUI": ["8C", "8C", "6E"],
+        "SEX": ["8E", "8C", "8C", "8E", "6F", "8D"],
+      },
+      "JANINA DOS PASSOS BRAGA DE ALMEIDA": {
+        "SEG": ["2ADM/B", "2ADM/B", "2B"],
+        "TER": ["2A", "2A", "2B"],
+        "QUA": ["3C/BIOT", "3C/BIOT", "2C", "2C"],
+        "QUI": ["3A", "3A", "3B", "3B", "3D", "3F", "3D"],
+        "SEX": ["2E", "2D", "2D", "2E", "3E", "3E", "3F"],
+      },
+      "JUAREZ GOMES DE MAGALHAES FILHO": {
+        "SEG": ["2H", "2H", "3F", "3E", "3E"],
+        "TER": ["3A", "3A", "3C", "3C", "2H/Q", "3D", "3D", "2G", "2G"],
+        "QUA": ["1E", "1E", "1F", "2F/FÍS", "2G", "2G", "1I", "1I"],
+        "QUI": ["1F", "1D", "1D"],
+        "SEX": ["3B", "3B", "1I", "1I", "3F", "2H/Q", "2F"],
+      },
+      "KATIUSCIA ALVES BOMFIM": {
+        "SEG": ["1A", "1A", "8A", "9C", "8B", "8C", "8E", "8E"],
+        "TER": ["7C", "7A", "7A", "7D", "7D", "8B"],
+        "QUA": ["9D", "9D", "9A", "9A", "7E", "7E"],
+        "QUI": ["7B", "9B", "9C", "7B", "9B", "8A"],
+        "SEX": ["8C", "7F", "7F", "8D", "8D", "7C"],
+      },
+      "LUANA CAROLINE ALVES LIMA": {
+        "SEG": ["9C", "7A", "7A", "9A", "9B", "9B"],
+        "TER": ["6D", "6B", "6A", "9C", "9C", "1G", "1G", "9D", "9D"],
+        "QUA": ["6C", "6D", "6C", "9A", "9B", "9B", "9C", "1G", "1G"],
+        "QUI": ["6A", "6B", "9D", "7A", "7A", "9D", "9A", "9A"],
+      },
+      "LUCIANO MOREIRA DE AZEVEDO": {
+        "SEG": ["8A", "8A", "8D", "9A", "9C"],
+        "TER": ["7E", "8B", "9C", "7E"],
+        "QUA": ["8C", "9B", "8B", "9D"],
+        "QUI": ["7F", "7F", "8C", "7E", "9B"],
+        "SEX": ["7F", "9D", "8D", "9A", "8E", "8E"],
+      },
+      "MARCIEL DA SILVA": {
+        "SEG": ["7E", "7E", "7B", "9B/PV", "8C", "8C"],
+        "TER": ["9A/PV", "8E", "8E", "8A", "7C", "7D"],
+        "QUA": ["8C", "7D", "7F", "7F", "8D", "8D"],
+        "QUI": ["9C/PV", "8D", "8E", "8B", "8B", "7B"],
+        "SEX": ["8A", "8A", "8B", "7C", "7A", "7A", "3D", "3D"],
+      },
+      "MARINA DA CONCEICAO FRANCISCO SILVA": {
+        "SEG": ["6B", "6A", "6B/EF", "6B/EF"],
+        "TER": ["6D", "6D", "6D", "6B", "6A", "6B", "7A"],
+        "QUA": ["6C", "6C", "6C", "6B", "6A/EF", "6A/EF", "7A", "7A"],
+        "QUI": ["6D", "6D", "6A", "6D/EF", "6D/EF", "6A", "7A", "7B/EF", "7B/EF", "7A", "7A/EF", "7A/EF"],
+        "SEX": ["6C", "6C", "6A", "6B", "6C/EF", "6C/EF"],
+      },
+      "MAURICIO DE BARROS SANTOS": {
+        "SEG": ["2C/EF", "2A/EF", "2ADM/M.A", "2ADM/M.A", "2A/MAT"],
+        "TER": ["2C/EF", "2B/EF", "2ADM/M", "2ADM/M"],
+        "QUA": ["2A"],
+        "QUI": ["2A"],
+        "SEX": ["2A", "2A", "2ADM", "2ADM", "2ADM", "2B"],
+      },
+      "MOISES ANTONIO DE BARROS": {
+        "SEG": ["3E", "3E", "3G", "3G", "3D"],
+        "TER": ["3E/OM", "3G", "3G", "3F/OM", "3F/OM"],
+        "QUA": ["3G/OM", "3D/OM", "3D/OM", "3F", "3F"],
+        "QUI": ["2G/EF", "2G/EF", "3F/OM", "2F/EF", "2F/EF"],
+        "SEX": ["3F", "3F", "3G", "3G"],
+      },
+      "PAULO ROBERTO DA SILVA ITO": {
+        "SEG": ["2G", "1I", "2H", "2F"],
+        "TER": ["2E", "2E", "2E/L", "2E/L", "6E", "6F", "8C"],
+        "QUA": ["1F/FIL", "1F/FIL", "2D/OR", "2D/SOC", "2D/SOC", ""],
+        "QUI": ["2B", "2B", "2C/OR", "2E/OR", "2C", "2C"],
+        "SEX": ["2ADM", "2ADM", "1E/F", "1E/F", "2A/S", "2A/S", "2H", "2G", "2F"],
+      },
+      "RODRIGO VIEIRA": {
+        "SEG": ["1D", "1D", "1C", "1C", "1F", "1F", "", "3D", "2G", "2F", "2H", "3G"],
+        "TER": ["1B", "1B", "1A", "1A", "1E", "1E", "3F", "2G", "1I"],
+        "QUA": ["3D", "3G", "3E"],
+        "QUI": ["1I", "3F", "2H"],
+        "SEX": ["3E", "2F"],
+      },
+      "ROSANGELA CAFASSO MOREIRA": {
+        "SEG": ["1B", "1B", "2A", "2A", "2E", "2E"],
+        "TER": ["1A", "1A", "1C", "1C", "2B", "2B"],
+        "QUA": ["2A/PR", "2A/PR", "3A/PR", "3A/PR", "2C/Q", "2C/Q", "1G", "1G"],
+        "QUI": ["3B/EM", "3B/EM", "2D/QU", "2D/QU", "2B/PR", "2B/PR"],
+        "SEX": ["3B/P", "3B/P", "3A/EM", "3C/P", "3C/P", "3A/EM"],
+      },
+      "SUZINEIDE SILVA DE FREITAS": {
+        "SEG": ["1H", "2F", "2G"],
+        "TER": ["6F", "6F", "1I", "2H"],
+        "QUA": ["2ADM", "2ADM", "2B", "2B", "2E", "2E", "6E"],
+        "QUI": ["2C", "2C", "2A", "2A", "2D", "2D", "6E", "1G", "1G"],
+      },
+      "TITTO AUGUSTO NASCIMENTO SILVA": {
+        "SEG": ["6D", "7A", "7F", "7F", "7A", "7B", "7B"],
+        "QUI": ["3C", "6C"],
+        "SEX": ["6B", "6A", "6D", "6C", "6A", "6B", "6F", "6F", "6E", "6E", "7E", "7E", ""],
+      },
+      "VANDERSON HYPPOLITO": {
+        "SEG": ["3A", "3A", "3C", "3C", "3B"],
+        "TER": ["3C", "3C"],
+        "QUA": ["2E/R", "2E/R", "3B", "3B", "3B"],
+        "QUI": ["3C", "3C", "3A", "3A"],
+        "SEX": ["3C", "3C", "3B/IN", "3B/IN"],
+      },
+      "VANIA PENHA DE BARROS": {
+        "SEG": ["8D", "8C", "8C", "8A", "8A", "7E"],
+        "TER": ["8B", "8B", "7F", "7E", "7E", "8A"],
+        "QUA": ["3C", "3C", "7F", "7F", "8A", "7E", "9A/OP", "9A/OP"],
+        "QUI": ["8E", "8B", "8B", "8D", "8D", "8E"],
+        "SEX": ["8D", "8E", "8E", "7F", "8C", "8C"],
+      },
+      "VIVIANE LEAL CAMERA DE MORAES": {
+        "SEG": ["6B", "1B", "6B", "3A", "1D", "7B/T", "8B/PV", "9D/PV", "7D/T", "7F/T", "7F/T"],
+        "TER": ["6C", "1F", "1E", "1B", "6C", "1C", "6F/T", "7F/R", "6F/T", "7F/PV", "7A/T", "7F/R"],
+        "QUA": ["1D", "6D", "6A", "1F", "1C", "3A", "7E/T", "7C/T", "7A/R", "7A/R", "7C/T", "7B/T", "1H/R", "1H/P", "1H/P"],
+        "QUI": ["1E", "7E"],
+        "SEX": ["6A", "6D", "7E/R", "6E/T", "7E/R", "7A/T", "6E/T", "7D/T", "1H/P", "1H/P", "1H/R"],
+      },
+    };
 
-// Dias da semana
-const diasSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
-
+    // Dias da semana
+    const diasSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
 
     // Agendamentos e histórico (incluindo agendamentos excluídos)
     const agendamentos = {};
@@ -1457,6 +1281,7 @@ const diasSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
     const yearSelect = document.getElementById('yearSelect');
     let selectedDay = null;
     let selectedDate = null;
+    let aulaSelecionada = null;
 
     // Variáveis para o calendário pop-up
     let currentPopupDate = new Date();
@@ -1527,7 +1352,7 @@ const diasSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
     function verificarConflito() {
       const turma = document.getElementById("studentClass").value;
       const data = document.getElementById("data-selecionada").value;
-      const aula = document.getElementById("aula").value;
+      const aula = aulaSelecionada;
       const conflictMessage = document.getElementById("conflictMessage");
       
       if (turma && data && aula) {
@@ -1548,10 +1373,6 @@ const diasSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
         scheduleContainer.style.display = "none";
         return;
       }
-      
-      const periodo = turma.includes("MANHA") ? "MANHA" : 
-                     turma.includes("TARDE") ? "TARDE" : 
-                     turma.includes("NOITE") ? "NOITE" : "";
       
       const manhaList = document.getElementById("manhaSchedule");
       const tardeList = document.getElementById("tardeSchedule");
@@ -1604,16 +1425,16 @@ const diasSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
     function atualizarAulasDisponiveis() {
       const professor = document.getElementById("professor").value;
       const dataSelecionada = document.getElementById("data-selecionada").value;
-      const aulaSelect = document.getElementById("aula");
+      const aulasContainer = document.getElementById("aulas-container");
       const aulaInfo = document.getElementById("aula-info");
       
-      // Limpar o select de aulas
-      aulaSelect.innerHTML = "";
+      // Limpar o container de aulas
+      aulasContainer.innerHTML = '';
+      aulaSelecionada = null;
       
       // Verificar se professor e data estão selecionados
       if (!professor || professor === "Selecione" || !dataSelecionada) {
-        aulaInfo.textContent = "Selecione um professor e uma data para ver as aulas disponíveis";
-        aulaInfo.className = "aula-indisponivel";
+        aulaInfo.innerHTML = '<span class="aula-indisponivel">Selecione um professor e uma data para ver as aulas disponíveis</span>';
         return;
       }
       
@@ -1626,25 +1447,47 @@ const diasSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
       // Exibir o dia da semana
       const diasSemanaExtenso = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
       const diaSemanaExtenso = diasSemanaExtenso[diaSemanaIndex];
-      document.getElementById("aula-info").innerHTML = `<span class="day-of-week">${diaSemanaExtenso}</span>`;
+      aulaInfo.innerHTML = `<span class="day-of-week">${diaSemanaExtenso}</span>`;
       
       // Obter aulas do professor para esse dia da semana
       const aulasDoDia = horariosProfessores[professor] && horariosProfessores[professor][diaSemana];
       
       if (aulasDoDia && aulasDoDia.length > 0) {
+        // Adicionar título
+        const title = document.createElement('div');
+        title.className = 'aulas-title';
+        title.textContent = 'Clique em uma aula para selecionar:';
+        aulasContainer.appendChild(title);
+        
+        // Adicionar botões para cada aula
         aulasDoDia.forEach(aula => {
-          const option = document.createElement("option");
-          option.value = aula;
-          option.textContent = aula;
-          aulaSelect.appendChild(option);
+          const button = document.createElement('button');
+          button.className = 'aula-disponivel';
+          button.textContent = aula;
+          button.onclick = () => selecionarAula(button, aula);
+          aulasContainer.appendChild(button);
         });
-        aulaInfo.innerHTML += `<span class="aula-disponivel">${aulasDoDia.length} aulas disponíveis</span>`;
       } else {
-        const option = document.createElement("option");
-        option.textContent = "Nenhuma aula neste dia";
-        aulaSelect.appendChild(option);
         aulaInfo.innerHTML += `<span class="aula-indisponivel">Nenhuma aula neste dia</span>`;
       }
+    }
+    
+    // Função para selecionar uma aula
+    function selecionarAula(elemento, aula) {
+      // Remover seleção anterior
+      const botoes = document.querySelectorAll('#aulas-container button');
+      botoes.forEach(btn => {
+        btn.classList.remove('aula-selecionada');
+        btn.classList.add('aula-disponivel');
+      });
+      
+      // Marcar a aula selecionada
+      elemento.classList.remove('aula-disponivel');
+      elemento.classList.add('aula-selecionada');
+      aulaSelecionada = aula;
+      
+      // Verificar se há conflito
+      verificarConflito();
     }
 
     // Funções do calendário pop-up
@@ -1748,9 +1591,6 @@ const diasSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
             
             // Atualiza as aulas disponíveis
             atualizarAulasDisponiveis();
-            
-            // Verifica se há conflito
-            verificarConflito();
           });
         });
       }
@@ -1945,12 +1785,12 @@ const diasSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
       const aparelho = document.getElementById("aparelho").value;
       const turma = document.getElementById("studentClass").value;
       const numAparelhos = document.getElementById("numero-aparelhos").value;
-      const aula = document.getElementById("aula").value;
+      const aula = aulaSelecionada;
       const sala = document.getElementById("sala").value;
       const horaRetirada = document.getElementById("hora-retirada").value;
       const horaEntrega = document.getElementById("hora-entrega").value;
       
-      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate || !sala || !horaRetirada || !aula || aula === "Nenhuma aula neste dia") {
+      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate || !sala || !horaRetirada || !aula) {
         alert("Preencha todos os campos obrigatórios do formulário antes de agendar!");
         return;
       }
@@ -2076,11 +1916,10 @@ const diasSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
       document.getElementById("sala").value = "";
       document.getElementById("hora-retirada").value = "";
       document.getElementById("hora-entrega").value = "";
-      document.getElementById("aula").innerHTML = '<option value="">Selecione uma data primeiro</option>';
-      document.getElementById("aula-info").textContent = "Selecione um professor e uma data para ver as aulas disponíveis";
-      document.getElementById("aula-info").className = "aula-indisponivel";
-      document.getElementById("conflictMessage").style.display = "none";
+      document.getElementById("aula-info").innerHTML = '<span class="aula-indisponivel">Selecione um professor e uma data para ver as aulas disponíveis</span>';
+      document.getElementById("aulas-container").innerHTML = "";
       document.getElementById("teacherSchedule").style.display = "none";
+      aulaSelecionada = null;
       
       // Limpa a seleção de data
       if (selectedDay) {
@@ -2104,7 +1943,6 @@ const diasSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
 
     // Adiciona listeners para verificar conflito quando os campos mudam
     document.getElementById("studentClass").addEventListener("change", verificarConflito);
-    document.getElementById("aula").addEventListener("change", verificarConflito);
     document.getElementById("data-selecionada").addEventListener("change", verificarConflito);
 
     monthSelect.addEventListener('change', () => {
