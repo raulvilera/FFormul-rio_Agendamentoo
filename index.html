@@ -4,12 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AGENDAMENTO DE APARELHOS</title>
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -20,7 +14,6 @@
       --vermelho: #f44336;
       --cinza-escuro: #333;
       --cinza-claro: #f5f5f5;
-      --cinza-input: #f0f0f0;
       --branco: #ffffff;
       --branco-brilhante: rgba(255, 255, 255, 0.9);
       --verde-disponivel: #2ecc71;
@@ -29,30 +22,22 @@
       --fundo-cinza: #f0f0f0;
       --entregue: #d4edda;
       --nao-entregue: #f8d7da;
-      --expirado: #fff3cd;
-      --recente: #ffebee;
-      --destaque-aula: #fff176;
-      --cor-logo-1: #0a2463;
-      --cor-logo-2: #3e92cc;
-      --cor-logo-3: #4caf50;
-      --sombra-3d: 8px 8px 15px rgba(0, 0, 0, 0.3);
+      --laranja: #ff9800;
+      --roxo: #9c27b0;
     }
     
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
-      background: linear-gradient(135deg, var(--cor-logo-1) 0%, var(--cor-logo-2) 50%, var(--cor-logo-3) 100%);
+      background: linear-gradient(to bottom, var(--azul-escuro) 0%, var(--azul-escuro) 50%, #111 50%, #111 100%);
       color: var(--cinza-claro);
       min-height: 100vh;
       padding: 20px;
-      background-attachment: fixed;
-      background-size: 200% 200%;
-      animation: gradientAnimation 15s ease infinite;
     }
 
     h2 {
@@ -60,9 +45,9 @@
       margin-bottom: 20px;
       text-align: center;
       text-transform: uppercase;
-      font-size: 2rem;
       letter-spacing: 1px;
       text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      font-size: 1.8rem;
     }
 
     h3 {
@@ -74,90 +59,37 @@
       background-color: var(--azul-claro);
       padding: 8px;
       border-radius: 5px;
-      font-weight: 600;
     }
 
     .container {
       display: flex;
       gap: 30px;
       flex-wrap: wrap;
-      max-width: 1800px;
-      margin: 0 auto;
     }
 
     .form-container {
       flex: 1;
       min-width: 300px;
-      background-color: rgba(255, 255, 255, 0.98);
+      background-color: rgba(255, 255, 255, 0.95);
       padding: 25px;
       border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
       color: var(--cinza-escuro);
-      box-shadow:  
-        var(--sombra-3d), 
-        inset 8px 0 15px -5px rgba(0, 0, 0, 0.2), 
-        inset 0 -8px 15px -5px rgba(0, 0, 0, 0.2);
-      position: relative;
-      overflow: hidden;
+      transition: transform 0.3s ease;
     }
 
-    .form-container::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 8px;
-      background: linear-gradient(to top, rgba(0,0,0,0.1), transparent);
-      z-index: 1;
-    }
-
-    .form-container::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 8px;
-      height: 100%;
-      background: linear-gradient(to right, rgba(0,0,0,0.1), transparent);
-      z-index: 1;
+    .form-container:hover {
+      transform: translateY(-5px);
     }
 
     .calendar-container {
       flex: 1;
       min-width: 300px;
-      background-color: rgba(255, 255, 255, 0.98);
+      background-color: rgba(255, 255, 255, 0.95);
       padding: 25px;
       border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
       color: var(--cinza-escuro);
-      box-shadow:  
-        var(--sombra-3d), 
-        inset 8px 0 15px -5px rgba(0, 0, 0, 0.2), 
-        inset 0 -8px 15px -5px rgba(0, 0, 0, 0.2);
-      overflow: auto;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .calendar-container::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 8px;
-      background: linear-gradient(to top, rgba(0,0,0,0.1), transparent);
-      z-index: 1;
-    }
-
-    .calendar-container::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 8px;
-      height: 100%;
-      background: linear-gradient(to right, rgba(0,0,0,0.1), transparent);
-      z-index: 1;
     }
 
     .form-row {
@@ -173,10 +105,6 @@
       position: relative;
     }
 
-    .form-group.full-width {
-      flex: 1 0 100%;
-    }
-
     .form-group label {
       display: block;
       margin-bottom: 0.5rem;
@@ -186,15 +114,30 @@
     }
 
     .form-group input,
-    .form-group select {
+    .form-group select:not(#aula) {
       width: 100%;
       padding: 12px 15px;
       border: 2px solid #ddd;
       border-radius: 8px;
       font-size: 1rem;
       transition: all 0.3s ease;
-      background-color: var(--cinza-input);
+      background-color: var(--branco);
       box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .form-group select {
+      cursor: pointer;
+    }
+
+    /* Estilo específico para o campo "Aula" */
+    .form-group select#aula {
+      width: 120px;
+      padding: 8px 10px;
+    }
+
+    .form-group input[type="time"] {
+      width: 120px;
+      padding: 8px 10px;
     }
 
     .form-group input:focus,
@@ -204,10 +147,18 @@
       outline: none;
     }
 
+    /* Estilo para dropdown com cores alternadas */
+    .form-group select option:nth-child(odd) {
+      background-color: var(--azul-claro);
+    }
+    
+    .form-group select option:nth-child(even) {
+      background-color: var(--branco);
+    }
+
     .calendar {
       width: 100%;
-      border-collapse: separate;
-      border-spacing: 8px;
+      border-collapse: collapse;
       margin-top: 20px;
       margin-bottom: 0.4cm;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -215,34 +166,35 @@
 
     .calendar th,
     .calendar td {
-      width: 45px;
-      height: 45px;
+      width: 40px;
+      height: 40px;
       text-align: center;
       vertical-align: middle;
-      border-radius: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
       background-color: var(--branco);
-      padding: 12px;
+      padding: 10px;
       font-size: 0.9rem;
       transition: all 0.2s ease;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .calendar th {
-      background-color: var(--azul-escuro);
-      color: white;
-      font-weight: 500;
-      padding: 12px;
+      background-color: var(--azul-claro);
+      border: 1px solid #ddd;
+      font-weight: 600;
     }
 
     .calendar td.disponivel {
       background-color: var(--verde-disponivel);
       color: white;
       cursor: default;
+      border: 1px solid #ddd;
     }
 
     .calendar td.agendado {
       background-color: var(--azul-agendado);
       color: white;
+      border: 1px solid #ddd;
       cursor: default;
     }
 
@@ -250,68 +202,54 @@
       background-color: var(--azul-selecionado);
       color: white;
       font-weight: bold;
+      border: 1px solid #ddd;
       cursor: default;
       transform: scale(1.05);
-      box-shadow: 0 0 8px rgba(0,0,0,0.2);
     }
 
     .calendar td.indisponivel {
-      background-color: #e9ecef;
+      background-color: #e0e0e0;
       cursor: not-allowed;
-      color: #868e96;
-    }
-
-    .calendar td.aula-professor {
-      background-color: var(--destaque-aula);
-      font-weight: bold;
-      position: relative;
-    }
-
-    .calendar td.aula-professor::after {
-      content: '';
-      position: absolute;
-      bottom: 2px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 6px;
-      height: 6px;
-      background-color: #f57c00;
-      border-radius: 50%;
+      color: #999;
+      border: 1px solid #ddd;
     }
 
     .calendar td:hover:not(.indisponivel) {
       opacity: 0.8;
+      transform: translateY(-2px);
     }
 
+    /* Estilos para a tabela de histórico */
     .historico-table {
       width: 100%;
       border-collapse: collapse;
       table-layout: fixed;
-      font-size: 0.85rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
     .historico-table th,
     .historico-table td {
-      border: 1px solid #dee2e6;
-      padding: 10px 8px;
+      border: 1px solid #ddd;
+      padding: 10px;
       text-align: center;
       word-wrap: break-word;
       overflow-wrap: break-word;
+      font-size: 0.8em;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .historico-table th {
-      background-color: var(--azul-escuro);
-      color: white;
-      font-weight: 500;
+      background-color: var(--azul-claro);
+      color: #000;
+      font-weight: bold;
       position: sticky;
       top: 0;
     }
 
     .historico-table td {
-      color: #495057;
+      color: #333;
     }
 
     .historico-table tr.excluido td {
@@ -326,55 +264,39 @@
     .historico-table tr.nao-entregue {
       background-color: var(--nao-entregue);
     }
-    
-    .historico-table tr.expirado {
-      background-color: var(--expirado);
-    }
-    
-    .historico-table tr.recente {
-      background-color: var(--recente);
-    }
 
+    /* Definindo larguras específicas para cada coluna */
     .historico-table th:nth-child(1),
     .historico-table td:nth-child(1) {
-      width: 10%;
+      width: 15%;
     }
 
     .historico-table th:nth-child(2),
     .historico-table td:nth-child(2) {
-      width: 15%;
+      width: 20%;
     }
 
     .historico-table th:nth-child(3),
     .historico-table td:nth-child(3) {
-      width: 8%;
+      width: 10%;
     }
 
     .historico-table th:nth-child(4),
     .historico-table td:nth-child(4) {
-      width: 12%;
+      width: 15%;
     }
 
     .historico-table th:nth-child(5),
     .historico-table td:nth-child(5) {
-      width: 20%;
+      width: 25%;
     }
 
     .historico-table th:nth-child(6),
     .historico-table td:nth-child(6) {
-      width: 10%;
-    }
-    
-    .historico-table th:nth-child(7),
-    .historico-table td:nth-child(7) {
-      width: 10%;
-    }
-    
-    .historico-table th:nth-child(8),
-    .historico-table td:nth-child(8) {
       width: 15%;
     }
 
+    /* Estilos para os botões */
     .buttons-container {
       display: flex;
       gap: 10px;
@@ -386,17 +308,13 @@
       padding: 12px 24px;
       border: none;
       border-radius: 8px;
-      font-weight: 600;
+      font-weight: bold;
       cursor: pointer;
       transition: all 0.2s;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       position: relative;
       overflow: hidden;
       font-size: 1rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
     }
 
     .btn:active {
@@ -405,12 +323,12 @@
     }
 
     .btn-cadastrar {
-      background-color: var(--azul-medio);
+      background: linear-gradient(to right, var(--azul-medio), var(--azul-escuro));
       color: white;
     }
 
     .btn-cadastrar:hover {
-      background-color: #2c7ebd;
+      background: linear-gradient(to right, #2c7ebd, #09306b);
     }
 
     .btn-cadastrar:active {
@@ -418,12 +336,12 @@
     }
 
     .btn-limpar {
-      background-color: #f0f0f0;
+      background: linear-gradient(to right, #f0f0f0, #e0e0e0);
       color: #333;
     }
 
     .btn-limpar:hover {
-      background-color: #e0e0e0;
+      background: linear-gradient(to right, #e0e0e0, #d0d0d0);
     }
 
     .btn-limpar:active {
@@ -431,31 +349,20 @@
     }
 
     .btn-excluir {
-      background-color: var(--vermelho);
-      color: white;
-      padding: 6px 12px;
-      font-size: 0.8rem;
+      background: none;
+      border: none;
+      color: var(--vermelho);
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 5px;
+      transition: transform 0.2s;
     }
 
     .btn-excluir:hover {
-      background-color: #d32f2f;
+      transform: scale(1.2);
     }
 
-    .btn-excluir:active {
-      box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
-    }
-    
-    .btn-entregar {
-      background-color: var(--verde);
-      color: white;
-      padding: 6px 12px;
-      font-size: 0.8rem;
-    }
-
-    .btn-entregar:hover {
-      background-color: #3d8b40;
-    }
-
+    /* Estilo para o calendário pop-up */
     .datepicker-container {
       position: relative;
     }
@@ -470,7 +377,7 @@
       border: 1px solid #ddd;
       border-radius: 8px;
       padding: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
       width: 300px;
     }
 
@@ -488,13 +395,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
     }
 
     .datepicker-nav {
       background: none;
       border: none;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       cursor: pointer;
       width: 36px;
       height: 36px;
@@ -502,8 +411,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background-color 0.2s;
-      color: var(--azul-escuro);
+      transition: background 0.2s;
     }
 
     .datepicker-nav:hover {
@@ -511,8 +419,7 @@
     }
 
     .datepicker-title {
-      font-weight: 600;
-      color: var(--azul-escuro);
+      font-weight: bold;
       font-size: 1.1rem;
     }
 
@@ -524,19 +431,17 @@
 
     .datepicker-weekday {
       text-align: center;
-      font-weight: 600;
+      font-weight: bold;
       padding: 8px 0;
       color: var(--azul-escuro);
-      font-size: 0.9rem;
     }
 
     .datepicker-day {
       text-align: center;
-      padding: 8px 0;
+      padding: 8px;
       cursor: pointer;
       border-radius: 50%;
       transition: all 0.2s;
-      font-weight: 500;
     }
 
     .datepicker-day:hover {
@@ -546,7 +451,7 @@
     .datepicker-day.selected {
       background-color: var(--azul-medio);
       color: white;
-      font-weight: 600;
+      font-weight: bold;
     }
 
     .datepicker-day.disabled {
@@ -554,259 +459,213 @@
       cursor: not-allowed;
     }
 
-    .datepicker-day.today {
-      position: relative;
-      color: var(--azul-medio);
-      font-weight: 700;
+    .datepicker-today {
+      font-weight: bold;
+      border: 2px solid var(--azul-medio);
     }
 
-    .datepicker-day.today::after {
-      content: '';
-      position: absolute;
-      bottom: 4px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 4px;
-      height: 4px;
-      background-color: var(--azul-medio);
-      border-radius: 50%;
-    }
-
-    .datepicker-day.other-month {
+    .datepicker-other-month {
       color: #aaa;
     }
 
     .datepicker-input {
       cursor: pointer;
-      background-color: var(--cinza-input);
     }
 
     .conflict-message {
       color: var(--vermelho);
       font-weight: bold;
-      margin-top: 15px;
+      margin-top: 10px;
       text-align: center;
       display: none;
       padding: 10px;
       background-color: #ffebee;
       border-radius: 5px;
-      border-left: 4px solid var(--vermelho);
-    }
-    
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1001;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
+      animation: pulse 2s infinite;
     }
 
-    .modal-content {
-      background-color: #fefefe;
-      margin: 15% auto;
-      padding: 25px;
-      border: 1px solid #888;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      position: relative;
+    @keyframes pulse {
+      0% { opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { opacity: 0.8; }
     }
 
-    .close {
-      color: #aaa;
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-
-    .close:hover {
-      color: #000;
-    }
-
-    .modal-buttons {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
+    /* Estilo para o horário do professor */
+    .teacher-schedule {
       margin-top: 20px;
+      background-color: var(--branco);
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: none;
     }
-    
-    .export-buttons {
-      margin-bottom: 20px;
+
+    .teacher-schedule h4 {
+      color: var(--azul-escuro);
+      margin-bottom: 10px;
+      text-align: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .schedule-container {
       display: flex;
       gap: 15px;
-      justify-content: flex-end;
-    }
-    
-    .status-indicator {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      margin-right: 5px;
-    }
-    
-    .status-disponivel {
-      background-color: var(--verde-disponivel);
-    }
-    
-    .status-agendado {
-      background-color: var(--azul-agendado);
-    }
-    
-    .status-entregue {
-      background-color: var(--verde);
-    }
-    
-    .status-excluido {
-      background-color: var(--vermelho);
-    }
-
-    .aula-container {
-      display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
     }
 
-    .aula-checkbox {
-      display: none;
+    .period-schedule {
+      flex: 1;
+      min-width: 150px;
     }
 
-    .aula-label {
-      display: inline-block;
-      padding: 8px 15px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      cursor: pointer;
+    .period-title {
+      background-color: var(--azul-claro);
+      padding: 8px;
+      border-radius: 5px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .schedule-list {
+      list-style-type: none;
+    }
+
+    .schedule-list li {
+      padding: 6px 8px;
+      margin-bottom: 5px;
       background-color: #f9f9f9;
-      transition: all 0.3s;
+      border-radius: 4px;
       font-size: 0.9rem;
     }
 
-    .aula-checkbox:checked + .aula-label {
-      background-color: var(--azul-medio);
-      color: white;
-      border-color: var(--azul-medio);
+    .schedule-list li:nth-child(odd) {
+      background-color: #f0f7ff;
     }
 
-    .aula-professor {
-      background-color: var(--destaque-aula);
-    }
-
-    .aula-disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    
-    @media (max-width: 1200px) {
+    /* Responsividade */
+    @media (max-width: 768px) {
       .container {
         flex-direction: column;
       }
-       
-      .calendar-container {
-        max-height: 600px;
-      }
-       
-      .historico-table {
-        font-size: 0.8rem;
-      }
-    }
-    
-    @media (max-width: 768px) {
+      
       .form-row {
         flex-direction: column;
         gap: 15px;
       }
-       
+      
       .buttons-container {
         flex-direction: column;
       }
-       
-      .btn {
-        width: 100%;
+      
+      .schedule-container {
+        flex-direction: column;
       }
     }
 
-    .solution-banner {
-      background-color: white;
-      color: var(--azul-escuro);
-      padding: 15px;
-      text-align: center;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      font-weight: bold;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .tooltip {
+      position: relative;
+      cursor: help;
     }
 
-    .solution-banner i {
-      margin-right: 10px;
-      font-size: 1.2rem;
+    .tooltip::after {
+      content: "ℹ️";
+      margin-left: 5px;
+      font-size: 0.8em;
+    }
+
+    .tooltip-text {
+      visibility: hidden;
+      width: 200px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.8rem;
+    }
+
+    .tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .teacher-availability {
+      background-color: var(--laranja);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      display: inline-block;
+      margin-top: 5px;
     }
     
-    .logo-profissional {
-      max-width: 100px;
-      height: auto;
-      margin: 10px auto;
-      display: block;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    .aula-disponivel {
+      background-color: var(--verde-disponivel);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      display: inline-block;
+      margin-top: 5px;
     }
     
-    @keyframes gradientAnimation {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    .aula-indisponivel {
+      background-color: #e0e0e0;
+      color: #999;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      display: inline-block;
+      margin-top: 5px;
     }
     
-    .legend-container {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin: 15px 0;
-      flex-wrap: wrap;
+    .day-of-week {
+      font-size: 0.85em;
+      color: var(--roxo);
+      font-weight: bold;
+      margin-top: 5px;
     }
     
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.85rem;
+    .info-box {
+      background-color: var(--azul-claro);
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 15px;
+    }
+    
+    .info-box h4 {
+      color: var(--azul-escuro);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    
+    .info-content {
+      font-size: 0.9rem;
+      line-height: 1.5;
     }
   </style>
 </head>
 <body>
   <h2>AGENDAMENTO DE APARELHOS</h2>
-  
-  <div class="solution-banner">
-    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiSzDhx5hyK70tNgSdiNd4esNRDmdTGDSC0O_wqjJ7lZT68g-NYA7KfZA2YiB9LbDUkhJRS_jKfj4hMSu8QiaaHydEzvn_OtpQ9hSNfL5EpTQycz54FHOVjoiJI2hbRN0QEWqNlVYPnDVj6JfunSA9sR6CZaSlUaJc9NkLGvJyxCbDU6zo18BstZMT1L6tN/s320/Captura_de_tela_2025-07-20_102344-removebg-preview.png" 
-         alt="Logo da Escola" 
-         class="logo-profissional">
-    <p>GERENCIAMENTO DE EQUIPAMENTOS</p>
-  </div>
-  
   <div class="container">
     <div class="form-container">
       <div class="form-row">
-        <div class="form-group full-width">
-          <label>PROFESSOR:</label>
-          <select id="professor" onchange="atualizarEmailEAulas()">
+        <div class="form-group">
+          <label>PROFESSOR: <span class="tooltip"><span class="tooltip-text">Selecione o professor para verificar sua disponibilidade</span></span></label>
+          <select id="professor" onchange="atualizarEmail(); verificarDisponibilidadeProfessor(); atualizarAulasDisponiveis()">
             <option>Selecione</option>
           </select>
         </div>
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group full-width">
+        <div class="form-group">
           <label>EMAIL:</label>
           <input type="email" id="email-professor" readonly>
         </div>
@@ -815,7 +674,7 @@
       <div class="form-row">
         <div class="form-group">
           <label>APARELHO:</label>
-          <select id="equipamentoAgendamento" onchange="atualizarMarca()">
+          <select id="aparelho" onchange="atualizarMarca()">
             <option value="">Selecione</option>
             <option value="TABLET">TABLET</option>
             <option value="SMARTPHONE">SMARTPHONE</option>
@@ -833,12 +692,12 @@
       <div class="form-row">
         <div class="form-group">
           <label>N° DE APARELHOS:</label>
-          <input type="number" id="quantidadeAgendamento" min="1" value="1">
+          <input type="number" id="numero-aparelhos" min="1" value="1">
         </div>
         
         <div class="form-group datepicker-container">
           <label>DATA:</label>
-          <input type="text" id="dataAgendamento" class="datepicker-input" readonly placeholder="Clique para selecionar">
+          <input type="text" id="data-selecionada" class="datepicker-input" readonly placeholder="Clique para selecionar">
           <div class="datepicker-popup" id="datepickerPopup">
             <div class="datepicker-header">
               <button class="datepicker-nav" id="prevMonth">&lt;</button>
@@ -852,9 +711,9 @@
       </div>
 
       <div class="form-row">
-        <div class="form-group full-width">
-          <label>TURMA:</label>
-          <select id="studentClass" class="form-control" required onchange="atualizarSalaEAulas()">
+        <div class="form-group">
+          <label>SELECIONE A TURMA:</label>
+          <select id="studentClass" class="form-control" required onchange="atualizarSala(); verificarDisponibilidadeProfessor()">
             <option value="">Selecione a turma</option>
             <option value="6° ANO A MANHA">6° ANO A MANHA</option>
             <option value="6° ANO B MANHA">6° ANO B MANHA</option>
@@ -894,7 +753,7 @@
             <option value="2ª SERIE F NOITE">2ª SERIE F NOITE</option>
             <option value="2ª SERIE G NOITE">2ª SERIE G NOITE</option>
             <option value="2ª SERIE H NOITE">2ª SERIE H NOITE</option>
-            <option value="2ª SERIE I NOITE">2ª SERie I NOITE</option>
+            <option value="2ª SERIE I NOITE">2ª SERIE I NOITE</option>
             <option value="3ª SERIE A MANHA">3ª SERIE A MANHA</option>
             <option value="3ª SERIE B MANHA">3ª SERIE B MANHA</option>
             <option value="3ª SERIE C MANHA">3ª SERIE C MANHA</option>
@@ -905,70 +764,73 @@
             <option value="4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA">4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA</option>
           </select>
         </div>
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group full-width">
+
+        <div class="form-group">
           <label>SALA:</label>
           <input type="text" id="sala" readonly>
         </div>
       </div>
 
       <div class="form-row">
-        <div class="form-group">
-          <label>SELECIONE A(S) AULA(S):</label>
-          <div id="aula-container" class="aula-container">
-            <!-- Checkboxes para aulas serão inseridos aqui -->
+        <div class="form-group" onclick="abrirRelogio('hora-retirada')" style="cursor: pointer;">
+          <label for="hora-retirada">RETIRADA:</label>
+          <input type="time" id="hora-retirada" required>
+        </div>
+        <div class="form-group" onclick="abrirRelogio('hora-entrega')" style="cursor: pointer;">
+          <label for="hora-entrega">ENTREGA:</label>
+          <input type="time" id="hora-entrega">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="aula">AULA:</label>
+        <select id="aula">
+          <option value="">Selecione uma data primeiro</option>
+        </select>
+        <div id="aula-info" class="aula-indisponivel">Selecione um professor e uma data para ver as aulas disponíveis</div>
+      </div>
+
+      <div class="conflict-message" id="conflictMessage">
+        Já existe um agendamento para esta turma nesta data e aula!
+      </div>
+
+      <div class="teacher-schedule" id="teacherSchedule">
+        <h4>HORÁRIO DO PROFESSOR</h4>
+        <div class="schedule-container">
+          <div class="period-schedule">
+            <div class="period-title">MANHÃ</div>
+            <ul class="schedule-list" id="manhaSchedule"></ul>
+          </div>
+          <div class="period-schedule">
+            <div class="period-title">TARDE</div>
+            <ul class="schedule-list" id="tardeSchedule"></ul>
+          </div>
+          <div class="period-schedule">
+            <div class="period-title">NOITE</div>
+            <ul class="schedule-list" id="noiteSchedule"></ul>
           </div>
         </div>
       </div>
 
-      <div class="conflict-message" id="conflictMessage">
-        <i class="fas fa-exclamation-circle"></i> Já existe um agendamento para este local/horário!
+      <div class="info-box">
+        <h4>INFORMAÇÕES</h4>
+        <div class="info-content">
+          <p><i class="fas fa-info-circle"></i> Selecione um professor e uma data para ver as aulas disponíveis.</p>
+          <p><i class="fas fa-check-circle"></i> As aulas mostradas correspondem ao dia da semana selecionado.</p>
+          <p><i class="fas fa-exclamation-triangle"></i> Verifique os conflitos antes de agendar.</p>
+        </div>
       </div>
 
       <div class="buttons-container">
-        <button class="btn btn-cadastrar" onclick="agendarEquipamento()">
-          <i class="fas fa-calendar-check"></i> AGENDAR
-        </button>
-        <button class="btn btn-limpar" onclick="limparFormulario()">
-          <i class="fas fa-broom"></i> LIMPAR
-        </button>
+        <button class="btn btn-cadastrar" onclick="cadastrarAgendamento()">CADASTRAR</button>
+        <button class="btn btn-limpar" onclick="limparFormulario()">LIMPAR</button>
       </div>
     </div>
 
     <div class="calendar-container">
-      <div class="export-buttons">
-        <button class="btn btn-cadastrar" onclick="exportarParaPDF()">
-          <i class="fas fa-file-pdf"></i> Exportar PDF
-        </button>
-        <button class="btn btn-cadastrar" onclick="exportarParaCSV()">
-          <i class="fas fa-file-csv"></i> Exportar CSV
-        </button>
-      </div>
-      
       <div style="margin-bottom: 20px; display: flex; gap: 15px;">
-        <select id="monthSelect" style="flex: 1; padding: 10px; border-radius: 8px; border: 2px solid #ddd; background-color: var(--cinza-input);"></select>
-        <select id="yearSelect" style="flex: 1; padding: 10px; border-radius: 8px; border: 2px solid #ddd; background-color: var(--cinza-input);"></select>
-      </div>
-
-      <div class="legend-container">
-        <div class="legend-item">
-          <div class="status-indicator status-disponivel"></div>
-          <span>Disponível</span>
-        </div>
-        <div class="legend-item">
-          <div class="status-indicator status-agendado"></div>
-          <span>Agendado</span>
-        </div>
-        <div class="legend-item">
-          <div class="status-indicator status-entregue"></div>
-          <span>Entregue</span>
-        </div>
-        <div class="legend-item">
-          <div class="status-indicator status-excluido"></div>
-          <span>Excluído</span>
-        </div>
+        <select id="monthSelect" class="form-control"></select>
+        <select id="yearSelect" class="form-control"></select>
       </div>
 
       <table class="calendar">
@@ -1009,44 +871,7 @@
     </div>
   </div>
 
-  <div id="devolucaoModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="fecharModal()">&times;</span>
-      <h3>Finalizar Agendamento</h3>
-      <p id="modalText"></p>
-      <div class="form-group">
-        <label for="horaEntregaModal">Hora da Entrega:</label>
-        <input type="time" id="horaEntregaModal" value="" style="background-color: var(--cinza-input);">
-      </div>
-      <div class="modal-buttons">
-        <button class="btn btn-limpar" onclick="fecharModal()">Cancelar</button>
-        <button class="btn btn-entregar" onclick="finalizarAgendamento()">Confirmar</button>
-      </div>
-    </div>
-  </div>
-
   <script>
-    // CONFIGURAÇÃO DO FIREBASE
-    apiKey : "AIzaSyBOoXyjLQPfgzQM06LVy-TRSPdSM_8CjcE" , 
-  authDomain: "gerenciamentoaparelho.firebaseapp.com",
-  databaseURL: "https://gerenciamentoaparelho-default-rtdb.firebaseio.com",
-  projectId: "gerenciamentoaparelho",
-  storageBucket: "gerenciamentoaparelho.firebasestorage.app",
-  messagingSenderId : "751628186418" , 
-  appId : "1:751628186418:web:dd68af74d9e3723c179d2b" , 
-  measurementId : "G-K02ZZQ4JBK" 
-
-    // INICIALIZA O FIREBASE
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // UID DO USUÁRIO ESPECÍFICO
-    const USER_ID = "lfSOKNcVcnZFJdrT7BpZG6H6dm32";
-    // REFERÊNCIAS ÀS COLEÇÕES FILTRADAS POR USUÁRIO
-    const agendamentosRef = db.collection("agendamentos");
-    const historicoExcluidosRef = db.collection("historico_excluidos");
-    // Inicializa o jsPDF
-    const { jsPDF } = window.jspdf;
     // Dados dos professores
     const teacherEmails = {
       "ADEMAR RIBEIRO DE SOUZA": "ademarribeirosouza@prof.educacao.sp.gov.br",
@@ -1088,7 +913,6 @@
       "FLAVIA CRISTINA APARECIDA BICHLER": "flaviacri@prof.educacao.sp.gov.br",
       "FLAVIO CARDOSO FLEURY": "flaviofleury@prof.educacao.sp.gov.br",
       "GABRIELA SERIGHELLI DE MELO": "gabrielaserighelli@prof.educacao.sp.gov.br",
-      "GELSON DE ALMEIDA BATISTA": "gelsonalmeida@prof.educacao.sp.gov.br",
       "GENILTON DE OLIVEIRA SILVA": "genilton@prof.educacao.sp.gov.br",
       "GIANI CRISTINA DO PRADO": "gianiprado@prof.educacao.sp.gov.br",
       "INGRYD CAROLINA SUGUIMOTO VIEIRA": "ingryd@prof.educacao.sp.gov.br",
@@ -1137,6 +961,7 @@
       "WILSON LUIZ DE SOUZA COSTA": "wilsonluizsouza@prof.educacao.sp.gov.br",
       "WILSON RODRIGUES MOTA": "wmota@prof.educacao.sp.gov.br"
     };
+
     // Dados dos aparelhos
     const marcas = {
       "TABLET": "POSITIVO",
@@ -1144,29 +969,39 @@
       "CHROMEBOOK": "SAMSUNG",
       "NOTEBOOK": "POSITIVO"
     };
+
     // Dados das salas por turma e período
     const salasPorTurmaPeriodo = {
+      // 6° ANO
       "6° ANO A MANHA": "Sala 1",
       "6° ANO B MANHA": "Sala 2",
       "6° ANO C MANHA": "Sala 3",
       "6° ANO D MANHA": "Sala 4",
       "6° ANO E TARDE": "Sala 1",
       "6° ANO F TARDE": "Sala 2",
+      
+      // 7° ANO
       "7° ANO A TARDE": "Sala 3",
       "7° ANO B TARDE": "Sala 4",
       "7° ANO C TARDE": "Sala 5",
       "7° ANO D TARDE": "Sala 6",
       "7° ANO E TARDE": "Sala 7",
       "7° ANO F TARDE": "Sala 8",
+      
+      // 8° ANO
       "8° ANO A TARDE": "Sala 10",
       "8° ANO B TARDE": "Sala 11",
       "8° ANO C TARDE": "Sala 12",
       "8° ANO D TARDE": "Sala 13",
       "8° ANO E TARDE": "Sala 14",
+      
+      // 9° ANO
       "9° ANO A TARDE": "Sala 15",
       "9° ANO B TARDE": "Sala 16",
       "9° ANO C TARDE": "Sala 17",
       "9° ANO D TARDE": "Sala 18",
+      
+      // 1ª SÉRIE
       "1ª SERIE A MANHA": "Sala 10",
       "1ª SERIE B MANHA": "Sala 11",
       "1ª SERIE C MANHA": "Sala 12",
@@ -1176,599 +1011,506 @@
       "1ª SERIE G TARDE": "Sala 9",
       "1ª SERIE H NOITE": "Sala 9",
       "1ª SERIE I NOITE": "Sala 602",
+      
+      // 2ª SÉRIE
       "2ª SERIE A MANHA": "Sala 5",
       "2ª SERIE B MANHA": "Sala 6",
       "2ª SERIE C MANHA": "Sala 7",
       "2ª SERIE D MANHA": "Sala 8",
-      "2ª SERie E MANHA": "Sala 9",
+      "2ª SERIE E MANHA": "Sala 9",
       "2ª SERIE F NOITE": "Sala 1",
       "2ª SERIE G NOITE": "Sala 2",
       "2ª SERIE H NOITE": "Sala 3",
       "2ª SERIE I NOITE": "Sala 4",
+      
+      // 3ª SÉRIE
       "3ª SERIE A MANHA": "Sala 16",
       "3ª SERIE B MANHA": "Sala 17",
       "3ª SERIE C MANHA": "Sala 18",
       "3ª SERIE D NOITE": "Sala 5",
       "3ª SERIE E NOITE": "Sala 6",
       "3ª SERIE F NOITE": "Sala 7",
-      "3ª SERie G NOITE": "Sala 8",
+      "3ª SERIE G NOITE": "Sala 8",
+      
+      // ADMINISTRAÇÃO
       "4050 - ADMINISTRAÇÃO - 2ª SERIE A MANHA": "Laboratório 1"
     };
-    // Horários dos professores (ESTRUTURA CORRIGIDA)
-    const horariosProfessores = {
-      "ADEMAR": {
-        "MANHA": ["HISTÓRIA", "1F", "1B", "1A", "1D", "1C"],
-        "TARDE": ["HISTÓRIA", "9A", "9C", "9D", "9B", "1G"],
-        "NOITE": ["HISTÓRIA", "2F", "2H", "1H", "2G"],
-      },
-      "ADRIANA": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "ALISSON": {
-        "MANHA": ["BIO/CIÊNCIAS", "1D", "6C", "1B", "BIO/PV/CIÊ", "1B/BIO", "3C/PV", "6C/CIÊ", "1E/BIO", "CIÊNCIAS/BIO", "6B", "1C", "1F", "6D", "1E", "1A", "6D/C"],
-        "TARDE": ["CIÊNCIAS/PV", "8A", "7E/PV", "7C/PV", "7D/PV"],
-        "NOITE": [],
-      },
-      "ANDRÉ": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["SALA LEITURA", "X"],
-      },
-      "ANDRÉIA": {
-        "MANHA": ["RED/PORT", "1F/R", "1D", "1F", "1E", "1C", "2C/R", "1C/R", "REDAÇÃO/PORT", "1D/R", "1B/R", "1E/R", "2D/R"],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "ANTONIO": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["BIOLOGIA", "3G", "2F", "2G", "2H", "1I"],
-      },
-      "ANTONIO CARLOS": {
-        "MANHA": ["PORTUGUÊS", "2C", "2D", "2A", "2E", "2B"],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "AUGUSTO": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "BETE": {
-        "MANHA": ["ED FIN/MAT", "1E/EF", "1D", "1B", "1A", "1C/EF", "1E", "1D/EF", "MAT/ED FIN", "1C", "1A/EF", "1B/EF"],
-        "TARDE": ["ED FIN", "1G"],
-        "NOITE": [],
-      },
-      "CAROL": {
-        "MANHA": [],
-        "TARDE": ["CIÊNCIS/BIO", "1G", "7A", "CIÊNCIAS", "9D", "9A", "7B", "9C", "9B"],
-        "NOITE": [],
-      },
-      "CASSIA": {
-        "MANHA": [],
-        "TARDE": ["CIÊNCIAS", "8C", "8E", "8B", "8D"],
-        "NOITE": [],
-      },
-      "CELSO": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "CHARLES": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "DANIEL": {
-        "MANHA": ["HIST/LID", "2ADM/H", "6A", "2C", "2D/L", "HISTÓRIA", "2D", "6D", "3B", "HISTÓRIA/LID", "3A", "2C/L", "2E"],
-        "TARDE": ["HISTÓRIA", "6E"],
-        "NOITE": [],
-      },
-      "DANIEL FR": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["MATEMÁTICA", "1H"],
-      },
-      "DANIEL FREITAS": {
-        "MANHA": [],
-        "TARDE": ["MATEMÁTICA", "9B", "9D", "1G", "MAT/ED FIN", "9A", "8E/EF", "9C"],
-        "NOITE": ["MATEMÁTICA", "1H"],
-      },
-      "DANIEL LOPES": {
-        "MANHA": ["HISTÓRIA", "6B", "2A", "2B"],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "DANIELA": {
-        "MANHA": ["ARTE", "6B", "6C", "1D", "1A", "1F", "1B", "1E"],
-        "TARDE": ["ARTE", "7D", "7C", "9A", "7E", "7B", "7A", "1G", "9D"],
-        "NOITE": ["ARTE", "1H"],
-      },
-      "DANIELLE": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["QUÍMICA", "3F", "2F", "3G", "3E", "3D"],
-      },
-      "DEIZY": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "EDIANE": {
-        "MANHA": ["PORTUGUÊS", "2ADM"],
-        "TARDE": ["OP/R/PORT", "7C", "7B", "6F/R", "9C/O", "9D/O", "PORT/OP/RED", "7D", "9B/OP", "6E/R", "OP/PORT", "9C/OP", "O PORT/PORT", "6F", "9D/OP", "REDAÇÃO/PORT"],
-        "NOITE": ["PORTUGUÊS", "3F", "2G", "2H", "PORT/OR PORT", "2F", "3E/OP", "PORT/ OR PORT", "3G/OP", "3D/OP"],
-      },
-      "EDIVANIA": {
-        "MANHA": [],
-        "TARDE": ["OR MAT/PV", "9D", "OR MAT"],
-        "NOITE": [],
-      },
-      "EDIVÂNIA": {
-        "MANHA": ["MAT/ED FIN", "1F", "2E/EF"],
-        "TARDE": ["ED FIN", "7F", "7E"],
-        "NOITE": [],
-      },
-      "EDUARDO": {
-        "MANHA": [],
-        "TARDE": ["ED FÍSICA", "7C", "8B", "7D"],
-        "NOITE": [],
-      },
-      "ELIANE": {
-        "MANHA": ["GEOGRAFIA", "6A", "2A", "2E", "GEO/PV", "3B/PV", "6B/PV", "6A/PV", "6B", "6D", "GEOGRAFIA/PV", "6C", "3A/PV", "2B", "6D/PV", "2C"],
-        "TARDE": ["GEOGRAFIA", "1G"],
-        "NOITE": [],
-      },
-      "ELIANE CONTI": {
-        "MANHA": ["EMP", "3C/EMP"],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "ELIAS": {
-        "MANHA": ["FÍS/QUIM", "1C", "2ADM/Q", "3A", "FÍSICA", "2B", "1A", "2A", "1F", "1B", "3C", "1E", "1D", "2D"],
-        "TARDE": ["OR MAT", "9B", "9B/OM", "OR MAT/PV", "9A", "8E/PV", "8D/PV", "FÍSICA", "1G", "9C"],
-        "NOITE": ["QUIM/ED FIN", "1H/Q", "1H/EF", "FÍSICA", "1H/F"],
-      },
-      "EMERSON": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "ERINEIDE": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "EUZELI": {
-        "MANHA": ["ED FÍSICA", "1B", "1D", "1F", "1A", "2ADM", "2C", "2A", "1C", "2E", "3A"],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "EVENTUAL": {
-        "MANHA": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª"],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "EVENTUAL:": {
-        "MANHA": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª"],
-        "TARDE": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª"],
-        "NOITE": ["1ª", "2ª", "3ª", "4ª", "5ª"],
-      },
-      "FERNANDO": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "FLÁVIA": {
-        "MANHA": ["SALA LEITURA", "X"],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "FÁBIO": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["MATEÁTICA", "1I", "2F", "3D", "MATEMÁTICA", "3E", "2H", "2G"],
-      },
-      "GELSON": {
-        "MANHA": ["OR MAT/E.FIN", "2D/EF", "3C/OM", "3B/OM", "ED FIN", "1F", "ED FIN/MAT"],
-        "TARDE": ["MATEMÁTICA", "8B", "8A"],
-        "NOITE": [],
-      },
-      "GENILTON": {
-        "MANHA": [],
-        "TARDE": ["CIÊNCIAS", "7E", "CIÊNCIAS/PV", "7D", "6F", "7B/PV", "6E", "7F", "7C", "7A/PV"],
-        "NOITE": [],
-      },
-      "GISLENE": {
-        "MANHA": ["TECNOLOGIA", "6B", "6A"],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "GUSTAVO": {
-        "MANHA": [],
-        "TARDE": ["ARTE", "7F/AR", "9C/AR"],
-        "NOITE": ["ARTE", "1I"],
-      },
-      "HELENA": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "INGRYD": {
-        "MANHA": [],
-        "TARDE": ["MATEMÁTICA", "8E", "8D", "6E", "8C", "6F"],
-        "NOITE": [],
-      },
-      "JANINA": {
-        "MANHA": ["BIOLOGIA", "2A", "2B", "BIOTEC/BIO", "3C/BIOT", "2C", "BIOTECNOLOGIA", "3A", "3B", "2E", "2D"],
-        "TARDE": [],
-        "NOITE": ["BIOLOGIA", "3D", "3F", "3E"],
-      },
-      "JUAREZ": {
-        "MANHA": ["QUIM APL", "3A", "3C", "QUÍMICA", "1E", "1F", "1D", "3B"],
-        "TARDE": [],
-        "NOITE": ["FÍSICA", "2H", "3F", "3E", "QUIM/FÍSICA", "2H/Q", "3D", "2G", "FÍSICA/QUIM", "2F/FÍS", "1I", "2F"],
-      },
-      "KATIUSCIA": {
-        "MANHA": [],
-        "TARDE": ["INGLÊS", "8A", "9C", "8B", "8C", "8E", "7C", "7A", "7D", "9D", "9A", "7E", "7B", "9B", "7F", "8D"],
-        "NOITE": [],
-      },
-      "LUANA": {
-        "MANHA": ["REDAÇÃO", "6D", "6B", "6A", "6C"],
-        "TARDE": ["PORTUGUÊS", "9C", "7A", "9A", "9B", "1G", "9D"],
-        "NOITE": [],
-      },
-      "LUANA ADM": {
-        "MANHA": ["MER TRA/LEG PES", "2ADM", "LEG PES"],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "LUCIANA": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["PORTUGUÊS", "3G", "3D", "3F", "1I", "3E"],
-      },
-      "LUCIANO": {
-        "MANHA": [],
-        "TARDE": ["GEOGRAFIA", "8A", "8D", "9A", "9C", "7E", "8B", "8C", "9B", "9D", "7F", "8E"],
-        "NOITE": [],
-      },
-      "LUCIENE": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "MARA": {
-        "MANHA": [],
-        "TARDE": ["ED FÍSICA", "1G", "9A", "9D", "8A", "8E", "8D", "8C", "9C", "PV/ED FÍSICA", "8A/PV", "9B"],
-        "NOITE": [],
-      },
-      "MARCIEL": {
-        "MANHA": [],
-        "TARDE": ["HISTÓRIA", "7E", "7B", "9B/PV", "8C", "PV/HISTÓRIA", "9A/PV", "8E", "8A", "7C", "7D", "7F", "8D", "9C/PV", "8B", "7A"],
-        "NOITE": ["HISTÓRIA", "3D"],
-      },
-      "MARINA": {
-        "MANHA": ["MTEMÁTICA", "6D", "6B", "6A", "MAT/ED FIN", "6C", "6A/EF", "6D/EF", "6C/EF"],
-        "TARDE": ["MATEMÁTICA", "7A", "ED FIN/MAT", "7B/EF", "7A/EF"],
-        "NOITE": [],
-      },
-      "MARINA ESP": {
-        "MANHA": [],
-        "TARDE": ["ED FIN", "6F", "6E"],
-        "NOITE": [],
-      },
-      "MAURÍCIO": {
-        "MANHA": ["ED FIN/MAT", "2C/EF", "2B/EF", "2ADM/M", "ED FIN", "2A", "MATEMÁTICA", "MAT/ED FIN", "2ADM", "2B"],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "MOISÉS": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["OR MAT.", "3E", "3G", "3D", "OM/MAT", "3E/OM", "3F/OM", "OR MAT/MAT", "3G/OM", "3D/OM", "3F", "ED FIN/OR MAT", "2G/EF", "2F/EF", "MATEMÁTICA"],
-      },
-      "MURÍCIO": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "MªAPARECIDA": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "NILDES": {
-        "MANHA": ["MAT/O MAT", "2B", "3A/OM", "3B", "2C", "MAT/OR MAT", "3C", "2D", "3A/O M", "MATEMÁTICA", "2E", "3A"],
-        "TARDE": ["ED FIN", "8A"],
-        "NOITE": [],
-      },
-      "PAULO": {
-        "MANHA": ["SOC/LID", "2E", "2E/L", "FIL/OR/SOC", "1F/FIL", "2D/OR", "2D/SOC", "", "SOC/ORATÓRIA", "2B", "2C/OR", "2E/OR", "2C", "SOC/FIL", "2ADM", "1E/F", "2A/S"],
-        "TARDE": ["PROJ VIDA", "6E", "6F", "8C"],
-        "NOITE": ["FILOSOFIA", "2G", "1I", "2H", "2F", "SOCIOLOGIA"],
-      },
-      "PEDRO": {
-        "MANHA": [],
-        "TARDE": ["HISTÓRIA", "6F"],
-        "NOITE": ["HISTÓRIA", "3F", "3G", "3E", "1I"],
-      },
-      "PROFESSOR": {
-        "MANHA": ["1º", "2º", "3º", "4º", "5º", "6º", "PROFESSOR"],
-        "TARDE": [],
-        "NOITE": ["", "1ª", "2ª", "3ª", "4ª", "5ª", "6ª"],
-      },
-      "PROFESSOR READAPTADO": {
-        "MANHA": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "2º", "7ª"],
-        "TARDE": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "7ª", "2º"],
-        "NOITE": ["1ª", "2ª", "3ª", "4ª", "5ª", "2º", "6ª"],
-      },
-      "PROFESSOR:": {
-        "MANHA": [],
-        "TARDE": ["", "1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "7ª", "PROFESSOR:"],
-        "NOITE": [],
-      },
-      "RAUL": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["BIOLOGIA", "1H"],
-      },
-      "REGIANE": {
-        "MANHA": ["OR PORT", "3B", "3A"],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "REGINA": {
-        "MANHA": ["REDAÇÃO", "1A"],
-        "TARDE": ["REDAÇÃO", "9D", "7C", "8D", "9B", "9C", "9A", "RED/PORT", "8E/R", "1G/R", "6E", "REDAÇÃO/PORT", "7D/R", "8A/R", "8C/R", "7D", "7B", "8B", "8A"],
-        "NOITE": [],
-      },
-      "RICARDO": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "ROBERTO": {
-        "MANHA": [],
-        "TARDE": ["MATEMÁTICA", "7E", "7F", "7C", "7D", "7B"],
-        "NOITE": ["FÍSICA", "3G", "ED FIN/FÍS", "1I/EF", "3G/F", "2H/EF"],
-      },
-      "RODRIGO": {
-        "MANHA": ["GEOGRAFIA", "1B", "1A", "1E"],
-        "TARDE": [],
-        "NOITE": ["GEOGRAFIA", "3D", "2G", "2F", "2H", "3G", "3F", "1I", "3E"],
-      },
-      "ROSANGELA": {
-        "MANHA": ["QUÍMICA", "1A", "1C", "2B", "PROGR/QUÍM", "2A/PR", "3A/PR", "2C/Q", "EMP/QU/PR", "3B/EM", "2D/QU", "2B/PR", "PROG/EMP", "3B/P", "3A/EM", "3C/P"],
-        "TARDE": ["QUÍMICA", "1G"],
-        "NOITE": [],
-      },
-      "ROSE": {
-        "MANHA": ["PORTUGUÊS", "6B", "6A", "1A", "6C", "6D", "1B"],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "SANDRA": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": ["GEOGRAFIA", "1H/F", "1H/G"],
-      },
-      "SELMA": {
-        "MANHA": ["FILOSOFIA", "1B", "1A", "1C", "1D"],
-        "TARDE": ["FILOSOFIA", "1G/F"],
-        "NOITE": [],
-      },
-      "SOL": {
-        "MANHA": [],
-        "TARDE": ["SALA LEITURA", "X", "SALA LEITRA"],
-        "NOITE": [],
-      },
-      "SOLL": {
-        "MANHA": [],
-        "TARDE": ["SALA LEITURA", "X"],
-        "NOITE": [],
-      },
-      "SUZY": {
-        "MANHA": ["INGLÊS", "2ADM", "2B", "2E", "2C", "2A", "2D"],
-        "TARDE": ["INGLÊS", "6F", "6E", "1G"],
-        "NOITE": ["INGLÊS", "1H", "2F", "2G", "1I", "2H"],
-      },
-      "SÉRGIO": {
-        "MANHA": ["REDAÇÃO", "3A", "2B"],
-        "TARDE": [],
-        "NOITE": ["REDAÇÃO", "2F", "3D", "3E", "3F", "2G", "3G", "1I", "2H"],
-      },
-      "TITO": {
-        "MANHA": ["ED FÍSICA", "3C", "6C", "6B", "6A", "6D"],
-        "TARDE": ["ED FIS", "7A", "7F", "7B", "ED FÍSICA", "6F", "6E", "7E", ""],
-        "NOITE": [],
-      },
-      "VANDA": {
-        "MANHA": [],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "VANDERSON": {
-        "MANHA": ["REDAÇÃO", "3C", "REDAÇÃO/PORT", "2E/R", "3B", "INGLÊS/PORT", "3A", "PORT/INGLÊS", "3B/IN"],
-        "TARDE": [],
-        "NOITE": [],
-      },
-      "VANIA": {
-        "MANHA": ["OR PORT", "3C"],
-        "TARDE": ["PORTUGUÊS", "8D", "8C", "8A", "7E", "8B", "7F", "PORT/OP", "9A/OP", "8E"],
-        "NOITE": [],
-      },
-      "VIVIANE": {
-        "MANHA": ["INGLÊS", "6C", "1F", "1E", "1B", "1C", "1D", "6D", "6A", "3A"],
-        "TARDE": ["TEC/PV", "7B/T", "8B/PV", "9D/PV", "7D/T", "7F/T", "TEC/RED/PV", "6F/T", "7F/R", "7F/PV", "7A/T", "TEC/REDAÇÃO", "7E/T", "7C/T", "7A/R", "TECNOLOGIA", "7E", "REDAÇÃO/TEC", "7E/R", "6E/T"],
-        "NOITE": ["REDAÇÃO/PORT", "1H/R", "1H/P", "PORT/REDAÇÃO"],
-      },
-      "WILSON": {
-        "MANHA": [],
-        "TARDE": ["ARTE", "6E", "8C", "6F", "8D", "8A", "8E", "8B"],
-        "NOITE": [],
-      },
-      "WILTON": {
-        "MANHA": [],
-        "TARDE": ["ED FIN/TEC", "7D/EF", "8A/T", "8E/T", "8C/EF", "8D/EF", "8B/T", "8C/T", "8B/EF", "ED FIN/ TEC", "8D/T", "7C/EF"],
-        "NOITE": [],
-      },
+
+   // Horários dos professores (organizados por dias da semana)
+const horariosProfessores = {
+  ".": {
+    "SEG": [],
+    "TER": [],
+    "QUA": [],
+  },
+  "ADEMAR": {
+    "SEG": ["1D", "1E", "1E", "9A", "9A", "9C", "9C", "9D", "9A"],
+    "TER": ["1F", "1F", "1B", "9D", "2F", "2H", "1H", "1H"],
+    "QUA": ["1B", "1A", "1A"],
+    "QUI": ["1D", "1C", "1C", "9B", "9D"],
+    "SEX": ["9C", "9B", "9B", "1G", "1G", "2F", "2G", "2G", "2H"],
+  },
+  "ALISSON": {
+    "SEG": ["6A", "6D", "6B", "1F", "6A", "6A"],
+    "TER": ["1D", "6C", "1B"],
+    "QUA": ["1B/BIO", "3C/PV", "6C/CIÊ", "1E/BIO", "8A", "8A", "7E/PV", "7C/PV"],
+    "QUI": ["6B", "6B", "1C", "6C", "1F", "6D", "8A", "8A", "7D/PV"],
+    "SEX": ["1E", "1A", "1A", "1C", "6D/C", "1D"],
+  },
+  "ANDRÉ": {
+    "SEG": ["X", "X", "X", "X", "X"],
+    "TER": ["X", "X", "X", "X", "X"],
+    "QUA": ["X", "X", "X", "X", "X"],
+    "QUI": ["X", "X", "X", "X", "X"],
+    "SEX": ["X", "X", "X", "X", "X"],
+  },
+  "ANDRÉIA": {
+    "SEG": ["1E", "1F", "1D", "2C", "1C", "2D"],
+    "TER": ["1F/R", "1D", "1F", "1E", "1C", "1F/R"],
+    "QUA": ["2C/R", "1D", "1C", "1C", "1E", "1C/R"],
+    "QUI": ["1D/R", "1E", "1B/R", "1E/R", "1D/R", "1F"],
+    "SEX": ["2D/R", "1E", "1C", "1F", "1D", "1B/R"],
+  },
+  "ANTONIO": {
+    "QUI": ["3G", "2F", "2F", "2G", "2G"],
+    "SEX": ["3G", "2H", "2H", "1I", "1I"],
+  },
+  "ANTONIO CARLOS": {
+    "SEG": ["2B", "2B", "2E", "2E"],
+    "TER": ["2C", "2C", "2D", "2D", "2A"],
+    "QUA": ["2D", "2D", "2E", "2E"],
+    "QUI": ["2A", "2A"],
+    "SEX": ["2C", "2C", "2A", "2B", "2B"],
+  },
+  "BETE": {
+    "SEG": ["1A", "1A", "1A", "1E", "1B", "1B"],
+    "TER": ["1E/EF", "1E/EF", "1D", "1D", "1B", "1A"],
+    "QUA": ["1C/EF", "1C/EF", "1E", "1E", "1D/EF", "1D/EF"],
+    "QUI": ["1C", "1C", "1E", "1B", "1A/EF", "1A/EF"],
+    "SEX": ["1B/EF", "1B/EF", "1D", "1D", "1C", "1C", "1G", "1G"],
+  },
+  "CAROL": {
+    "SEG": ["1G", "1G", "7A", "7A"],
+    "TER": ["9D", "9D", "9A", "7B", "7B"],
+    "QUA": ["9C", "9C", "7B", "7A"],
+    "QUI": ["9A", "9B", "9B", "9C", "9D"],
+    "SEX": ["9B", "9C", "9D", "9B", "9A", "9A"],
+  },
+  "CASSIA": {
+    "SEG": ["8C", "8E", "8E", "8B", "8B", "8B"],
+    "TER": ["8D", "8D", "8B", "8C"],
+    "QUA": ["8D", "8D", "8E", "8E", "8C", "8C"],
+  },
+  "DANIEL": {
+    "SEG": ["6C", "6C", "2C", "6D", "3C", "3C", "6E", "6E"],
+    "TER": ["2ADM/H", "2ADM/H", "6A", "2C", "2D/L", "2D/L"],
+    "QUI": ["2D", "2D", "6D", "6A", "3B", "3B"],
+    "SEX": ["3A", "3A", "2C/L", "2C/L", "2E", "2E"],
+  },
+  "DANIEL FR": {
+    "QUA": ["1H", "1H"],
+  },
+  "DANIEL FREITAS": {
+    "SEG": ["9B", "9B", "9D", "1G", "1G"],
+    "TER": ["9A", "9B", "8E/EF", "8E/EF", "9C"],
+    "QUA": ["9A", "9D", "9D", "9B", "9B"],
+    "QUI": ["9C", "9A", "1G", "1G", "9C", "1H", "1H"],
+    "SEX": ["9A", "9A", "9C", "9C", "9D", "9D"],
+  },
+  "DANIEL LOPES": {
+    "QUA": ["6B", "6B", "2A", "2A", "2B", "2B"],
+  },
+  "DANIELA": {
+    "SEG": ["1C", "1C", "6A", "6A", "6D", "6D", "", "7D", "7C", "9A", "7E", "7E", "7C"],
+    "TER": ["6B", "6B", "6C", "6C", "1D", "1D", "7D", "7B", "7B", "7A", "1G", "1G", "1H"],
+    "QUA": ["1A", "1A", "9D", "7A"],
+    "SEX": ["1F", "1F", "1B", "1B", "1E", "1E"],
+  },
+  "DANIELLE": {
+    "TER": ["3F", "2F", "3G"],
+    "QUA": ["3E", "3D"],
+    "QUI": ["2F", "3E", "3G", "3D", "3F"],
+  },
+  "EDIANE": {
+    "SEG": ["7C", "7B", "6F/R", "6F/R", "9C/O", "9D/O", "3F", "3F", "2G", "2G", "2H"],
+    "TER": ["7B", "7D", "7C", "9B/OP", "6E/R", "9B/OP", "2G", "2F", "2F", "3E/OP", "3E/OP"],
+    "QUA": ["9C/OP", "7B", "2H", "2H", "2H", "2F", "2F"],
+    "QUI": ["2ADM", "2ADM", "2ADM", "6F", "7D", "9D/OP", "7D", "7C", "7D"],
+    "SEX": ["6E/R", "7C", "6F", "6F", "7B", "6F", "2G", "3G/OP", "3G/OP", "3D/OP", "3D/OP"],
+  },
+  "EDIVANIA": {
+    "QUI": ["9D"],
+    "SEX": ["9D"],
+  },
+  "EDIVÂNIA": {
+    "SEG": ["1F", "1F", "2B/EMP"],
+    "QUI": ["1F", "2E/EF", "1F", "2E/EF", "7F", "7E", "7E", "7F"],
+  },
+  "EDUARDO": {
+    "QUA": ["7C", "8B", "7D", "8B", "7D", "7C"],
+  },
+  "ELIANE": {
+    "SEG": ["1G", "1G"],
+    "TER": ["6A", "6A", "2A", "2A", "2E", "2E"],
+    "QUA": ["6A", "3B/PV", "6B/PV", "6A/PV", "6B", "6D"],
+    "QUI": ["6C", "6C", "6C", "6B", "6B", "3A/PV"],
+    "SEX": ["6D", "2B", "2B", "6D/PV", "2C", "2C"],
+  },
+  "ELIANE CONTI": {
+    "SEG": ["3C/EMP"],
+    "QUI": ["3C/EMP"],
+  },
+  "ELIANE SANTOS": {
+    "SEG": ["2D", "2D", "6D", "6C/PV", "2ADM/G", "2ADM/G", ""],
+  },
+  "ELIAS": {
+    "SEG": ["2E", "2E", "3B", "3B", "2C", "2C", "9B", "1H/Q", "1H/Q", "1H/EF", "1H/EF"],
+    "TER": ["1C", "1C", "2ADM/Q", "2ADM/Q", "3A", "3A"],
+    "QUA": ["2B", "2B", "1A", "1A", "2A", "1F", "9B/OM"],
+    "QUI": ["1B", "1B", "3C", "3C", "1E", "1E", "9A", "8E/PV", "9A", "8D/PV"],
+    "SEX": ["1D", "1D", "1F", "2A", "2D", "2D", "1G", "1G", "9C", "9C", "1H/F", "1H/F"],
+  },
+  "EUZELI": {
+    "SEG": ["3B", "1E", "1E", "2D", "2B"],
+    "QUA": ["1B", "1B", "1D", "1D", "1F"],
+    "QUI": ["1A", "1A", "2ADM", "2C", "2A"],
+    "SEX": ["1C", "1C", "2E", "3A", "1F"],
+  },
+  "EVENTUAL": {
+    "QUI": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª"],
+  },
+  "EVENTUAL:": {
+    "SEG": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
+    "TER": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
+    "QUA": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
+    "QUI": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
+    "SEX": ["1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª", "6ª", "1ª", "2ª", "3ª", "4ª", "5ª"],
+  },
+  "FLÁVIA": {
+    "SEG": ["X", "X", "X", "X", "X", "X"],
+    "TER": ["X", "X", "X", "X", "X", "X"],
+    "QUA": ["X", "X", "X", "X", "X", "X"],
+    "QUI": ["X", "X", "X", "X", "X", "X"],
+    "SEX": ["X", "X", "X", "X", "X", "X"],
+  },
+  "FÁBIO": {
+    "SEG": ["1I", "2F", "1I", "3D", "1I"],
+    "TER": ["3D", "3E", "2H", "2H", "2F"],
+    "QUA": ["2G", "3E", "2F", "2G", "3E"],
+    "QUI": ["2H", "3D", "2G", "1I", "2H"],
+    "SEX": ["3E", "3D", "2F", "2G"],
+  },
+  "GELSON": {
+    "SEG": ["8B"],
+    "TER": ["2D/EF", "2D/EF", "3C/OM", "3C/OM", "3B/OM", "3B/OM", "8A"],
+    "QUA": ["8A"],
+    "QUI": ["1F", "8B"],
+    "SEX": ["1F", "8B", "8B", "8A", "8A", "8A", "8B"],
+  },
+  "GENILTON": {
+    "TER": ["7E", "7E"],
+    "QUA": ["7D", "6F", "7B/PV", "6E", "7F", "7D"],
+    "QUI": ["7C", "7C", "6F", "6F", "6E", "6E"],
+    "SEX": ["7C", "7E", "7A/PV", "7D", "7F", "7F"],
+  },
+  "GISLENE": {
+    "SEX": ["6B", "6A", "6B", "6A"],
+  },
+  "GUSTAVO": {
+    "SEG": ["7F/AR", "1I"],
+    "QUI": ["9C/AR", "7F/AR"],
+  },
+  "INGRYD": {
+    "SEG": ["8E", "8D", "8D", "8E", "6E", "6E"],
+    "TER": ["8C", "6F", "8D", "8D"],
+    "QUA": ["6F", "6E", "6E", "6F", "6F", "8E"],
+    "QUI": ["8C", "8C", "6E"],
+    "SEX": ["8E", "8C", "8C", "8E", "6F", "8D"],
+  },
+  "JANINA": {
+    "SEG": ["2ADM/B", "2ADM/B", "2B"],
+    "TER": ["2A", "2A", "2B"],
+    "QUA": ["3C/BIOT", "3C/BIOT", "2C", "2C"],
+    "QUI": ["3A", "3A", "3B", "3B", "3D", "3F", "3D"],
+    "SEX": ["2E", "2D", "2D", "2E", "3E", "3E", "3F"],
+  },
+  "JUAREZ": {
+    "SEG": ["2H", "2H", "3F", "3E", "3E"],
+    "TER": ["3A", "3A", "3C", "3C", "2H/Q", "3D", "3D", "2G", "2G"],
+    "QUA": ["1E", "1E", "1F", "2F/FÍS", "2G", "2G", "1I", "1I"],
+    "QUI": ["1F", "1D", "1D"],
+    "SEX": ["3B", "3B", "1I", "1I", "3F", "2H/Q", "2F"],
+  },
+  "KATIUSCIA": {
+    "SEG": ["1A", "1A", "8A", "9C", "8B", "8C", "8E", "8E"],
+    "TER": ["7C", "7A", "7A", "7D", "7D", "8B"],
+    "QUA": ["9D", "9D", "9A", "9A", "7E", "7E"],
+    "QUI": ["7B", "9B", "9C", "7B", "9B", "8A"],
+    "SEX": ["8C", "7F", "7F", "8D", "8D", "7C"],
+  },
+  "LUANA": {
+    "SEG": ["9C", "7A", "7A", "9A", "9B", "9B"],
+    "TER": ["6D", "6B", "6A", "9C", "9C", "1G", "1G", "9D", "9D"],
+    "QUA": ["6C", "6D", "6C", "9A", "9B", "9B", "9C", "1G", "1G"],
+    "QUI": ["6A", "6B", "9D", "7A", "7A", "9D", "9A", "9A"],
+  },
+  "LUANA ADM": {
+    "QUA": ["2ADM", "2ADM", "2ADM", "2ADM"],
+    "QUI": ["2ADM", "2ADM"],
+    "SEX": ["2ADM"],
+  },
+  "LUCIANA": {
+    "SEG": ["3G", "3G", "3D", "3F", "3F"],
+    "TER": ["1I", "1I", "3E", "3D", "3D"],
+    "QUA": ["3E", "3F", "3F", "3G", "3G"],
+    "QUI": ["3D", "1I", "1I", "3E", "3E"],
+  },
+  "LUCIANO": {
+    "SEG": ["8A", "8A", "8D", "9A", "9C"],
+    "TER": ["7E", "8B", "9C", "7E"],
+    "QUA": ["8C", "9B", "8B", "9D"],
+    "QUI": ["7F", "7F", "8C", "7E", "9B"],
+    "SEX": ["7F", "9D", "8D", "9A", "8E", "8E"],
+  },
+  "MARA": {
+    "TER": ["1G", "9A", "9D", "8A", "8E"],
+    "QUA": ["8D", "8C", "9C", "9C"],
+    "QUI": ["8A/PV", "8E", "8A", "1G"],
+    "SEX": ["9D", "8D", "9A", "8C", "9B", "9B"],
+  },
+  "MARCIEL": {
+    "SEG": ["7E", "7E", "7B", "9B/PV", "8C", "8C"],
+    "TER": ["9A/PV", "8E", "8E", "8A", "7C", "7D"],
+    "QUA": ["8C", "7D", "7F", "7F", "8D", "8D"],
+    "QUI": ["9C/PV", "8D", "8E", "8B", "8B", "7B"],
+    "SEX": ["8A", "8A", "8B", "7C", "7A", "7A", "3D", "3D"],
+  },
+  "MARINA": {
+    "SEG": ["6B", "6A", "6B/EF", "6B/EF"],
+    "TER": ["6D", "6D", "6D", "6B", "6A", "6B", "7A"],
+    "QUA": ["6C", "6C", "6C", "6B", "6A/EF", "6A/EF", "7A", "7A"],
+    "QUI": ["6D", "6D", "6A", "6D/EF", "6D/EF", "6A", "7A", "7B/EF", "7B/EF", "7A", "7A/EF", "7A/EF"],
+    "SEX": ["6C", "6C", "6A", "6B", "6C/EF", "6C/EF"],
+  },
+  "MARINA ESP": {
+    "SEG": ["6F", "6F", "6E", "6E"],
+  },
+  "MAURÍCIO": {
+    "SEG": ["2C/EF", "2A/EF", "2ADM/M.A", "2ADM/M.A", "2A/MAT"],
+    "TER": ["2C/EF", "2B/EF", "2ADM/M", "2ADM/M"],
+    "QUA": ["2A"],
+    "QUI": ["2A"],
+    "SEX": ["2A", "2A", "2ADM", "2ADM", "2ADM", "2B"],
+  },
+  "MOISÉS": {
+    "SEG": ["3E", "3E", "3G", "3G", "3D"],
+    "TER": ["3E/OM", "3G", "3G", "3F/OM", "3F/OM"],
+    "QUA": ["3G/OM", "3D/OM", "3D/OM", "3F", "3F"],
+    "QUI": ["2G/EF", "2G/EF", "3F/OM", "2F/EF", "2F/EF"],
+    "SEX": ["3F", "3F", "3G", "3G"],
+  },
+  "NILDES": {
+    "SEG": ["3C", "2C", "2D", "3A", "2D", "3A"],
+    "TER": ["2B", "3A/OM", "3B", "3B", "2C", "2C", "8A", "8A"],
+    "QUA": ["3B", "2C", "3C", "2D", "3A/O M", "3B"],
+    "QUI": ["2E", "2E", "2B", "2B", "3A", "2E"],
+    "SEX": ["2B", "2E", "3C", "2D", "3A", "3C"],
+  },
+  "PAULO": {
+    "SEG": ["2G", "1I", "2H", "2F"],
+    "TER": ["2E", "2E", "2E/L", "2E/L", "6E", "6F", "8C"],
+    "QUA": ["1F/FIL", "1F/FIL", "2D/OR", "2D/SOC", "2D/SOC", ""],
+    "QUI": ["2B", "2B", "2C/OR", "2E/OR", "2C", "2C"],
+    "SEX": ["2ADM", "2ADM", "1E/F", "1E/F", "2A/S", "2A/S", "2H", "2G", "2F"],
+  },
+  "PEDRO": {
+    "QUI": ["6F", "6F", "3F", "3G", "3E", "3G", "1I"],
+    "SEX": ["1I", "3F", "3E"],
+  },
+  "RAUL": {
+    "TER": ["1H", "1H"],
+  },
+  "REGIANE": {
+    "TER": ["3B", "3B"],
+    "QUA": ["3A", "3A"],
+  },
+  "REGINA": {
+    "SEG": ["9D", "9D", "7C", "7C", "8D", "8D"],
+    "TER": ["9B", "9B", "9C", "9C", "9A", "9A"],
+    "QUA": ["8E/R", "8E/R", "1G/R", "1G/R", "6E", "6E"],
+    "QUI": ["7D/R", "6E", "6E", "8A/R", "8C/R", "8C/R"],
+    "SEX": ["1A", "1A", "7D", "7B", "7B", "8B", "8B", "8A"],
+  },
+  "ROBERTO": {
+    "SEG": ["7E", "7F", "7C", "7D"],
+    "TER": ["7F", "7C", "7D", "7B", "7F", "7C", "3G"],
+    "QUA": ["7B", "7E", "7C", "7D", "7B", "7F", "1I/EF", "1I/EF", "3G/F", "2H/EF", "2H/EF"],
+    "QUI": ["7E", "7F", "7E"],
+    "SEX": ["7B", "7D", "7C", "7E", "7D", "7B"],
+  },
+  "RODRIGO": {
+    "SEG": ["1D", "1D", "1C", "1C", "1F", "1F", "", "3D", "2G", "2F", "2H", "3G"],
+    "TER": ["1B", "1B", "1A", "1A", "1E", "1E", "3F", "2G", "1I"],
+    "QUA": ["3D", "3G", "3E"],
+    "QUI": ["1I", "3F", "2H"],
+    "SEX": ["3E", "2F"],
+  },
+  "ROSANGELA": {
+    "SEG": ["1B", "1B", "2A", "2A", "2E", "2E"],
+    "TER": ["1A", "1A", "1C", "1C", "2B", "2B"],
+    "QUA": ["2A/PR", "2A/PR", "3A/PR", "3A/PR", "2C/Q", "2C/Q", "1G", "1G"],
+    "QUI": ["3B/EM", "3B/EM", "2D/QU", "2D/QU", "2B/PR", "2B/PR"],
+    "SEX": ["3B/P", "3B/P", "3A/EM", "3C/P", "3C/P", "3A/EM"],
+  },
+  "ROSE": {
+    "SEG": ["6C", "1B"],
+    "TER": ["6B", "6A", "1A", "6C"],
+    "QUA": ["6D", "6A", "6D", "6D", "1B", "6B"],
+    "QUI": ["6A", "6A", "6B", "1A", "6C", "1B"],
+    "SEX": ["1A", "6B", "6C", "1A", "1B", "6D"],
+  },
+  "SANDRA": {
+    "QUI": ["1H/F", "1H/G", "1H/G"],
+  },
+  "SELMA": {
+    "SEG": ["1A", "1D", "1C"],
+    "TER": ["1G/F"],
+    "QUA": ["1B"],
+    "QUI": ["1A", "1C", "1B", "1D", "1G/F"],
+  },
+  "SOL": {
+    "SEG": ["X", "X", "X", "X", "X", "X"],
+    "QUA": ["X", "X", "X", "X", "X", "X"],
+    "QUI": ["X", "X", "X", "X", "X", "X"],
+    "SEX": ["X", "X", "X", "X", "X", "X"],
+  },
+  "SOLL": {
+    "TER": ["X", "X", "X", "X", "X", "X"],
+  },
+  "SUZY": {
+    "SEG": ["1H", "2F", "2G"],
+    "TER": ["6F", "6F", "1I", "2H"],
+    "QUA": ["2ADM", "2ADM", "2B", "2B", "2E", "2E", "6E"],
+    "QUI": ["2C", "2C", "2A", "2A", "2D", "2D", "6E", "1G", "1G"],
+  },
+  "SÉRGIO": {
+    "SEG": ["2A", "3B", "3A", "2B", "2A", "3B", "2F", "3D", "3E"],
+    "TER": ["3A", "2B", "3F", "2G", "3G", "1I"],
+    "QUA": ["3F", "2F", "1I", "3D", "2G"],
+    "QUI": ["3E", "2H", "2H", "3G"],
+  },
+  "TITO": {
+    "SEG": ["6D", "7A", "7F", "7F", "7A", "7B", "7B"],
+    "QUI": ["3C", "6C"],
+    "SEX": ["6B", "6A", "6D", "6C", "6A", "6B", "6F", "6F", "6E", "6E", "7E", "7E", ""],
+  },
+  "VANDERSON": {
+    "SEG": ["3A", "3A", "3C", "3C", "3B"],
+    "TER": ["3C", "3C"],
+    "QUA": ["2E/R", "2E/R", "3B", "3B", "3B"],
+    "QUI": ["3C", "3C", "3A", "3A"],
+    "SEX": ["3C", "3C", "3B/IN", "3B/IN"],
+  },
+  "VANIA": {
+    "SEG": ["8D", "8C", "8C", "8A", "8A", "7E"],
+    "TER": ["8B", "8B", "7F", "7E", "7E", "8A"],
+    "QUA": ["3C", "3C", "7F", "7F", "8A", "7E", "9A/OP", "9A/OP"],
+    "QUI": ["8E", "8B", "8B", "8D", "8D", "8E"],
+    "SEX": ["8D", "8E", "8E", "7F", "8C", "8C"],
+  },
+  "VIVIANE": {
+    "SEG": ["6B", "1B", "6B", "3A", "1D", "7B/T", "8B/PV", "9D/PV", "7D/T", "7F/T", "7F/T"],
+    "TER": ["6C", "1F", "1E", "1B", "6C", "1C", "6F/T", "7F/R", "6F/T", "7F/PV", "7A/T", "7F/R"],
+    "QUA": ["1D", "6D", "6A", "1F", "1C", "3A", "7E/T", "7C/T", "7A/R", "7A/R", "7C/T", "7B/T", "1H/R", "1H/P", "1H/P"],
+    "QUI": ["1E", "7E"],
+    "SEX": ["6A", "6D", "7E/R", "6E/T", "7E/R", "7A/T", "6E/T", "7D/T", "1H/P", "1H/P", "1H/R"],
+  },
+  "WILSON": {
+    "TER": ["6E", "8C", "6E"],
+    "QUA": ["6F", "8D", "8A", "6F"],
+    "QUI": ["8E", "8B"],
+  },
+  "WILTON": {
+    "SEG": ["7D/EF", "8A/T"],
+    "TER": ["8E/T", "8C/EF", "8D/EF", "8D/EF", "8B/T", "8C/T"],
+    "QUA": ["8B/T", "8C/T", "8B/EF", "8A/T", "8E/T", "8B/EF"],
+    "QUI": ["8D/T", "8C/EF", "8D/T", "7C/EF", "7D/EF", "7C/EF"],
+  },
 };
+
+// Dias da semana
+const diasSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
+
+
+    // Agendamentos e histórico (incluindo agendamentos excluídos)
+    const agendamentos = {};
+    const historicoExcluidos = [];
+
     const monthNames = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
     ];
+
     const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
     const monthSelect = document.getElementById('monthSelect');
     const yearSelect = document.getElementById('yearSelect');
     let selectedDay = null;
     let selectedDate = null;
+
+    // Variáveis para o calendário pop-up
     let currentPopupDate = new Date();
     let popupSelectedDate = null;
-    let agendamentoParaDevolver = null;
-    let agendamentos = {};
-    let historicoExcluidos = [];
-    let aulasDisponiveis = [];
 
-    // Função para remover acentos
-    function removerAcentos(str) {
-      return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    }
-
-    // FUNÇÕES DO FIREBASE COM USER_ID
-    async function carregarDadosIniciais() {
-      try {
-        // Carrega agendamentos do usuário específico
-        const snapshotAgendamentos = await agendamentosRef.where("userId", "==", USER_ID).get();
-        agendamentos = {};
-        snapshotAgendamentos.forEach(doc => {
-          const data = doc.data();
-          const mesAno = data.mesAno;
-          if (!agendamentos[mesAno]) {
-            agendamentos[mesAno] = [];
-          }
-          agendamentos[mesAno].push({ id: doc.id, ...data });
-        });
-        
-        // Carrega histórico excluído do usuário específico
-        const snapshotHistorico = await historicoExcluidosRef.where("userId", "==", USER_ID).get();
-        historicoExcluidos = [];
-        snapshotHistorico.forEach(doc => {
-          historicoExcluidos.push({ id: doc.id, ...doc.data() });
-        });
-        
-        // Renderiza o calendário
-        renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
-      } catch (error) {
-        console.error("Erro ao carregar dados:", error);
-      }
-    }
-
-    async function salvarAgendamentoFirestore(agendamento) {
-      try {
-        // Adiciona o USER_ID ao agendamento
-        const agendamentoComUserId = {
-          ...agendamento,
-          userId: USER_ID
-        };
-        
-        const docRef = await agendamentosRef.add(agendamentoComUserId);
-        return docRef.id;
-      } catch (error) {
-        console.error("Erro ao salvar agendamento:", error);
-        alert("Erro ao salvar agendamento. Tente novamente.");
-        return false;
-      }
-    }
-
-    async function atualizarAgendamentoFirestore(id, dados) {
-      try {
-        await agendamentosRef.doc(id).update(dados);
-        return true;
-      } catch (error) {
-        console.error("Erro ao atualizar agendamento:", error);
-        alert("Erro ao atualizar agendamento. Tente novamente.");
-        return false;
-      }
-    }
-
-    async function excluirAgendamentoFirestore(id, agendamento) {
-      try {
-        // Adiciona ao histórico com USER_ID
-        await historicoExcluidosRef.add({
-          ...agendamento,
-          userId: USER_ID,
-          dataExclusao: new Date().toISOString()
-        });
-        
-        // Exclui o agendamento
-        await agendamentosRef.doc(id).delete();
-        return true;
-      } catch (error) {
-        console.error("Erro ao excluir agendamento:", error);
-        alert("Erro ao excluir agendamento. Tente novamente.");
-        return false;
-      }
-    }
-
-    // Funções do sistema
-    function estaDentroDoPeriodo(dataAgendamento) {
-      const hoje = new Date();
-      const dataAgendamentoObj = new Date(dataAgendamento);
-      const diferencaDias = Math.floor((hoje - dataAgendamentoObj) / (1000 * 60 * 60 * 24));
-      return diferencaDias <= 15;
-    }
-
-    function formatarDataParaComparacao(dia, mes, ano) {
-      return `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
-    }
-
-    async function verificarConflitoAgendamento(turma, data, aula) {
+    // Função para verificar conflito de agendamento
+    function verificarConflitoAgendamento(turma, data, aula) {
       const [dia, mes, ano] = data.split('/');
-      const mesAno = `${ano}-${mes}`;
+      const key = `${ano}-${mes}`;
       
-      try {
-        const querySnapshot = await agendamentosRef
-          .where("mesAno", "==", mesAno)
-          .where("dia", "==", parseInt(dia))
-          .where("turma", "==", turma)
-          .where("aula", "==", aula)
-          .where("userId", "==", USER_ID) // Filtro por usuário
-          .get();
-          
-        return !querySnapshot.empty;
-      } catch (error) {
-        console.error("Erro ao verificar conflito:", error);
-        return false;
-      }
+      if (!agendamentos[key]) return false;
+      
+      return agendamentos[key].some(agendamento => 
+        agendamento.dia === parseInt(dia) && 
+        agendamento.turma === turma && 
+        agendamento.aula === aula
+      );
     }
 
+    // Funções do formulário
     function atualizarMarca() {
-      const tipo = document.getElementById("equipamentoAgendamento").value;
+      const tipo = document.getElementById("aparelho").value;
       document.getElementById("marca").value = marcas[tipo] || "";
     }
 
     function atualizarSala() {
       const turma = document.getElementById("studentClass").value;
-      document.getElementById("sala").value = salasPorTurmaPeriodo[turma] || "Sala não definida";
+      const periodo = turma.includes("MANHA") ? "MANHA" : 
+                     turma.includes("TARDE") ? "TARDE" : 
+                     turma.includes("NOITE") ? "NOITE" : "";
+      
+      // Verifica se a turma existe no mapeamento
+      if (salasPorTurmaPeriodo[turma]) {
+        document.getElementById("sala").value = salasPorTurmaPeriodo[turma];
+      } else {
+        document.getElementById("sala").value = "Sala não definida";
+      }
+      
+      // Verifica se há conflito de agendamento
+      verificarConflito();
+    }
+
+    function abrirRelogio(idCampo) {
+      const campo = document.getElementById(idCampo);
+      if (campo && typeof campo.showPicker === 'function') {
+        campo.showPicker();
+      } else {
+        campo.focus();
+      }
     }
 
     function atualizarEmail() {
       const nome = document.getElementById("professor").value;
       document.getElementById("email-professor").value = teacherEmails[nome] || "";
-    }
-
-    function atualizarEmailEAulas() {
-      atualizarEmail();
-      atualizarAulasDisponiveis();
-    }
-
-    function atualizarSalaEAulas() {
-      atualizarSala();
-      atualizarAulasDisponiveis();
     }
 
     function gerarOpcoesProfessores() {
@@ -1781,113 +1523,133 @@
       });
     }
 
-    function obterPeriodoTurma(turma) {
-      if (turma.includes("MANHA")) return "MANHA";
-      if (turma.includes("TARDE")) return "TARDE";
-      if (turma.includes("NOITE")) return "NOITE";
-      return "";
+    // Função para verificar conflito quando os campos relevantes mudam
+    function verificarConflito() {
+      const turma = document.getElementById("studentClass").value;
+      const data = document.getElementById("data-selecionada").value;
+      const aula = document.getElementById("aula").value;
+      const conflictMessage = document.getElementById("conflictMessage");
+      
+      if (turma && data && aula) {
+        const conflito = verificarConflitoAgendamento(turma, data, aula);
+        conflictMessage.style.display = conflito ? "block" : "none";
+      } else {
+        conflictMessage.style.display = "none";
+      }
     }
 
-    function obterAulasProfessor(professor, periodo) {
-      // Usar apenas o primeiro nome e remover acentos
-      const primeiroNome = removerAcentos(professor.split(' ')[0]).toUpperCase();
-      if (!horariosProfessores[primeiroNome]) return [];
-      return horariosProfessores[primeiroNome][periodo] || [];
-    }
-
-    function atualizarAulasDisponiveis() {
+    // Função para verificar disponibilidade do professor
+    function verificarDisponibilidadeProfessor() {
       const professor = document.getElementById("professor").value;
       const turma = document.getElementById("studentClass").value;
-      const data = document.getElementById("dataAgendamento").value;
-      const aulaContainer = document.getElementById("aula-container");
+      const scheduleContainer = document.getElementById("teacherSchedule");
       
-      aulaContainer.innerHTML = '';
-      aulasDisponiveis = [];
-      
-      if (!professor || professor === "Selecione" || !turma || !data) {
+      if (!professor || !turma) {
+        scheduleContainer.style.display = "none";
         return;
       }
       
-      const periodo = obterPeriodoTurma(turma);
-      if (!periodo) return;
+      const periodo = turma.includes("MANHA") ? "MANHA" : 
+                     turma.includes("TARDE") ? "TARDE" : 
+                     turma.includes("NOITE") ? "NOITE" : "";
       
-      const aulasProfessor = obterAulasProfessor(professor, periodo);
-      if (aulasProfessor.length === 0) {
-        aulaContainer.innerHTML = '<p>Não há aulas neste período</p>';
-        return;
-      }
+      const manhaList = document.getElementById("manhaSchedule");
+      const tardeList = document.getElementById("tardeSchedule");
+      const noiteList = document.getElementById("noiteSchedule");
       
-      // Obter dia da semana (0 = Domingo, 1 = Segunda, ...)
-      const [dia, mes, ano] = data.split('/');
-      let dataObj;
-      try {
-        dataObj = new Date(ano, mes-1, dia);
-      } catch (e) {
-        console.error("Data inválida:", e);
-        aulaContainer.innerHTML = '<p>Data inválida</p>';
-        return;
-      }
-      const diaSemana = dataObj.getDay();
+      // Limpar listas
+      manhaList.innerHTML = "";
+      tardeList.innerHTML = "";
+      noiteList.innerHTML = "";
       
-      // Não exibir aulas para domingo e sábado (0 e 6)
-      if (diaSemana === 0 || diaSemana === 6) {
-        aulaContainer.innerHTML = '<p>Não há aulas disponíveis para domingos e sábados</p>';
-        return;
-      }
-      
-      // Número de aulas por dia de acordo com o período
-      let aulasPorDia = 0;
-      if (periodo === "MANHA" || periodo === "TARDE") {
-        aulasPorDia = 6;
-      } else if (periodo === "NOITE") {
-        aulasPorDia = 5;
-      }
-      
-      // Índice do primeiro horário do dia (segunda = 0, terça = 1, etc)
-      const indiceDia = diaSemana - 1; 
-      
-      // Índice do primeiro horário do dia na grade semanal
-      let indiceInicio = indiceDia * aulasPorDia;
-      
-      // Prevenção contra índices inválidos
-      if (indiceInicio < 0) indiceInicio = 0;
-      if (indiceInicio >= aulasProfessor.length) {
-        indiceInicio = aulasProfessor.length - aulasPorDia;
-        if (indiceInicio < 0) indiceInicio = 0;
-      }
-      
-      const aulasDoDia = aulasProfessor.slice(indiceInicio, indiceInicio + aulasPorDia);
-      
-      if (aulasDoDia.length === 0) {
-        aulaContainer.innerHTML = '<p>Não há aulas disponíveis neste dia</p>';
-        return;
-      }
-      
-      // Criar checkboxes para as aulas
-      aulasDoDia.forEach((aula, index) => {
-        // Verificar se a aula não está vazia ou é um horário livre
-        if (aula && aula.trim() !== "" && aula.trim() !== "X") {
-          const aulaId = `aula-${index}`;
-          const checkbox = document.createElement("input");
-          checkbox.type = "checkbox";
-          checkbox.id = aulaId;
-          checkbox.className = "aula-checkbox";
-          checkbox.value = aula;
-          
-          const label = document.createElement("label");
-          label.htmlFor = aulaId;
-          label.className = "aula-label aula-professor";
-          label.textContent = `${aula} (${index+1}ª Aula)`;
-          
-          aulaContainer.appendChild(checkbox);
-          aulaContainer.appendChild(label);
-          aulasDisponiveis.push(aula);
+      // Preencher listas
+      if (horariosProfessores[professor]) {
+        if (horariosProfessores[professor]["SEG"] && horariosProfessores[professor]["SEG"].length > 0) {
+          horariosProfessores[professor]["SEG"].forEach(aula => {
+            const li = document.createElement("li");
+            li.textContent = aula;
+            manhaList.appendChild(li);
+          });
+        } else {
+          manhaList.innerHTML = "<li>Sem aulas</li>";
         }
-      });
+        
+        if (horariosProfessores[professor]["TER"] && horariosProfessores[professor]["TER"].length > 0) {
+          horariosProfessores[professor]["TER"].forEach(aula => {
+            const li = document.createElement("li");
+            li.textContent = aula;
+            tardeList.appendChild(li);
+          });
+        } else {
+          tardeList.innerHTML = "<li>Sem aulas</li>";
+        }
+        
+        if (horariosProfessores[professor]["QUA"] && horariosProfessores[professor]["QUA"].length > 0) {
+          horariosProfessores[professor]["QUA"].forEach(aula => {
+            const li = document.createElement("li");
+            li.textContent = aula;
+            noiteList.appendChild(li);
+          });
+        } else {
+          noiteList.innerHTML = "<li>Sem aulas</li>";
+        }
+        
+        scheduleContainer.style.display = "block";
+      } else {
+        scheduleContainer.style.display = "none";
+      }
+    }
+    
+    // Função para atualizar as aulas disponíveis baseadas no professor e data selecionados
+    function atualizarAulasDisponiveis() {
+      const professor = document.getElementById("professor").value;
+      const dataSelecionada = document.getElementById("data-selecionada").value;
+      const aulaSelect = document.getElementById("aula");
+      const aulaInfo = document.getElementById("aula-info");
+      
+      // Limpar o select de aulas
+      aulaSelect.innerHTML = "";
+      
+      // Verificar se professor e data estão selecionados
+      if (!professor || professor === "Selecione" || !dataSelecionada) {
+        aulaInfo.textContent = "Selecione um professor e uma data para ver as aulas disponíveis";
+        aulaInfo.className = "aula-indisponivel";
+        return;
+      }
+      
+      // Obter o dia da semana da data selecionada
+      const [dia, mes, ano] = dataSelecionada.split('/');
+      const dataObj = new Date(ano, mes - 1, dia);
+      const diaSemanaIndex = dataObj.getDay();
+      const diaSemana = diasSemana[diaSemanaIndex];
+      
+      // Exibir o dia da semana
+      const diasSemanaExtenso = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
+      const diaSemanaExtenso = diasSemanaExtenso[diaSemanaIndex];
+      document.getElementById("aula-info").innerHTML = `<span class="day-of-week">${diaSemanaExtenso}</span>`;
+      
+      // Obter aulas do professor para esse dia da semana
+      const aulasDoDia = horariosProfessores[professor] && horariosProfessores[professor][diaSemana];
+      
+      if (aulasDoDia && aulasDoDia.length > 0) {
+        aulasDoDia.forEach(aula => {
+          const option = document.createElement("option");
+          option.value = aula;
+          option.textContent = aula;
+          aulaSelect.appendChild(option);
+        });
+        aulaInfo.innerHTML += `<span class="aula-disponivel">${aulasDoDia.length} aulas disponíveis</span>`;
+      } else {
+        const option = document.createElement("option");
+        option.textContent = "Nenhuma aula neste dia";
+        aulaSelect.appendChild(option);
+        aulaInfo.innerHTML += `<span class="aula-indisponivel">Nenhuma aula neste dia</span>`;
+      }
     }
 
+    // Funções do calendário pop-up
     function initDatepicker() {
-      const datepickerInput = document.getElementById('dataAgendamento');
+      const datepickerInput = document.getElementById('data-selecionada');
       const datepickerPopup = document.getElementById('datepickerPopup');
       const prevMonthBtn = document.getElementById('prevMonth');
       const nextMonthBtn = document.getElementById('nextMonth');
@@ -1895,15 +1657,18 @@
       const datepickerWeekdays = document.getElementById('datepickerWeekdays');
       const datepickerDays = document.getElementById('datepickerDays');
 
-      datepickerWeekdays.innerHTML = weekdays.map(day =>  
+      // Preenche os dias da semana
+      datepickerWeekdays.innerHTML = weekdays.map(day => 
         `<div class="datepicker-weekday">${day}</div>`
       ).join('');
 
+      // Mostra/oculta o popup
       datepickerInput.addEventListener('click', () => {
         datepickerPopup.classList.toggle('active');
         renderDatepicker();
       });
 
+      // Navegação do calendário
       prevMonthBtn.addEventListener('click', () => {
         currentPopupDate.setMonth(currentPopupDate.getMonth() - 1);
         renderDatepicker();
@@ -1914,6 +1679,7 @@
         renderDatepicker();
       });
 
+      // Fecha o popup quando clicar fora
       document.addEventListener('click', (e) => {
         if (!datepickerPopup.contains(e.target) && e.target !== datepickerInput) {
           datepickerPopup.classList.remove('active');
@@ -1933,10 +1699,12 @@
         let daysHtml = '';
         const today = new Date();
         
+        // Dias do mês anterior (se necessário)
         for (let i = 0; i < firstDay; i++) {
           daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${daysInPrevMonth - firstDay + i + 1}</div>`;
         }
         
+        // Dias do mês atual
         for (let i = 1; i <= daysInMonth; i++) {
           const date = new Date(year, month, i);
           const isToday = date.toDateString() === today.toDateString();
@@ -1944,14 +1712,15 @@
           const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
           
           let dayClass = 'datepicker-day';
-          if (isToday) dayClass += ' today';
+          if (isToday) dayClass += ' datepicker-today';
           if (isSelected) dayClass += ' selected';
           if (isPast) dayClass += ' disabled';
           
           daysHtml += `<div class="${dayClass}" data-day="${i}">${i}</div>`;
         }
         
-        const totalCells = 42;
+        // Dias do próximo mês (se necessário)
+        const totalCells = 42; // 6 semanas * 7 dias
         const remainingCells = totalCells - (firstDay + daysInMonth);
         for (let i = 1; i <= remainingCells; i++) {
           daysHtml += `<div class="datepicker-day datepicker-other-month disabled">${i}</div>`;
@@ -1959,38 +1728,49 @@
         
         datepickerDays.innerHTML = daysHtml;
         
+        // Adiciona eventos aos dias
         document.querySelectorAll('.datepicker-day:not(.disabled)').forEach(day => {
           day.addEventListener('click', () => {
             const dayNum = parseInt(day.getAttribute('data-day'));
             popupSelectedDate = new Date(year, month, dayNum);
             
+            // Atualiza o campo de data
             const formattedDay = String(dayNum).padStart(2, '0');
             const formattedMonth = String(month + 1).padStart(2, '0');
             selectedDate = `${formattedDay}/${formattedMonth}/${year}`;
             datepickerInput.value = selectedDate;
             
+            // Fecha o popup
             datepickerPopup.classList.remove('active');
+            
+            // Atualiza o calendário principal
             updateMainCalendarSelection(year, month + 1, dayNum);
+            
+            // Atualiza as aulas disponíveis
             atualizarAulasDisponiveis();
+            
+            // Verifica se há conflito
+            verificarConflito();
           });
         });
       }
-      
-      renderDatepicker();
     }
 
     function updateMainCalendarSelection(year, month, day) {
+      // Atualiza os seletores de mês/ano se necessário
       if (parseInt(yearSelect.value) !== year || parseInt(monthSelect.value) + 1 !== month) {
         yearSelect.value = year;
         monthSelect.value = month - 1;
         renderCalendarBody(year, month - 1);
       }
       
+      // Encontra e seleciona o dia no calendário principal
       const calendarBody = document.getElementById('calendarBody');
       const cells = calendarBody.querySelectorAll('td');
       
       cells.forEach(cell => {
         if (parseInt(cell.textContent) === day) {
+          // Remove seleção anterior
           if (selectedDay) {
             selectedDay.classList.remove('selecionado');
             const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
@@ -1999,6 +1779,7 @@
             }
           }
           
+          // Adiciona nova seleção
           cell.classList.add('selecionado');
           cell.classList.remove('disponivel');
           selectedDay = cell;
@@ -2006,11 +1787,9 @@
       });
     }
 
+    // Funções do calendário principal
     function populateMonthYearSelectors() {
       const currentYear = new Date().getFullYear();
-
-      monthSelect.innerHTML = '';
-      yearSelect.innerHTML = '';
 
       for (let y = currentYear - 1; y <= currentYear + 2; y++) {
         const option = document.createElement('option');
@@ -2036,30 +1815,23 @@
       return agendamentos[key] || [];
     }
 
-    async function renderHistorico(agendamentosDoMes) {
+    function renderHistorico(agendamentosDoMes) {
       const historicoBody = document.getElementById('historico-body');
       historicoBody.innerHTML = '';
       
+      // Adiciona agendamentos atuais
       agendamentosDoMes.forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega, id }) => {
         const row = document.createElement('tr');
         
         const formattedDay = String(dia).padStart(2, '0');
         const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0');
         const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
-        const dataAgendamento = formatarDataParaComparacao(dia, parseInt(monthSelect.value) + 1, yearSelect.value);
         
+        // Adiciona classe de status de entrega
         if (horaEntrega) {
           row.classList.add('entregue');
         } else {
           row.classList.add('nao-entregue');
-        }
-        
-        if (estaDentroDoPeriodo(dataAgendamento)) {
-          row.classList.add('recente');
-        }
-        
-        if (!estaDentroDoPeriodo(dataAgendamento)) {
-          row.classList.add('expirado');
         }
         
         row.innerHTML = `
@@ -2070,33 +1842,22 @@
           <td>${professor}</td>
           <td>${aula}</td>
           <td>${horaEntrega || 'Não entregue'}</td>
-          <td>
-            ${!horaEntrega ? `<button class="btn btn-entregar" onclick="abrirModalDevolucao('${id}')">ENTREGAR</button>` : ''}
-            <button class="btn btn-excluir" onclick="excluirAgendamento('${id}')" ${!estaDentroDoPeriodo(dataAgendamento) ? 'disabled' : ''}>EXCLUIR</button>
-          </td>
+          <td><button class="btn-excluir" onclick="excluirAgendamento('${id}')"><i class="fas fa-trash-alt"></i></button></td>
         `;
         historicoBody.appendChild(row);
       });
       
+      // Adiciona agendamentos excluídos (apenas do mês atual)
       const currentMonthKey = `${yearSelect.value}-${String(parseInt(monthSelect.value) + 1).padStart(2, '0')}`;
       historicoExcluidos
         .filter(item => item.mesAno === currentMonthKey)
-        .forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega, dataExclusao }) => {
+        .forEach(({ dia, aparelho, professor, turma, numAparelhos, aula, horaEntrega }) => {
           const row = document.createElement('tr');
           row.classList.add('excluido');
           
           const formattedDay = String(dia).padStart(2, '0');
           const formattedMonth = String(parseInt(monthSelect.value) + 1).padStart(2, '0');
           const formattedDate = `${formattedDay}/${formattedMonth}/${yearSelect.value}`;
-          const dataAgendamento = formatarDataParaComparacao(dia, parseInt(monthSelect.value) + 1, yearSelect.value);
-          
-          if (estaDentroDoPeriodo(dataAgendamento)) {
-            row.classList.add('recente');
-          }
-          
-          if (!estaDentroDoPeriodo(dataAgendamento)) {
-            row.classList.add('expirado');
-          }
           
           row.innerHTML = `
             <td>${formattedDate}</td>
@@ -2117,7 +1878,7 @@
       calendarBody.innerHTML = '';
 
       const date = new Date(year, month, 1);
-      const firstDay = date.getDay();
+      const firstDay = date.getDay(); // 0=Domingo, 1=Segunda, ..., 6=Sábado
       const daysInMonth = new Date(year, month + 1, 0).getDate();
       const daysInPrevMonth = new Date(year, month, 0).getDate();
 
@@ -2126,6 +1887,7 @@
       let day = 1;
       let currentRow = document.createElement('tr');
       
+      // Células vazias para os dias do mês anterior
       for (let i = 0; i < firstDay; i++) {
         const emptyCell = document.createElement('td');
         emptyCell.innerHTML = daysInPrevMonth - firstDay + i + 1;
@@ -2133,7 +1895,9 @@
         currentRow.appendChild(emptyCell);
       }
 
+      // Dias do mês atual
       while (day <= daysInMonth) {
+        // Se chegarmos ao domingo (0), criamos uma nova linha
         if (currentRow.children.length === 7) {
           calendarBody.appendChild(currentRow);
           currentRow = document.createElement('tr');
@@ -2151,16 +1915,11 @@
           cell.style.cursor = 'default';
         }
 
-        const today = new Date();
-        if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-          cell.style.border = '2px solid var(--azul-escuro)';
-          cell.style.fontWeight = 'bold';
-        }
-
         currentRow.appendChild(cell);
         day++;
       }
 
+      // Preenche as células restantes na última linha com dias do próximo mês
       while (currentRow.children.length < 7) {
         const nextMonthDay = document.createElement('td');
         nextMonthDay.innerHTML = day - daysInMonth;
@@ -2169,6 +1928,7 @@
         day++;
       }
 
+      // Adiciona a última linha se ela tiver conteúdo
       if (currentRow.children.length > 0) {
         calendarBody.appendChild(currentRow);
       }
@@ -2176,176 +1936,153 @@
       renderHistorico(agendamentosDoMes);
     }
 
-    async function agendarEquipamento() {
+    function gerarIdUnico() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    async function cadastrarAgendamento() {
       const professor = document.getElementById("professor").value;
-      const aparelho = document.getElementById("equipamentoAgendamento").value;
+      const aparelho = document.getElementById("aparelho").value;
       const turma = document.getElementById("studentClass").value;
-      const numAparelhos = parseInt(document.getElementById("quantidadeAgendamento").value);
+      const numAparelhos = document.getElementById("numero-aparelhos").value;
+      const aula = document.getElementById("aula").value;
       const sala = document.getElementById("sala").value;
-      const data = document.getElementById("dataAgendamento").value;
+      const horaRetirada = document.getElementById("hora-retirada").value;
+      const horaEntrega = document.getElementById("hora-entrega").value;
       
-      // Obter aulas selecionadas
-      const aulasSelecionadas = [];
-      document.querySelectorAll('.aula-checkbox:checked').forEach(checkbox => {
-        aulasSelecionadas.push(checkbox.value);
-      });
-      
-      if (!professor || professor === "Selecione" || !aparelho || !turma || !numAparelhos || !data || !sala || aulasSelecionadas.length === 0) {
+      if (!professor || !aparelho || !turma || !numAparelhos || !selectedDate || !sala || !horaRetirada || !aula || aula === "Nenhuma aula neste dia") {
         alert("Preencha todos os campos obrigatórios do formulário antes de agendar!");
         return;
       }
       
-      const [dia, mes, ano] = data.split('/');
-      const mesAno = `${ano}-${mes}`;
-      
-      let agendamentosSalvos = 0;
-      let mensagensConflito = 0;
-      
-      // Criar um agendamento para cada aula selecionada
-      for (const aula of aulasSelecionadas) {
-        // Verificar conflito para esta aula específica
-        if (await verificarConflitoAgendamento(turma, data, aula)) {
-          mensagensConflito++;
-          continue;
-        }
-        
-        const novoAgendamento = { 
-          dia: parseInt(dia),
-          mesAno,
-          aparelho,
-          professor,
-          turma,
-          numAparelhos,
-          aula,
-          sala,
-          horaEntrega: null,
-          userId: USER_ID
-        };
-        
-        const id = await salvarAgendamentoFirestore(novoAgendamento);
-        
-        if (id) {
-          agendamentosSalvos++;
-          if (!agendamentos[mesAno]) {
-            agendamentos[mesAno] = [];
-          }
-          agendamentos[mesAno].push({ id, ...novoAgendamento });
-        }
+      // Verifica se já existe agendamento para esta turma, data e aula
+      if (verificarConflitoAgendamento(turma, selectedDate, aula)) {
+        alert("Já existe um agendamento para esta turma nesta data e aula!");
+        return;
       }
       
-      // Recarregar todos os dados do Firestore
-      await carregarDadosIniciais();
+      const [dia, mes, ano] = selectedDate.split('/');
+      const key = `${ano}-${mes}`;
       
+      if (!agendamentos[key]) {
+        agendamentos[key] = [];
+      }
+      
+      const id = gerarIdUnico();
+      
+      const novoAgendamento = { 
+        id,
+        dia: parseInt(dia),
+        aparelho,
+        professor,
+        turma,
+        numAparelhos: parseInt(numAparelhos),
+        aula,
+        sala,
+        horaRetirada,
+        horaEntrega
+      };
+      
+      agendamentos[key].push(novoAgendamento);
+      
+      // Atualiza o calendário e o histórico
+      renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
+      
+      // Limpa a seleção
       if (selectedDay) {
         selectedDay.classList.remove('selecionado');
         selectedDay.classList.add('agendado');
         selectedDay = null;
       }
       selectedDate = null;
-      document.getElementById('dataAgendamento').value = '';
+      document.getElementById('data-selecionada').value = '';
       
-      let mensagem = '';
-      if (agendamentosSalvos > 0) {
-        mensagem += `${agendamentosSalvos} agendamento(s) cadastrado(s) com sucesso! `;
-      }
-      if (mensagensConflito > 0) {
-        mensagem += `${mensagensConflito} aula(s) não foram agendadas devido a conflitos.`;
-      }
+      // Gera documento
+      await gerarDocumento(novoAgendamento);
       
-      if (mensagem) {
-        alert(mensagem);
-      } else {
-        alert("Nenhum agendamento foi realizado.");
-      }
+      alert("Agendamento cadastrado com sucesso!");
     }
 
-    async function excluirAgendamento(id) {
+    function excluirAgendamento(id) {
       if (!confirm("Tem certeza que deseja excluir este agendamento?")) {
         return;
       }
       
+      // Encontra e remove o agendamento
       for (const key in agendamentos) {
         const index = agendamentos[key].findIndex(ag => ag.id === id);
         if (index !== -1) {
           const [agendamentoExcluido] = agendamentos[key].splice(index, 1);
           
-          const sucesso = await excluirAgendamentoFirestore(id, agendamentoExcluido);
-          if (sucesso) {
-            await carregarDadosIniciais();
-          }
+          // Adiciona ao histórico de excluídos
+          const [ano, mes] = key.split('-');
+          historicoExcluidos.push({
+            ...agendamentoExcluido,
+            mesAno: key
+          });
+          
+          // Atualiza a exibição
+          renderCalendarBody(parseInt(ano), parseInt(mes) - 1);
           break;
         }
-      }
-    }
-    
-    function abrirModalDevolucao(id) {
-      for (const key in agendamentos) {
-        const agendamento = agendamentos[key].find(ag => ag.id === id);
-        if (agendamento) {
-          agendamentoParaDevolver = agendamento;
-          
-          document.getElementById('modalText').textContent = 
-            `Confirmar devolução de ${agendamento.numAparelhos} ${agendamento.aparelho}(s) pelo professor ${agendamento.professor}?`;
-          
-          const now = new Date();
-          const horaAtual = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-          document.getElementById('horaEntregaModal').value = horaAtual;
-          
-          document.getElementById('devolucaoModal').style.display = 'block';
-          break;
-        }
-      }
-    }
-    
-    function fecharModal() {
-      document.getElementById('devolucaoModal').style.display = 'none';
-      agendamentoParaDevolver = null;
-    }
-    
-    async function finalizarAgendamento() {
-      if (!agendamentoParaDevolver) return;
-      
-      const horaEntrega = document.getElementById('horaEntregaModal').value;
-      if (!horaEntrega) {
-        alert("Informe a hora da entrega!");
-        return;
-      }
-      
-      const sucesso = await atualizarAgendamentoFirestore(agendamentoParaDevolver.id, { horaEntrega });
-      if (sucesso) {
-        agendamentoParaDevolver.horaEntrega = horaEntrega;
-        
-        // Recarregar todos os dados
-        await carregarDadosIniciais();
-        
-        fecharModal();
-        alert("Devolução registrada com sucesso!");
       }
     }
 
-    function gerarDocumentoPDF(agendamento) {
-      // ... (mantido igual ao original)
-    }
-    
-    function exportarParaPDF() {
-      // ... (mantido igual ao original)
-    }
-    
-    function exportarParaCSV() {
-      // ... (mantido igual ao original)
+    async function gerarDocumento(agendamento) {
+      try {
+        // Esta função seria implementada para integrar com o Google Docs usando o Google Apps Script
+        // Aqui está apenas um esboço da implementação que seria chamada pelo Google Apps Script
+        
+        const response = await fetch('https://script.google.com/macros/s/AKfycbw3I3K5zveoPB398z2EyTfrd91nFmFQr3sspk2E01G8YWS2itYWJ6q7tPicsr-J4U0D/exec', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'gerarDocumento',
+            dados: {
+              professor: agendamento.professor,
+              quantidade: agendamento.numAparelhos,
+              data: agendamento.dia + '/' + (parseInt(monthSelect.value) + 1) + '/' + yearSelect.value,
+              tipoAparelho: agendamento.aparelho,
+              turma: agendamento.turma,
+              aula: agendamento.aula,
+              horaRetirada: agendamento.horaRetirada,
+              horaEntrega: agendamento.horaEntrega,
+              statusEntrega: agendamento.horaEntrega ? 'Entregue' : 'Não entregue'
+            }
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          console.log("Documento gerado com sucesso:", result.url);
+        } else {
+          console.error("Erro ao gerar documento:", result.message);
+        }
+      } catch (error) {
+        console.error("Erro ao chamar o Google Apps Script:", error);
+      }
     }
 
     function limparFormulario() {
       document.getElementById("professor").value = "Selecione";
       document.getElementById("email-professor").value = "";
-      document.getElementById("equipamentoAgendamento").value = "";
+      document.getElementById("aparelho").value = "";
       document.getElementById("marca").value = "";
-      document.getElementById("quantidadeAgendamento").value = "1";
+      document.getElementById("numero-aparelhos").value = "1";
       document.getElementById("studentClass").value = "";
       document.getElementById("sala").value = "";
-      document.getElementById("aula-container").innerHTML = '';
+      document.getElementById("hora-retirada").value = "";
+      document.getElementById("hora-entrega").value = "";
+      document.getElementById("aula").innerHTML = '<option value="">Selecione uma data primeiro</option>';
+      document.getElementById("aula-info").textContent = "Selecione um professor e uma data para ver as aulas disponíveis";
+      document.getElementById("aula-info").className = "aula-indisponivel";
       document.getElementById("conflictMessage").style.display = "none";
+      document.getElementById("teacherSchedule").style.display = "none";
       
+      // Limpa a seleção de data
       if (selectedDay) {
         selectedDay.classList.remove('selecionado');
         const agendamentosDoMes = getAgendamentos(parseInt(yearSelect.value), parseInt(monthSelect.value));
@@ -2355,31 +2092,28 @@
         selectedDay = null;
       }
       selectedDate = null;
-      document.getElementById('dataAgendamento').value = '';
+      document.getElementById('data-selecionada').value = '';
       popupSelectedDate = null;
     }
 
-    // INICIALIZAÇÃO
-    async function initApp() {
-      gerarOpcoesProfessores();
-      populateMonthYearSelectors();
-      await carregarDadosIniciais();
-      initDatepicker();
+    // Inicialização
+    gerarOpcoesProfessores();
+    populateMonthYearSelectors();
+    renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
+    initDatepicker();
 
-      document.getElementById("professor").addEventListener("change", atualizarEmailEAulas);
-      document.getElementById("studentClass").addEventListener("change", atualizarSalaEAulas);
-      document.getElementById("dataAgendamento").addEventListener("change", atualizarAulasDisponiveis);
+    // Adiciona listeners para verificar conflito quando os campos mudam
+    document.getElementById("studentClass").addEventListener("change", verificarConflito);
+    document.getElementById("aula").addEventListener("change", verificarConflito);
+    document.getElementById("data-selecionada").addEventListener("change", verificarConflito);
 
-      monthSelect.addEventListener('change', () => {
-        renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
-      });
-      yearSelect.addEventListener('change', () => {
-        renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
-      });
-      // Carregar as aulas disponíveis ao iniciar
-      atualizarAulasDisponiveis();
-    }
-    initApp();
+    monthSelect.addEventListener('change', () => {
+      renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
+    });
+
+    yearSelect.addEventListener('change', () => {
+      renderCalendarBody(Number(yearSelect.value), Number(monthSelect.value));
+    });
   </script>
 </body>
 </html>
